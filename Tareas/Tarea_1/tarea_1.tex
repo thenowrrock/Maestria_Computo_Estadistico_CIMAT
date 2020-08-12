@@ -35,7 +35,7 @@
 \newcommand{\paren}[1]{\left( #1 \right)}
 \newcommand{\llaves}[1]{\left\lbrace #1 \right\rbrace}
 \newcommand{\barra}{\,\vert\,}
-\newcommand{\mP}{\mathbf{P}}
+\newcommand{\mP}{\mathbb{P}}
 \newcommand{\mT}{\mathbf{T}}
 \newcommand{\mI}{\mathbf{I}}
 \newcommand{\mJ}{\mathbf{J}}
@@ -83,21 +83,28 @@ Considerando
 
 \item Un conjunto de bits se envían sobre un canal de comunicación en paquetes de 12. Si la probabilidad de que un bit sea corrompido sobre este canal es 0.1 y los errores son independientes,
 ¿cuál es la probabilidad de que no más de dos bits de un paquete se corrompan? Si 6 paquetes
-de bits se envían sobre el canal, ¿cuál es la probabilidad de que al menos un paquete contenga 3 o más bits corruptos? Finalmente, si X denota el número de paquetes conteniendo
-3 o más bit corruptos, ¿cuál es la probabilidad de que X excederá su media por más de dos
-desviaciones estándar? 
+de bits se envían sobre el canal, ¿cuál es la probabilidad de que al menos un paquete contenga 3 o más bits corruptos? Finalmente, si $X$ denota el número de paquetes conteniendo 3 o más bit corruptos, ¿cuál es la probabilidad de que $X$ excederá su media por más de dos desviaciones estándar? 
+
+\res
+
+Sea $Y$ el número de bits que son corrompidos en este canal dentro de un paquete de 12, entonces podemos decir que, $Y\sim \ Bin(12,0.1)$. Entonces la probabilidad de que no más de dos bits de un paquete se corrompan es
+
+$$\mP(Y<2)= \mP(Y=1)+\mP(Y=0)...$$
+
+Ahora si existen 6 paquetes de bits sobre el canal, para determinar la probabilidad de que al menos un paquete contenga 3 o más bits corruptos
 
 \item Una caja contiene 12 manzanas frescas y 4 que están podridas. Si elige 3 al azar y X denota el
 número de manzanas frescas que tomó, encuentre la función de densidad de X y su esperanza.
 
 \res 
 
-Sea X por definición se distribuye binomial (1/3, 3).
+Sea X por definición se distribuye Hypergeometrica (12, 3).
+\begin{equation*}
+f(x)= \frac{{k\choose n}{N-x\choose n-x}}{{N\choose n}}
+\end{equation*}
 
 \item Para el siguiente ejercicio es necesario el programa \textsc{R}.
-
 \begin{itemize}
-
 \item[a)] Escriba un programa en \textsc{R}  que reproduzca las gráficas de las funciones de distribución
 acumulada y de masa de la distribución uniforme que aparecen en las notas del curso. Las gráficas deben verse similares a las figuras de la Figura 1.
 
@@ -159,6 +166,8 @@ vi) C y E son independientes. vii) $P (A \cap C \cap E) = P (A)P (C)P (E)$. viii
 independientes. Justifique sus respuestas.
 
 
+\item \textbf{Extra} 
+Solución extra del ejercicio 4 en python. 
 
 
 
