@@ -1,0 +1,183 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish]{babel}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{lmodern}
+\usepackage{xspace}
+\usepackage{multicol}
+\usepackage{hyperref}
+\usepackage{float}
+
+
+\usepackage{array}
+\hypersetup{ colorlinks=true,  urlcolor=MaterialBlue800, linkcolor=black}
+%\usepackage[colorlinks=true, linkcolor=black, urlcolor=blue, pdfborder={0 0 0}]{hyperref}
+\usepackage{color}
+
+\usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
+\title{Modelos no paramétricos y de regresión 2018-1}
+\author{Tarea examen: pruebas binomiales y tablas de contingencia}
+\date{Fecha de entrega: 08/01/2017}
+\setlength{\parindent}{0in}
+\spanishdecimal{.}
+
+
+\newcommand{\X}{\mathbb{X}}
+\newcommand{\x}{\mathbf{x}}
+\newcommand{\Y}{\mathbf{Y}}
+\newcommand{\y}{\mathbf{y}}
+\newcommand{\xbarn}{\bar{x}_n}
+\newcommand{\ybarn}{\bar{y}_n}
+\newcommand{\paren}[1]{\left( #1 \right)}
+\newcommand{\llaves}[1]{\left\lbrace #1 \right\rbrace}
+\newcommand{\barra}{\,\vert\,}
+\newcommand{\mP}{\mathbb{P}}
+\newcommand{\mT}{\mathbf{T}}
+\newcommand{\mI}{\mathbf{I}}
+\newcommand{\mJ}{\mathbf{J}}
+\newcommand{\mX}{\mathbf{X}}
+\newcommand{\mS}{\mathbf{S}}
+\newcommand{\mA}{\mathbf{A}}
+\newcommand{\unos}{\boldsymbol{1}}
+\newcommand{\xbarnv}{\bar{\mathbf{x}}_n}
+\newcommand{\abs}[1]{\left\vert #1 \right\vert}
+\newcommand{\muv}{\boldsymbol{\mu}}
+\newcommand{\mcov}{\boldsymbol{\Sigma}}
+\newcommand{\vbet}{\boldsymbol{\beta}}
+\newcommand{\veps}{\boldsymbol{\epsilon}}
+\newcommand{\mC}{\mathbf{C}}
+\newcommand{\ceros}{\boldsymbol{0}}
+\newcommand{\mH}{\mathbf{H}}
+\newcommand{\ve}{\mathbf{e}}
+\newcommand{\avec}{\mathbf{a}}
+\newcommand{\res}{\textbf{RESPUESTA}\\}
+\newcommand{\rojo}[1]{\textcolor{MaterialRed900}{#1}}
+\newcommand{\azul}[1]{\textcolor{MaterialBlue900}{#1}}
+\newcommand{\defi}[3]{\textbf{Definición:#3}}
+
+\begin{document}
+\begin{table}[ht]
+\centering
+\begin{tabular}{c}
+\textbf{Maestría en Computo Estadístico}\\
+\textbf{Inferencia Estadística} \\
+\textbf{Tarea 1}\\
+\today \\
+\emph{Enrique Santibáñez Cortés}
+\end{tabular}
+\end{table}
+
+\begin{enumerate}
+
+\item La compañía CIE ha desarrollado un nuevo producto. La demanda de tal artículo es desconocida, pero se asume que es una variable aleatoria distribuida uniformemente en $\{0, 1, \cdots, N \}$.
+Los dispositivos deben de ser hechos por adelantado; cada uno vendido produce una ganancia de g pesos y cada uno de los que se queda sin vender produce una perdida de p pesos.
+¿Cuántos de estos artículos tienen que producirse para maximizar la ganancia esperada?
+
+\res
+
+Considerando
+
+\item Un conjunto de bits se envían sobre un canal de comunicación en paquetes de 12. Si la probabilidad de que un bit sea corrompido sobre este canal es 0.1 y los errores son independientes,
+¿cuál es la probabilidad de que no más de dos bits de un paquete se corrompan? Si 6 paquetes
+de bits se envían sobre el canal, ¿cuál es la probabilidad de que al menos un paquete contenga 3 o más bits corruptos? Finalmente, si $X$ denota el número de paquetes conteniendo 3 o más bit corruptos, ¿cuál es la probabilidad de que $X$ excederá su media por más de dos desviaciones estándar? 
+
+\res
+
+Sea $Y$ el número de bits que son corrompidos en este canal dentro de un paquete de 12, entonces podemos decir que, $Y\sim \ Bin(12,0.1)$. Entonces la probabilidad de que no más de dos bits de un paquete se corrompan es
+
+$$\mP(Y<2)= \mP(Y=1)+\mP(Y=0)...$$
+
+Ahora si existen 6 paquetes de bits sobre el canal, para determinar la probabilidad de que al menos un paquete contenga 3 o más bits corruptos
+
+\item Una caja contiene 12 manzanas frescas y 4 que están podridas. Si elige 3 al azar y X denota el
+número de manzanas frescas que tomó, encuentre la función de densidad de X y su esperanza.
+
+\res 
+
+Sea X por definición se distribuye Hypergeometrica (12, 3).
+\begin{equation*}
+f(x)= \frac{{k\choose n}{N-x\choose n-x}}{{N\choose n}}
+\end{equation*}
+
+\item Para el siguiente ejercicio es necesario el programa \textsc{R}.
+\begin{itemize}
+\item[a)] Escriba un programa en \textsc{R}  que reproduzca las gráficas de las funciones de distribución
+acumulada y de masa de la distribución uniforme que aparecen en las notas del curso. Las gráficas deben verse similares a las figuras de la Figura 1.
+
+\item[b)] Lea en la documentación de \textsc{R}, o en cualquier otra fuente de información confiable,
+la explicación de la función sample(x, size, replace=FALSE, prob=NULL). (No es necesario entregar algo para este ejercicio).
+
+\item[c)] Usando la función sample simule una muestra de tamaño 10 000 de la distribución
+U (1, . . . , 10). Fijando la semilla en 13 (set.seed(13)), muestre los resultados de la
+simulación en una tabla de frecuencia y calcule la media y la varianza. Sugerencia: Use la función table.
+\item[d)] Grafique las frecuencias de la simulación anterior.
+\end{itemize}
+
+
+\item Para el siguiente ejercicio también necesitamos R.
+
+
+\begin{itemize}
+\item[a)] Usando la función sample, simule 10 lanzamientos de una moneda equilibrada y cuente
+el número de águilas que obtiene. Repita este proceso $10^6$ veces y muestre sus primeros 3 resultados. Grafique las frecuencias del número de águilas obtenidas en los $10^6$ experiementos. También grafique las proporciones del número de águilas obtenidas.
+\item[b)] Usando la función $dbinom$ grafique la función de masa de una distribución B(10, 0.5)
+sobre la gráfica de las proporciones que hizo en el inciso anterior.
+\item[c)] Repita los dos incisos anteriores para una moneda desequilibrada que tiene probabilidad
+p = 0.3 de obtener un águila cuando se lanza. ¿Qué observa?
+\end{itemize}
+
+\item Una urna contiene 46 bolas grises y 49 bolas blancas. Usando la función sample en R, simule
+la extracción sin reemplazamiento de 20 de estas bolas y cuente el número de bolas grises que
+obtuvo. Repita este proceso 10 6 veces y grafique las frecuencias de bolas grises obtenidas en
+cada experimento. ¿Cuál es la probabilidad de que al extraer 20 bolas de la urna 5 de ellas
+sean grises? También grafique la proporción de bolas grises obtenidas en los experiementos
+anteriores y sobre esta figura añada la correspondiente función de masa de la distristibución
+Hipergeometrica asociada al experimento total.
+
+\item Sea $X$ una variable aleatoria con función de distribución F dada por
+
+\begin{equation*}
+F(x) = \left\{\begin{array}{ll}
+0 & \text{para } x<0\\
+1/2 & \text{para } 0 \leq x <1/4\\
+3/4 & \text{para } 1/4\leq x< 3/4\\
+1 & \text{para } 3/4 \leq x
+\end{array} \right.
+\end{equation*}
+
+Determine la función de probabilidad de $X$.
+
+
+\item Sea X una variable aleatoria con valores en $[0, 1]$ y función de distribución $F(x)=x^2$ . ¿Cuál es
+la densidad de $X$? Calcule las siguientes probabilidades: i) $P (1/4 \leq X \leq 3/4)$; ii) $P(X > 1/2)$;
+iii) $P(X \leq 3/4|X > 1/2)$.
+
+\item Un lote muy grande de componentes ha llegado a un distribuidor. Se puede decir que el
+lote es aceptable solo si la proporción de componentes defectuosos es cuando mucho 0.10.
+El distribuidor decide seleccionar aleatoriamente 10 componentes y aceptar el lote solo si el
+número de componentes defectuosos en la muestra es cuando mucho 2.
+
+\begin{itemize}
+\item[a)] ¿Cuál es la probabilidad de que el lote sea aceptado cuando la proporción real de defectuosos es 0.01, 0.05, 0.10, 0.20, 0.25?
+\end{itemize}
+
+\item Sean G=$\{1, 2, 3\}$, H=$\{4, 5, 6\}$. Lanzamos dos dados y sean los eventos $A =$ el primer dado cae en H; $B=$el segundo dado cae en H; $C=$un dado cae en G y el otro en H; $D=$ el total es cuatro, $E=$ el total es cinco y $F=$el total es siete. ¿Cuáles de las siguientes proposiciones son ciertas? i) A y F son independientes. ii) A y D son independientes. iii) A
+y E son independientes. iv) $\mP(A \cap B \cap C) = \mP (A)\mP (B)\mP (C)$. v) A y C son independientes.
+vi) C y E son independientes. vii) $\mP (A \cap C \cap E) = \mP (A)\mP (C)\mP (E)$. viii) A, C y E son
+independientes. Justifique sus respuestas.
+
+
+\item \textbf{Extra} 
+
+Solución extra del ejercicio 4 en python. 
+
+
+
+
+\end{enumerate}
+
+\end{document}
