@@ -26,7 +26,7 @@
 \spanishdecimal{.}
 
 
-\newcommand{\X}{\mathbf{X}}
+\newcommand{\X}{\mathbb{X}}
 \newcommand{\x}{\mathbf{x}}
 \newcommand{\Y}{\mathbf{Y}}
 \newcommand{\y}{\mathbf{y}}
@@ -142,11 +142,20 @@ Hipergeometrica asociada al experimento total.
 
 \item Sea $X$ una variable aleatoria con función de distribución F dada por
 
+\begin{equation*}
+F(x) = \left\{\begin{array}{ll}
+0 & \text{para } x<0\\
+1/2 & \text{para } 0 \leq x <1/4\\
+3/4 & \text{para } 1/4\leq x< 3/4\\
+1 & \text{para } 3/4 \leq x
+\end{array} \right.
+\end{equation*}
+
 Determine la función de probabilidad de $X$.
 
 
-\item Sea X una variable aleatoria con valores en [0, 1] y función de distribución F (x) = x 2 . ¿Cuál es
-la densidad de X? Calcule las siguientes probabilidades: i) $P (1/4 \leq X \leq 3/4)$; ii) $P(X > 1/2)$;
+\item Sea X una variable aleatoria con valores en $[0, 1]$ y función de distribución $F(x)=x^2$ . ¿Cuál es
+la densidad de $X$? Calcule las siguientes probabilidades: i) $P (1/4 \leq X \leq 3/4)$; ii) $P(X > 1/2)$;
 iii) $P(X \leq 3/4|X > 1/2)$.
 
 \item Un lote muy grande de componentes ha llegado a un distribuidor. Se puede decir que el
@@ -158,11 +167,9 @@ número de componentes defectuosos en la muestra es cuando mucho 2.
 \item[a)] ¿Cuál es la probabilidad de que el lote sea aceptado cuando la proporción real de defectuosos es 0.01, 0.05, 0.10, 0.20, 0.25?
 \end{itemize}
 
-\item Sean G = {1, 2, 3}, H = {4, 5, 6}. Lanzamos dos dados y sean los eventos A =‘el primer dado
-cae en H’; B =‘el segundo dado cae en H’; C =‘un dado cae en G y el otro en H’; D =‘el
-total es cuatro’, E = ‘el total es cinco’ y F =‘el total es siete’. ¿Cuáles de las siguientes proposiciones son ciertas? i) A y F son independientes. ii) A y D son independientes. iii) A
-y E son independientes. iv) $P(A \cap B \cap C) = P (A)P (B)P (C)$. v) A y C son independientes.
-vi) C y E son independientes. vii) $P (A \cap C \cap E) = P (A)P (C)P (E)$. viii) A, C y E son
+\item Sean G=$\{1, 2, 3\}$, H=$\{4, 5, 6\}$. Lanzamos dos dados y sean los eventos $A =$ el primer dado cae en H; $B=$el segundo dado cae en H; $C=$un dado cae en G y el otro en H; $D=$ el total es cuatro, $E=$ el total es cinco y $F=$el total es siete. ¿Cuáles de las siguientes proposiciones son ciertas? i) A y F son independientes. ii) A y D son independientes. iii) A
+y E son independientes. iv) $\mP(A \cap B \cap C) = \mP (A)\mP (B)\mP (C)$. v) A y C son independientes.
+vi) C y E son independientes. vii) $\mP (A \cap C \cap E) = \mP (A)\mP (C)\mP (E)$. viii) A, C y E son
 independientes. Justifique sus respuestas.
 
 
