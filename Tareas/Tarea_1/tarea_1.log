@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2019.1.22)  13 AUG 2020 01:05
+=======
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2019.1.22)  12 AUG 2020 19:14
+>>>>>>> features/tareas
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -894,6 +898,7 @@ Package babel Info: Redefining spanish shorthand "?
 [1
 
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]
+<<<<<<< HEAD
 Package babel Info: Redefining spanish shorthand <<
 (babel)             in language  on input line 181.
 Package babel Info: Redefining spanish shorthand >>
@@ -946,10 +951,40 @@ Package babel Info: Redefining spanish shorthand "?
 (babel)             in language  on input line 183.
  [3]
 Package atveryend Info: Empty hook `AfterLastShipout' on input line 183.
+=======
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 184.
+Package babel Info: Redefining spanish shorthand <<
+(babel)             in language  on input line 184.
+Package babel Info: Redefining spanish shorthand >>
+(babel)             in language  on input line 184.
+Package babel Info: Redefining spanish shorthand "=
+(babel)             in language  on input line 184.
+Package babel Info: Redefining spanish shorthand "~
+(babel)             in language  on input line 184.
+Package babel Info: Redefining spanish shorthand "!
+(babel)             in language  on input line 184.
+Package babel Info: Redefining spanish shorthand "?
+(babel)             in language  on input line 184.
+Package babel Info: Redefining spanish shorthand <<
+(babel)             in language  on input line 184.
+Package babel Info: Redefining spanish shorthand >>
+(babel)             in language  on input line 184.
+Package babel Info: Redefining spanish shorthand "=
+(babel)             in language  on input line 184.
+Package babel Info: Redefining spanish shorthand "~
+(babel)             in language  on input line 184.
+Package babel Info: Redefining spanish shorthand "!
+(babel)             in language  on input line 184.
+Package babel Info: Redefining spanish shorthand "?
+(babel)             in language  on input line 184.
+ [2]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 184.
+>>>>>>> features/tareas
  (./tarea_1.aux
 LaTeX Info: Redefining \. on input line 23.
 LaTeX Info: Redefining \% on input line 23.
 )
+<<<<<<< HEAD
 Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 183.
 Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 183.
 Package rerunfilecheck Info: File `tarea_1.out' has not changed.
@@ -959,6 +994,17 @@ Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 183.
 Here is how much of TeX's memory you used:
  8045 strings out of 493029
  111920 string characters out of 6136234
+=======
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 184.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 184.
+Package rerunfilecheck Info: File `tarea_1.out' has not changed.
+(rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 184.
+ ) 
+Here is how much of TeX's memory you used:
+ 8044 strings out of 493029
+ 111914 string characters out of 6136234
+>>>>>>> features/tareas
  215282 words of memory out of 5000000
  11441 multiletter control sequences out of 15000+600000
  35988 words of font info for 38 fonts, out of 8000000 for 9000
@@ -975,10 +1021,18 @@ nts/type1/public/lm/lmmi8.pfb></usr/share/texmf/fonts/type1/public/lm/lmr10.pfb
 /public/lm/lmri10.pfb></usr/share/texmf/fonts/type1/public/lm/lmsy10.pfb></usr/
 share/texmf/fonts/type1/public/lm/lmsy8.pfb></usr/share/texlive/texmf-dist/font
 s/type1/public/amsfonts/symbols/msbm10.pfb>
+<<<<<<< HEAD
 Output written on tarea_1.pdf (3 pages, 145889 bytes).
 PDF statistics:
  86 PDF objects out of 1000 (max. 8388607)
  69 compressed objects within 1 object stream
  15 named destinations out of 1000 (max. 500000)
+=======
+Output written on tarea_1.pdf (2 pages, 144432 bytes).
+PDF statistics:
+ 82 PDF objects out of 1000 (max. 8388607)
+ 66 compressed objects within 1 object stream
+ 14 named destinations out of 1000 (max. 500000)
+>>>>>>> features/tareas
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 
