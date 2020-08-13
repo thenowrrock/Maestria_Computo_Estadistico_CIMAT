@@ -1,0 +1,26 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1597278220761.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3412612114",
+    "id" : "5678DF1C",
+    "lastKnownWriteTime" : 1597300792,
+    "last_content_update" : 1597300792465,
+    "path" : "~/Documentos/Maestría/Inferencia_Estad-stica/Tareas/Tarea_1/Tarea_1 Inferencia/Tarea_1.R",
+    "project_path" : "Tarea_1.R",
+    "properties" : {
+        "cursorPosition" : "27,16",
+        "scrollLine" : "20",
+        "tempName" : "Untitled1"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
