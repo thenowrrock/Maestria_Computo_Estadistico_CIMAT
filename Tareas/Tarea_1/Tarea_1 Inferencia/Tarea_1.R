@@ -30,7 +30,7 @@ for
 # b) 
 
 
-# c) Re
+# c) Re324234
 
 # Ejercicio 6.
 # 
