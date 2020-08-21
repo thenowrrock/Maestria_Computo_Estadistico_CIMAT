@@ -11,12 +11,14 @@
 \usepackage{multicol}
 \usepackage{hyperref}
 \usepackage{float}
-
-
-\usepackage{array}
-\hypersetup{ colorlinks=true,  urlcolor=MaterialBlue800, linkcolor=black}
-%\usepackage[colorlinks=true, linkcolor=black, urlcolor=blue, pdfborder={0 0 0}]{hyperref}
+\usepackage{hyperref}
 \usepackage{color}
+
+\newcommand{\azul}[1]{\textcolor{MaterialBlue900}{#1}}
+\usepackage{array}
+
+\hypersetup{colorlinks=true,   linkcolor=MaterialBlue900}
+%\usepackage[colorlinks=true, linkcolor=black, urlcolor=blue, pdfborder={0 0 0}]{hyperref}
 
 \usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
 \title{Modelos no paramétricos y de regresión 2018-1}
@@ -56,7 +58,7 @@
 \newcommand{\avec}{\mathbf{a}}
 \newcommand{\res}{\textbf{RESPUESTA}\\}
 \newcommand{\rojo}[1]{\textcolor{MaterialRed900}{#1}}
-\newcommand{\azul}[1]{\textcolor{MaterialBlue900}{#1}}
+
 \newcommand{\defi}[3]{\textbf{Definición:#3}}
 
 \begin{document}
@@ -67,7 +69,8 @@
 \textbf{Inferencia Estadística} \\
 \textbf{Tarea 1}\\
 \today \\
-\emph{Enrique Santibáñez Cortés}
+\emph{Enrique Santibáñez Cortés}\\
+Repositorio de Git: \href{https://github.com/Enriquesec/Inferencia_Estad-stica/tree/master/Tareas/Tarea_1}{Tarea 1, IE}.
 \end{tabular}
 \end{table}
 
@@ -228,14 +231,95 @@ número de componentes defectuosos en la muestra es cuando mucho 2.
 \end{itemize}
 
 \res
-Sea $X$ el número de componentes defectuosos en la muestra aleatoria de 10 componentes. 
+Sea $X$ el número de componentes defectuosos en la muestra aleatoria de 10 componentes. Considerando que el lote es muy grande y la proporción $p$ real de defectuosos en el lote, podemos decir que $X\sim Bin(10,p)$. Entonces la probabilidad de que el lote sea aceptado es $$\mP(X\leq 2).$$
+
+Ahora considerando las diferentes proporciones, tenemos que (ocupando la función \textsf{pbinom(q=2, size=10, prob = p)} de software estadístico R.):
+
+\begin{itemize}
+\item cuando $p=0.01$, la probabilidad de aceptar el lotes es:
+\begin{equation*}
+\begin{array}{ccl}
+\mP(X\leq 2)&=&\mP(X=0)+\mP(X=1)+\mP(X=2)\\
+&& \\
+&=&{10\choose0}(0.99)^{10}+{10\choose1}(0.99)^9(0.01)+{10\choose2}(0.99)^8(0.01)^2\\
+&&\\
+&=&0.9998862.
+\end{array}
+\end{equation*}
+
+\item cuando $p=0.05$, la probabilidad de aceptar el lote es: 
+\begin{equation*}
+\begin{array}{ccl}
+\mP(X\leq 2)&=&\mP(X=0)+\mP(X=1)+\mP(X=2)\\
+&& \\
+&=&{10\choose0}(0.95)^{10}+{10\choose1}(0.95)^9(0.05)+{10\choose2}(0.95)^8(0.05)^2\\
+&& \\
+&=& 0.9884964.
+\end{array}
+\end{equation*}
+
+\item cuando $p=0.10$, la probabilidad de aceptar el lote es: 
+\begin{equation*}
+\begin{array}{ccl}
+\mP(X\leq 2)&=&\mP(X=0)+\mP(X=1)+\mP(X=2)\\
+&& \\
+&=&{10\choose0}(0.90)^{10}+{10\choose1}(0.90)^9(0.10)+{10\choose2}(0.90)^8(0.10)^2\\
+&& \\
+&=& 0.9298092.
+\end{array}
+\end{equation*}
+
+\item cuando $p=0.20$, la probabilidad de aceptar el lote es: 
+\begin{equation*}
+\begin{array}{ccl}
+\mP(X\leq 2)&=&\mP(X=0)+\mP(X=1)+\mP(X=2)\\
+&& \\
+&=&{10\choose0}(0.80)^{10}+{10\choose1}(0.80)^9(0.20)+{10\choose2}(0.80)^8(0.20)^2\\
+&& \\
+&=& 0.6777995.
+\end{array}
+\end{equation*}
+
+\item cuando $p=0.25$, la probabilidad de aceptar el lote es: 
+\begin{equation*}
+\begin{array}{ccl}
+\mP(X\leq 2)&=&\mP(X=0)+\mP(X=1)+\mP(X=2)\\
+&& \\
+&=&{10\choose0}(0.75)^{10}+{10\choose1}(0.75)^9(0.25)+{10\choose2}(0.75)^8(0.25)^2\\
+&& \\
+&=& 0.5255928.
+\end{array}
+\end{equation*}
+\end{itemize}
+
+Podemos observar, que cuando la proporción real de componentes defectuosos del lote es más grande esto implica que la probabilidad de aceptar el lote es cada vez menor, es decir, la proporción real es inversamente proporcional a la probabilidad de aceptar el lote. Si observamos la función de distribución acumulada la $X$ cambio el valor $p$, se puede observar claramente este hecho. $\blacksquare$
 
 
-\item Sean G=$\{1, 2, 3\}$, H=$\{4, 5, 6\}$. Lanzamos dos dados y sean los eventos $A =$ el primer dado cae en H; $B=$el segundo dado cae en H; $C=$un dado cae en G y el otro en H; $D=$ el total es cuatro, $E=$ el total es cinco y $F=$el total es siete. ¿Cuáles de las siguientes proposiciones son ciertas? i) A y F son independientes. ii) A y D son independientes. iii) A
+\item Sean G=$\{1, 2, 3\}$, H=$\{4, 5, 6\}$. Lanzamos dos dados y sean los eventos $A=$ el primer dado cae en H; $B=$el segundo dado cae en H; $C=$un dado cae en G y el otro en H; $D=$ el total es cuatro, $E=$ el total es cinco y $F=$ el total es siete. ¿Cuáles de las siguientes proposiciones son ciertas? i) A y F son independientes. ii) A y D son independientes. iii) A
 y E son independientes. iv) $\mP(A \cap B \cap C) = \mP (A)\mP (B)\mP (C)$. v) A y C son independientes.
 vi) C y E son independientes. vii) $\mP (A \cap C \cap E) = \mP (A)\mP (C)\mP (E)$. viii) A, C y E son
 independientes. Justifique sus respuestas.
 
+\res
+Analicemos las proposiciones:
+\begin{itemize}
+\item[i)] A y F son independientes. \textbf{Falso}. Si consideramos la porbabilidad: 
+
+$$\mP(F|A)=.$$
+
+
+\item[ii)] A y D son independientes. \textbf{Falso}
+
+\item[iii)] A y E son independientes. \textbf{Falso}.
+
+\item[iv)] $\mP(A \cap B \cap C) = \mP (A)\mP (B)\mP (C)$. \textbf{Verdadero}
+
+\item[v)] A y C son independientes.\textbf{Falso}.
+\item[vi)] C y E son independientes.\textbf{Falso}.
+\item[vii)] $\mP (A \cap C \cap E) = \mP (A)\mP (C)\mP (E)$. \textbf{Falso}.
+\item[viii)] A, C y E son
+independientes. \textbf{Falso}.
+\end{itemize}
 
 \item \textbf{Extra} 
 
