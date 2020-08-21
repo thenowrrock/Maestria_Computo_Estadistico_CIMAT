@@ -1,3 +1,9 @@
+# Ejercicio 1.
+pbinom(q=2, size=12, prob = 0.1)
+
+pbinom(q=1, size=6, prob=0.11087)
+6*0.11087
+
 # Ejercicio 4. 
 # a) Función para graficar la función de distribución acumulada y de masa de la distribu-
 # ción uniforme.
@@ -34,6 +40,13 @@ for
 
 # Ejercicio 6.
 # 
+
+
+# Ejercicio 9.
+
+pbinom(q=seq(0,10), size=10, prob = 0.25)
+
+
 
 
 
