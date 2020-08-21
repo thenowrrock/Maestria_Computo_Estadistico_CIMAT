@@ -25,12 +25,12 @@ plot(table(muestra))
 # a) Sea 1 si cae sol y 0 si cae aguila, entonces podemos 
 
 experimento_moneda <- sample(2, 10, replace=TRUE)
-muestras_modenas
+for i in muestras_modenas
 for 
 # b) 
 
 
-# c) Re
+# c) 
 
 # Ejercicio 6.
 # 
