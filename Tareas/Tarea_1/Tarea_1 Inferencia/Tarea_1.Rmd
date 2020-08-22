@@ -22,7 +22,7 @@ Repositorio de Git: \href{https://github.com/Enriquesec/Inferencia_Estad-stica/t
 \end{table}
 \begin{itemize}
 \item[1.] La compañía CIE ha desarrollado un nuevo producto. La demanda de tal artículo es desconocida, pero se asume que es una variable aleatoria distribuida uniformemente en $\{0, 1, \cdots, N \}$.
-Los dispositivos deben de ser hechos por adelantado; cada uno vendido produce una ganancia de g pesos y cada uno de los que se queda sin vender produce una perdida de p pesos.
+Los dispositivos deben de ser hechos por adelantado; cada uno vendido produce una ganancia de $g$ pesos y cada uno de los que se queda sin vender produce una perdida de $p$ pesos.
 ¿Cuántos de estos artículos tienen que producirse para maximizar la ganancia esperada?
 
 \res
@@ -183,7 +183,7 @@ b. Usando la función dbinom grafique la función de masa de una distribución B
 ```{r}
 plot(frecuencias_moneda/10**6)
 par(new=TRUE)
-plot(dbinom(x=seq(0,10,1), size = 10,prob = 0.5),xlab = "", ylab = "",xlim = c(0,10))
+plot(x=seq(0,10,1),dbinom(x=seq(0,10,1), size = 10,prob = 0.5),xlab = "", ylab = "",)
 ```
 
 
@@ -216,7 +216,7 @@ plot(frecuencias_moneda_desequilibrada/10**6)
 ```{r}
 plot(frecuencias_moneda_desequilibrada/10**6)
 par(new=TRUE)
-plot(dbinom(x=seq(0,10,1), size = 10,prob = 0.3),xlab = "", ylab = "",xlim = c(0,10))
+plot(x=seq(0,10,1), y=dbinom(x=seq(0,10,1), size = 10,prob = 0.3),xlab = "", ylab = "",xlim = c(0,10))
 ```
 
 
@@ -235,8 +235,26 @@ frecuencias_grises <- c()
 for(i in 1:10**6) {
  frecuencias_grises[i] <-sum(sample(urna, 20, replace=FALSE))
 }
-plot(table(frecuencias_grises))
+freq_grises <- table(frecuencias_grises)
+plot(freq_grises)
 ```
+
+Si $X$ es el número es de bolas grises que se obtienen en la extracción sin reemplazamiento de 20 bolas de la urna definida en el problema, entonces podemos decir que $X\sim Hyper(n=20, M=46, N=95)$. Por lo tanto, la porbabilidad de que se extraigan 5 bolas grises es:
+
+$$f(x=5)=\frac{{46 \choose 5}{49 \choose 15}}{{95 \choose 20}}=0.01261935. $$
+
+
+
+Graficamos la proporción de bolas grises:
+
+```{r}
+proporcion_bolas <- freq_grises/10**6
+
+plot(proporcion_bolas)
+par(new=TRUE)
+plot(x=seq(1,19,1), y=dhyper(x=seq(1,19,1), m = 46, n=49, k=20), xlab = "", ylab="")
+```
+
 
 \begin{itemize}
 \item[7.] Sea $X$ una variable aleatoria con función de distribución $F$ dada por
