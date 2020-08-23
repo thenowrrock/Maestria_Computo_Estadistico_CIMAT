@@ -52,16 +52,18 @@ simulación en una tabla de frecuencia y calcule la media y la varianza. Sugeren
 \res
 ```{r}
 set.seed(13) # fijamos la semilla.
-muestra <- sample(10,10000, replace = TRUE)
-table(muestra)
-mean(muestra)
-var(muestra)
+muestra <- sample(10, 10000, replace = TRUE) # Muestra aleatoria.
+table(muestra) # Tabla de Frecuencias
+mean(muestra) # Media de la muestra simulada.
+var(muestra) # Varianza de la muestra simulada.
 ```
 
 d. Grafique las frecuencias de la simulación anterior.
 
-```{r}
-plot(table(muestra))
+```{r, message=FALSE}
+ggplot(data=data.frame(x=muestra), aes(x))+
+  geom_histogram()+
+  labs(title="Tabla de frecuencias.")
 ```
 
 
