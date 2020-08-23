@@ -37,7 +37,9 @@ for
 # b) 
 
 
+
 # c) 
+
 
 # Ejercicio 6.
 # 
