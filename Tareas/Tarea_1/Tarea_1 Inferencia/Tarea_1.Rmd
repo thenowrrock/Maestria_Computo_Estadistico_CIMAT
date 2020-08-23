@@ -1,0 +1,176 @@
+---
+fontsize: 11pt
+geometry: "left=2cm,right=2cm,top=2cm,bottom=2cm"
+documentclass: article
+output:
+    pdf_document:
+        includes:
+            in_header: mystyles.sty
+            
+
+---
+4. Para el siguiente ejercicio es necesario el programa \textsc{R}.
+
+a. Escriba un programa en \textsc{R}  que reproduzca las gráficas de las funciones de distribución
+acumulada y de masa de la distribución uniforme que aparecen en las notas del curso. Las gráficas deben verse similares a las figuras de la Figura 1.
+
+\res 
+Cargamos los paquetes:
+```{r, message=FALSE}
+library(tidyverse)
+library(gridExtra)
+```
+
+
+```{r, warning=FALSE}
+grafica_pdf_and_cdf_uniforme <- function(n){
+    data_uniforme <- data_frame(x=seq(1:n)) %>% 
+      mutate("f_x"=1/n, 
+             "F_x"= cumsum(f_x))
+    data_uniforme[n,]<-c(0,NaN,0)
+    cdf <- ggplot(data=data_uniforme)+
+      geom_segment(aes(x=x, xend=x+1, y=F_x, yend=F_x))+
+      labs(y="F(x)",title="CDF Unifrome Discreta" )+
+      ylim(0,1)
+    pdf <- ggplot(data=data_uniforme)+
+      geom_point(aes(x,f_x))+
+      geom_segment(aes(x=x, xend=x, y=0, yend=f_x))+
+      labs(x="x", y="f(x)",title = "PDF Unifrome Discreta")
+    grid.arrange(pdf, cdf, ncol=2)
+  }
+
+grafica_pdf_and_cdf_uniforme(10)
+```
+
+b. Lea en la documentación de \textsc{R}, o en cualquier otra fuente de información confiable,
+la explicación de la función sample(x, size, replace=FALSE, prob=NULL). (No es necesario entregar algo para este ejercicio).
+
+
+c. Usando la función sample simule una muestra de tamaño 10 000 de la distribución U (1, . . . , 10). Fijando la semilla en 13 (set.seed(13)), muestre los resultados de la
+simulación en una tabla de frecuencia y calcule la media y la varianza. Sugerencia: Use la función table.
+
+\res
+```{r}
+set.seed(13) # fijamos la semilla.
+muestra <- sample(10, 10000, replace = TRUE) # Muestra aleatoria.
+table(muestra) # Tabla de Frecuencias
+mean(muestra) # Media de la muestra simulada.
+var(muestra) # Varianza de la muestra simulada.
+```
+
+d. Grafique las frecuencias de la simulación anterior.
+
+```{r, message=FALSE}
+ggplot(data=data.frame(x=muestra), aes(x))+
+  geom_histogram()+
+  labs(title="Tabla de frecuencias.")
+```
+
+
+5. Para el siguiente ejercicio también necesitamos R.
+
+a. Usando la función sample, simule 10 lanzamientos de una moneda equilibrada y cuente el número de águilas que obtiene. Repita este proceso $10^6$ veces y muestre sus primeros 3 resultados. Grafique las frecuencias del número de águilas obtenidas en los $10^6$ experimentos. También grafique las proporciones del número de águilas obtenidas.
+
+\res
+Sea 1: obtener una aguila, 0: obtener sol.
+```{r}
+lanzamientos <- c(0,1)
+
+sum(sample(lanzamientos, 10, replace = TRUE)) 
+
+```
+```{r}
+simulacion_monedas <- c()
+for(i in 1:10**6) {
+ simulacion_monedas[i] <-sum(sample(lanzamientos, 10, replace = TRUE)) 
+}
+simulacion_monedas[1:3]
+```
+
+```{r}
+frecuencias_moneda <- table(simulacion_monedas)
+plot(frecuencias_moneda)
+```
+
+```{r}
+plot(frecuencias_moneda/10**6)
+```
+
+b. Usando la función dbinom grafique la función de masa de una distribución B(10, 0.5) sobre la gráfica de las proporciones que hizo en el inciso anterior.
+
+\res
+```{r}
+plot(frecuencias_moneda/10**6)
+par(new=TRUE)
+plot(x=seq(0,10,1),dbinom(x=seq(0,10,1), size = 10,prob = 0.5),xlab = "", ylab = "",)
+```
+
+
+c. Repita los dos incisos anteriores para una moneda desequilibrada que tiene probabilidad $p = 0.3$ de obtener un águila cuando se lanza. ¿Qué observa?
+
+\res
+
+```{r}
+lanzamientos_moneda_desequilibrada <- c(rep(0,7),rep(1,3))
+
+sum(sample(lanzamientos_moneda_desequilibrada, 10, replace = TRUE)) 
+```
+
+```{r}
+simulacion_monedas_desequilibrada <- c()
+for(i in 1:10**6) {
+simulacion_monedas_desequilibrada[i] <-sum(sample(lanzamientos_moneda_desequilibrada, 10, replace = TRUE))
+4}
+simulacion_monedas[1:3]
+```
+
+```{r}
+frecuencias_moneda_desequilibrada <- table(simulacion_monedas_desequilibrada)
+plot(frecuencias_moneda_desequilibrada)
+```
+```{r}
+plot(frecuencias_moneda_desequilibrada/10**6)
+```
+
+```{r}
+plot(frecuencias_moneda_desequilibrada/10**6)
+par(new=TRUE)
+plot(x=seq(0,10,1), y=dbinom(x=seq(0,10,1), size = 10,prob = 0.3),xlab = "", ylab = "",xlim = c(0,10))
+```
+
+
+6. Una urna contiene 46 bolas grises y 49 bolas blancas. Usando la función sample en R, simule la extracción sin reemplazamiento de 20 de estas bolas y cuente el número de bolas grises que obtuvo. Repita este proceso $10^6$ veces y grafique las frecuencias de bolas grises obtenidas en cada experimento. ¿Cuál es la probabilidad de que al extraer 20 bolas de la urna 5 de ellas sean grises? También grafique la proporción de bolas grises obtenidas en los experiementos anteriores y sobre esta figura añada la correspondiente función de masa de la distristibución Hipergeometrica asociada al experimento total.
+
+\res
+Sea 1: una bola gris, y 0: una bola blanca.
+```{r}
+urna <- c(rep(1,46), rep(0,49))
+sum(sample(urna, 20, replace=FALSE))
+
+```
+
+```{r}
+frecuencias_grises <- c()
+for(i in 1:10**6) {
+ frecuencias_grises[i] <-sum(sample(urna, 20, replace=FALSE))
+}
+freq_grises <- table(frecuencias_grises)
+plot(freq_grises)
+```
+
+Si $X$ es el número es de bolas grises que se obtienen en la extracción sin reemplazamiento de 20 bolas de la urna definida en el problema, entonces podemos decir que $X\sim Hyper(n=20, M=46, N=95)$. Por lo tanto, la porbabilidad de que se extraigan 5 bolas grises es:
+
+$$f(x=5)=\frac{{46 \choose 5}{49 \choose 15}}{{95 \choose 20}}=0.01261935. $$
+
+
+
+Graficamos la proporción de bolas grises:
+
+```{r}
+proporcion_bolas <- freq_grises/10**6
+
+plot(proporcion_bolas)
+par(new=TRUE)
+plot(x=seq(1,19,1), y=dhyper(x=seq(1,19,1), m = 46, n=49, k=20), xlab = "", ylab="")
+```
+

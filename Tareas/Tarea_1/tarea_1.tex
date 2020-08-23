@@ -38,7 +38,7 @@
 \newcommand{\llaves}[1]{\left\lbrace #1 \right\rbrace}
 \newcommand{\barra}{\,\vert\,}
 \newcommand{\mP}{\mathbb{P}}
-\newcommand{\mE}{\mathbf{E}}
+\newcommand{\mE}{\mathbb{E}}
 \newcommand{\mI}{\mathbf{I}}
 \newcommand{\mJ}{\mathbf{J}}
 \newcommand{\mX}{\mathbf{X}}
@@ -75,11 +75,9 @@
 Repositorio de Git: \href{https://github.com/Enriquesec/Inferencia_Estad-stica/tree/master/Tareas/Tarea_1}{Tarea 1, IE}.
 \end{tabular}
 \end{table}
-
-\begin{enumerate}
-
-\item La compañía CIE ha desarrollado un nuevo producto. La demanda de tal artículo es desconocida, pero se asume que es una variable aleatoria distribuida uniformemente en $\{0, 1, \cdots, N \}$.
-Los dispositivos deben de ser hechos por adelantado; cada uno vendido produce una ganancia de g pesos y cada uno de los que se queda sin vender produce una perdida de p pesos.
+\begin{itemize}
+\item[1.] La compañía CIE ha desarrollado un nuevo producto. La demanda de tal artículo es desconocida, pero se asume que es una variable aleatoria distribuida uniformemente en $\{0, 1, \cdots, N \}$.
+Los dispositivos deben de ser hechos por adelantado; cada uno vendido produce una ganancia de $g$ pesos y cada uno de los que se queda sin vender produce una perdida de $p$ pesos.
 ¿Cuántos de estos artículos tienen que producirse para maximizar la ganancia esperada?
 
 \res
@@ -94,21 +92,42 @@ Sea r el número de dispositivos hechos por adelantado, definamos a la función 
 
 \begin{equation*}
 G = \left\{\begin{array}{ll}
-gX-(r-X)p & \text{para } X\leq y\\
-gr & \text{para } X>y
+gX-(r-X)p & \text{para } X\leq r\\
+gr & \text{para } X>r
 \end{array} \right.
 \end{equation*}
 
 Ahora podemos calcular la esperanza de $G$:
 
-$$\mE[G]=\mE[[gX-(r-X)p]\cdot I_{\{X\leq y \}}+gr\cdot I_{\{X >y\}}] $$
+$$\mE[G]=\mE[[gX-(r-X)p]\cdot I_{\{X\leq r \}}+gr\cdot I_{\{X >r\}}] $$
 
-$$=\left( g\frac{N+2}{2}-rp+p\frac{N+2}{2}\right)\cdot\mP(X\geq y) +gr \cdot \mP(X<y)$$
+$$=\left( g\frac{N+2}{2}-rp+p\frac{N+2}{2}\right)\cdot\mP(X\geq r) +gr \cdot \mP(X<r)$$
 
 Ahora, considerando la definición de $X$:
-$$\mP(X<y)=\frac{y+1}{N+1}$$
+$$\mP(X<r)=\frac{r+1}{N+1}$$
 
-\item Un conjunto de bits se envían sobre un canal de comunicación en paquetes de 12. Si la probabilidad de que un bit sea corrompido sobre este canal es 0.1 y los errores son independientes,
+Entonces tenemos que:
+$$\mE[G]= \left( g\frac{N+2}{2}-rp+p\frac{N+2}{2}\right)\cdot\left[1- \frac{r+1}{N+1} \right] +gr \cdot\left[ \frac{r+1}{N+1}\right]$$
+
+Ahora derivamos con respeto a $r$ para maximizar $\mE [G]$. 
+$$\mE'[G]= -p + \frac{2rp-p}{N+1}+\frac{2rg+g}{N+1}.$$
+
+Igualamos a 0 y despejamos $r$.
+\begin{equation*}
+\begin{array}{ccl}
+-p + \frac{2rp-p}{N+1}+\frac{2rg+g}{N+1}&=&0\\
+&&\\
+2r(p+g)-p+g&=&p(N+1)\\
+&&\\
+r&=&\frac{p(N+1)-p+g}{2(p+g)}
+\end{array}
+\end{equation*}
+
+Solo falta demostrar que es un máximo. 
+
+Por lo tanto, cuando $r$ es igual a $\frac{p(N+1)-p+g}{2(p+g)}$ la esperanza de la ganancia se maximiza\ \ \ \ \fin 
+
+2. Un conjunto de bits se envían sobre un canal de comunicación en paquetes de 12. Si la probabilidad de que un bit sea corrompido sobre este canal es 0.1 y los errores son independientes,
 ¿cuál es la probabilidad de que no más de dos bits de un paquete se corrompan? Si 6 paquetes
 de bits se envían sobre el canal, ¿cuál es la probabilidad de que al menos un paquete contenga 3 o más bits corruptos? Finalmente, si $X$ denota el número de paquetes conteniendo 3 o más bit corruptos, ¿cuál es la probabilidad de que $X$ excederá su media por más de dos desviaciones estándar? 
 
@@ -129,12 +148,10 @@ $$\mP(X\geq1)=1-\mP(X<1)=0.8637243.$$
 Ahora, la probabilidad de que $X$ exceda su media por más de dos desviaciones estándar es, primero calculemos la media y la desviación estandar, como $X$ es una distribución binomial tenemos que 
 
 $$\mE(X)=np=6*0.11087=0.66522$$
-
 $$\sigma=\sqrt{var(X)} =\sqrt{np(1-p)}=\sqrt{6*0.11087(1-0.11087)}=0.769069$$
-
 $$\mP(X>np+2\sqrt{np(1-p)})=\mP(X>0.66522+2(0.769069)=\mP(X> 2.203358) \ \ \finf$$
 
-\item Una caja contiene 12 manzanas frescas y 4 que están podridas. Si elige 3 al azar y X denota el
+3. Una caja contiene 12 manzanas frescas y 4 que están podridas. Si elige 3 al azar y X denota el
 número de manzanas frescas que tomó, encuentre la función de densidad de X y su esperanza.
 
 \res 
@@ -142,44 +159,13 @@ Por definición de X, podemos decir que $X\sim Hyper(n=3, M=8, N=12)$. Por lo qu
 \begin{equation*}
 f(x)= \frac{{M\choose x}{N-M\choose n-x}}{{N\choose n}}
 \end{equation*}
-
 Y su esperanza es $n\frac{M}{N}.$ \ \ \ \ \fin
-
-\item Para el siguiente ejercicio es necesario el programa \textsc{R}.
-\begin{itemize}
-\item[a)] Escriba un programa en \textsc{R}  que reproduzca las gráficas de las funciones de distribución
-acumulada y de masa de la distribución uniforme que aparecen en las notas del curso. Las gráficas deben verse similares a las figuras de la Figura 1.
-
-\item[b)] Lea en la documentación de \textsc{R}, o en cualquier otra fuente de información confiable,
-la explicación de la función sample(x, size, replace=FALSE, prob=NULL). (No es necesario entregar algo para este ejercicio).
-
-\item[c)] Usando la función sample simule una muestra de tamaño 10 000 de la distribución
-U (1, . . . , 10). Fijando la semilla en 13 (set.seed(13)), muestre los resultados de la
-simulación en una tabla de frecuencia y calcule la media y la varianza. Sugerencia: Use la función table.
-\item[d)] Grafique las frecuencias de la simulación anterior.
 \end{itemize}
 
 
-\item Para el siguiente ejercicio también necesitamos R.
-
 
 \begin{itemize}
-\item[a)] Usando la función sample, simule 10 lanzamientos de una moneda equilibrada y cuente el número de águilas que obtiene. Repita este proceso $10^6$ veces y muestre sus primeros 3 resultados. Grafique las frecuencias del número de águilas obtenidas en los $10^6$ experimentos. También grafique las proporciones del número de águilas obtenidas.
-\item[b)] Usando la función $dbinom$ grafique la función de masa de una distribución B(10, 0.5) el número de águilas que obtiene. Repita este proceso 10 6 veces y muestre sus primeros 3 resultados. Grafique las frecuencias del número de águilas obtenidas en los 10 6
-experiementos. También grafique las proporciones del número de águilas obtenidas.
-\item[b)] Usando la función dbinom grafique la función de masa de una distribución B(10, 0.5) sobre la gráfica de las proporciones que hizo en el inciso anterior.
-\item[c)] Repita los dos incisos anteriores para una moneda desequilibrada que tiene probabilidad
-p = 0.3 de obtener un águila cuando se lanza. ¿Qué observa?
-\end{itemize}
-
-\item Una urna contiene 46 bolas grises y 49 bolas blancas. Usando la función sample en R, simule
-la extracción sin reemplazamiento de 20 de estas bolas y cuente el número de bolas grises que
-obtuvo. Repita este proceso 10 6 veces y grafique las frecuencias de bolas grises obtenidas en
-cada experimento. ¿Cuál es la probabilidad de que al extraer 20 bolas de la urna 5 de ellas
-sean grises? También grafique la proporción de bolas grises obtenidas en los experiementos anteriores y sobre esta figura añada la correspondiente función de masa de la distristibución Hipergeometrica asociada al experimento total.
-
-\item Sea $X$ una variable aleatoria con función de distribución $F$ dada por
-
+\item[7.] Sea $X$ una variable aleatoria con función de distribución $F$ dada por
 \begin{equation*}
 F(x) = \left\{\begin{array}{ll}
 0 & \text{para } x<0\\
@@ -192,7 +178,6 @@ F(x) = \left\{\begin{array}{ll}
 Determine la función de probabilidad de $X$.
 
 \res 
-
 Recordemos que cuando $X$ es una variable aleatoria, su función de distribución $F$ esta definida como:
 
 \begin{itemize}
@@ -219,7 +204,6 @@ $$ f(x)= \mP(X=1/4)= F(1/4)-F({1/4}^-)=3/4-1/2=1/4.$$
 $$ f(x)= \mP(X=3/4)= F(3/4)-F({3/4}^-)=1-3/4=1/4.$$
 \end{itemize}
 Por lo tanto la función de probabilidad de $X$ es: 
-
 \begin{equation*}
 f(x) = \left\{\begin{array}{ll}
 1/2 & \text{para } x=0\\
@@ -228,7 +212,7 @@ f(x) = \left\{\begin{array}{ll}
 \end{array} \right.\ \ \ \blacksquare
 \end{equation*}
 
-\item Sea X una variable aleatoria con valores en $[0, 1]$ y función de distribución $F(x)=x^2$ . ¿Cuál es
+\item[8.] Sea X una variable aleatoria con valores en $[0, 1]$ y función de distribución $F(x)=x^2$ . ¿Cuál es
 la densidad de $X$? Calcule las siguientes probabilidades: i) $\mP (1/4 \leq X \leq 3/4)$; ii) $\mP (X > 1/2)$;
 iii) $\mP (X \leq 3/4|X > 1/2)$.
 
@@ -247,20 +231,16 @@ Recordemos que algunas propiedades de la función acumulada:
 \item $$\mP(X>a)=1-\mP(X<a).$$
 \end{itemize}
 Ocupando lo anterior tenemos:
-
 \begin{itemize}
 \item[i)] 
 $$\mP (1/4 \leq X \leq 3/4)= F(3/4)-F(1/4)= (3/4)^2-(1/4)^2=8/16=1/2.$$ 
-
 \item[ii)]$$\mP(X > 1/2)= 1-F(1/2)=1-(1/2)^2=3/4.$$
-
 \item[iii)]Ocupando el teorema de Bayes,
 $$\mP(X \leq 3/4|X > 1/2)=\frac{\mP(X\leq 3/4 \cap X>1/2)}{\mP(X>1/2)}=\frac{\mP(1/2<X\leq3/4)}{1-\mP(X<1/2)}=\frac{F(3/4)-F(1/2)}{1-F(1/2)}$$
-
 $$=\frac{(3/4)^2-(1/2)^2}{3/4} =\frac{5/16}{3/4}=5/12. \ \ \ \ \ \ \  \blacksquare$$
 \end{itemize}
 
-\item Un lote muy grande de componentes ha llegado a un distribuidor. Se puede decir que el
+\item[9.] Un lote muy grande de componentes ha llegado a un distribuidor. Se puede decir que el
 lote es aceptable solo si la proporción de componentes defectuosos es cuando mucho 0.10.
 El distribuidor decide seleccionar aleatoriamente 10 componentes y aceptar el lote solo si el
 número de componentes defectuosos en la muestra es cuando mucho 2.
@@ -270,6 +250,7 @@ número de componentes defectuosos en la muestra es cuando mucho 2.
 \end{itemize}
 
 \res
+
 Sea $X$ el número de componentes defectuosos en la muestra aleatoria de 10 componentes. Considerando que el lote es muy grande y la proporción $p$ real de defectuosos en el lote, podemos decir que $X\sim Bin(10,p)$. Entonces la probabilidad de que el lote sea aceptado es $$\mP(X\leq 2).$$
 
 Ahora considerando las diferentes proporciones, tenemos que (ocupando la función \textsf{pbinom(q=2, size=10, prob = p)} de software estadístico R.):
@@ -307,7 +288,6 @@ Ahora considerando las diferentes proporciones, tenemos que (ocupando la funció
 &=& 0.9298092.
 \end{array}
 \end{equation*}
-
 \item cuando $p=0.20$, la probabilidad de aceptar el lote es: 
 \begin{equation*}
 \begin{array}{ccl}
@@ -318,7 +298,6 @@ Ahora considerando las diferentes proporciones, tenemos que (ocupando la funció
 &=& 0.6777995.
 \end{array}
 \end{equation*}
-
 \item cuando $p=0.25$, la probabilidad de aceptar el lote es: 
 \begin{equation*}
 \begin{array}{ccl}
@@ -332,41 +311,33 @@ Ahora considerando las diferentes proporciones, tenemos que (ocupando la funció
 \end{itemize}
 
 Podemos observar, que cuando la proporción real de componentes defectuosos del lote es más grande esto implica que la probabilidad de aceptar el lote es cada vez menor, es decir, la proporción real es inversamente proporcional a la probabilidad de aceptar el lote. Si observamos la función de distribución acumulada la $X$ cambio el valor $p$, se puede observar claramente este hecho. $\blacksquare$
+\end{itemize}
 
-
-\item Sean G=$\{1, 2, 3\}$, H=$\{4, 5, 6\}$. Lanzamos dos dados y sean los eventos $A=$ el primer dado cae en H; $B=$el segundo dado cae en H; $C=$un dado cae en G y el otro en H; $D=$ el total es cuatro, $E=$ el total es cinco y $F=$ el total es siete. ¿Cuáles de las siguientes proposiciones son ciertas? i) A y F son independientes. ii) A y D son independientes. iii) A
+\begin{itemize}
+\item[10.] Sean G=$\{1, 2, 3\}$, H=$\{4, 5, 6\}$. Lanzamos dos dados y sean los eventos $A=$ el primer dado cae en H; $B=$el segundo dado cae en H; $C=$un dado cae en G y el otro en H; $D=$ el total es cuatro, $E=$ el total es cinco y $F=$ el total es siete. ¿Cuáles de las siguientes proposiciones son ciertas? i) A y F son independientes. ii) A y D son independientes. iii) A
 y E son independientes. iv) $\mP(A \cap B \cap C) = \mP (A)\mP (B)\mP (C)$. v) A y C son independientes.
 vi) C y E son independientes. vii) $\mP (A \cap C \cap E) = \mP (A)\mP (C)\mP (E)$. viii) A, C y E son
 independientes. Justifique sus respuestas.
 
 \res
+
 Analicemos las proposiciones:
 \begin{itemize}
 \item[i)] A y F son independientes. \textbf{Falso}. Si consideramos la porbabilidad: 
-
 $$\mP(F|A)=.$$
-
-
 \item[ii)] A y D son independientes. \textbf{Falso}
-
 \item[iii)] A y E son independientes. \textbf{Falso}.
-
 \item[iv)] $\mP(A \cap B \cap C) = \mP (A)\mP (B)\mP (C)$. \textbf{Verdadero}
-
 \item[v)] A y C son independientes.\textbf{Falso}.
 \item[vi)] C y E son independientes.\textbf{Falso}.
 \item[vii)] $\mP (A \cap C \cap E) = \mP (A)\mP (C)\mP (E)$. \textbf{Falso}.
 \item[viii)] A, C y E son
 independientes. \textbf{Falso}.
 \end{itemize}
-
-\item \textbf{Extra} 
-
+\item[11.] \textbf{Extra} 
 Solución extra del ejercicio 4 en python. 
+\end{itemize}
 
-
-
-
-\end{enumerate}
+\textbf{Ejercicios de las notas: }
 
 \end{document}

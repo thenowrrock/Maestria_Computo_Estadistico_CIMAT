@@ -24,6 +24,7 @@ table(muestra)
 mean(muestra)
 var(muestra)
 
+# d) Plot simulación
 plot(table(muestra))
 
 
