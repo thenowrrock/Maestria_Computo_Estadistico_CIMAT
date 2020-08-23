@@ -13,6 +13,7 @@ output:
 
 a. Escriba un programa en \textsc{R}  que reproduzca las gráficas de las funciones de distribución acumulada y de masa de la distribución uniforme que aparecen en las notas del curso. Las gráficas deben verse similares a las figuras de la Figura 1.
 
+![title](ejercicio_4-graficas.png)
 \res 
 Cargamos los paquetes a ocupar:
 ```{r, message=FALSE}
@@ -43,7 +44,7 @@ grafica_pdf_and_cdf_uniforme <- function(n){ # La función tiene como parametro 
   }
 ```
 
-Mostramos las distribuciones $U(0,5)$:
+Mostramos las funciones para una distribución $U(0,5)$ discreta:
 ```{r warning=FALSE,fig.width = 5.2, fig.asp = 0.62, fig.align = "center"}
 grafica_pdf_and_cdf_uniforme(5) 
 ```
