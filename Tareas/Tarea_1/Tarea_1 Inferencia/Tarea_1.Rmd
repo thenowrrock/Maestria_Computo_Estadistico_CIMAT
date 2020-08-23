@@ -9,120 +9,37 @@ output:
             
 
 ---
-\begin{table}[ht]
-\centering
-\begin{tabular}{c}
-\textbf{Maestría en Computo Estadístico}\\
-\textbf{Inferencia Estadística} \\
-\textbf{Tarea 1}\\
-\today \\
-\emph{Enrique Santibáñez Cortés}\\
-Repositorio de Git: \href{https://github.com/Enriquesec/Inferencia_Estad-stica/tree/master/Tareas/Tarea_1}{Tarea 1, IE}.
-\end{tabular}
-\end{table}
-\begin{itemize}
-\item[1.] La compañía CIE ha desarrollado un nuevo producto. La demanda de tal artículo es desconocida, pero se asume que es una variable aleatoria distribuida uniformemente en $\{0, 1, \cdots, N \}$.
-Los dispositivos deben de ser hechos por adelantado; cada uno vendido produce una ganancia de $g$ pesos y cada uno de los que se queda sin vender produce una perdida de $p$ pesos.
-¿Cuántos de estos artículos tienen que producirse para maximizar la ganancia esperada?
-
-\res
-Sea $X$ la demanda del nuevo producto, entonces la función de densidad es: 
-\begin{equation*}
-f(x) = \left\{\begin{array}{ll}
-\frac{1}{N+1}& \text{para } X\in\{0,1,\cdots , N\}\\
-0 & \text{en otro caso} 
-\end{array} \right.
-\end{equation*}
-Sea r el número de dispositivos hechos por adelantado, definamos a la función ganancia como:
-
-\begin{equation*}
-G = \left\{\begin{array}{ll}
-gX-(r-X)p & \text{para } X\leq r\\
-gr & \text{para } X>r
-\end{array} \right.
-\end{equation*}
-
-Ahora podemos calcular la esperanza de $G$:
-
-$$\mE[G]=\mE[[gX-(r-X)p]\cdot I_{\{X\leq r \}}+gr\cdot I_{\{X >r\}}] $$
-
-$$=\left( g\frac{N+2}{2}-rp+p\frac{N+2}{2}\right)\cdot\mP(X\geq r) +gr \cdot \mP(X<r)$$
-
-Ahora, considerando la definición de $X$:
-$$\mP(X<r)=\frac{r+1}{N+1}$$
-
-Entonces tenemos que:
-$$\mE[G]= \left( g\frac{N+2}{2}-rp+p\frac{N+2}{2}\right)\cdot\left[1- \frac{r+1}{N+1} \right] +gr \cdot\left[ \frac{r+1}{N+1}\right]$$
-
-Ahora derivamos con respeto a $r$ para maximizar $\mE [G]$. 
-$$\mE'[G]= -p + \frac{2rp-p}{N+1}+\frac{2rg+g}{N+1}.$$
-
-Igualamos a 0 y despejamos $r$.
-\begin{equation*}
-\begin{array}{ccl}
--p + \frac{2rp-p}{N+1}+\frac{2rg+g}{N+1}&=&0\\
-&&\\
-2r(p+g)-p+g&=&p(N+1)\\
-&&\\
-r&=&\frac{p(N+1)-p+g}{2(p+g)}
-\end{array}
-\end{equation*}
-
-Solo falta demostrar que es un máximo. 
-
-Por lo tanto, cuando $r$ es igual a $\frac{p(N+1)-p+g}{2(p+g)}$ la esperanza de la ganancia se maximiza\ \ \ \ \fin 
-
-2. Un conjunto de bits se envían sobre un canal de comunicación en paquetes de 12. Si la probabilidad de que un bit sea corrompido sobre este canal es 0.1 y los errores son independientes,
-¿cuál es la probabilidad de que no más de dos bits de un paquete se corrompan? Si 6 paquetes
-de bits se envían sobre el canal, ¿cuál es la probabilidad de que al menos un paquete contenga 3 o más bits corruptos? Finalmente, si $X$ denota el número de paquetes conteniendo 3 o más bit corruptos, ¿cuál es la probabilidad de que $X$ excederá su media por más de dos desviaciones estándar? 
-
-\res
-
-Sea $Y$ el número de bits que son corrompidos en este canal dentro de un paquete de 12, entonces podemos decir que, $Y\sim \ Bin(12,0.1)$. Entonces la probabilidad de que no más de dos bits de un paquete se corrompan es
-
-$$\mP(Y\leq2)= \mP(Y=1)+\mP(Y=0)=0.88913.$$
-
-Ahora si existen 6 paquetes de bits sobre el canal, para determinar la probabilidad de que al menos un paquete contenga 3 o más bits corruptos, primero calculemos la probabilidad de que un paquete contenga 3 o más bits, la cual esta dada como 
-$$\mP(Y\geq3) 1-\mP(Y\leq3)=1-0.88913= 0.11087.$$
-
-
-Ahora, sea $X$ el número de paquetes que contienen 3 o más bits corruptos de n paquetes existentes. Por definición podemos decir que $X\sim Bin(n,p)$, donde $p$ es la probabilidad de que un paquete tenga 3 o más bits corruptos. $X\sim Bin(6,0.11087),$ entonces la probabilidad de que al menos un paquete contenga 3 o más bits sería:
-
-$$\mP(X\geq1)=1-\mP(X<1)=0.8637243.$$
-
-Ahora, la probabilidad de que $X$ exceda su media por más de dos desviaciones estándar es, primero calculemos la media y la desviación estandar, como $X$ es una distribución binomial tenemos que 
-
-$$\mE(X)=np=6*0.11087=0.66522$$
-$$\sigma=\sqrt{var(X)} =\sqrt{np(1-p)}=\sqrt{6*0.11087(1-0.11087)}=0.769069$$
-$$\mP(X>np+2\sqrt{np(1-p)})=\mP(X>0.66522+2(0.769069)=\mP(X> 2.203358) \ \ \finf$$
-
-3. Una caja contiene 12 manzanas frescas y 4 que están podridas. Si elige 3 al azar y X denota el
-número de manzanas frescas que tomó, encuentre la función de densidad de X y su esperanza.
-
-\res 
-Por definición de X, podemos decir que $X\sim Hyper(n=3, M=8, N=12)$. Por lo que podemos decir que la función de densidad es:
-\begin{equation*}
-f(x)= \frac{{M\choose x}{N-M\choose n-x}}{{N\choose n}}
-\end{equation*}
-
-Y su esperanza es $n\frac{M}{N}.$ \ \ \ \ \fin
-\end{itemize}
-
 4. Para el siguiente ejercicio es necesario el programa \textsc{R}.
 
 a. Escriba un programa en \textsc{R}  que reproduzca las gráficas de las funciones de distribución
 acumulada y de masa de la distribución uniforme que aparecen en las notas del curso. Las gráficas deben verse similares a las figuras de la Figura 1.
+
 \res 
-```{r}
+Cargamos los paquetes:
+```{r, message=FALSE}
+library(tidyverse)
+library(gridExtra)
+```
+
+
+```{r, warning=FALSE}
 grafica_pdf_and_cdf_uniforme <- function(n){
-  x <- seq(1:n)
-  f_x <- rep(1/n,n) 
-  F_x <- cumsum(f_x)
-  par(mfrow=c(1,2))
-  plot(x, f_x, main="PDF Unifrome Discreta", type="h")
-  plot.ecdf(x,  main="CDF Unifrome Discreta")
-}
-grafica_pdf_and_cdf_uniforme(20)
+    data_uniforme <- data_frame(x=seq(1:n)) %>% 
+      mutate("f_x"=1/n, 
+             "F_x"= cumsum(f_x))
+    data_uniforme[n,]<-c(0,NaN,0)
+    cdf <- ggplot(data=data_uniforme)+
+      geom_segment(aes(x=x, xend=x+1, y=F_x, yend=F_x))+
+      labs(y="F(x)",title="CDF Unifrome Discreta" )+
+      ylim(0,1)
+    pdf <- ggplot(data=data_uniforme)+
+      geom_point(aes(x,f_x))+
+      geom_segment(aes(x=x, xend=x, y=0, yend=f_x))+
+      labs(x="x", y="f(x)",title = "PDF Unifrome Discreta")
+    grid.arrange(pdf, cdf, ncol=2)
+  }
+
+grafica_pdf_and_cdf_uniforme(10)
 ```
 
 b. Lea en la documentación de \textsc{R}, o en cualquier otra fuente de información confiable,
@@ -134,7 +51,7 @@ simulación en una tabla de frecuencia y calcule la media y la varianza. Sugeren
 
 \res
 ```{r}
-set.seed(13)
+set.seed(13) # fijamos la semilla.
 muestra <- sample(10,10000, replace = TRUE)
 table(muestra)
 mean(muestra)
@@ -254,180 +171,4 @@ plot(proporcion_bolas)
 par(new=TRUE)
 plot(x=seq(1,19,1), y=dhyper(x=seq(1,19,1), m = 46, n=49, k=20), xlab = "", ylab="")
 ```
-
-
-\begin{itemize}
-\item[7.] Sea $X$ una variable aleatoria con función de distribución $F$ dada por
-\begin{equation*}
-F(x) = \left\{\begin{array}{ll}
-0 & \text{para } x<0\\
-1/2 & \text{para } 0 \leq x <1/4\\
-3/4 & \text{para } 1/4\leq x< 3/4\\
-1 & \text{para } 3/4 \leq x
-\end{array} \right.
-\end{equation*}
-
-Determine la función de probabilidad de $X$.
-
-\res 
-Recordemos que cuando $X$ es una variable aleatoria, su función de distribución $F$ esta definida como:
-
-\begin{itemize}
-\item caso discreto
-
-$$F(x) =\mP(X\leq x)= \sum_{x_i\leq x} f(x_i).$$
-
-\item caso continuo
-
-$$F(x) = \mP(X\leq x)= \int_{-\infty}^x f(t) dt.$$
-\end{itemize}
-Donde $f$ es la función de probabilidad de $X$. \\
-
-Debido a que $F(x)$ es discontinua en los puntos $x_i$ podemos decir que $X$ es una variable aleatoria discreta.\\
-Ahora ocupando lo anterior, podemos decir que:
-\begin{itemize}
-\item Para $x=0$,
-$$ f(x)= \mP(X=0)= F(0)-F({0}^-)=1/2-0=1/2.$$
-
-\item Para $x=1/4$,
-$$ f(x)= \mP(X=1/4)= F(1/4)-F({1/4}^-)=3/4-1/2=1/4.$$
-
-\item Para $x=3/4$,
-$$ f(x)= \mP(X=3/4)= F(3/4)-F({3/4}^-)=1-3/4=1/4.$$
-\end{itemize}
-Por lo tanto la función de probabilidad de $X$ es: 
-\begin{equation*}
-f(x) = \left\{\begin{array}{ll}
-1/2 & \text{para } x=0\\
-1/4 & \text{para } x =1/4\\
-1/4 & \text{para } x=3/4
-\end{array} \right.\ \ \ \blacksquare
-\end{equation*}
-
-\item[8.] Sea X una variable aleatoria con valores en $[0, 1]$ y función de distribución $F(x)=x^2$ . ¿Cuál es
-la densidad de $X$? Calcule las siguientes probabilidades: i) $\mP (1/4 \leq X \leq 3/4)$; ii) $\mP (X > 1/2)$;
-iii) $\mP (X \leq 3/4|X > 1/2)$.
-
-\res
-Debido a que $F(x)$ esta definida como un polinomio, esto implica que $F(x)$ es continua y además que $X$ es una variable aleatoria continua. Ocupando el teorema fundamental del calculo y la definición de $F(x)$ para una variable aleatoria continua tenemos que\\ 
-
-\textit{Si $X$ es una variable aleatoria continua con función de densidad $f(x)$ y función de distribución acumulada $F(x)$, entonces en cada $x$ en la que existe la derivada $F'(x)$ implica que $F'(x)=f(x).$}\\
-
-Como $F(x)=x^2$ es un polinomio esto implica que $F'(x)$ en $\forall x$. Por lo tanto, la función la densidad de X es
-$$f(x)=F'(x)=2x \ I_{x\in [0,1]}.$$
-
-Recordemos que algunas propiedades de la función acumulada:
-\begin{itemize}
-\item $$F(a)=\mP(X<a).$$
-\item $$\mP (a\leq X\leq b)= F(b)-F(a). $$
-\item $$\mP(X>a)=1-\mP(X<a).$$
-\end{itemize}
-Ocupando lo anterior tenemos:
-\begin{itemize}
-\item[i)] 
-$$\mP (1/4 \leq X \leq 3/4)= F(3/4)-F(1/4)= (3/4)^2-(1/4)^2=8/16=1/2.$$ 
-\item[ii)]$$\mP(X > 1/2)= 1-F(1/2)=1-(1/2)^2=3/4.$$
-\item[iii)]Ocupando el teorema de Bayes,
-$$\mP(X \leq 3/4|X > 1/2)=\frac{\mP(X\leq 3/4 \cap X>1/2)}{\mP(X>1/2)}=\frac{\mP(1/2<X\leq3/4)}{1-\mP(X<1/2)}=\frac{F(3/4)-F(1/2)}{1-F(1/2)}$$
-$$=\frac{(3/4)^2-(1/2)^2}{3/4} =\frac{5/16}{3/4}=5/12. \ \ \ \ \ \ \  \blacksquare$$
-\end{itemize}
-
-\item[9.] Un lote muy grande de componentes ha llegado a un distribuidor. Se puede decir que el
-lote es aceptable solo si la proporción de componentes defectuosos es cuando mucho 0.10.
-El distribuidor decide seleccionar aleatoriamente 10 componentes y aceptar el lote solo si el
-número de componentes defectuosos en la muestra es cuando mucho 2.
-
-\begin{itemize}
-\item[a)] ¿Cuál es la probabilidad de que el lote sea aceptado cuando la proporción real de defectuosos es 0.01, 0.05, 0.10, 0.20, 0.25?
-\end{itemize}
-
-\res
-
-Sea $X$ el número de componentes defectuosos en la muestra aleatoria de 10 componentes. Considerando que el lote es muy grande y la proporción $p$ real de defectuosos en el lote, podemos decir que $X\sim Bin(10,p)$. Entonces la probabilidad de que el lote sea aceptado es $$\mP(X\leq 2).$$
-
-Ahora considerando las diferentes proporciones, tenemos que (ocupando la función \textsf{pbinom(q=2, size=10, prob = p)} de software estadístico R.):
-
-\begin{itemize}
-\item cuando $p=0.01$, la probabilidad de aceptar el lotes es:
-\begin{equation*}
-\begin{array}{ccl}
-\mP(X\leq 2)&=&\mP(X=0)+\mP(X=1)+\mP(X=2)\\
-&& \\
-&=&{10\choose0}(0.99)^{10}+{10\choose1}(0.99)^9(0.01)+{10\choose2}(0.99)^8(0.01)^2\\
-&&\\
-&=&0.9998862.
-\end{array}
-\end{equation*}
-
-\item cuando $p=0.05$, la probabilidad de aceptar el lote es: 
-\begin{equation*}
-\begin{array}{ccl}
-\mP(X\leq 2)&=&\mP(X=0)+\mP(X=1)+\mP(X=2)\\
-&& \\
-&=&{10\choose0}(0.95)^{10}+{10\choose1}(0.95)^9(0.05)+{10\choose2}(0.95)^8(0.05)^2\\
-&& \\
-&=& 0.9884964.
-\end{array}
-\end{equation*}
-
-\item cuando $p=0.10$, la probabilidad de aceptar el lote es: 
-\begin{equation*}
-\begin{array}{ccl}
-\mP(X\leq 2)&=&\mP(X=0)+\mP(X=1)+\mP(X=2)\\
-&& \\
-&=&{10\choose0}(0.90)^{10}+{10\choose1}(0.90)^9(0.10)+{10\choose2}(0.90)^8(0.10)^2\\
-&& \\
-&=& 0.9298092.
-\end{array}
-\end{equation*}
-\item cuando $p=0.20$, la probabilidad de aceptar el lote es: 
-\begin{equation*}
-\begin{array}{ccl}
-\mP(X\leq 2)&=&\mP(X=0)+\mP(X=1)+\mP(X=2)\\
-&& \\
-&=&{10\choose0}(0.80)^{10}+{10\choose1}(0.80)^9(0.20)+{10\choose2}(0.80)^8(0.20)^2\\
-&& \\
-&=& 0.6777995.
-\end{array}
-\end{equation*}
-\item cuando $p=0.25$, la probabilidad de aceptar el lote es: 
-\begin{equation*}
-\begin{array}{ccl}
-\mP(X\leq 2)&=&\mP(X=0)+\mP(X=1)+\mP(X=2)\\
-&& \\
-&=&{10\choose0}(0.75)^{10}+{10\choose1}(0.75)^9(0.25)+{10\choose2}(0.75)^8(0.25)^2\\
-&& \\
-&=& 0.5255928.
-\end{array}
-\end{equation*}
-\end{itemize}
-
-Podemos observar, que cuando la proporción real de componentes defectuosos del lote es más grande esto implica que la probabilidad de aceptar el lote es cada vez menor, es decir, la proporción real es inversamente proporcional a la probabilidad de aceptar el lote. Si observamos la función de distribución acumulada la $X$ cambio el valor $p$, se puede observar claramente este hecho. $\blacksquare$
-
-
-\item[10.] Sean G=$\{1, 2, 3\}$, H=$\{4, 5, 6\}$. Lanzamos dos dados y sean los eventos $A=$ el primer dado cae en H; $B=$el segundo dado cae en H; $C=$un dado cae en G y el otro en H; $D=$ el total es cuatro, $E=$ el total es cinco y $F=$ el total es siete. ¿Cuáles de las siguientes proposiciones son ciertas? i) A y F son independientes. ii) A y D son independientes. iii) A
-y E son independientes. iv) $\mP(A \cap B \cap C) = \mP (A)\mP (B)\mP (C)$. v) A y C son independientes.
-vi) C y E son independientes. vii) $\mP (A \cap C \cap E) = \mP (A)\mP (C)\mP (E)$. viii) A, C y E son
-independientes. Justifique sus respuestas.
-
-\res
-
-Analicemos las proposiciones:
-\begin{itemize}
-\item[i)] A y F son independientes. \textbf{Falso}. Si consideramos la porbabilidad: 
-$$\mP(F|A)=.$$
-\item[ii)] A y D son independientes. \textbf{Falso}
-\item[iii)] A y E son independientes. \textbf{Falso}.
-\item[iv)] $\mP(A \cap B \cap C) = \mP (A)\mP (B)\mP (C)$. \textbf{Verdadero}
-\item[v)] A y C son independientes.\textbf{Falso}.
-\item[vi)] C y E son independientes.\textbf{Falso}.
-\item[vii)] $\mP (A \cap C \cap E) = \mP (A)\mP (C)\mP (E)$. \textbf{Falso}.
-\item[viii)] A, C y E son
-independientes. \textbf{Falso}.
-\end{itemize}
-
-\item[11.] \textbf{Extra} 
-Solución extra del ejercicio 4 en python. 
-
-\end{itemize}
 
