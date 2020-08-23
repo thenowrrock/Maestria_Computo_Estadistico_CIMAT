@@ -53,13 +53,17 @@ b. Lea en la documentación de \textsc{R}, o en cualquier otra fuente de informa
 la explicación de la función sample(x, size, replace=FALSE, prob=NULL). (No es necesario entregar algo para este ejercicio).
 
 
-c. Usando la función sample simule una muestra de tamaño 10 000 de la distribución U (1, . . . , 10). Fijando la semilla en 13 (set.seed(13)), muestre los resultados de la
-simulación en una tabla de frecuencia y calcule la media y la varianza. Sugerencia: Use la función table.
+c. Usando la función sample simule una muestra de tamaño 10 000 de la distribución $U (1, . . . , 10)$. Fijando la semilla en 13 (set.seed(13)), muestre los resultados de la simulación en una tabla de frecuencia y calcule la media y la varianza. Sugerencia: Use la función table.
 
 \res
+Simulamos la realización de la muestra de tamaño 10000.
 ```{r}
 set.seed(13) # fijamos la semilla.
 muestra <- sample(10, 10000, replace = TRUE) # Muestra aleatoria.
+```
+
+
+```{r}
 table(muestra) # Tabla de Frecuencias
 mean(muestra) # Media de la muestra simulada.
 var(muestra) # Varianza de la muestra simulada.
