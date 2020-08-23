@@ -62,8 +62,9 @@ d. Grafique las frecuencias de la simulación anterior.
 
 ```{r, message=FALSE}
 ggplot(data=data.frame(x=muestra), aes(x))+
-  geom_histogram()+
-  labs(title="Tabla de frecuencias.")
+  geom_bar(bins = 10, fill="blue")+
+  scale_x_discrete(limits =seq(1,10,1))+
+  labs(title="Grafica de frecuencias.", y="conteos")
 ```
 
 
@@ -72,37 +73,48 @@ ggplot(data=data.frame(x=muestra), aes(x))+
 a. Usando la función sample, simule 10 lanzamientos de una moneda equilibrada y cuente el número de águilas que obtiene. Repita este proceso $10^6$ veces y muestre sus primeros 3 resultados. Grafique las frecuencias del número de águilas obtenidas en los $10^6$ experimentos. También grafique las proporciones del número de águilas obtenidas.
 
 \res
-Sea 1: obtener una aguila, 0: obtener sol.
+Consideremos, 1: obtener una aguila, 0: obtener sol.
 ```{r}
-lanzamientos <- c(0,1)
-
-sum(sample(lanzamientos, 10, replace = TRUE)) 
-
+resultados_modena <- c(0,1)
+sum(sample(resultados_modena, 10, replace = TRUE)) 
 ```
+
+Ahora repetimos el proceso $10^6$ veces.
 ```{r}
-simulacion_monedas <- c()
-for(i in 1:10**6) {
- simulacion_monedas[i] <-sum(sample(lanzamientos, 10, replace = TRUE)) 
+simulacion_moneda_equilibrada <- c() # Inicializamos un vector
+for(i in 1:10**6) { # Creamos un ciclo para crear las repeticiones.
+ simulacion_moneda_equilibrada[i] <-sum(sample(resultados_modena, 10, replace = TRUE)) 
 }
-simulacion_monedas[1:3]
+# Mostramos los primeros 3 resultados.
+simulacion_moneda_equilibrada[1:3] 
+```
+
+Graficamos las frecuencias del número de aguilas obtenidas en cada uno de los experimentos.
+```{r}
+ggplot(data=data.frame(x=simulacion_moneda_equilibrada), aes(x))+
+  geom_bar(bins = 11, binwidth=.5, fill="blue")+
+  scale_x_discrete(limits=seq(0,10,1))+
+  labs(y="conteos", title="Grafica de frecuencias del experimiento")
 ```
 
 ```{r}
-frecuencias_moneda <- table(simulacion_monedas)
-plot(frecuencias_moneda)
-```
-
-```{r}
-plot(frecuencias_moneda/10**6)
+ggplot(data=data.frame(x=simulacion_moneda_equilibrada), aes(x))+
+  geom_histogram(bins = 11, binwidth=.5, fill="blue", aes(y=stat(count) / sum(count)))+
+  scale_x_discrete(limits=seq(0,10,1))+
+  labs(y="conteos", title="Grafica de frecuencias del experimiento")
 ```
 
 b. Usando la función dbinom grafique la función de masa de una distribución B(10, 0.5) sobre la gráfica de las proporciones que hizo en el inciso anterior.
 
 \res
 ```{r}
-plot(frecuencias_moneda/10**6)
-par(new=TRUE)
-plot(x=seq(0,10,1),dbinom(x=seq(0,10,1), size = 10,prob = 0.5),xlab = "", ylab = "",)
+binomial<-data.frame(x=seq(0,10,1), y=dbinom(x=seq(0,10,1), size = 10,prob = 0.5))
+ggplot(data=data.frame(x=simulacion_moneda_equilibrada), aes(x))+
+  geom_histogram(bins = 11, binwidth=.5, fill="blue", aes(y=stat(count) / sum(count)))+
+  scale_x_discrete(limits=seq(0,10,1))+
+  labs(y="conteos", title="Grafica de frecuencias del experimiento")+
+  geom_line(data=binomial, aes(x,y))+
+  geom_point(data=binomial, aes(x,y))
 ```
 
 
@@ -121,7 +133,7 @@ simulacion_monedas_desequilibrada <- c()
 for(i in 1:10**6) {
 simulacion_monedas_desequilibrada[i] <-sum(sample(lanzamientos_moneda_desequilibrada, 10, replace = TRUE))
 4}
-simulacion_monedas[1:3]
+simulacion_monedas_desequilibrada[1:3]
 ```
 
 ```{r}
