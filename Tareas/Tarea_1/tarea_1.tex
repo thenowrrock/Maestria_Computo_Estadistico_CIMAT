@@ -88,8 +88,7 @@ f(x) = \left\{\begin{array}{ll}
 0 & \text{en otro caso} 
 \end{array} \right.
 \end{equation*}
-Sea r el número de dispositivos hechos por adelantado, definamos a la función ganancia como:
-
+Sea r el número de dispositivos hechos por adelantado, $g>0$ y $p>0$,definamos a la función ganancia como:
 \begin{equation*}
 G = \left\{\begin{array}{ll}
 gX-(r-X)p & \text{para } X\leq r\\
@@ -98,58 +97,51 @@ gr & \text{para } X>r
 \end{equation*}
 
 Ahora podemos calcular la esperanza de $G$:
-
 $$\mE[G]=\mE[[gX-(r-X)p]\cdot I_{\{X\leq r \}}+gr\cdot I_{\{X >r\}}] $$
-Debido a que $X\sim U(0,N)$, entonces $\mE(X)=\frac{1}{N+1}\frac{N(N+1)}{2}=\frac{N}{2}$ y $\mP(X<r)=\frac{r+1}{N+1}$. Utilizando lo anterior y algunas propiedades básicas de la esperanza podemos concluir que:
-$$\mE[G]=\left( g\frac{N}{2}-rp+p\frac{N}{2}\right)\cdot\mP(X\leq r) +gr \cdot \mP(X>r).$$
+Debido a que $X\sim U(0,N)$, entonces $\mE(X)=\frac{1}{N+1}\frac{N(N+1)}{2}=\frac{N}{2}$ y $\mP(X<r)=\frac{r+1}{N+1}$. Utilizando lo anterior y algunas propiedades básicas de la esperanza podemos desarrollar la esperanza como 
+$$\mE[G]=\left( g\frac{N}{2}-rp+p\frac{N}{2}\right)\cdot\mP(X\leq r) +gr \cdot \mP(X>r)$$
 
-$$\mE[G]= \left( g\frac{N}{2}-rp+p\frac{N}{2}\right)\cdot\left[ \frac{r+1}{N+1}\right] +gr \cdot\left[1- \frac{r+1}{N+1} \right]$$
+$$\mE[G]= \left( g\frac{N}{2}-rp+p\frac{N}{2}\right)\cdot\left[ \frac{r+1}{N+1}\right] +gr \cdot\left[1- \frac{r+1}{N+1} \right].$$
 
-Ahora simplificamos y derivamos con respeto a $r$ para obtener un punto crítico de $\mE [G]$. 
-$$\mE'[G]= \frac{gN}{2(N+1)}+\frac{-2rp-p}{N+1}+\frac{pN}{2(N+1)}+g-\frac{2gr+g}{N+1}$$
+Simplificando la expresión anterior y derivando $\mE [G]$ con respeto a $r$ tenemos 
+$$\mE'[G]= \frac{gN}{2(N+1)}+\frac{-2rp-p}{N+1}+\frac{pN}{2(N+1)}+g-\frac{2gr+g}{N+1}.$$
 
-Igualamos a 0 y despejamos $r$.
+Igualando a 0 y despejando $r$ tenemos
 \begin{equation*}
-\begin{array}{ccl}
+\begin{array}{rcl}
 \frac{gN}{2(N+1)}+\frac{-2rp-p}{N+1}+\frac{pN}{2(N+1)}+g-\frac{2gr+g}{N+1}&=&0\\
 &&\\
 gN+2(-2rp-p)+pN+2(N+1)g-2(2gr+g)&=&0\\
 &&\\
 gN-4rp-2p+pN+2Ng+2g-4gr-2g&=&0\\
 &&\\
-4r(p+g)&=&-3gN -pN+2p+2g\\
+-4r(p+g)&=&-3gN -pN+2p\\
 &&\\
-r&=&\frac{-3gN -pN+2p+2g}{4(p+g)}
+r&=&\frac{3gN +pN-2p}{4(p+g)}
 \end{array}
 \end{equation*}
 
-Solo falta demostrar que es un máximo. 
-
-Por lo tanto, cuando $r$ es igual a $\frac{p(N+1)-p+g}{2(p+g)}$ la esperanza de la ganancia se maximiza\ \ \ \ \fin 
+Ahora usando el criterio de segunda derivada para determinar que el punto crítico encontrado sea un máximo/mínimo, calculemos la segunda derivada de la esperanza de la función de las ganancias:
+$$\mE''[G]=\frac{-2p}{N+1}+\frac{-2g}{N+1}.$$
+Como $p, g, N>0$ por como se definieron desde el principio del problema, implica que $\mE''[G]<0$ y que $r$ en $\frac{3gN +pN-2p}{4(p+g)}$ es un máximo. \\
+Por lo tanto cuando se producen $\frac{3gN +pN-2p}{4(p+g)}$ artículos  la ganancia esperada se maximiza.\ \ \ \ \fin 
 
 2. Un conjunto de bits se envían sobre un canal de comunicación en paquetes de 12. Si la probabilidad de que un bit sea corrompido sobre este canal es 0.1 y los errores son independientes,
 ¿cuál es la probabilidad de que no más de dos bits de un paquete se corrompan? Si 6 paquetes
 de bits se envían sobre el canal, ¿cuál es la probabilidad de que al menos un paquete contenga 3 o más bits corruptos? Finalmente, si $X$ denota el número de paquetes conteniendo 3 o más bit corruptos, ¿cuál es la probabilidad de que $X$ excederá su media por más de dos desviaciones estándar? 
 
 \res
-
-Sea $Y$ el número de bits que son corrompidos en este canal dentro de un paquete de 12, entonces podemos decir que, $Y\sim \ Bin(12,0.1)$. Entonces la probabilidad de que no más de dos bits de un paquete se corrompan es
-
-$$\mP(Y\leq2)= \mP(Y=2)+\mP(Y=1)+\mP(Y=0)=0.88913.$$
-
+Sea $Y$ el número de bits que son corrompidos en este canal dentro de un paquete de 12, entonces podemos decir que $Y\sim \ Bin(12,0.1)$. Por lo que \textbf{la probabilidad de que no más de dos bits de un paquete se corrompan es} (ocupando la función \textsf{pbinom(q=2, size=12, prob = 0.1)} en el software estadístico R.):
+$$\mP(Y\leq2)= \mP(Y=2)+\mP(Y=1)+\mP(Y=0)=\sum_{y=0}^2{12 \choose y}(0.1)^y(0.9)^{12-y}=0.88913.$$
 Ahora si existen 6 paquetes de bits sobre el canal, para determinar la probabilidad de que al menos un paquete contenga 3 o más bits corruptos, primero calculemos la probabilidad de que un paquete contenga 3 o más bits, la cual esta dada como 
 $$\mP(Y\geq3) = 1-\mP(Y<3)=1-0.88913= 0.11087.$$
-
-
-Ahora, sea $X$ el número de paquetes que contienen 3 o más bits corruptos de n paquetes existentes. Por definición podemos decir que $X\sim Bin(n,p)$, donde $p$ es la probabilidad de que un paquete tenga 3 o más bits corruptos. $X\sim Bin(6,0.11087),$ entonces la probabilidad de que al menos un paquete contenga 3 o más bits sería:
-
+Ahora, sea $X$ el número de paquetes que contienen 3 o más bits corruptos de n paquetes existentes. Por definición podemos decir que $X\sim Bin(n,p)$, donde $p$ es la probabilidad de que un paquete tenga 3 o más bits corruptos. Por lo que para este problema $n=6$ y $p=0.1107$ y $X\sim Bin(6,0.11087),$ entonces \textbf{la probabilidad de que al menos un paquete contenga 3 o más bits sería}
 $$\mP(X\geq1)=1-\mP(X<1)=0.5059265.$$
-
-Ahora, la probabilidad de que $X$ exceda su media por más de dos desviaciones estándar es, primero calculemos la media y la desviación estandar, como $X$ es una distribución binomial tenemos que 
-
-$$\mE(X)=np=6*0.11087=0.66522$$
-$$\sigma=\sqrt{var(X)} =\sqrt{np(1-p)}=\sqrt{6*0.11087(1-0.11087)}=0.769069$$
-$$\mP(X>np+2\sqrt{np(1-p)})=\mP(X>0.66522+2(0.769069)=\mP(X> 2.203358) $$
+Ahora, para calcular la probabilidad de que $X$ exceda su media por más de dos desviaciones estándar primero calculemos la media y la desviación estándar. Como $X$ es una distribución binomial tenemos que 
+$$\mE(X)=np=6*0.11087=0.66522.$$
+$$\sigma=\sqrt{var(X)} =\sqrt{np(1-p)}=\sqrt{6*0.11087(1-0.11087)}=0.769069.$$
+Por lo que \textbf{la probabilidad de que $X$ exceda su media por más de dos desviaciones estándar es}
+$$\mP(X>np+2\sqrt{np(1-p)})=\mP(X>0.66522+2(0.769069)=\mP(X> 2.203358).$$
 Por ser una variable discreta en los enteros positivos, podemos utilizar que:
 $$\mP(X> 2.203358)=\mP (X\geq 3)=1-\mP(X\leq2)=0.02104176 \ \ \finf$$
 
