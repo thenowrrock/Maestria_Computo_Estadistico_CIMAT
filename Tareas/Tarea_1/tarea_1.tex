@@ -100,26 +100,26 @@ gr & \text{para } X>r
 Ahora podemos calcular la esperanza de $G$:
 
 $$\mE[G]=\mE[[gX-(r-X)p]\cdot I_{\{X\leq r \}}+gr\cdot I_{\{X >r\}}] $$
+Debido a que $X\sim U(0,N)$, entonces $\mE(X)=\frac{1}{N+1}\frac{N(N+1)}{2}=\frac{N}{2}$ y $\mP(X<r)=\frac{r+1}{N+1}$. Utilizando lo anterior y algunas propiedades básicas de la esperanza podemos concluir que:
+$$\mE[G]=\left( g\frac{N}{2}-rp+p\frac{N}{2}\right)\cdot\mP(X\leq r) +gr \cdot \mP(X>r).$$
 
-$$=\left( g\frac{N+2}{2}-rp+p\frac{N+2}{2}\right)\cdot\mP(X\geq r) +gr \cdot \mP(X<r)$$
+$$\mE[G]= \left( g\frac{N}{2}-rp+p\frac{N}{2}\right)\cdot\left[ \frac{r+1}{N+1}\right] +gr \cdot\left[1- \frac{r+1}{N+1} \right]$$
 
-Ahora, considerando la definición de $X$:
-$$\mP(X<r)=\frac{r+1}{N+1}$$
-
-Entonces tenemos que:
-$$\mE[G]= \left( g\frac{N+2}{2}-rp+p\frac{N+2}{2}\right)\cdot\left[1- \frac{r+1}{N+1} \right] +gr \cdot\left[ \frac{r+1}{N+1}\right]$$
-
-Ahora derivamos con respeto a $r$ para maximizar $\mE [G]$. 
-$$\mE'[G]= -p + \frac{2rp-p}{N+1}+\frac{2rg+g}{N+1}.$$
+Ahora simplificamos y derivamos con respeto a $r$ para obtener un punto crítico de $\mE [G]$. 
+$$\mE'[G]= \frac{gN}{2(N+1)}+\frac{-2rp-p}{N+1}+\frac{pN}{2(N+1)}+g-\frac{2gr+g}{N+1}$$
 
 Igualamos a 0 y despejamos $r$.
 \begin{equation*}
 \begin{array}{ccl}
--p + \frac{2rp-p}{N+1}+\frac{2rg+g}{N+1}&=&0\\
+\frac{gN}{2(N+1)}+\frac{-2rp-p}{N+1}+\frac{pN}{2(N+1)}+g-\frac{2gr+g}{N+1}&=&0\\
 &&\\
-2r(p+g)-p+g&=&p(N+1)\\
+gN+2(-2rp-p)+pN+2(N+1)g-2(2gr+g)&=&0\\
 &&\\
-r&=&\frac{p(N+1)-p+g}{2(p+g)}
+gN-4rp-2p+pN+2Ng+2g-4gr-2g&=&0\\
+&&\\
+4r(p+g)&=&-3gN -pN+2p+2g\\
+&&\\
+r&=&\frac{-3gN -pN+2p+2g}{4(p+g)}
 \end{array}
 \end{equation*}
 
@@ -135,29 +135,31 @@ de bits se envían sobre el canal, ¿cuál es la probabilidad de que al menos un
 
 Sea $Y$ el número de bits que son corrompidos en este canal dentro de un paquete de 12, entonces podemos decir que, $Y\sim \ Bin(12,0.1)$. Entonces la probabilidad de que no más de dos bits de un paquete se corrompan es
 
-$$\mP(Y\leq2)= \mP(Y=1)+\mP(Y=0)=0.88913.$$
+$$\mP(Y\leq2)= \mP(Y=2)+\mP(Y=1)+\mP(Y=0)=0.88913.$$
 
 Ahora si existen 6 paquetes de bits sobre el canal, para determinar la probabilidad de que al menos un paquete contenga 3 o más bits corruptos, primero calculemos la probabilidad de que un paquete contenga 3 o más bits, la cual esta dada como 
-$$\mP(Y\geq3) 1-\mP(Y\leq3)=1-0.88913= 0.11087.$$
+$$\mP(Y\geq3) = 1-\mP(Y<3)=1-0.88913= 0.11087.$$
 
 
 Ahora, sea $X$ el número de paquetes que contienen 3 o más bits corruptos de n paquetes existentes. Por definición podemos decir que $X\sim Bin(n,p)$, donde $p$ es la probabilidad de que un paquete tenga 3 o más bits corruptos. $X\sim Bin(6,0.11087),$ entonces la probabilidad de que al menos un paquete contenga 3 o más bits sería:
 
-$$\mP(X\geq1)=1-\mP(X<1)=0.8637243.$$
+$$\mP(X\geq1)=1-\mP(X<1)=0.5059265.$$
 
 Ahora, la probabilidad de que $X$ exceda su media por más de dos desviaciones estándar es, primero calculemos la media y la desviación estandar, como $X$ es una distribución binomial tenemos que 
 
 $$\mE(X)=np=6*0.11087=0.66522$$
 $$\sigma=\sqrt{var(X)} =\sqrt{np(1-p)}=\sqrt{6*0.11087(1-0.11087)}=0.769069$$
-$$\mP(X>np+2\sqrt{np(1-p)})=\mP(X>0.66522+2(0.769069)=\mP(X> 2.203358) \ \ \finf$$
+$$\mP(X>np+2\sqrt{np(1-p)})=\mP(X>0.66522+2(0.769069)=\mP(X> 2.203358) $$
+Por ser una variable discreta en los enteros positivos, podemos utilizar que:
+$$\mP(X> 2.203358)=\mP (X\geq 3)=1-\mP(X\leq2)=0.02104176 \ \ \finf$$
 
 3. Una caja contiene 12 manzanas frescas y 4 que están podridas. Si elige 3 al azar y X denota el
 número de manzanas frescas que tomó, encuentre la función de densidad de X y su esperanza.
 
 \res 
-Por definición de X, podemos decir que $X\sim Hyper(n=3, M=8, N=12)$. Por lo que podemos decir que la función de densidad es:
+Por definición de X, podemos decir que $X\sim Hyper(n=3, M=12, N=16)$. Por lo que podemos decir que la función de densidad es:
 \begin{equation*}
-f(x)= \frac{{M\choose x}{N-M\choose n-x}}{{N\choose n}}
+f(x)= \frac{{M\choose x}{N-M\choose n-x}}{{N\choose n}}\ \ \text{para } x\in \{0,1,2,3\}.
 \end{equation*}
 Y su esperanza es $n\frac{M}{N}.$ \ \ \ \ \fin
 \end{itemize}
@@ -321,23 +323,99 @@ independientes. Justifique sus respuestas.
 
 \res
 
-Analicemos las proposiciones:
+Para cada una de las proposiciones determinamos que el espacio muestral de los resultados es:
+\begin{equation*}
+\Omega=\left\{ \begin{array}{c}
+ (1,1),\ (1,2), \ (1,3),\ (1,4), (1,5),\ (1,6)\\
+ (2,1),\ (2,2), \ (2,3),\ (2,4), (2,5),\ (2,6)\\
+ (3,1),\ (3,2), \ (3,3),\ (3,4), (3,5),\ (3,6)\\
+ (4,1),\ (4,2), \ (4,3),\ (4,4), (4,5),\ (4,6)\\
+ (5,1),\ (5,2), \ (5,3),\ (5,4), (5,5),\ (5,6)\\
+ (6,1),\ (6,2), \ (6,3),\ (6,4), (6,5),\ (6,6)\\
+\end{array}\right.
+\end{equation*}
+
+Para probar la valides de las proposiciones ocuparemos la siguiente definición de independencia de dos eventos: \\
+
+\textit{Sea A y B dos eventos, entonces son independientes si solo sí}
+$$\mP(A\cap B)=\mP(A)\mP(B).$$
+
 \begin{itemize}
-\item[i)] A y F son independientes. \textbf{Falso}. Si consideramos la porbabilidad: 
-$$\mP(F|A)=.$$
-\item[ii)] A y D son independientes. \textbf{Falso}
-\item[iii)] A y E son independientes. \textbf{Falso}.
-\item[iv)] $\mP(A \cap B \cap C) = \mP (A)\mP (B)\mP (C)$. \textbf{Verdadero}
-\item[v)] A y C son independientes.\textbf{Falso}.
-\item[vi)] C y E son independientes.\textbf{Falso}.
-\item[vii)] $\mP (A \cap C \cap E) = \mP (A)\mP (C)\mP (E)$. \textbf{Falso}.
+\item[i)] A y F son independientes. \textbf{Verdadera}. Como A es el evento que el primer dado cae en H=$\{4, 5, 6\}$, 
+$$\mP(A)=\frac{\text{Número de veces que sucede A}}{\text{Número total de eventos}}= \frac{18}{36}=\frac{1}{2}.$$
+Ahora, como F es el evento en que el total es siete tenemos que
+$$\mP(F)=\frac{\text{Número de veces que sucede F}}{\text{Número total de eventos}}=\frac{6}{36}=\frac{1}{6}.$$
+Y ahora calculemos la probabilidad de la intersección de los eventos A y F:
+$$\mP(A\cap F)= \frac{\text{Número de veces que sucede A y F}}{\text{Número total de eventos}}=\frac{3}{36}=\frac{1}{12}.$$
+Por lo tanto, como
+$$\mP(A\cap F)= \frac{1}{12}=\frac{1}{2}\cdot \frac{1}{6}=\mP(A)\mP(F)$$
+podemos concluir que A y F son independientes.
+
+\item[ii)] A y D son independientes. \textbf{Falsa}. En el inciso $i)$ ya obtuvimos $\mP(A)$. Ahora, como D es el evento en que el total es cuatro tenemos que
+$$\mP(D)=\frac{\text{Número de veces que sucede D}}{\text{Número total de eventos}}=\frac{3}{36}=\frac{1}{12}.$$
+Y ahora calculemos la probabilidad de la intersección de los eventos A y D:
+$$\mP(A\cap D)= \frac{\text{Número de veces que sucede A y D}}{\text{Número total de eventos}}=\frac{0}{36}=0.$$
+Por lo tanto, como
+$$\mP(A\cap D)= 0 \neq \frac{1}{24}=\frac{1}{2}\cdot \frac{1}{12}=\mP(A)\mP(D)$$
+podemos concluir que A y D no son independientes.
+
+\item[iii)] A y E son independientes. \textbf{Falsa}. En el inciso $i)$ ya obtuvimos $\mP(A)$. Ahora, como E es el evento en que el total es cinco tenemos que
+$$\mP(E)=\frac{\text{Número de veces que sucede E}}{\text{Número total de eventos}}=\frac{4}{36}=\frac{1}{9}.$$
+Y ahora calculemos la probabilidad de la intersección de los eventos A y E:
+$$\mP(A\cap E)= \frac{\text{Número de veces que sucede A y E}}{\text{Número total de eventos}}=\frac{1}{36}.$$
+Por lo tanto, como
+$$\mP(A\cap E)= \frac{1}{36} \neq \frac{1}{18}=\frac{1}{2}\cdot \frac{1}{9}=\mP(A)\mP(E)$$
+podemos concluir que A y D no son independientes.
+
+\item[iv)] $\mP(A \cap B \cap C) = \mP (A)\mP (B)\mP (C)$. \textbf{Falsa}. En el inciso $i)$ ya obtuvimos $\mP(A)$. Ahora, como B es el evento en que el segundo dado cae en H tenemos que
+$$\mP(B)=\frac{\text{Número de veces que sucede B}}{\text{Número total de eventos}}=\frac{18}{36}=\frac{1}{2}.$$
+Como C es el evento en que un dado cae en G y el otro en H tenemos que
+$$\mP(C)=\frac{\text{Número de veces que sucede C}}{\text{Número total de eventos}}=\frac{18}{36}=\frac{1}{2}.$$
+
+Y ahora calculemos la probabilidad de la intersección de los eventos A, B y C:
+$$\mP(A\cap B \cap C)= \frac{\text{Número de veces que sucede A, B y C}}{\text{Número total de eventos}}=\frac{0}{36}=0.$$
+Por lo tanto, como
+$$\mP(A\cap B \cap C)= 0 \neq \frac{1}{8}=\frac{1}{2}\cdot \frac{1}{2}\cdot \frac{1}{2}=\mP(A)\mP(B)\mP(C)$$
+no se cumple la igualdad.
+
+\item[v)] A y C son independientes.\textbf{Verdadera}. En el inciso i) y iv) calculamos $\mP(A)$ y $\mP(C)$ respectivamente. Y ahora calculemos la probabilidad de la intersección de los eventos A y C:
+$$\mP(A\cap C)= \frac{\text{Número de veces que sucede A y C}}{\text{Número total de eventos}}=\frac{9}{36}=\frac{1}{4}.$$
+Por lo tanto, como
+$$\mP(A\cap C)= \frac{1}{4}=\frac{1}{2}\cdot \frac{1}{2}=\mP(A)\mP(C)$$
+podemos concluir que A y C son independientes.
+
+\item[vi)] C y E son independientes.\textbf{Verdadera}. En el inciso iii) y iv) calculamos $\mP(E)$ y $\mP(C)$ respectivamente. Y ahora calculemos la probabilidad de la intersección de los eventos E y C:
+$$\mP(E\cap C)= \frac{\text{Número de veces que sucede E y C}}{\text{Número total de eventos}}=\frac{2}{36}=\frac{1}{18}.$$
+Por lo tanto, como
+$$\mP(E\cap C)= \frac{1}{18} = \frac{1}{9}\cdot \frac{1}{2}=\mP(E)\mP(C)$$
+podemos concluir que E y C son independientes.
+
+\item[vii)] $\mP (A \cap C \cap E) = \mP (A)\mP (C)\mP (E)$. \textbf{Verdadera}. En el inciso iii) y iv) calculamos $\mP(E)$, $\mP(C)$ y $\mP(A)$ respectivamente. Y ahora calculemos la probabilidad de la intersección de los eventos A, C y E:
+$$\mP(A\cap C\cap E)= \frac{\text{Número de veces que sucede A, C y E}}{\text{Número total de eventos}}=\frac{1}{36}=\frac{1}{18}.$$
+Por lo tanto, como
+$$\mP(A\cap C\cap E)= \frac{1}{36} = \frac{1}{2}\cdot \frac{1}{2} \cdot\frac{1}{9}=\mP(A)\mP(C)\mP(E)$$
+podemos concluir se cumple la igualdad. 
+
 \item[viii)] A, C y E son
-independientes. \textbf{Falso}.
+independientes. \textbf{Falsa}. Utitlizaremos el siguiente criterio de independencia:\\
+
+\textit{Sea $A, C, E$ eventos son independientes si solo si
+\begin{equation*}
+\begin{array}{c}
+\mP(A\cap C \cap E) =\mP(A)\mP(C)\mP(E),\\
+\mP(A\cap C)= \mP(A)\mP(C),\\
+\mP(A\cap E)= \mP(A)\mP(E),\\
+\mP(C\cap E)= \mP(C)\mP(E).\\
+\end{array}
+\end{equation*}
+}
+Considerando el resultado del inciso iii), en donde concluimos que $\mP(A\cap E)\neq\mP(A)\mP(E)$. Entonces podemos concluir que A, C y E no son independientes. $\ \ \ \ \finf$
 \end{itemize}
-\item[11.] \textbf{Extra} 
-Solución extra del ejercicio 4 en python. 
 \end{itemize}
 
 \textbf{Ejercicios de las notas: }
+\begin{enumerate}
+\item Avion
+\end{enumerate}
 
 \end{document}
