@@ -149,13 +149,34 @@ $$\mP(X> 2.203358)=\mP (X\geq 3)=1-\mP(X\leq2)=0.02104176 \ \ \finf$$
 número de manzanas frescas que tomó, encuentre la función de densidad de X y su esperanza.
 
 \res 
-Por definición de X, podemos decir que $X\sim Hyper(n=3, M=12, N=16)$. Por lo que podemos decir que la función de densidad es:
+Por definición de X, podemos decir que $X\sim Hyper(n=3, M=12, N=16)$. Por lo que podemos decir que la función de densidad es :
 \begin{equation*}
 f(x)= \frac{{M\choose x}{N-M\choose n-x}}{{N\choose n}}\ \ \text{para } x\in \{0,1,2,3\}.
 \end{equation*}
-Y su esperanza es $n\frac{M}{N}.$ \ \ \ \ \fin
+Calculemos los valores exactos de la función de densidad (ocupando la función \textsf{dhyper(x=c(0,1,2,3), m=12, n=4, k=3)}:
+\begin{itemize}
+\item para $x=0$,
+$$f(0)=\frac{{12\choose 0}{4\choose 3}}{{16\choose 3}}= 0.007142857.$$
+\item para $x=1$,
+$$f(1)=\frac{{12\choose 1}{4\choose 2}}{{16\choose 3}}= 0.128571429.$$
+\item para $x=2$,
+$$f(2)=\frac{{12\choose 2}{4\choose 1}}{{16\choose 3}}= 0.471428571.$$
+\item para $x=3$,
+$$f(3)=\frac{{12\choose 3}{4\choose 0}}{{16\choose 3}}= 0.392857143.$$
 \end{itemize}
-
+En conclusión \textbf{la función de densidad de $X$ es}: 
+\begin{equation*}
+f(x) = \left\{\begin{array}{ll}
+0.007142857 & \text{para } x=0\\
+0.128571429 & \text{para } x=1\\
+0.471428571 & \text{para } x=2\\
+0.392857143 & \text{para } x=3\\
+0 & \text{en otro caso}
+\end{array} \right.
+\end{equation*}
+Debido a que $X$ se distribuye como una hypergeometrica tenemos que \textbf{la  esperanza es} 
+$$\mE[X]=\frac{nM}{N}=\frac{3\cdot12}{16}=2.25 \ \ \finf$$ 
+\end{itemize}
 
 
 \begin{itemize}
@@ -215,7 +236,7 @@ Debido a que $F(x)$ esta definida como un polinomio, esto implica que $F(x)$ es 
 
 \textit{Si $X$ es una variable aleatoria continua con función de densidad $f(x)$ y función de distribución acumulada $F(x)$, entonces en cada $x$ en la que existe la derivada $F'(x)$ implica que $F'(x)=f(x).$}\\
 
-Como $F(x)=x^2$ es un polinomio esto implica que $F'(x)$ en $\forall x$. Por lo tanto, la función la densidad de X es
+Como $F(x)=x^2$ es un polinomio esto implica que $\exists\ F'(x) \ \forall x$. Por lo tanto, \textbf{la función la densidad de X es}
 $$f(x)=F'(x)=2x \ I_{x\in [0,1]}.$$
 
 Recordemos que algunas propiedades de la función acumulada:
@@ -224,7 +245,7 @@ Recordemos que algunas propiedades de la función acumulada:
 \item $$\mP (a\leq X\leq b)= F(b)-F(a). $$
 \item $$\mP(X>a)=1-\mP(X<a).$$
 \end{itemize}
-Ocupando lo anterior tenemos:
+Ocupando lo anterior tenemos que:
 \begin{itemize}
 \item[i)] 
 $$\mP (1/4 \leq X \leq 3/4)= F(3/4)-F(1/4)= (3/4)^2-(1/4)^2=8/16=1/2.$$ 
@@ -304,7 +325,7 @@ Ahora considerando las diferentes proporciones, tenemos que (ocupando la funció
 \end{equation*}
 \end{itemize}
 
-Podemos observar, que cuando la proporción real de componentes defectuosos del lote es más grande esto implica que la probabilidad de aceptar el lote es cada vez menor, es decir, la proporción real es inversamente proporcional a la probabilidad de aceptar el lote. Si observamos la función de distribución acumulada la $X$ cambio el valor $p$, se puede observar claramente este hecho. $\blacksquare$
+Podemos observar, que cuando la proporción real de componentes defectuosos del lote es más grande esto implica que la probabilidad de aceptar el lote es cada vez menor, es decir, la proporción real es inversamente proporcional a la probabilidad de aceptar el lote. Si observamos la función de distribución acumulada de $X$ cuando cambia el valor $p$ (ver Figura 3) se puede observar claramente este hecho. $\blacksquare$
 \end{itemize}
 
 \begin{itemize}
