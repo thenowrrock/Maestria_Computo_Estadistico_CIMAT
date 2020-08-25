@@ -98,33 +98,34 @@ gr & \text{para } X>r
 
 Ahora podemos calcular la esperanza de $G$:
 $$\mE[G]=\mE[[gX-(r-X)p]\cdot I_{\{X\leq r \}}+gr\cdot I_{\{X >r\}}] $$
-Debido a que $X\sim U(0,N)$, entonces $\mE(X)=\frac{1}{N+1}\frac{N(N+1)}{2}=\frac{N}{2}$ y $\mP(X<r)=\frac{r+1}{N+1}$. Utilizando lo anterior y algunas propiedades básicas de la esperanza podemos desarrollar la esperanza como 
-$$\mE[G]=\left( g\frac{N}{2}-rp+p\frac{N}{2}\right)\cdot\mP(X\leq r) +gr \cdot \mP(X>r)$$
+$$\mE[G]=g\mE[X\cdot I_{\{X\leq r \}}]-rp\mE[\cdot I_{\{X\leq r \}}]+p\mE[X\cdot I_{\{X\leq r \}}]+gr\mE[\cdot I_{\{X >r\}}] $$
+Debido a que $X\sim U(0,N)$, entonces $\mE(X\cdot I_{\{X\leq r \}})=\frac{r(r-1)}{2(N+1)}$, $\mE[I_{\{X\leq r \}}]=\mP(X<r))$ y $\mP(X<r)=\frac{r}{N+1}$. Utilizando lo anterior y algunas propiedades básicas de la esperanza podemos desarrollar la esperanza como 
+$$\mE[G]=\left( \frac{g(r^2-r)}{2(N+1)}-\frac{pr^2}{N+1}+\frac{p(r^2-r)}{2(N+1)}\right)+gr \cdot\left[1- \frac{r}{N+1} \right]$$
 
-$$\mE[G]= \left( g\frac{N}{2}-rp+p\frac{N}{2}\right)\cdot\left[ \frac{r+1}{N+1}\right] +gr \cdot\left[1- \frac{r+1}{N+1} \right].$$
+$$\mE[G]= \left( \frac{g(r^2-r)}{2(N+1)}-\frac{pr^2}{N+1}+\frac{p(r^2-r)}{2(N+1)}\right)+gr -\frac{gr^2}{N+1}.$$
 
 Simplificando la expresión anterior y derivando $\mE [G]$ con respeto a $r$ tenemos 
-$$\mE'[G]= \frac{gN}{2(N+1)}+\frac{-2rp-p}{N+1}+\frac{pN}{2(N+1)}+g-\frac{2gr+g}{N+1}.$$
+$$\mE'[G]= \frac{2gr-g}{2(N+1)}+\frac{-2rp}{N+1}+\frac{2pr-p}{2(N+1)}+g+\frac{-2gr}{N+1}.$$
 
 Igualando a 0 y despejando $r$ tenemos
 \begin{equation*}
 \begin{array}{rcl}
-\frac{gN}{2(N+1)}+\frac{-2rp-p}{N+1}+\frac{pN}{2(N+1)}+g-\frac{2gr+g}{N+1}&=&0\\
+\frac{2gr-g}{2(N+1)}+\frac{-2rp}{N+1}+\frac{2gr-p}{2(N+1)}+g+\frac{-2pr}{N+1}&=&0\\
 &&\\
-gN+2(-2rp-p)+pN+2(N+1)g-2(2gr+g)&=&0\\
+2gr-g-4rp+2pr-p+2g(N+1)-4gr&=&0\\
 &&\\
-gN-4rp-2p+pN+2Ng+2g-4gr-2g&=&0\\
+-2gr+g-2rp-p+2gN&=&0\\
 &&\\
--4r(p+g)&=&-3gN -pN+2p\\
+-2r(p+g)&=&-g-2gN+p\\
 &&\\
-r&=&\frac{3gN +pN-2p}{4(p+g)}
+r&=&\frac{g+2gN-p}{2(p+g)}
 \end{array}
 \end{equation*}
 
 Ahora usando el criterio de segunda derivada para determinar que el punto crítico encontrado sea un máximo/mínimo, calculemos la segunda derivada de la esperanza de la función de las ganancias:
-$$\mE''[G]=\frac{-2p}{N+1}+\frac{-2g}{N+1}.$$
-Como $p, g, N>0$ por como se definieron desde el principio del problema, implica que $\mE''[G]<0$ y que $r$ en $\frac{3gN +pN-2p}{4(p+g)}$ es un máximo. \\
-Por lo tanto cuando se producen $\frac{3gN +pN-2p}{4(p+g)}$ artículos  la ganancia esperada se maximiza.\ \ \ \ \fin 
+$$\mE''[G]=\frac{-p}{N+1}+\frac{-g}{N+1}.$$
+Como $p, g, N>0$ por como se definieron desde el principio del problema, implica que $\mE''[G]<0$ y que $r$ en $\frac{g+2gN-p}{2(p+g)}$ es un máximo. \\
+Por lo tanto cuando se producen $\frac{g+2gN-p}{2(p+g)}$ artículos  la ganancia esperada se maximiza.\ \ \ \ \fin 
 
 2. Un conjunto de bits se envían sobre un canal de comunicación en paquetes de 12. Si la probabilidad de que un bit sea corrompido sobre este canal es 0.1 y los errores son independientes,
 ¿cuál es la probabilidad de que no más de dos bits de un paquete se corrompan? Si 6 paquetes
