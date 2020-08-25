@@ -265,7 +265,6 @@ número de componentes defectuosos en la muestra es cuando mucho 2.
 \end{itemize}
 
 \res
-
 Sea $X$ el número de componentes defectuosos en la muestra aleatoria de 10 componentes. Considerando que el lote es muy grande y la proporción $p$ real de defectuosos en el lote, podemos decir que $X\sim Bin(10,p)$. Entonces la probabilidad de que el lote sea aceptado es $$\mP(X\leq 2).$$
 
 Ahora considerando las diferentes proporciones, tenemos que (ocupando la función \textsf{pbinom(q=2, size=10, prob = p)} de software estadístico R.):
@@ -335,7 +334,6 @@ vi) C y E son independientes. vii) $\mP (A \cap C \cap E) = \mP (A)\mP (C)\mP (E
 independientes. Justifique sus respuestas.
 
 \res
-
 Para cada una de las proposiciones determinamos que el espacio muestral de los resultados es:
 \begin{equation*}
 \Omega=\left\{ \begin{array}{c}
@@ -428,7 +426,28 @@ Considerando el resultado del inciso iii), en donde concluimos que $\mP(A\cap E)
 
 \textbf{Ejercicios de las notas: }
 \begin{enumerate}
-\item Avion
+\item Sea $X\sim Poisson(\lambda)$, demuestre que $C_X(t)=\log M_x(t), C'_X(0)=\mu, C_X''(0)=\sigma^2.$
+
+\res
+Recordemos que la función generadora de momentos para $X\sim Poisson(\lambda)$ es
+$$M_X(t)=e^{\lambda(e^t-1)}.$$
+Entonces
+$$C_X(t)=\log M_x(t) = \log (e^{\lambda(e^t-1)})=\lambda(e^t-1).$$
+Calculemos la primera y segunda derivada de $C_X(t):$
+$$C'_X(t)=\lambda e^t,$$
+$$C''_X(t)=\lambda e^t.$$
+Evaluando las derivadas en 0, tenemos que:
+$$C'_X(0)=\lambda e^0=\lambda,$$
+$$C''_X(0)=\lambda e^0=\lambda.$$
+Y como $X\sim Poisson(\lambda)$ podemos concluir que:
+$$C'_X(0)=\lambda=\mu,$$
+$$C''_X(0)=\lambda=\sigma.\ \ \finf$$
+\item El factor $\frac{N-n}{N-1}$, cantidad que nos recuerda la finitud de N, es llamada el \textbf{factor de correción para la población finita}. ¿Cuál es $\lim_{N\rightarrow\infty}\frac{N-n}{N-1}$ con $n$ fija?
+
+\res
+Ocupando algunas propiedades de los límites, tenemos
+$$\lim_{N\rightarrow\infty}\frac{N-n}{N-1}=\lim_{N\rightarrow\infty}\frac{\frac{N-n}{N}}{\frac{N-1}{N}}=\lim_{N\rightarrow\infty}\frac{1-\frac{n}{N}}{1-\frac{1}{N}}=1.$$
+Esto se puede interpretar como que cuando $N$ es grande el factor correción tiene a 1, es decir, cuando $N$ es grande el factor ya no tiene importancia. $\finf$
 \end{enumerate}
 
 \end{document}
