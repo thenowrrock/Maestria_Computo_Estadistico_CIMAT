@@ -107,6 +107,60 @@ I& P\\
 \end{equation*}
 y si $P$ es idempotente, encuentre $A^{500}.$
 
+\res
+\begin{equation*}
+A^2=\left(\begin{array}{cc}
+I& P\\
+0&P
+\end{array}
+\right)\left(\begin{array}{cc}
+I& P\\
+0&P
+\end{array}
+\right)=
+\left(\begin{array}{cc}
+I^2+0& IP+P^2\\
+0+0&0+P^2
+\end{array}
+\right)=\left(\begin{array}{cc}
+I&2P\\
+0&P
+\end{array}
+\right).
+\end{equation*}
+
+\begin{equation*}
+A^3=\left(\begin{array}{cc}
+I& 2P\\
+0&P
+\end{array}
+\right)\left(\begin{array}{cc}
+I& P\\
+0&P
+\end{array}
+\right)=
+\left(\begin{array}{cc}
+I^2+0& IP+2P^2\\
+0+0&0+P^2
+\end{array}
+\right)=\left(\begin{array}{cc}
+I&3P\\
+0&P
+\end{array}
+\right).
+\end{equation*}
+
+
+Por lo tanto 
+
+\begin{equation*}
+A^{500}=\left(\begin{array}{cc}
+I& 500P\\
+0&P
+\end{array}
+\right) \finf
+\end{equation*}
+
 \item Sean $A$ y $B$ matrices de tamaño $m\times n$. Demuestre que tr$(AB^t)=$tr$(A^tB)$. 
 
 \item Encuentre matrices $A, B \ \text{y} \ C$ tales que tr$(ABC)\neq$tr$(BAC)$.
