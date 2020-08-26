@@ -1,0 +1,121 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish]{babel}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{lmodern}
+\usepackage{xspace}
+\usepackage{multicol}
+\usepackage{hyperref}
+\usepackage{float}
+\usepackage{hyperref}
+\usepackage{color}
+
+\newcommand{\azul}[1]{\textcolor{MaterialBlue900}{#1}}
+\usepackage{array}
+
+\hypersetup{colorlinks=true,   linkcolor=MaterialBlue900}
+%\usepackage[colorlinks=true, linkcolor=black, urlcolor=blue, pdfborder={0 0 0}]{hyperref}
+
+\usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
+\title{Modelos no paramétricos y de regresión 2018-1}
+\author{Tarea examen: pruebas binomiales y tablas de contingencia}
+\date{Fecha de entrega: 08/01/2017}
+\setlength{\parindent}{0in}
+\spanishdecimal{.}
+
+
+\newcommand{\X}{\mathbb{X}}
+\newcommand{\x}{\mathbf{x}}
+\newcommand{\Y}{\mathbf{Y}}
+\newcommand{\y}{\mathbf{y}}
+\newcommand{\xbarn}{\bar{x}_n}
+\newcommand{\ybarn}{\bar{y}_n}
+\newcommand{\paren}[1]{\left( #1 \right)}
+\newcommand{\llaves}[1]{\left\lbrace #1 \right\rbrace}
+\newcommand{\barra}{\,\vert\,}
+\newcommand{\mP}{\mathbb{P}}
+\newcommand{\mE}{\mathbb{E}}
+\newcommand{\mI}{\mathbf{I}}
+\newcommand{\mJ}{\mathbf{J}}
+\newcommand{\mX}{\mathbf{X}}
+\newcommand{\mS}{\mathbf{S}}
+\newcommand{\mA}{\mathbf{A}}
+\newcommand{\unos}{\boldsymbol{1}}
+\newcommand{\xbarnv}{\bar{\mathbf{x}}_n}
+\newcommand{\abs}[1]{\left\vert #1 \right\vert}
+\newcommand{\muv}{\boldsymbol{\mu}}
+\newcommand{\mcov}{\boldsymbol{\Sigma}}
+\newcommand{\vbet}{\boldsymbol{\beta}}
+\newcommand{\veps}{\boldsymbol{\epsilon}}
+\newcommand{\mC}{\mathbf{C}}
+\newcommand{\ceros}{\boldsymbol{0}}
+\newcommand{\mH}{\mathbf{H}}
+\newcommand{\ve}{\mathbf{e}}
+\newcommand{\avec}{\mathbf{a}}
+\newcommand{\res}{\textbf{RESPUESTA}\\}
+\newcommand{\rojo}[1]{\textcolor{MaterialRed900}{#1}}
+
+\newcommand{\defi}[3]{\textbf{Definición:#3}}
+\newcommand{\fin}{$\blacksquare.$}
+\newcommand{\finf}{\blacksquare.}
+
+\begin{document}
+\begin{table}[ht]
+\centering
+\begin{tabular}{c}
+\textbf{Maestría en Computo Estadístico}\\
+\textbf{Álgebra Matricial} \\
+\textbf{Tarea 1}\\
+\today \\
+\emph{Enrique Santibáñez Cortés}\\
+Repositorio de Git: \href{https://github.com/Enriquesec/Inferencia_Estad-stica/tree/master/Tareas/Tarea_1}{Tarea 1, IE}.
+\end{tabular}
+\end{table}
+
+\begin{enumerate}
+\item Si $A$ es una matriz $m\times n$ dada por bloques de vectores columna como $$ (a_1\ a_2\ \cdots a_n)$$ y $B$ es una matriz $n\times p$ dada por bloques de vectores renglón como
+\begin{equation*}
+\left(\begin{array}{c}
+v1\\
+v2\\
+\vdots \\
+v_n
+\end{array}
+\right)
+\end{equation*}
+Demuestre que $$AB=\sum_{i=1}^na_iv_i.$$
+
+\item Sean $A$ y $B$ matrices cuadradas del mismo orden. Demuestre que $(A-B)(A+B)=A^2-B^2$ si y solo si $AB=BA.$
+
+\item Sean $A$ y $B$ matrices $n\times n$, $A\neq 0, \ B\neq 0,$ tales que $AB=BA.$ Demuestre que $A^pB^p=B^pA^p$ para cualesquiera $p,q\in \mathbb{N}.$
+
+\item Se dice que una matriz cuadrada $A$ es antisimétrica si $A=-A^t.$ Demuestre que $A-A^t$ es antisimétrica.
+
+\item Demuestre que dada cualquier matriz cuadrada $A,$ esta se puede escribir como la suma de una matriz simétrica y una matriz antisimétrica.
+
+\item Se dice que una matriz cuadrada $P$ es idempotente si $P^2=P$. Si 
+\begin{equation*}
+A=\left(\begin{array}{cc}
+I& P\\
+0&P
+\end{array}
+\right)
+\end{equation*}
+y si $P$ es idempotente, encuentre $A^{500}.$
+
+\item Sean $A$ y $B$ matrices de tamaño $m\times n$. Demuestre que tr$(AB^t)=$tr$(A^tB)$. 
+
+\item Encuentre matrices $A, B \ \text{y} \ C$ tales que tr$(ABC)\neq$tr$(BAC)$.
+
+\item Sea $L$ una mtriz triangular inferior $n\times n$. Demuestre que $L=L_1L_2\cdots L_n$ donde $L_i$ es la matriz $n\times n$ que se obtiene reemplazando la $i-$ésima columna de $I_n$ por la $i-$ésima columna de $L$. Demuestre un resultado análogo para matrices triangulares superiores.
+
+\item Sea $A=(a_{ij})$ una matriz cuadrada de tamaño $n$ tal que $a_{ij}=0$ para $i=1, \cdots , n.$ Demuestre que para $i=1, \cdots , n$ y $j=1, \cdots , \min (n,i+p-1)$ se cumple que $b_{ij}=0$ donde $A^p=(b_{ij})$ y $p$ es un entero positivo. 
+
+
+
+\end{enumerate}
+\end{document}
