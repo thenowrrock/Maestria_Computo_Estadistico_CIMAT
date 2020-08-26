@@ -62,7 +62,7 @@
 \newcommand{\defi}[3]{\textbf{Definición:#3}}
 \newcommand{\fin}{$\blacksquare.$}
 \newcommand{\finf}{\blacksquare.}
-
+\newcommand{\tr}{\text{tr}}
 \begin{document}
 \begin{table}[ht]
 \centering
@@ -91,9 +91,23 @@ Demuestre que $$AB=\sum_{i=1}^na_iv_i.$$
 
 \item Sean $A$ y $B$ matrices cuadradas del mismo orden. Demuestre que $(A-B)(A+B)=A^2-B^2$ si y solo si $AB=BA.$
 
+\res
+Primera implicación:
+$$(A-B)(A+B)=AA-BA+AB-BB=$$
+
 \item Sean $A$ y $B$ matrices $n\times n$, $A\neq 0, \ B\neq 0,$ tales que $AB=BA.$ Demuestre que $A^pB^p=B^pA^p$ para cualesquiera $p,q\in \mathbb{N}.$
 
+\res
+Multiplicado por $A^{p-1}$ por la izquierda y $B^{q-1}$ por la derecha tenemos que:
+
+$$A^{p-1}(AB)B^{q-1}=A^{p-1}(BA)B^{q-1} \ \ \ \ \finf$$
+
+
 \item Se dice que una matriz cuadrada $A$ es antisimétrica si $A=-A^t.$ Demuestre que $A-A^t$ es antisimétrica.
+
+\res
+Considerando las propiedades de la transpuesta:
+$$-(A-A^t)^t=-(A-A^t)=A-A^t\ \ \ \finf$$
 
 \item Demuestre que dada cualquier matriz cuadrada $A,$ esta se puede escribir como la suma de una matriz simétrica y una matriz antisimétrica.
 
@@ -163,9 +177,16 @@ I& 500P\\
 
 \item Sean $A$ y $B$ matrices de tamaño $m\times n$. Demuestre que tr$(AB^t)=$tr$(A^tB)$. 
 
+\res
+Utilizando la propiedad de la traza de una matriz:
+$$\tr(A)=\tr(A^t).$$
+Y si 
+Entonces,
+$$\tr(AB^t)=\tr($$
 \item Encuentre matrices $A, B \ \text{y} \ C$ tales que tr$(ABC)\neq$tr$(BAC)$.
 
-\item Sea $L$ una mtriz triangular inferior $n\times n$. Demuestre que $L=L_1L_2\cdots L_n$ donde $L_i$ es la matriz $n\times n$ que se obtiene reemplazando la $i-$ésima columna de $I_n$ por la $i-$ésima columna de $L$. Demuestre un resultado análogo para matrices triangulares superiores.
+
+\item Sea $L$ una matriz triangular inferior $n\times n$. Demuestre que $L=L_1L_2\cdots L_n$ donde $L_i$ es la matriz $n\times n$ que se obtiene reemplazando la $i-$ésima columna de $I_n$ por la $i-$ésima columna de $L$. Demuestre un resultado análogo para matrices triangulares superiores.
 
 \item Sea $A=(a_{ij})$ una matriz cuadrada de tamaño $n$ tal que $a_{ij}=0$ para $i=1, \cdots , n.$ Demuestre que para $i=1, \cdots , n$ y $j=1, \cdots , \min (n,i+p-1)$ se cumple que $b_{ij}=0$ donde $A^p=(b_{ij})$ y $p$ es un entero positivo. 
 
