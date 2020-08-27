@@ -1,0 +1,140 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish]{babel}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{lmodern}
+\usepackage{xspace}
+\usepackage{multicol}
+\usepackage{hyperref}
+\usepackage{float}
+\usepackage{hyperref}
+\usepackage{color}
+
+\newcommand{\azul}[1]{\textcolor{MaterialBlue900}{#1}}
+\usepackage{array}
+
+\hypersetup{colorlinks=true,   linkcolor=MaterialBlue900}
+%\usepackage[colorlinks=true, linkcolor=black, urlcolor=blue, pdfborder={0 0 0}]{hyperref}
+
+\usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
+\title{Modelos no paramétricos y de regresión 2018-1}
+\author{Tarea examen: pruebas binomiales y tablas de contingencia}
+\date{Fecha de entrega: 08/01/2017}
+\setlength{\parindent}{0in}
+\spanishdecimal{.}
+
+
+\newcommand{\X}{\mathbb{X}}
+\newcommand{\x}{\mathbf{x}}
+\newcommand{\Y}{\mathbf{Y}}
+\newcommand{\y}{\mathbf{y}}
+\newcommand{\xbarn}{\bar{x}_n}
+\newcommand{\ybarn}{\bar{y}_n}
+\newcommand{\paren}[1]{\left( #1 \right)}
+\newcommand{\llaves}[1]{\left\lbrace #1 \right\rbrace}
+\newcommand{\barra}{\,\vert\,}
+\newcommand{\mP}{\mathbb{P}}
+\newcommand{\mE}{\mathbb{E}}
+\newcommand{\mI}{\mathbf{I}}
+\newcommand{\mJ}{\mathbf{J}}
+\newcommand{\mX}{\mathbf{X}}
+\newcommand{\mS}{\mathbf{S}}
+\newcommand{\mA}{\mathbf{A}}
+\newcommand{\unos}{\boldsymbol{1}}
+\newcommand{\xbarnv}{\bar{\mathbf{x}}_n}
+\newcommand{\abs}[1]{\left\vert #1 \right\vert}
+\newcommand{\muv}{\boldsymbol{\mu}}
+\newcommand{\mcov}{\boldsymbol{\Sigma}}
+\newcommand{\vbet}{\boldsymbol{\beta}}
+\newcommand{\veps}{\boldsymbol{\epsilon}}
+\newcommand{\mC}{\mathbf{C}}
+\newcommand{\ceros}{\boldsymbol{0}}
+\newcommand{\mH}{\mathbf{H}}
+\newcommand{\ve}{\mathbf{e}}
+\newcommand{\avec}{\mathbf{a}}
+\newcommand{\res}{\textbf{RESPUESTA}\\}
+\newcommand{\rojo}[1]{\textcolor{MaterialRed900}{#1}}
+
+\newcommand{\defi}[3]{\textbf{Definición:#3}}
+\newcommand{\fin}{$\blacksquare.$}
+\newcommand{\finf}{\blacksquare.}
+\newcommand{\tr}{\text{tr}}
+\begin{document}
+\begin{table}[ht]
+\centering
+\begin{tabular}{c}
+\textbf{Maestría en Computo Estadístico}\\
+\textbf{Inferencia Estadística} \\
+\textbf{Tarea 2}\\
+\today \\
+\emph{Enrique Santibáñez Cortés}\\
+Repositorio de Git: \href{https://github.com/Enriquesec/Inferencia_Estad-stica/tree/master/Tareas/Tarea_2}{Tarea 2, IE}.
+\end{tabular}
+\end{table}
+
+\begin{itemize}
+\item[1.] Cuando una máquina no se ajusta adecuadamente tiene una probabilidad 0.15 de producir un artículo defectuoso. Diariamente, la máquina trabaja hasta que se producen 3 artículos defectuosos. Se detiene la máquina y se revisa para ajustarla. ¿Cuál es la probabilidad de que una máquina mal ajustada produzca 5 o más artículos antes de que sea detenida? ¿Cuál es el número promedio de artículos que la máquina producirá antes de ser detenida?
+
+\res
+Sea $X$ el número de artículos producidos antes de que se produzcan 3 artículos defectuosos, entonces podemos decir que $X\sim BN(3,0.15).$ Por lo tanto, \textbf{la probabilidad de que una máquina mal ajustada produzca 5 o más artículos antes de que sea detenida} es
+$$\mP(X\geq 5) =1-\mP(X\leq 4).$$
+Por como se distribuye $Y$ podemos decir que \textbf{el número promedio de artículos que la máquina producirá antes de ser detenida} es
+$$\mE(X)=\frac{r}{p}=\frac{3}{0.15}. \finf$$
+
+\item[2.] Los empleados de una compañía de aislantes son sometidos a pruebas para detectar residuos de asbesto en sus pulmones. Se le ha pedido a la compañía que envíe a tres empleados, cuyas pruebas resulten positivas, a un centro médico para realizarles más análisis. Si se sospecha que el 40 \% de los empleados tienen residuos de asbesto en sus pulmones, encuentre la probabilidad de que deban ser analizados 10 trabajadores para poder encontrar a 3 con resultado positivo.
+
+\res
+
+\item[5.] Considera $X$ una v.a. con función de distribución $F$ y función de densidad $f$, y sea $A$ un intervalo de la línea real $\mathbb{R}$. Definamos la función indicadora $1_{A}(x):$
+\begin{equation*}
+1_{A}(x) = \left\{\begin{array}{ccr}
+1 & \text{si} \ x\in A\\
+0 & \text{en otro caso}
+\end{array}\right.
+\end{equation*}
+Sea $Y=1_{A}(x).$ Encuentre una expresión para la distribución acumulada y el valor esperado de $Y$. 
+
+\item[6.] Las calificaciones de un estudiante de primer semestre en un examen de química se describen
+por la densidad de probabilidad
+$$f_y(y)=6y(1-y)\ \ \ \ 0\geq y \geq 1,$$
+donde $y$ representa la proporción de preguntas que el estudiante contesta correctamente. Cualquier calificación menor a 0.4 es reprobatoria. Responda lo siguiente:
+\begin{itemize}
+\item[a)] ¿Cuál es la probabilidad de que un estudiante repruebe?
+\item[b)] Si 6 estudiantes toman el examen, ¿cuál es la probabilidad de exactamente 2 reprueben?
+\end{itemize}
+
+\item[8.] En una oficina de correo los paquetes llegan según un proceso de Poisson de intensidad $\lambda$. Hay un costo de almacenamiento de c pesos por paquete y por unidad de tiempo. Los paquetes se acumulan en el local y se despachan en grupos cada $T$ unidades de tiempo (es decir, se despachan en $T , 2T , 3T , \cdots)$. Hay un costo por despacho fijo de K pesos (es decir, el costo es independiente del número de paquetes que se despachen). (a) ¿Cuál es el costo promedio por paquete por almacenamiento en el primer ciclo $[0, T ]$? (b) ¿Cuál es el costo promedio por paquete por almacenamiento y despacho en el primer ciclo? (c) ¿Cuál es el valor de $T$ que minimiza este costo promedio?
+
+
+\item[9.] Considere la siguiente función
+\begin{equation*}
+F(x)=\left\{ \begin{array}{cl}
+0 & \text{para} \ x<0\\
+0.1 & \text{para} \ x=0\\
+0.1+0.8x & \text{para} \ 0<x<1\\
+1 & \text{para} 3/4\geq x
+\end{array} \right.
+\end{equation*}
+¿Es una función de distribución? Si es una función de distribución, ¿corresponde a una variable
+aleatoria discreta o continua?
+
+\item[10.] \textbf{Este es un problema al que se recurrirá en el futuro,} su intención es que empiecen a jugar con datos reales. El archivo \textsf{ Delitos.csv} contiene información sobre los delitos denunciados en la ciudad de Aguascalientes, para el período comprendido entre enero de 2011 a junio del 2016. Dicho archivo contiene 5 columnas: la primera columna contiene la fecha de denuncia del delito; la columna TIPO muestra una descripción del tipo de delito; la columna CONCATENAD presenta un descripción más amplia del delito; la columna SEMANA contiene la semana del año a la que corresponde la fecha de denuncia; y la columna SEMANA\_COMPLETAS indica la semana a lo largo del estudio en la cual se presentó la denuncia. A través de métodos gráficos (e.g. boxplots) traten de determinar el comportamiento semanal de los delitos y discutan alternativas de modelos para describir los delitos cometidos en forma relativamente apropiada.
+\end{itemize}
+
+
+\textbf{Honour problems (no es obligatorio entregarlos, pero dan crédito extra)}\\
+
+\begin{itemize}
+\item[1.] Cambiando las hipótesis 2 y 3 que se usaron para contruir los procesos de Poisson homogéneos
+a la forma indicada en la diapositiva 135, deduzca la distribución del número de eventos que
+ocurren durante el intervalo [t 1 , t 2 ].
+
+\item[2.] Sea $N(t), \ t\leq 0$ un proceso de Poisson con parámetro $\lambda >0$. Para $0<\mu <t$ y $0\geq k\geq n,$ calcule la probabilidad $P(N(u)=k|N(y)=n)).$ Interpreta los resultados.
+\end{itemize}
+
+
+\end{document}
