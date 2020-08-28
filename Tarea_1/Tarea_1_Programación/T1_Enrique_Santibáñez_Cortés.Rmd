@@ -1,11 +1,27 @@
 ---
-output: pdf_document
+fontsize: 11pt
+geometry: "left=2cm,right=2cm,top=2cm,bottom=2cm"
+documentclass: article
+output:
+    pdf_document:
+        includes:
+            in_header: mystyles.sty
 ---
-
+\begin{table}[ht]
+\centering
+\begin{tabular}{c}
+\textbf{Maestría en Computo Estadístico}\\
+\textbf{Programación y análisis de algoritmos} \\
+\textbf{Tarea 1}\\
+\today \\
+\emph{Enrique Santibáñez Cortés}\\
+Repositorio de Git: \href{https://github.com/Enriquesec/Inferencia_Estad-stica/tree/master/Tareas/Tarea_1}{Tarea 1, IE}.
+\end{tabular}
+\end{table}
 1. Asigna a una variable $x$ el valor de 17. Posteriormente, crea un vector $y$ con los valores
 $[2,4,6,10,100]$. Multiplica esos vectores por componente y guarda el resultado en un objeto $z$. Calcula la suma de todos los elementos en $z$.
 
-
+\res
 ```{r}
 # Creamos la variable x:
 x <- 17
@@ -40,7 +56,7 @@ datos_sem <- matrix(c(s,n),nrow = 6)
 
 Calcula el máximo y el mínimo en la columna de edad. Al parecer, hubo algunos problemas en la transcripción de la información. Genera una variable que contenga los resultados de la verificación lógica de edad debajo de 20 y arriba de 80. Usa esta variable para poner el valor de NA en las observaciones correspondientes. Crear el índice de masa corporal (IMC) IMC=Peso en kg/Altura en metros. Guarda los resultados en la variable BMI y agregala a la dataframe. Redondea los valores obtenidos.
 
-```{r}
+```{r, message=FALSE}
 library(tidyverse) # ggplot, tidyr and dplyr
 # Creamos el dataframe:
 edad <- c(21, 35, 829, 2)
@@ -71,7 +87,7 @@ df_ejer3 <- df_ejer3 %>%
 
 4. Genera una secuencia de $-5$ a $5$ en incrementos de $0.01$. Grafique la función $Y=x^2$ donde $X$ es la secuencia previamente generada. Compara la función a: $Y= -2 + x^2$ , $y = 5 x^2$?
 
-```{r}
+```{r, warning=FALSE,fig.width = 5, fig.asp = 1, fig.align = "center"}
 # Creamos la secuencia:
 x <- seq(-5, 5, 0.01)
 
@@ -95,7 +111,7 @@ a. La mediana del valor de las casas ocupadas en miles está dado por la columna
 b. Muestra la relación entre valor de las casas(columna: medv) e indíce criminal (columna: crim) con un gráfico. Dibuje también una línea en el gráfico que muestre la relación.
 
 
-```{r}
+```{r, message=FALSE}
 library(MASS)
 data("Boston")
 
@@ -103,7 +119,7 @@ summary(Boston$medv)
 ```
 
 
-```{r}
+```{r, warning=FALSE,fig.width = 5, fig.asp = 1, fig.align = "center"}
 #ggplot(data=Boston, aes(x=medv, y=crim))+
 #  geom_line()
 ```
