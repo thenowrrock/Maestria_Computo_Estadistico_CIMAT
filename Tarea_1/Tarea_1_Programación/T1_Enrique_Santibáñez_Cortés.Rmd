@@ -18,6 +18,7 @@ output:
 Repositorio de Git: \href{https://github.com/Enriquesec/Inferencia_Estad-stica/tree/master/Tareas/Tarea_1}{Tarea 1, IE}.
 \end{tabular}
 \end{table}
+
 1. Asigna a una variable $x$ el valor de 17. Posteriormente, crea un vector $y$ con los valores
 $[2,4,6,10,100]$. Multiplica esos vectores por componente y guarda el resultado en un objeto $z$. Calcula la suma de todos los elementos en $z$.
 
@@ -35,12 +36,14 @@ z <- x*y
 # Calculamos la suma de z:
 sum(z)
 ```
+Es decir, la suma total de $z$ es 2074. $\blacksquare$
 
 2. Define dos vectores con los siguientes datos: $s$ incluye los strings “lun”, “mar”, “mier”, “jueves”,
 “viernes” y “sabado”. El vector $n$ incluye los valores $[90, 70, 30, 50, 5, 10]$. Une estos dos
 vectores de manera columnas en una matriz con 5 renglones y 2 columnas y guárdalo en un
 nuevo objeto llamado $datos_sem$. 
 
+\res
 ```{r}
 # Definimos el vector s:
 s <- c("lun", "mar", "mier", "jueves", "viernes","sabado")
@@ -49,48 +52,71 @@ s <- c("lun", "mar", "mier", "jueves", "viernes","sabado")
 n <- c(90, 70, 30, 50, 5, 10)
 
 # Creamos la matrix de tamaño 6x2:
-datos_sem <- matrix(c(s,n),nrow = 6)
+datos_sem <- matrix(c(s,n),nrow = 6,ncol = 2)
+datos_sem # imprimimos el resultado
 ```
 
 3. Crea la siguiente data frame
+\begin{figure}[H]
+\centering
+\includegraphics{imagen_2.png}
+\end{figure}
+Calcula el máximo y el mínimo en la columna de edad. Al parecer, hubo algunos problemas en la transcripción de la información. Genera una variable que contenga los resultados de la verificación lógica de edad debajo de 20 y arriba de 80. Usa esta variable para poner el valor de NA en las observaciones correspondientes. 
+Crear el índice de masa corporal (IMC) IMC=Peso en kg/Altura en metros. Guarda los resultados en la variable BMI y agregala a la dataframe. Redondea los valores obtenidos.
 
-Calcula el máximo y el mínimo en la columna de edad. Al parecer, hubo algunos problemas en la transcripción de la información. Genera una variable que contenga los resultados de la verificación lógica de edad debajo de 20 y arriba de 80. Usa esta variable para poner el valor de NA en las observaciones correspondientes. Crear el índice de masa corporal (IMC) IMC=Peso en kg/Altura en metros. Guarda los resultados en la variable BMI y agregala a la dataframe. Redondea los valores obtenidos.
-
+\res
 ```{r, message=FALSE}
-library(tidyverse) # ggplot, tidyr and dplyr
-# Creamos el dataframe:
-edad <- c(21, 35, 829, 2)
+library(tidyverse) # Cargamos esta libraria, para ocupar ggplot, tidyr and dplyr.
+# Datos del dataframe:
+edad <- c(21, 35, 829, 2) 
 sexo <- c("m", "f", "m", "e")
 altura <- c(181, 173, 171, 166)
 peso <- c(89, 58, 75, 60)
-
+# Creamos el dataframe:
 df_ejer3 <- data.frame(edad=edad, sexo=sexo, altura=altura, peso=peso)
-
-# máximo y mímino de la columna edad:
+df_ejer3
+```
+Calculamos el máximo de la columna edad:
+```{r}
+# máximo
 max(df_ejer3$edad)
+```
+Ahora, calculamos el mínimo: 
+```{r}
 min(df_ejer3$edad)
+```
 
+Validación de la variable edad conforme al intervalo (20, 80), donde $TRUE$: si la edad debajo de 20 o arriba de 80, $FALSE$: no cumple la condición anterior:
+```{r}
 # verificación de la edad:
 df_ejer3 <- df_ejer3 %>% 
-  mutate(veri_edad=ifelse(edad<=20|edad>=80, 1, 0))
-
+  mutate(veri_edad=ifelse(edad<=20|edad>=80, T, F))
+df_ejer3
+```
+Agreamos las NaN en donde la edad esta fuera de rango del intervalo (20,80):
+```{r}
 # Agreamos las NaN en donde la edad esta fuera de rango:
 df_ejer3 <- df_ejer3 %>% 
-  mutate(edad=ifelse(veri_edad==1, NaN, edad))
-
+  mutate(edad=ifelse(veri_edad, NaN, edad))
+df_ejer3
+```
+Creamos el índice de masa corporal (redondeando a 1 decimal):
+```{r}
 # Creamos la variable BMI= índice de masa corporal:
 df_ejer3 <- df_ejer3 %>%
   mutate(BMI = round(peso/(altura/100),1)) 
-
-
+df_ejer3
 ```
 
 4. Genera una secuencia de $-5$ a $5$ en incrementos de $0.01$. Grafique la función $Y=x^2$ donde $X$ es la secuencia previamente generada. Compara la función a: $Y= -2 + x^2$ , $y = 5 x^2$?
 
-```{r, warning=FALSE,fig.width = 5, fig.asp = 1, fig.align = "center"}
-# Creamos la secuencia:
+\res
+Creamos la secuencia:
+```{r }
 x <- seq(-5, 5, 0.01)
-
+```
+Generamos un dataframe que contenga las tres funciónes, donde $y_1$: es la función $Y=x^2$, $y_2$: es la función $Y=-2+x^2$ y $y_3$: es la función $Y=5x^2$:
+```{r warning=FALSE,fig.width = 5.2, fig.asp = 0.62, fig.align = "center"}
 # Creamos un dataframe
 graficas <- data.frame(x=x)
 # Creamos las 3 funciones:
@@ -98,11 +124,15 @@ graficas <- graficas %>%
   mutate(y_1 = x**2,
          y_2 =-2+x**2,
          y_3 = 5*(x**2))
-
+# Modificamos el formato del data frame:
 graficas_gat <- gather(graficas, key="funcion", value="y", 2:4)
+head(graficas_gat)
+```
 
-#ggplot(data=graficas_gat, aes(x, y,col=funcion))+
-#  geom_line()
+```{r warning=FALSE,fig.width = 5.2, fig.asp = 0.62, fig.align = "center"}
+ggplot(data=graficas_gat, aes(x=x, y=y, col=funcion))+
+  geom_line()+
+  scale_color_discrete(labels = c(expression(Y=x^2), expression(Y=-2+x^2), expression(Y=5*x^2)))
 ```
 
 5. Carga el conjunto de datos “Boston” de la librería “MASS”, que muestra los potenciales parámetros que influyen en los valores de las casas en los suburbios de la ciudad.
@@ -110,7 +140,7 @@ a. La mediana del valor de las casas ocupadas en miles está dado por la columna
 
 b. Muestra la relación entre valor de las casas(columna: medv) e indíce criminal (columna: crim) con un gráfico. Dibuje también una línea en el gráfico que muestre la relación.
 
-
+\res
 ```{r, message=FALSE}
 library(MASS)
 data("Boston")
@@ -120,8 +150,8 @@ summary(Boston$medv)
 
 
 ```{r, warning=FALSE,fig.width = 5, fig.asp = 1, fig.align = "center"}
-#ggplot(data=Boston, aes(x=medv, y=crim))+
-#  geom_line()
+ggplot(data=Boston, aes(x=medv, y=crim))+
+  geom_line()
 ```
 
 6. Tenemos los datos de 100 billetes reales y 100 falsos. En la base bank2.dat se encuentran los datos de estos. Los primeros registros corresponden a los billetes reales y los segundos a los falso. Las variables son las siguientes:
@@ -147,8 +177,8 @@ summary(bank2[bank2$veri=="real",])
 summary(bank2[bank2$veri!="real",])
 
 
-#ggplot(data = bank2, aes(x=ancho, col=veri))+
-#  geom_density()
+ggplot(data = bank2, aes(x=ancho, col=veri))+
+  geom_density()
 
 #ggplot(data = bank2, aes(x=altura_iz, col=veri))+
 #  geom_density()
