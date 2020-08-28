@@ -88,7 +88,7 @@ $$\mE(X)=\frac{r}{p}=\frac{3}{0.15}. \finf$$
 \item[2.] Los empleados de una compañía de aislantes son sometidos a pruebas para detectar residuos de asbesto en sus pulmones. Se le ha pedido a la compañía que envíe a tres empleados, cuyas pruebas resulten positivas, a un centro médico para realizarles más análisis. Si se sospecha que el 40 \% de los empleados tienen residuos de asbesto en sus pulmones, encuentre la probabilidad de que deban ser analizados 10 trabajadores para poder encontrar a 3 con resultado positivo.
 
 \res
-
+Tenemos una distribución $Y\sim BN(3,0.4)$. 
 
 \item[5.] Considera $X$ una v.a. con función de distribución $F$ y función de densidad $f$, y sea $A$ un intervalo de la línea real $\mathbb{R}$. Definamos la función indicadora $1_{A}(x):$
 \begin{equation*}
@@ -98,15 +98,40 @@ $$\mE(X)=\frac{r}{p}=\frac{3}{0.15}. \finf$$
 \end{array}\right.
 \end{equation*}
 Sea $Y=1_{A}(x).$ Encuentre una expresión para la distribución acumulada y el valor esperado de $Y$. 
+\res 
+Consideremos dos casos:\\
+cuando $X$ es discreta tenemos que la función de densidad es 
+
+$$f(Y=y)=\mP(1_{A}(x)=y)=\mP(\{x:1_{A}(x)=y\}).$$
+\begin{equation*}
+f(y)=\left\{ \begin{array}{cc}
+\mP(x\in A) & \text{para y=1}\\
+\mP(x\not{\in} A) & \text{para y=0}\\
+0 & \text{en otro caso}
+\end{array}\right.
+\end{equation*}
+Por lo que 
+
+El valor esperado es
+$$\mE[Y]=\sum y f(y)=1\cdot f(1)+0\cdot f(0)=1\cdot f(1)=\mP(x\in A)$$
 
 \item[6.] Las calificaciones de un estudiante de primer semestre en un examen de química se describen
 por la densidad de probabilidad
-$$f_y(y)=6y(1-y)\ \ \ \ 0\geq y \geq 1,$$
+$$f_y(y)=6y(1-y)\ \ \ \ 0\leq y \leq 1,$$
 donde $y$ representa la proporción de preguntas que el estudiante contesta correctamente. Cualquier calificación menor a 0.4 es reprobatoria. Responda lo siguiente:
 \begin{itemize}
 \item[a)] ¿Cuál es la probabilidad de que un estudiante repruebe?
 \item[b)] Si 6 estudiantes toman el examen, ¿cuál es la probabilidad de exactamente 2 reprueben?
 \end{itemize}
+\res
+Solo para comprobación veamos que realmente sea una función de probabilidad, para ello observemos que
+$$\int_{-\infty}^\infty f_y(y)=\int_{0}^1 6y(1-y)=3y^2-2y^3|_0^1=1.$$
+Por lo tanto observamos que si es una función de probabilidad. 
+
+La probabilidad de que repruebe es
+$$f_y(Y<0.4)=\int_0^{0.4}f_y(y)=\int_0^{0.4} 6y(1-y)=3y^2-2y^3|_0^{0.4}=0.352 $$
+Ahora, consideremos que $X$ el número de estudiantes de reprueban el examen de los 6 que tomaron el examen. Por definición podemos decir que $X\sim Bin(6,p)$ donde $p$ es la probabilidad de reprobar, es decir, $X\sim Bin(6,0.352).$  Entonces la probabilidad de que exactamente 2 reprueben es:
+$$\mP(X=2)={6\choose 2}0.325^2(1-0.325)^4\ \ \ \finf$$
 
 \item[8.] En una oficina de correo los paquetes llegan según un proceso de Poisson de intensidad $\lambda$. Hay un costo de almacenamiento de c pesos por paquete y por unidad de tiempo. Los paquetes se acumulan en el local y se despachan en grupos cada $T$ unidades de tiempo (es decir, se despachan en $T , 2T , 3T , \cdots)$. Hay un costo por despacho fijo de K pesos (es decir, el costo es independiente del número de paquetes que se despachen). (a) ¿Cuál es el costo promedio por paquete por almacenamiento en el primer ciclo $[0, T ]$? (b) ¿Cuál es el costo promedio por paquete por almacenamiento y despacho en el primer ciclo? (c) ¿Cuál es el valor de $T$ que minimiza este costo promedio?
 
@@ -117,11 +142,13 @@ F(x)=\left\{ \begin{array}{cl}
 0 & \text{para} \ x<0\\
 0.1 & \text{para} \ x=0\\
 0.1+0.8x & \text{para} \ 0<x<1\\
-1 & \text{para} 3/4\geq x
+1 & \text{para } 3/4\leq x
 \end{array} \right.
 \end{equation*}
-¿Es una función de distribución? Si es una función de distribución, ¿corresponde a una variable
+¿ Es una función de distribución? Si es una función de distribución, ¿ corresponde a una variable
 aleatoria discreta o continua?
+
+\res 
 
 \end{itemize}
 
