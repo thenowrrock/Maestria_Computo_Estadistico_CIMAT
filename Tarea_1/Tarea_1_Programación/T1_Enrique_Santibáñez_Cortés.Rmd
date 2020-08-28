@@ -41,8 +41,7 @@ datos_sem <- matrix(c(s,n),nrow = 6)
 Calcula el máximo y el mínimo en la columna de edad. Al parecer, hubo algunos problemas en la transcripción de la información. Genera una variable que contenga los resultados de la verificación lógica de edad debajo de 20 y arriba de 80. Usa esta variable para poner el valor de NA en las observaciones correspondientes. Crear el índice de masa corporal (IMC) IMC=Peso en kg/Altura en metros. Guarda los resultados en la variable BMI y agregala a la dataframe. Redondea los valores obtenidos.
 
 ```{r}
-library(dplyr)
-
+library(tidyverse) # ggplot, tidyr and dplyr
 # Creamos el dataframe:
 edad <- c(21, 35, 829, 2)
 sexo <- c("m", "f", "m", "e")
@@ -73,8 +72,6 @@ df_ejer3 <- df_ejer3 %>%
 4. Genera una secuencia de $-5$ a $5$ en incrementos de $0.01$. Grafique la función $Y=x^2$ donde $X$ es la secuencia previamente generada. Compara la función a: $Y= -2 + x^2$ , $y = 5 x^2$?
 
 ```{r}
-library(ggplot2)
-
 # Creamos la secuencia:
 x <- seq(-5, 5, 0.01)
 
@@ -86,9 +83,70 @@ graficas <- graficas %>%
          y_2 =-2+x**2,
          y_3 = 5*(x**2))
 
+graficas_gat <- gather(graficas, key="funcion", value="y", 2:4)
+
+#ggplot(data=graficas_gat, aes(x, y,col=funcion))+
+#  geom_line()
+```
+
+5. Carga el conjunto de datos “Boston” de la librería “MASS”, que muestra los potenciales parámetros que influyen en los valores de las casas en los suburbios de la ciudad.
+a. La mediana del valor de las casas ocupadas en miles está dado por la columna “medv”. Obtenga los estadísticos de resumen y comentelos.
+
+b. Muestra la relación entre valor de las casas(columna: medv) e indíce criminal (columna: crim) con un gráfico. Dibuje también una línea en el gráfico que muestre la relación.
 
 
+```{r}
+library(MASS)
+data("Boston")
+
+summary(Boston$medv)
 ```
 
 
+```{r}
+#ggplot(data=Boston, aes(x=medv, y=crim))+
+#  geom_line()
+```
+
+6. Tenemos los datos de 100 billetes reales y 100 falsos. En la base bank2.dat se encuentran los datos de estos. Los primeros registros corresponden a los billetes reales y los segundos a los falso. Las variables son las siguientes:
+\begin{itemize}
+\item $X1: $ Ancho,
+\item $X2: $ Altura, medida desde el lado izquierdo
+\item $X3: $ Altura, medida desde el lado derecho
+\item $X4: $ Distancia del marco interior al borde inferior
+\item $X5: $ Distancia del marco interior al borde superior
+\item $X6: $ Tamaño de la diagonal.
+\end{itemize}
+Realice un análisis exploratorio donde se puedan observar las diferencias/similitudes entre los diferentes tipos de billetes. Incluya gráficas comparativas para ellos.
+
+```{r}
+bank2 <- read.table("bank2.dat", quote="\"", comment.char="", 
+                    col.names = c("ancho", "altura_iz", "altura_der", 
+                                  "marco_inf", "marco_sup", "diagonal"))
+
+# Etiquetamos los billetes:
+bank2$veri <- c(rep("real", 100), rep("falso",100))
+
+summary(bank2[bank2$veri=="real",])
+summary(bank2[bank2$veri!="real",])
+
+
+#ggplot(data = bank2, aes(x=ancho, col=veri))+
+#  geom_density()
+
+#ggplot(data = bank2, aes(x=altura_iz, col=veri))+
+#  geom_density()
+
+#ggplot(data = bank2, aes(x=altura_der, col=veri))+
+#  geom_density()
+
+#ggplot(data = bank2, aes(x=marco_inf, col=veri))+
+#  geom_density()
+
+#ggplot(data = bank2, aes(x=marco_sup, col=veri))+
+#  geom_density()
+
+#ggplot(data = bank2, aes(x=diagonal, col=veri))+
+#  geom_density()
+```
 
