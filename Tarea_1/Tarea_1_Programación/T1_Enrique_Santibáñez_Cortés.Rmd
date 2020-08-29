@@ -150,13 +150,20 @@ library(MASS)
 data("Boston")
 ```
 a. Calculamos los estadísticos de resumen de la mediana del valor de las casas:
-```{r}
+```{r warning=FALSE,fig.width = 5, fig.asp = 1, fig.align = "center"}
 summary(Boston$medv)
+```
+Realizamos un boxplot para interpretar un poco más los estadísticos de resumen:
+```{r, warning=FALSE,fig.width = 5, fig.asp = 1, fig.align = "center"}
 ggplot(data = Boston, aes(y=medv))+
   geom_boxplot()
 ```
+```{r message=F}
+ggplot(data = Boston, aes(x=medv))+
+  geom_histogram(fill="blue")
+```
 
-
+b. Relación entre valor de las casas e indíce criminal:
 ```{r, warning=FALSE,fig.width = 5, fig.asp = 1, fig.align = "center"}
 ggplot(data=Boston, aes(x=medv, y=crim))+
   geom_point()+
@@ -179,6 +186,8 @@ cor(Boston$crim, Boston$medv)
 \end{itemize}
 Realice un análisis exploratorio donde se puedan observar las diferencias/similitudes entre los diferentes tipos de billetes. Incluya gráficas comparativas para ellos.
 
+\res
+Cargamos los datos y creamos una variable dummy para etiquetar a los billetes reales y falsos:
 ```{r}
 bank2 <- read.table("bank2.dat", quote="\"", comment.char="", 
                     col.names = c("ancho", "altura_iz", "altura_der", 
@@ -186,7 +195,10 @@ bank2 <- read.table("bank2.dat", quote="\"", comment.char="",
 
 # Etiquetamos los billetes:
 bank2$veri <- c(rep("real", 100), rep("falso",100))
+```
 
+
+```{r}
 summary(bank2[bank2$veri=="real",])
 summary(bank2[bank2$veri!="real",])
 
@@ -194,19 +206,20 @@ summary(bank2[bank2$veri!="real",])
 ggplot(data = bank2, aes(x=ancho, col=veri))+
   geom_density()
 
-#ggplot(data = bank2, aes(x=altura_iz, col=veri))+
-#  geom_density()
+ggplot(data = bank2, aes(x=altura_iz, col=veri))+
+  geom_density()
 
-#ggplot(data = bank2, aes(x=altura_der, col=veri))+
-#  geom_density()
+ggplot(data = bank2, aes(x=altura_der, col=veri))+
+  geom_density()
 
-#ggplot(data = bank2, aes(x=marco_inf, col=veri))+
-#  geom_density()
+ggplot(data = bank2, aes(x=marco_inf, col=veri))+
+  geom_density()
 
 #ggplot(data = bank2, aes(x=marco_sup, col=veri))+
 #  geom_density()
 
 #ggplot(data = bank2, aes(x=diagonal, col=veri))+
 #  geom_density()
+
 ```
 
