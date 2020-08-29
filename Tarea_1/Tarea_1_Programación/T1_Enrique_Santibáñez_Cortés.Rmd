@@ -26,10 +26,8 @@ $[2,4,6,10,100]$. Multiplica esos vectores por componente y guarda el resultado 
 ```{r}
 # Creamos la variable x:
 x <- 17
-
 # Creamos el vector y:
 y <- c(seq(2,6,2),10,100)
-
 # Multiplicamos esos vectores y creamos el vector z:
 z <- x*y
 
@@ -40,8 +38,7 @@ Es decir, la suma total de $z$ es 2074. $\blacksquare$
 
 2. Define dos vectores con los siguientes datos: $s$ incluye los strings “lun”, “mar”, “mier”, “jueves”,
 “viernes” y “sabado”. El vector $n$ incluye los valores $[90, 70, 30, 50, 5, 10]$. Une estos dos
-vectores de manera columnas en una matriz con 5 renglones y 2 columnas y guárdalo en un
-nuevo objeto llamado $datos_sem$. 
+vectores de manera columnas en una matriz con 5 renglones y 2 columnas y guárdalo en un nuevo objeto llamado datos\_sem. 
 
 \res
 ```{r}
@@ -68,6 +65,8 @@ Crear el índice de masa corporal (IMC) IMC=Peso en kg/Altura en metros. Guarda 
 ```{r, message=FALSE}
 library(tidyverse) # Cargamos esta libraria, para ocupar ggplot, tidyr and dplyr.
 library(latex2exp) # Legendas de las gráficas.
+library(gridExtra) # Gráficas en pares.
+
 # Datos del dataframe:
 edad <- c(21, 35, 829, 2) 
 sexo <- c("m", "f", "m", "e")
@@ -84,6 +83,7 @@ max(df_ejer3$edad)
 ```
 Ahora, calculamos el mínimo: 
 ```{r}
+# mínimo
 min(df_ejer3$edad)
 ```
 
@@ -108,6 +108,7 @@ df_ejer3 <- df_ejer3 %>%
   mutate(BMI = round(peso/(altura/100),1)) 
 df_ejer3
 ```
+Estas validación/limpieza de los datos son recomendables hacerse antes de cualquier análisis para evitar problemas de los resultados, el manejo de los datos, la interpretabilidad, etc.
 
 4. Genera una secuencia de $-5$ a $5$ en incrementos de $0.01$. Grafique la función $Y=x^2$ donde $X$ es la secuencia previamente generada. Compara la función a: $Y= -2 + x^2$ , $y = 5 x^2$?
 
@@ -154,25 +155,24 @@ a. Calculamos los estadísticos de resumen de la mediana del valor de las casas:
 summary(Boston$medv)
 ```
 Realizamos un boxplot para interpretar un poco más los estadísticos de resumen:
-```{r, warning=FALSE,fig.width = 5, fig.asp = 1, fig.align = "center"}
-ggplot(data = Boston, aes(y=medv))+
-  geom_boxplot()
+```{r, message=FALSE,warning=FALSE,fig.width =7, fig.height=4, fig.align = "center"}
+box_ejer5 <- ggplot(data = Boston, aes(y=medv))+
+  geom_boxplot()+
+  coord_flip()
+
+hist_ejer5 <- ggplot(data = Boston, aes(x=medv))+
+  geom_histogram(aes(y=..density..), colour="black", fill="white")+
+ geom_density(alpha=.2, fill="#FF6666") 
+
+grid.arrange(box_ejer5, hist_ejer5, ncol = 1)
 ```
-```{r message=F}
-ggplot(data = Boston, aes(x=medv))+
-  geom_histogram(fill="blue")
-```
+Observando los estadísticos de resumen y las gráficas podemos decir que la distribución del valor de las casas esta sesgada a la izquierda. Es decir, es más probable que existan casas con valores bajos que con valores altos. Tal vez un estadístico util sea el coeficiente de Gini. Esta distribución me recuerda a como se comporta la distribución del ingreso de los hogares en México.
 
 b. Relación entre valor de las casas e indíce criminal:
-```{r, warning=FALSE,fig.width = 5, fig.asp = 1, fig.align = "center"}
-ggplot(data=Boston, aes(x=medv, y=crim))+
+```{r, results='hide', message=FALSE, warning=FALSE,fig.width =6, fig.height=4, fig.align = "center"}
+ggplot(data=Boston, aes(x=crim, y=medv))+
   geom_point()+
-  geom_smooth()
-```
-Calculamos la correlación de estas dos variables:
-```{r}
-# Correlación:
-cor(Boston$crim, Boston$medv)
+  geom_smooth()+labs(title = "Relación entre el índice criminal y valor casa")
 ```
 
 6. Tenemos los datos de 100 billetes reales y 100 falsos. En la base bank2.dat se encuentran los datos de estos. Los primeros registros corresponden a los billetes reales y los segundos a los falso. Las variables son las siguientes:
@@ -189,37 +189,33 @@ Realice un análisis exploratorio donde se puedan observar las diferencias/simil
 \res
 Cargamos los datos y creamos una variable dummy para etiquetar a los billetes reales y falsos:
 ```{r}
-bank2 <- read.table("bank2.dat", quote="\"", comment.char="", 
-                    col.names = c("ancho", "altura_iz", "altura_der", 
-                                  "marco_inf", "marco_sup", "diagonal"))
+bank2 <- read.table("bank2.dat", quote="\"", comment.char="", col.names=c("ancho", 
+                  "altura_iz", "altura_der","marco_inf", "marco_sup", "diagonal"))
 
 # Etiquetamos los billetes:
-bank2$veri <- c(rep("real", 100), rep("falso",100))
+bank2$billete <- c(rep("real", 100), rep("falso",100))
 ```
-
-
+Ahora realizemos el analisis exploratorio. Primero conozcamos la estructura de los datos:
 ```{r}
-summary(bank2[bank2$veri=="real",])
-summary(bank2[bank2$veri!="real",])
+# Mostramos los primeros 5 elementos:
+head(bank2)
 
-
-ggplot(data = bank2, aes(x=ancho, col=veri))+
-  geom_density()
-
-ggplot(data = bank2, aes(x=altura_iz, col=veri))+
-  geom_density()
-
-ggplot(data = bank2, aes(x=altura_der, col=veri))+
-  geom_density()
-
-ggplot(data = bank2, aes(x=marco_inf, col=veri))+
-  geom_density()
-
-#ggplot(data = bank2, aes(x=marco_sup, col=veri))+
-#  geom_density()
-
-#ggplot(data = bank2, aes(x=diagonal, col=veri))+
-#  geom_density()
-
+# Estructura:
+str(bank2)
 ```
+En conclusión podemos decir que el tamaño del dataframe es de 200 registros y 7 variables (6 numericas y 1 character), no presente registros nulos. Mostremos los estadísticos de resumen para darnos una primera idea del rango de las variables:
+```{r}
+summary(bank2)
+```
+Se ocupara la libreria GGally para generar las gráficas de las similitudes/diferencias debido a que puede ser un poco más sencillo observarlas en este tipo de gráficas:
+```{r results='hide', message=FALSE, warning=FALSE}
+library(GGally) # Crear graficas en pares.
+```
+Creamos las densidades todas las variables, generamos los scatter plot entre las combinaciones de las variables, calculamos las correlaciones, boxplot para loas billetes falsos y reales:
+\newpage 
+```{r, message=FALSE, out.extra='angle=270',fig.width =16, fig.height=16, results='asis'} 
+bank2 %>% ggpairs(., mapping = aes(colour=billete))
+```
+
+Observando la gráficas de densidades de cada una de las variables observamos claramente que el tamaño de la diagonal es la variable en dónde se ve más claro la diferencias entre los billetes reales contra los falsos. Igualemente para la distancia del marco interior al borde inferior existe una diferencias de las distribuciones de densidad. El ancho es la variable en la cuales los billetes falso y reales son más similares. Ahora, si observamos las scatter plot podemos observar que efectivamente la diagonal es una variable para determinar si un billete es falso o no. Pero en general podemos decir que las relaciones entre variables igual nos pueden dar indicios de si el billete es falso o no, ya que se observan claramente grupos en los gráficos. $\blacksquare$
 
