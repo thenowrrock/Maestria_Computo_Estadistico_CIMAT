@@ -15,7 +15,7 @@ output:
 \textbf{Tarea 1}\\
 \today \\
 \emph{Enrique Santibáñez Cortés}\\
-Repositorio de Git: \href{https://github.com/Enriquesec/Inferencia_Estad-stica/tree/master/Tareas/Tarea_1}{Tarea 1, IE}.
+Repositorio de Git: \href{https://github.com/Enriquesec/Programcion_y_analisis_de_algoritmos/blob/master/Tarea_1/Tarea_1_Programaci%C3%B3n/T1_Enrique_Santib%C3%A1%C3%B1ez_Cort%C3%A9s.pdf}{Tarea 1, IE}.
 \end{tabular}
 \end{table}
 
