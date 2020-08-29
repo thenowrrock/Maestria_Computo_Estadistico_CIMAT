@@ -67,6 +67,7 @@ Crear el índice de masa corporal (IMC) IMC=Peso en kg/Altura en metros. Guarda 
 \res
 ```{r, message=FALSE}
 library(tidyverse) # Cargamos esta libraria, para ocupar ggplot, tidyr and dplyr.
+library(latex2exp) # Legendas de las gráficas.
 # Datos del dataframe:
 edad <- c(21, 35, 829, 2) 
 sexo <- c("m", "f", "m", "e")
@@ -125,15 +126,17 @@ graficas <- graficas %>%
          y_2 =-2+x**2,
          y_3 = 5*(x**2))
 # Modificamos el formato del data frame:
-graficas_gat <- gather(graficas, key="funcion", value="y", 2:4)
+graficas_gat <- gather(graficas, key="funciones", value="y", 2:4)
 head(graficas_gat)
 ```
-
+Graficamos las tres funciones:
 ```{r warning=FALSE,fig.width = 5.2, fig.asp = 0.62, fig.align = "center"}
-ggplot(data=graficas_gat, aes(x=x, y=y, col=funcion))+
+ggplot(data=graficas_gat, aes(x=x, y=y, col=funciones))+
   geom_line()+
-  scale_color_discrete(labels = c(expression(Y=x^2), expression(Y=-2+x^2), expression(Y=5*x^2)))
+  scale_color_discrete(labels = unname(TeX(c("$Y=x^2", "$Y=-2+x^2","Y=5x^2") )))
 ```
+Primero observemos que las tres funciones son parabolas por definición. Si comparamos $Y=x^2$ con $Y=-2+x^2$ observamos que tiene la misma forma solo que esta trasladada hacía abajo 2 unidades en el eje $y$, ahora si la comparamos con $Y=5^2$ observamos que esta función crece más rápido que la función $Y=x^2$ y este cambio es debido a como esta definida la función. $\ \ \ \ \blacksquare$
+
 
 5. Carga el conjunto de datos “Boston” de la librería “MASS”, que muestra los potenciales parámetros que influyen en los valores de las casas en los suburbios de la ciudad.
 a. La mediana del valor de las casas ocupadas en miles está dado por la columna “medv”. Obtenga los estadísticos de resumen y comentelos.
@@ -141,17 +144,28 @@ a. La mediana del valor de las casas ocupadas en miles está dado por la columna
 b. Muestra la relación entre valor de las casas(columna: medv) e indíce criminal (columna: crim) con un gráfico. Dibuje también una línea en el gráfico que muestre la relación.
 
 \res
+Cargamos la librería y los datos:
 ```{r, message=FALSE}
 library(MASS)
 data("Boston")
-
+```
+a. Calculamos los estadísticos de resumen de la mediana del valor de las casas:
+```{r}
 summary(Boston$medv)
+ggplot(data = Boston, aes(y=medv))+
+  geom_boxplot()
 ```
 
 
 ```{r, warning=FALSE,fig.width = 5, fig.asp = 1, fig.align = "center"}
 ggplot(data=Boston, aes(x=medv, y=crim))+
-  geom_line()
+  geom_point()+
+  geom_smooth()
+```
+Calculamos la correlación de estas dos variables:
+```{r}
+# Correlación:
+cor(Boston$crim, Boston$medv)
 ```
 
 6. Tenemos los datos de 100 billetes reales y 100 falsos. En la base bank2.dat se encuentran los datos de estos. Los primeros registros corresponden a los billetes reales y los segundos a los falso. Las variables son las siguientes:
