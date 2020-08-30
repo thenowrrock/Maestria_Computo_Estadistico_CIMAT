@@ -80,8 +80,8 @@ Repositorio de Git: \href{https://github.com/Enriquesec/Inferencia_Estad-stica/t
 \item Si $A$ es una matriz $m\times n$ dada por bloques de vectores columna como $$ (a_1\ a_2\ \cdots a_n)$$ y $B$ es una matriz $n\times p$ dada por bloques de vectores renglón como
 \begin{equation*}
 \left(\begin{array}{c}
-v1\\
-v2\\
+v_1\\
+v_2\\
 \vdots \\
 v_n
 \end{array}
@@ -185,12 +185,133 @@ Entonces,
 $$\tr(AB^t)=\tr($$
 \item Encuentre matrices $A, B \ \text{y} \ C$ tales que tr$(ABC)\neq$tr$(BAC)$.
 
+\res
+Por convicción definamos a $A=\left( \begin{array}{cc}
+0&1 \\
+1&0
+\end{array} \right)$, y ahora sea $B=\left( \begin{array}{cc}
+b_{11}&b_{12} \\
+b_{21}&b_{22}
+\end{array} \right)$ y $C=\left( \begin{array}{cc}
+c_{11}&c_{12} \\
+c_{21}&c_{22}
+\end{array} \right)$ por lo que tenemos que:
+
+\begin{equation*}
+AB=\left( \begin{array}{cc}
+0&1 \\
+1&0
+\end{array} \right)\left( \begin{array}{cc}
+b_{11}&b_{12} \\
+b_{21}&b_{22}
+\end{array} \right)=\left( \begin{array}{cc}
+b_{21}&b_{22} \\
+b_{11}&b_{12}
+\end{array} \right), \ \ \ BA=\left( \begin{array}{cc}
+b_{11}&b_{12} \\
+b_{21}&b_{22}
+\end{array} \right)\left( \begin{array}{cc}
+0&1 \\
+1&0
+\end{array} \right)=\left( \begin{array}{cc}
+b_{12}&b_{11} \\
+b_{22}&b_{21}
+\end{array} \right).
+\end{equation*}
+Observemos que la primera multiplicación representa a un cambio de renglones y la segunda a un cambio de columnas. Ahora multipliquemos lo anterior por la matriz $C$ pero solo concentrarnos en los resultados de la diagonal. 
+\begin{equation*}
+ABC=\left( \begin{array}{cc}
+b_{21}&b_{22} \\
+b_{11}&b_{12}
+\end{array} \right)\left( \begin{array}{cc}
+c_{11}&c_{12} \\
+c_{21}&c_{22}
+\end{array} \right)=
+\left( \begin{array}{cc}
+b_{21}c_{11}+b_{22}c_{21} & \gamma_1\\
+\gamma_2&b_{11}c_{12}+b_{12}c_{22}
+\end{array} \right),
+\end{equation*}
+
+\begin{equation*}
+BAC=\left( \begin{array}{cc}
+b_{12}&b_{11} \\
+b_{22}&b_{21}
+\end{array} \right)\left( \begin{array}{cc}
+c_{11}&c_{12} \\
+c_{21}&c_{22}
+\end{array} \right)=
+\left( \begin{array}{cc}
+b_{12}c_{11}+b_{11}c_{21}&\gamma_3 \\
+\gamma_4& b_{12}c_{12}+b_{21}c_{22}
+\end{array} \right),
+\end{equation*}
+donde $\gamma_i$ no son relevantes para este problema. Ahora calculemos la traza de ese producto de matrices:
+
+\begin{equation*}
+\tr (ABC)= b_{21}c_{11}+b_{22}c_{21}+b_{11}c_{12}+b_{12}c_{22}\ \ \text{y}\ \ \tr (BAC)= b_{12}c_{11}+b_{11}c_{21}+ b_{12}c_{12}+b_{21}c_{22}.
+\end{equation*}
+De lo anterior podemos observar que si tr$(ABC)\neq$tr$(BAC)$ ,
+\begin{equation*}
+\begin{array}{ccc}
+b_{21}c_{11}+b_{22}c_{21}+b_{11}c_{12}+b_{12}c_{22} \neq 
+b_{12}c_{11}+b_{11}c_{21}+ b_{12}c_{12}+b_{21}c_{22}\\
+b_{21}c_{11}+b_{22}c_{21}+b_{11}c_{12}+b_{12}c_{22}-b_{12}c_{11}-b_{11}c_{21}-b_{12}c_{12}-b_{21}c_{22}\neq 0\\
+c_{11}(b_{21}-b_{12})+c_{21}(b_{22}-b_{11})+c_{12}(b_{11}-b_{12})+c_{22}(b_{12}-b_{21})\neq 0\\
+(b_{21}-b_{12})(c_{11}-c_{22})+(b_{22}-b_{11})(c_{21}-c_{12})\neq 0.
+\end{array}
+\end{equation*}
+De lo anterior podemos observar que si $c_{ij}>0$ y $b_{ij}>0$ para $i=1,2, \ j=1,2$. Y además considerando las siguientes desigualdades:
+\begin{equation*}
+\begin{array}{ccc}
+c_{11}>c_{22} &,& b_{21}>b_{12}\\
+c_{21}>c_{12} &,& b_{22}>b_{11}
+\end{array}
+\end{equation*} 
+Obtenemos un conjunto de matriz que cumplirán que $\tr(ABC)\neq \tr(BAC)$
 
 \item Sea $L$ una matriz triangular inferior $n\times n$. Demuestre que $L=L_1L_2\cdots L_n$ donde $L_i$ es la matriz $n\times n$ que se obtiene reemplazando la $i-$ésima columna de $I_n$ por la $i-$ésima columna de $L$. Demuestre un resultado análogo para matrices triangulares superiores.
 
-\item Sea $A=(a_{ij})$ una matriz cuadrada de tamaño $n$ tal que $a_{ij}=0$ para $i=1, \cdots , n.$ Demuestre que para $i=1, \cdots , n$ y $j=1, \cdots , \min (n,i+p-1)$ se cumple que $b_{ij}=0$ donde $A^p=(b_{ij})$ y $p$ es un entero positivo. 
+\res
+Considerando que $L_i$ se puede interpretar como la matriz elemetenal por un escalar.
 
+\item Sea $A=(a_{ij})$ una matriz cuadrada de tamaño $n$, triangular superior tal que $a_{ii}=0$ para $i=1, \cdots , n.$ Demuestre que para $i=1, \cdots , n$ y $j=1, \cdots , \min (n,i+p-1)$ se cumple que $b_{ij}=0$ donde $A^p=(b_{ij})$ y $p$ es un entero positivo. 
 
+\res
+Sea $A=(a_{ij})$ una matriz cuadrada de tamaño $n$, triangular superior tal que $a_{ii}=0$ para $i=1, \cdots , n$:
+\begin{equation*}
+A=\left[ \begin{array}{ccccc}
+0& a_{12} & a_{13} & \cdots & a_{1n}\\
+0 & 0 & a_{23} & \cdots & a_{2n}\\
+0 & 0 & 0 & \cdots & a_{3n}\\
+\vdots & \vdots & \vdots & \ddots & \vdots\\
+0 & 0 & 0 & \cdots & 0
+\end{array}\right]
+\end{equation*}
+Entonces veamos que 
+\begin{equation*}
+A^2=\left[ \begin{array}{ccccc}
+0& a_{12} & a_{13} & \cdots & a_{1n}\\
+0 & 0 & a_{23} & \cdots & a_{2n}\\
+0 & 0 & 0 & \cdots & a_{3n}\\
+\vdots & \vdots & \vdots & \ddots & \vdots\\
+0 & 0 & 0 & \cdots & 0
+\end{array}\right]
+\left[ \begin{array}{ccccc}
+0& a_{12} & a_{13} & \cdots & a_{1n}\\
+0 & 0 & a_{23} & \cdots & a_{2n}\\
+0 & 0 & 0 & \cdots & a_{3n}\\
+\vdots & \vdots & \vdots & \ddots & \vdots\\
+0 & 0 & 0 & \cdots & 0
+\end{array}\right]= 
+\left[ \begin{array}{ccccc}
+0 & 0a_{12}+\sum_{j=2}^na_{1j}0 & a_{13} & \cdots & a_{1n}\\
+0 & 0 & a_{23} & \cdots & a_{2n}\\
+0 & 0 & 0 & \cdots & a_{3n}\\
+\vdots & \vdots & \vdots & \ddots & \vdots\\
+0 & 0 & 0 & \cdots & 0
+\end{array}\right]
+\end{equation*}
 
 \end{enumerate}
 \end{document}
