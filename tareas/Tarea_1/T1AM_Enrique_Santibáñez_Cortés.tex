@@ -231,7 +231,22 @@ Como $B=-B^t$ y como $B=A-A^t$ (por definición), podemos concluir que   $A-A^t$
 \item Demuestre que dada cualquier matriz cuadrada $A,$ esta se puede escribir como la suma de una matriz simétrica y una matriz antisimétrica.
 
 \res
-Es sencillo
+Demostremos que sea $A$ una matriz cuadrada entonces $A+A^t$ es simétrica. Sea $B=A+A^t$ entonces:
+$$B^t=(A+A^t)^t=A^t+A=B.$$
+Como $B=B^t$ y como $B=A+A^t$, podemos concluir que $A+A^t$ es simétrica. 
+
+Ahora,
+\begin{equation*}
+\begin{array}{ccc}
+A&=&\frac{1}{2}A+\frac{1}{2}A\\
+&&\\
+&=&\frac{1}{2}A+\frac{1}{2}A^t+\frac{1}{2}A-\frac{1}{2}A^t\\
+&&\\
+&=&\frac{1}{2}(A+A^t)+\frac{1}{2}(A-A^t). 
+\end{array}
+\end{equation*}	
+Y como ya se demostró que $A+A^t$ es simétrica y $A-A^t$ es antisimetrica para cualquier matriz cuadrada $A$ y además como se conoce que si una matriz simétrica(antisimetrica) se multiplica por un escalar es igual a otra matriz simétrica(antisimetrica), entonces podemos concluir que dada cualquier matriz cuadrada $A$ se puede escribir como suma de una matriz simétrica y una matriz antisimetrica.\ \ \ \ \fin 
+
 \item Se dice que una matriz cuadrada $P$ es idempotente si $P^2=P$. Si 
 \begin{equation*}
 A=\left(\begin{array}{cc}
