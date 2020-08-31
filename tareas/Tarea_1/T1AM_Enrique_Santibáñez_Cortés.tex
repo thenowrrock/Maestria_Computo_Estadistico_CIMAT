@@ -92,8 +92,21 @@ Demuestre que $$AB=\sum_{i=1}^na_iv_i.$$
 \item Sean $A$ y $B$ matrices cuadradas del mismo orden. Demuestre que $(A-B)(A+B)=A^2-B^2$ si y solo si $AB=BA.$
 
 \res
-Primera implicación:
-$$(A-B)(A+B)=AA-BA+AB-BB=$$
+$\Rightarrow)$ Si $(A-B)(A+B)=A^2-B^2$ entonces:
+\begin{equation*}
+\begin{array}{ccc}
+A^2-B^2&=&(A-B)(A+B)\\
+&&\\
+&=&AA-BA+AB-BB\\
+&&\\
+&=&A^2-BA+AB-B^2 \\
+&&\\
+BA&=&AB.
+\end{array}
+\end{equation*}
+$\Leftarrow)$ Si $AB=AB$ entonces:
+$$(A-B)(A+B)=AA-BA+AB-BB=A^2-B^2.$$
+Por lo tanto, queda demostrado que $(A-B)(A+B)=A^2-B^2$ si y solo si $AB=BA.\ \ \finf$
 
 \item Sean $A$ y $B$ matrices $n\times n$, $A\neq 0, \ B\neq 0,$ tales que $AB=BA.$ Demuestre que $A^pB^p=B^pA^p$ para cualesquiera $p,q\in \mathbb{N}.$
 
