@@ -108,7 +108,7 @@ $\Leftarrow)$ Si $AB=AB$ entonces:
 $$(A-B)(A+B)=AA-BA+AB-BB=A^2-B^2.$$
 Por lo tanto, queda demostrado que $(A-B)(A+B)=A^2-B^2$ si y solo si $AB=BA.\ \ \finf$
 
-\item Sean $A$ y $B$ matrices $n\times n$, $A\neq 0, \ B\neq 0,$ tales que $AB=BA.$ Demuestre que $A^pB^p=B^pA^p$ para cualesquiera $p,q\in \mathbb{N}.$
+\item Sean $A$ y $B$ matrices $n\times n$, $A\neq 0, \ B\neq 0,$ tales que $AB=BA.$ Demuestre que $A^pB^q=B^qA^p$ para cualesquiera $p,q\in \mathbb{N}.$
 
 \res
 Multiplicado por $A^{p-1}$ por la izquierda y $B^{q-1}$ por la derecha tenemos que:
@@ -119,8 +119,10 @@ $$A^{p-1}(AB)B^{q-1}=A^{p-1}(BA)B^{q-1} \ \ \ \ \finf$$
 \item Se dice que una matriz cuadrada $A$ es antisimétrica si $A=-A^t.$ Demuestre que $A-A^t$ es antisimétrica.
 
 \res
-Considerando las propiedades de la transpuesta:
-$$-(A-A^t)^t=-(A-A^t)=A-A^t\ \ \ \finf$$
+Sea $B=A-A^t$, entonces:
+$$B^t=(A-A^t)^t=A^t-A.$$
+y $$-B^t=-(A^t-A)=A-A^t.$$
+Como $B=-B^t$, podemos concluir que   $A-A^t$ es asimétrica. \ \ \fin
 
 \item Demuestre que dada cualquier matriz cuadrada $A,$ esta se puede escribir como la suma de una matriz simétrica y una matriz antisimétrica.
 
@@ -135,6 +137,7 @@ I& P\\
 y si $P$ es idempotente, encuentre $A^{500}.$
 
 \res
+Encontremos una formula para encontrar a $A^n$. Primero veamos que pasa cuando $n=2,3$:
 \begin{equation*}
 A^2=\left(\begin{array}{cc}
 I& P\\
@@ -155,7 +158,6 @@ I&2P\\
 \end{array}
 \right).
 \end{equation*}
-
 \begin{equation*}
 A^3=\left(\begin{array}{cc}
 I& 2P\\
@@ -176,16 +178,52 @@ I&3P\\
 \end{array}
 \right).
 \end{equation*}
-
-
-Por lo tanto 
-
+De lo anterior y considerando $n\in \mathbb{N}$ podemos suponer que se cumple que :
+\begin{equation*}
+A^n= \left(\begin{array}{cc}
+I&nP\\
+0&P
+\end{array}
+\right).
+\end{equation*}
+Demostremos lo anterior de forma inductiva: \\
+\textbf{Paso 1.} Mostrar que se cumple para $n=2,3$ o para algún $n$. Por construcción se cumple este paso.\\
+\textbf{Paso 2.} Suponer que se cumple para $n$.\\
+\textbf{Paso 3.} Demostrar que se cumple para $n+1$. Considerando el paso 2, tenemos que:
+\begin{equation*}
+A^{n+1}=A^nA=\left(\begin{array}{cc}
+I& nP\\
+0&P
+\end{array}
+\right)\left(\begin{array}{cc}
+I& P\\
+0&P
+\end{array}
+\right)=\left(\begin{array}{cc}
+I^2+0& IP+nP^2\\
+0+0&0+P^2
+\end{array}
+\right)=\left(\begin{array}{cc}
+I&(n+1)P\\
+0&P
+\end{array}
+\right).
+\end{equation*}
+Queda demostrado que para $n\in \mathbb{N}$ se cumple
+\begin{equation*}
+A^n= \left(\begin{array}{cc}
+I&nP\\
+0&P
+\end{array}
+\right).
+\end{equation*}
+Por lo tanto, utilizando la formula encontrada podemos concluir que 
 \begin{equation*}
 A^{500}=\left(\begin{array}{cc}
 I& 500P\\
 0&P
 \end{array}
-\right) \finf
+\right)\ \ \  \finf
 \end{equation*}
 
 \item Sean $A$ y $B$ matrices de tamaño $m\times n$. Demuestre que tr$(AB^t)=$tr$(A^tB)$. 
