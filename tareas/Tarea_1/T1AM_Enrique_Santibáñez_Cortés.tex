@@ -250,8 +250,7 @@ b_{21}&b_{22}
 \end{array} \right)$ y $C=\left( \begin{array}{cc}
 c_{11}&c_{12} \\
 c_{21}&c_{22}
-\end{array} \right)$ por lo que tenemos que:
-
+\end{array} \right)$. Entonces 
 \begin{equation*}
 AB=\left( \begin{array}{cc}
 0&1 \\
@@ -262,7 +261,7 @@ b_{21}&b_{22}
 \end{array} \right)=\left( \begin{array}{cc}
 b_{21}&b_{22} \\
 b_{11}&b_{12}
-\end{array} \right), \ \ \ BA=\left( \begin{array}{cc}
+\end{array} \right)\ \  \text{y} \ \ \ BA=\left( \begin{array}{cc}
 b_{11}&b_{12} \\
 b_{21}&b_{22}
 \end{array} \right)\left( \begin{array}{cc}
@@ -273,7 +272,7 @@ b_{12}&b_{11} \\
 b_{22}&b_{21}
 \end{array} \right).
 \end{equation*}
-Observemos que la primera multiplicación representa a un cambio de renglones y la segunda a un cambio de columnas. Ahora multipliquemos lo anterior por la matriz $C$ pero solo concentrarnos en los resultados de la diagonal. 
+Observemos que la primera multiplicación representa a un cambio de renglones y la segunda a un cambio de columnas. Ahora multipliquemos de lado izquierdo lo anterior por la matriz $C$ pero solo concentrarnos en los resultados de la diagonal. 
 \begin{equation*}
 ABC=\left( \begin{array}{cc}
 b_{21}&b_{22} \\
@@ -298,32 +297,105 @@ c_{21}&c_{22}
 \end{array} \right)=
 \left( \begin{array}{cc}
 b_{12}c_{11}+b_{11}c_{21}&\gamma_3 \\
-\gamma_4& b_{12}c_{12}+b_{21}c_{22}
+\gamma_4& b_{22}c_{12}+b_{21}c_{22}
 \end{array} \right),
 \end{equation*}
-donde $\gamma_i$ no son relevantes para este problema. Ahora calculemos la traza de ese producto de matrices:
-
+donde $\gamma_i$ no son relevantes para este problema. Por lo que la traza de esos producto de matrices es:
 \begin{equation*}
-\tr (ABC)= b_{21}c_{11}+b_{22}c_{21}+b_{11}c_{12}+b_{12}c_{22}\ \ \text{y}\ \ \tr (BAC)= b_{12}c_{11}+b_{11}c_{21}+ b_{12}c_{12}+b_{21}c_{22}.
+\tr (ABC)= b_{21}c_{11}+b_{22}c_{21}+b_{11}c_{12}+b_{12}c_{22}\ \ \text{y}\ \ \tr (BAC)= b_{12}c_{11}+b_{11}c_{21}+ b_{22}c_{12}+b_{21}c_{22}.
 \end{equation*}
 De lo anterior podemos observar que si tr$(ABC)\neq$tr$(BAC)$ ,
 \begin{equation*}
 \begin{array}{ccc}
 b_{21}c_{11}+b_{22}c_{21}+b_{11}c_{12}+b_{12}c_{22} \neq 
-b_{12}c_{11}+b_{11}c_{21}+ b_{12}c_{12}+b_{21}c_{22}\\
-b_{21}c_{11}+b_{22}c_{21}+b_{11}c_{12}+b_{12}c_{22}-b_{12}c_{11}-b_{11}c_{21}-b_{12}c_{12}-b_{21}c_{22}\neq 0\\
-c_{11}(b_{21}-b_{12})+c_{21}(b_{22}-b_{11})+c_{12}(b_{11}-b_{12})+c_{22}(b_{12}-b_{21})\neq 0\\
+b_{12}c_{11}+b_{11}c_{21}+ b_{22}c_{12}+b_{21}c_{22}\\
+b_{21}c_{11}+b_{22}c_{21}+b_{11}c_{12}+b_{12}c_{22}-b_{12}c_{11}-b_{11}c_{21}-b_{22}c_{12}-b_{21}c_{22}\neq 0\\
+c_{11}(b_{21}-b_{12})+c_{21}(b_{22}-b_{11})+c_{12}(b_{11}-b_{22})+c_{22}(b_{12}-b_{21})\neq 0\\
 (b_{21}-b_{12})(c_{11}-c_{22})+(b_{22}-b_{11})(c_{21}-c_{12})\neq 0.
 \end{array}
 \end{equation*}
-De lo anterior podemos observar que si $c_{ij}>0$ y $b_{ij}>0$ para $i=1,2, \ j=1,2$. Y además considerando las siguientes desigualdades:
+Entonces de lo anterior podemos encontrar un conjunto de elementos de las matrices $B$ y $C$:
 \begin{equation*}
 \begin{array}{ccc}
 c_{11}>c_{22} &,& b_{21}>b_{12}\\
 c_{21}>c_{12} &,& b_{22}>b_{11}
 \end{array}
 \end{equation*} 
-Obtenemos un conjunto de matriz que cumplirán que $\tr(ABC)\neq \tr(BAC)$
+tal que tr$(ABC)\neq$tr$(BAC), $ donde $A=\left( \begin{array}{cc}
+0&1 \\
+1&0
+\end{array} \right).$\\
+Entonces una tripleta de matrices que cumple que tr$(ABC)\neq$tr$(BAC),$ son: $A=\left( \begin{array}{cc}
+0&1 \\
+1&0
+\end{array} \right),$ $B=\left( \begin{array}{cc}
+2&3 \\
+4&5
+\end{array} \right)$ y $C=\left( \begin{array}{cc}
+4&2 \\
+3&1
+\end{array} \right).$ Mostremos que la igualdad se cumple:
+\begin{equation*}
+AB=\left( \begin{array}{cc}
+0&1 \\
+1&0
+\end{array} \right)\left( \begin{array}{cc}
+2 & 3\\
+4 & 5
+\end{array} \right)=\left( \begin{array}{cc}
+4 & 5\\
+2 & 3
+\end{array} \right)\ \  \text{y} \ \ \ BA=\left( \begin{array}{cc}
+2 & 3\\
+4 & 5
+\end{array} \right)\left( \begin{array}{cc}
+0&1 \\
+1&0
+\end{array} \right)=\left( \begin{array}{cc}
+3 & 2\\
+5 & 4
+\end{array} \right).
+\end{equation*}
+Ahora calculemos la multiplicación con la matriz $C$:
+\begin{equation*}
+ABC=\left( \begin{array}{cc}
+4 & 5\\
+2 & 3
+\end{array} \right)\left( \begin{array}{cc}
+4 & 2\\
+3 & 1
+\end{array} \right)=
+\left( \begin{array}{cc}
+14+15 & \gamma_1\\
+\gamma_2&4+3
+\end{array} \right)=
+\left( \begin{array}{cc}
+29 & \gamma_1\\
+\gamma_2&7
+\end{array} \right),
+\end{equation*}
+\begin{equation*}
+BAC=\left( \begin{array}{cc}
+3 & 2\\
+5 & 4
+\end{array} \right)\left( \begin{array}{cc}
+4 & 2\\
+3 & 1
+\end{array} \right)=
+\left( \begin{array}{cc}
+12+6&\gamma_3 \\
+\gamma_4& 10+4
+\end{array} \right)=
+\left( \begin{array}{cc}
+18&\gamma_3 \\
+\gamma_4& 14
+\end{array} \right),
+\end{equation*}
+donde $\gamma_i$ no son relevantes para este problema. Por lo que la traza de esos producto de matrices es:
+\begin{equation*}
+\tr (ABC)= 29+7=36\ \ \text{y}\ \ \tr (BAC)= 18+14=32.
+\end{equation*}
+Por lo que se cumple que tr$(ABC)\neq$tr$(BAC)$ para las matrices propuestas. $\ \ \ \finf$
 
 \item Sea $L$ una matriz triangular inferior $n\times n$. Demuestre que $L=L_1L_2\cdots L_n$ donde $L_i$ es la matriz $n\times n$ que se obtiene reemplazando la $i-$ésima columna de $I_n$ por la $i-$ésima columna de $L$. Demuestre un resultado análogo para matrices triangulares superiores.
 
