@@ -122,7 +122,7 @@ $$A^{p-1}(AB)B^{q-1}=A^{p-1}(BA)B^{q-1} \ \ \ \ \finf$$
 Sea $B=A-A^t$, entonces:
 $$B^t=(A-A^t)^t=A^t-A.$$
 y $$-B^t=-(A^t-A)=A-A^t.$$
-Como $B=-B^t$, podemos concluir que   $A-A^t$ es asimétrica. \ \ \fin
+Como $B=-B^t$, podemos concluir que   $A-A^t$ es antisimétrica. \ \ \fin
 
 \item Demuestre que dada cualquier matriz cuadrada $A,$ esta se puede escribir como la suma de una matriz simétrica y una matriz antisimétrica.
 
@@ -334,7 +334,7 @@ Entonces una tripleta de matrices que cumple que tr$(ABC)\neq$tr$(BAC),$ son: $A
 \end{array} \right)$ y $C=\left( \begin{array}{cc}
 4&2 \\
 3&1
-\end{array} \right).$ Mostremos que la igualdad se cumple:
+\end{array} \right).$ Calculemos la trazas para mostrar que efectivamente se cumple. 
 \begin{equation*}
 AB=\left( \begin{array}{cc}
 0&1 \\
@@ -400,20 +400,52 @@ Por lo que se cumple que tr$(ABC)\neq$tr$(BAC)$ para las matrices propuestas. $\
 \item Sea $L$ una matriz triangular inferior $n\times n$. Demuestre que $L=L_1L_2\cdots L_n$ donde $L_i$ es la matriz $n\times n$ que se obtiene reemplazando la $i-$ésima columna de $I_n$ por la $i-$ésima columna de $L$. Demuestre un resultado análogo para matrices triangulares superiores.
 
 \res
-Considerando que $L_i$ se puede interpretar como la matriz elemetenal por un escalar.
+Sea $L$ la matriz triangular inferir $n\times n$:
+\begin{equation*}
+L=\left( \begin{array}{ccccc}
+l_{11}&0 & 0 & \cdots &0\\
+l_{21}&l_{22}& 0 & \cdots & 0\\
+l_{31}&l_{32}& l_{33}& \cdots & 0\\
+\vdots & \vdots & \vdots & \ddots & \vdots\\
+l_{n1}&l_{n2}&l_{n3}& \cdots & l_{nn}
+\end{array}\right).
+\end{equation*}	 
+Entonces $L_i$ están definidas como:
+\begin{equation*}
+L_1=\left( \begin{array}{ccccc}
+l_{11}&0 & 0 & \cdots &0\\
+l_{21}&1& 0 & \cdots & 0\\
+l_{31}&0&1& \cdots & 0\\
+\vdots & \vdots & \vdots & \ddots & \vdots\\
+l_{n1}&0&0& \cdots &1
+\end{array}\right), \ L_2=\left( \begin{array}{ccccc}
+1&0 & 0 & \cdots &0\\
+0&l_{22}& 0 & \cdots & 0\\
+0&l_{32}& 1& \cdots & 0\\
+\vdots & \vdots & \vdots & \ddots & \vdots\\
+0&l_{n2}&0& \cdots & 1
+\end{array}\right), \cdots , L_n=\left( \begin{array}{ccccc}
+1&0 & 0 & \cdots &0\\
+0&1& 0 & \cdots & 0\\
+0&0& 1& \cdots & 0\\
+\vdots & \vdots & \vdots & \ddots & \vdots\\
+0&0&0& \cdots & l_{nn}
+\end{array}\right).
+\end{equation*}
+
 
 \item Sea $A=(a_{ij})$ una matriz cuadrada de tamaño $n$, triangular superior tal que $a_{ii}=0$ para $i=1, \cdots , n.$ Demuestre que para $i=1, \cdots , n$ y $j=1, \cdots , \min (n,i+p-1)$ se cumple que $b_{ij}=0$ donde $A^p=(b_{ij})$ y $p$ es un entero positivo. 
 
 \res
 Sea $A=(a_{ij})$ una matriz cuadrada de tamaño $n$, triangular superior tal que $a_{ii}=0$ para $i=1, \cdots , n$:
 \begin{equation*}
-A=\left[ \begin{array}{ccccc}
+A=\left( \begin{array}{ccccc}
 0& a_{12} & a_{13} & \cdots & a_{1n}\\
 0 & 0 & a_{23} & \cdots & a_{2n}\\
 0 & 0 & 0 & \cdots & a_{3n}\\
 \vdots & \vdots & \vdots & \ddots & \vdots\\
 0 & 0 & 0 & \cdots & 0
-\end{array}\right]
+\end{array}\right)
 \end{equation*}
 Entonces veamos que 
 \begin{equation*}
