@@ -126,6 +126,8 @@ Como $B=-B^t$, podemos concluir que   $A-A^t$ es asimétrica. \ \ \fin
 
 \item Demuestre que dada cualquier matriz cuadrada $A,$ esta se puede escribir como la suma de una matriz simétrica y una matriz antisimétrica.
 
+\res
+Es sencillo
 \item Se dice que una matriz cuadrada $P$ es idempotente si $P^2=P$. Si 
 \begin{equation*}
 A=\left(\begin{array}{cc}
@@ -229,11 +231,13 @@ I& 500P\\
 \item Sean $A$ y $B$ matrices de tamaño $m\times n$. Demuestre que tr$(AB^t)=$tr$(A^tB)$. 
 
 \res
-Utilizando la propiedad de la traza de una matriz:
-$$\tr(A)=\tr(A^t).$$
-Y si 
-Entonces,
-$$\tr(AB^t)=\tr($$
+Sea $A_{m\times n}, B_{n\times m}$ matrices. Entonces se cumple que (\textit{se demostraron en clase}):
+\begin{itemize}
+\item $\tr(A)=\tr(A^t).$
+\item $\tr(AB)=\tr(BA)$.
+\end{itemize}
+Ocupando las dos propiedades de la traza anteriores tenemos que:
+$$\tr(AB^t)=\tr((AB^t)^t)=\tr(BA^t)=\tr(A^tB). \ \ \finf$$
 \item Encuentre matrices $A, B \ \text{y} \ C$ tales que tr$(ABC)\neq$tr$(BAC)$.
 
 \res
