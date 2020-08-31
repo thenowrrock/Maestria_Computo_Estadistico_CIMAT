@@ -178,11 +178,48 @@ Por lo tanto, queda demostrado que $(A-B)(A+B)=A^2-B^2$ si y solo si $AB=BA.\ \ 
 \item Sean $A$ y $B$ matrices $n\times n$, $A\neq 0, \ B\neq 0,$ tales que $AB=BA.$ Demuestre que $A^pB^q=B^qA^p$ para cualesquiera $p,q\in \mathbb{N}.$
 
 \res
-Multiplicado por $A^{p-1}$ por la izquierda y $B^{q-1}$ por la derecha tenemos que:
+Multiplicado por $A^{p-1}$ (donde $p\in \mathbb{N}$) por la izquierda a $AB=BA$ tenemos 
+\begin{equation*}
+\begin{array}{ccc}
+A^{p-1}AB&=&A^{p-1}BA\\
+&=&A^{p-2}(AB)A=A^{p-2}(BA)A\\
+&=&A^{p-3}(AB)A^2=A^{p-3}(BA)A^2\\
+&=&\vdots\\
+&=&(AB)A^{p-1}=(BA)A^{p-1}.
+\end{array}
+\end{equation*}
+Simplificando de ambos lados, tenemos que $A^pB=BA^p.$ Ahora multiplicamos al resultado obtenido por la matriz $B^{q-1}$ (donde $q\in \mathbb{N}$) por la derecha tenemos 
+\begin{equation*}
+\begin{array}{ccc}
+A^pBB^{q-1}&=&BA^{p}B^{q-1}\\
+&=&BA^{p-1}(AB)B^{q-2}=BA^{p-1}(BA)B^{q-2}\\
+&=&BA^{p-2}(AB)AB^{q-2}=BA^{p-2}(BA)AB^{q-2}\\
+&=&BA^{p-3}(AB)A^2B^{q-2}=BA^{p-3}(BA)A^2B^{q-2}\\
+&\vdots&\\
+&=&B(AB)A^{p-1}B^{q-2}=B(BA)A^{p-1}B^{q-2}\\
+&=&B^2A^{p}B^{q-2}\\
+&=&B^2A^{p-1}(AB)B^{q-3}=B^2A^{p-1}(BA)B^{q-3}\\
+&=&B^2A^{p-2}(AB)AB^{q-3}=B^2A^{p-2}(BA)AB^{q-3}\\
+&=&B^2A^{p-3}(AB)A^2B^{q-3}=B^2A^{p-3}(BA)A^2B^{q-3}\\
+&\vdots&\\
+&=&B^2(AB)A^{p-1}B^{q-3}=B^2(BA)A^{p-1}B^{q-3}\\
+&=&B^3A^{p}B^{q-3}\\
+&\vdots&\\
+\end{array}
+\end{equation*}
 
-$$A^{p-1}(AB)B^{q-1}=A^{p-1}(BA)B^{q-1} \ \ \ \ \finf$$
-
-
+\begin{equation*}
+\begin{array}{ccc}
+&\vdots&\\
+&=&B^{q-1}A^{p-1}(AB)=B^{q-1}A^{p-1}(BA)\\
+&=&B^{q-1}A^{p-2}(AB)A=B^{q-1}A^{p-2}(BA)A\\
+&=&B^{q-1}A^{p-3}(AB)A^2=B^{q-1}A^{p-3}(BA)A^2\\
+&\vdots&\\
+&=&B^{q-1}(AB)A^{p-1}=B^{q-1}(BA)A^{p-1}\\
+&=&B^qA^{p}.
+\end{array}
+\end{equation*}
+Por lo tanto, queda demostrado que si $AB=BA$ y para cualesquiera $p,q\in \mathbb{N}$ se cumple que $A^pB^q=B^qA^p \ \ \ \finf$ 
 \item Se dice que una matriz cuadrada $A$ es antisimétrica si $A=-A^t.$ Demuestre que $A-A^t$ es antisimétrica.
 
 \res
