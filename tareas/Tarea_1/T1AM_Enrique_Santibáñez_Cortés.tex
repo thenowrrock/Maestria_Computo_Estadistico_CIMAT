@@ -88,7 +88,74 @@ v_n
 \right)
 \end{equation*}
 Demuestre que $$AB=\sum_{i=1}^na_iv_i.$$
-
+\res
+Como $A$ es una matriz $m\times n$ dada por bloques columnas, como
+$$(a_1\ a_2\ \cdots a_n)$$
+donde $a_i$ es un vector columna 
+$$a_i=\left( \begin{array}{c}
+a_{1i}\\
+a_{2i}\\
+\vdots\\
+a_{ni}
+\end{array}\right).$$
+Del mismo modo podemos decir que $B$ esta constituida por $b_i$ vectores renglón:
+$$v_i=(\begin{array}{cccc}
+v_{i1} & v_{i2} & \cdots &v_{in}
+\end{array} ).$$
+Entonces ocupando lo anterior
+$$AB=\left( \begin{array}{cccc}
+\left( \begin{array}{c}
+a_{11}\\
+a_{21}\\
+\vdots\\
+a_{n1}
+\end{array}\right) & 
+\left( \begin{array}{c}
+a_{12}\\
+a_{22}\\
+\vdots\\
+a_{n2}
+\end{array}\right)& \cdots &
+\left( \begin{array}{c}
+a_{1n}\\
+a_{2n}\\
+\vdots\\
+a_{nn}
+\end{array}\right)
+\end{array} \right) \left( \begin{array}{c}
+\left(\begin{array}{cccc}
+v_{11} & v_{12} & \cdots &v_{1n}
+\end{array} \right) \\
+\left(\begin{array}{cccc}
+v_{21} & v_{22} & \cdots &v_{2n}
+\end{array} \right)\\
+\vdots\\
+\left(\begin{array}{cccc}
+v_{n1} & v_{n2} & \cdots &v_{nn}
+\end{array} \right)
+\end{array} \right)
+$$
+$$
+=\begin{array}{cccc}
+\left( \begin{array}{c}
+a_{11}\\
+a_{21}\\
+\vdots\\
+a_{n1}
+\end{array}\right) \left(\begin{array}{cccc}
+v_{11} & v_{12} & \cdots &v_{1n}
+\end{array} \right)+\cdots+\left( \begin{array}{c}
+a_{1n}\\
+a_{2n}\\
+\vdots\\
+a_{nn}
+\end{array}\right) \left(\begin{array}{cccc}
+v_{n1} & v_{n2} & \cdots &v_{nn}
+\end{array} \right)
+\end{array}$$
+$$=\begin{array}{c}
+a_1v_1+a_2v_2+\cdots+a_nv_n
+\end{array}=\sum_{i=1}^na_iv_i \ \ \finf$$
 \item Sean $A$ y $B$ matrices cuadradas del mismo orden. Demuestre que $(A-B)(A+B)=A^2-B^2$ si y solo si $AB=BA.$
 
 \res
