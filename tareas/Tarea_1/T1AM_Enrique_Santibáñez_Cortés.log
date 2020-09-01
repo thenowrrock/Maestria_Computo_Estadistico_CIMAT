@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020) (preloaded format=pdflatex 2020.8.28)  1 SEP 2020 16:52
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020) (preloaded format=pdflatex 2020.8.28)  1 SEP 2020 17:01
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -603,8 +603,8 @@ ot changed.
 Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 773.
  ) 
 Here is how much of TeX's memory you used:
- 8193 strings out of 482823
- 120045 string characters out of 5955510
+ 8194 strings out of 482823
+ 120057 string characters out of 5955510
  425335 words of memory out of 5000000
  23366 multiletter control sequences out of 15000+600000
  579455 words of font info for 57 fonts, out of 8000000 for 9000
@@ -624,11 +624,11 @@ c/lm/lmri10.pfb></home/enrique/.TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy10
 .pfb></home/enrique/.TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy8.pfb></home/
 enrique/.TinyTeX/texmf-dist/fonts/type1/public/amsfonts/symbols/msam10.pfb></ho
 me/enrique/.TinyTeX/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on T1AM_Enrique_Santibáñez_Cortés.pdf (9 pages, 160995 bytes)
+Output written on T1AM_Enrique_Santibáñez_Cortés.pdf (9 pages, 161118 bytes)
 .
 PDF statistics:
- 115 PDF objects out of 1000 (max. 8388607)
- 92 compressed objects within 1 object stream
- 20 named destinations out of 1000 (max. 500000)
+ 116 PDF objects out of 1000 (max. 8388607)
+ 93 compressed objects within 1 object stream
+ 21 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 
