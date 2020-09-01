@@ -744,7 +744,10 @@ podemos observar que $L_i^t$ represenata a la matriz $n\times n$ que se obtiene 
 \item Sea $A=(a_{ij})$ una matriz cuadrada de tamaño $n$, triangular superior tal que $a_{ii}=0$ para $i=1, \cdots , n.$ Demuestre que para $i=1, \cdots , n$ y $j=1, \cdots , \min (n,i+p-1)$ se cumple que $b_{ij}=0$ donde $A^p=(b_{ij})$ y $p$ es un entero positivo. 
 
 \res
-Sea $A=(a_{ij})$ una matriz cuadrada de tamaño $n$, triangular superior tal que $a_{ii}=0$ para $i=1, \cdots , n$:
+Para hacer más sencilla la demostración cambiemos la notación de $i,j$. Consideremos dos casos posibles para el valor de $p$, cuando $p+k=n$ donde $k\in \mathbb{N}$ es decir $p<n$ y el otro caso cuando $p\geq n$.  Caso 1, cuando $p+k=n$ donde $k\in \mathbb{N}$, observemos que si $i\leq k$ esto implica que $j=1,\cdots, i+p-1,$ y si $i>k$ implica que $j=1,\cdots,n.$ Ahora busquemos $\max (j-i)$, cuando $i\leq k\Rightarrow$ $\max (j-i)=i+p-1-i=p-1$, ahora si $i>k\Rightarrow$ $\max (j-i)=n-(k+1)=n-(n-p+1)=p-1$, por lo que observemos que sin importar $i$ el  $max(j-i)=p-1<p$. Caso 2, si $p\geq n$, tenemos que $\min(n,i+p-1)=n$ para $i=1,\cdots,n$, por lo que el $\max(j-i)=n-i< n\leq p$. Por lo que podemos decir $i=1, \cdots , n$ y $j=1, \cdots , \min (n,i+p-1)$ es equivalente a decir que $j-i<p.$\\
+Entonces demostremos que si A es una matriz cuadrada de tamaño $n$, triangular superior tal que $a_{ii}=0$ para $i=1,\cdots, n$, entonces se cumple que $b_{ij}=0$ para $j-i<p$ donde $A^p=(b_{ij})$ y $p$ un entero positivo. Para ello ocuparemos inducción matemática. 
+
+\textbf{Paso 1.} Mostrar que se cumple para $p=2,3$ o para algún $p$. Si tomamos a $p=1$, tenemos que $A^1=(b_{ij})=(a_{ij})=A$, pero como $A$ una matriz cuadrada de tamaño $n$, triangular superior tal que $a_{ii}=0$ para $i=1, \cdots , n$:
 \begin{equation*}
 A=\left( \begin{array}{ccccc}
 0& a_{12} & a_{13} & \cdots & a_{1n}\\
@@ -752,32 +755,19 @@ A=\left( \begin{array}{ccccc}
 0 & 0 & 0 & \cdots & a_{3n}\\
 \vdots & \vdots & \vdots & \ddots & \vdots\\
 0 & 0 & 0 & \cdots & 0
-\end{array}\right)
+\end{array}\right),
 \end{equation*}
-Entonces veamos que 
-\begin{equation*}
-A^2=\left[ \begin{array}{ccccc}
-0& a_{12} & a_{13} & \cdots & a_{1n}\\
-0 & 0 & a_{23} & \cdots & a_{2n}\\
-0 & 0 & 0 & \cdots & a_{3n}\\
-\vdots & \vdots & \vdots & \ddots & \vdots\\
-0 & 0 & 0 & \cdots & 0
-\end{array}\right]
-\left[ \begin{array}{ccccc}
-0& a_{12} & a_{13} & \cdots & a_{1n}\\
-0 & 0 & a_{23} & \cdots & a_{2n}\\
-0 & 0 & 0 & \cdots & a_{3n}\\
-\vdots & \vdots & \vdots & \ddots & \vdots\\
-0 & 0 & 0 & \cdots & 0
-\end{array}\right]= 
-\left[ \begin{array}{ccccc}
-0 & 0a_{12}+\sum_{j=2}^na_{1j}0 & a_{13} & \cdots & a_{1n}\\
-0 & 0 & a_{23} & \cdots & a_{2n}\\
-0 & 0 & 0 & \cdots & a_{3n}\\
-\vdots & \vdots & \vdots & \ddots & \vdots\\
-0 & 0 & 0 & \cdots & 0
-\end{array}\right]
-\end{equation*}
+entonces es sencillo ver que se cumple que para cuando $j-i<1$ se cumple que $b_{ij}=0$.
 
+\textbf{Paso 2.} Suponer que se cumple para $p-1$. Es decir, suponer que para $p-1$ se cumple que $(b_{ij})=0$ para $j-i<p-1$ donde  $A^{p-1}=(b_{ij})$.\\
+\textbf{Paso 3.} Demostrar que se cumple para $p$. Por definición de multiplicación de matrices tenemos que:
+$$A_{ij}^p=(AA^{p-1})_{ij}=\sum_{r=1}^nA_{ir}A_{rj}^{p-1}=\sum_{r=1}^iA_{ir}A_{rj}^{p-1}+\sum_{r=i+1}^nA_{ir}A_{rj}^{p-1}.$$
+Observemos que en la primera suma como $r\leq i$ y como $A_{ij}$ una matriz superior podemos concluir que $A_{ir}=0$.
+$$A_{ij}^p=\sum_{r=1}^i0A_{rj}^{p-1}+\sum_{r=i+1}^nA_{ir}A_{rj}^{p-1}=\sum_{r=i+1}^nA_{ir}A_{rj}^{p-1}.$$
+
+Ahora si consideramos todos los elementos de la matriz que cumple que $j-i<p$ en lo anterior, tenemos que $r=i+1>j-p+1=j-(p-1)$ por lo que implica que $A^{p-1}_{rj}=0$ debido a que $j-r<j-j-(p-1)=p-1$ por el paso dos de la inducción. 
+Por lo que para $j-i<p$ queda demostrado que
+$$A_{ij}^p=0.\ \ \ \ \finf$$
+Por lo que concluimos que si $A$ matriz cuadrada triangular superior tal que $a_{ii}=0$ para $i=1,\cdots,n.$ entonces se cumple que $b_{ij}=0$ para $i=1,\cdots,n$ y $j=1,\cdots,\min (n,i+p-1)$ donde $A^p=(b_{ij})$ y $p$ es un entero positivo.
 \end{enumerate}
 \end{document}
