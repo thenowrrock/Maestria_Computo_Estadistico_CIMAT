@@ -23,9 +23,11 @@ datos_matrix <- function(n,m){
   for (i in (1:n)){
     for (j in (1:m)){
       cat("Ingresa el elemento en la posición (",i,",",j,"):") 
-      matriz[i,j] <- as.integer(readline())
+      matriz[i,j] <- as.numeric(readline())
     }
   }
+  cat("La matriz ingresada es:")
+  print(matriz)
   matriz
 }
 # Operaciones elementales.
@@ -45,7 +47,7 @@ tipo_ii <- function(matriz){
   cat("Ingresa el renglón al cual se le aplicará la operación elemental.")
   i <- as.integer(readline())
   cat("Ingresa el escalar (diferente de cero) a multiplicar.")
-  alpha <- as.integer(readline())
+  alpha <- as.numeric(readline())
   matriz[i,] <- alpha*matriz[i,]
   matriz
 }
@@ -54,11 +56,23 @@ tipo_iii <- function(matriz){
   cat("Ingresa al vector al cual se le sumará el otro vector")
   i <- as.integer(readline())
   cat("Ingresa el segundo renglón.")
-  j<-as.integer(readline()) 
+  j <- as.integer(readline()) 
   cat("Ingresa el escalar.")
-  alpha <- as.integer(readline())
+  alpha <- as.numeric(readline())
   matriz[i,] <- matriz[i,]+alpha*matriz[j,]
   matriz
+}
+
+validacion_escalonada <- function(matriz){
+  n <- nrow(matriz)
+  for (i in 2:n){
+    for (i in 1:(i-1)){
+      if (matriz[i,j]!=0){
+        return(0)
+      }
+    }
+  }
+  return(1)
 }
 
 operacion_elemental <- function(matriz){
@@ -79,10 +93,10 @@ operacion_elemental <- function(matriz){
   else{
     cat("Número ingresado.")
   }
+  cat("La nueva matriz es:")
+  print(matriz)
   
-  matriz
-  cat("Deseas salir (1:Sí, 0:no):")
-  salir<-as.integer(readline())
+  salir <- validacion_escalonada(matriz)
   if (salir==0){
     operacion_elemental(matriz)
   }
@@ -94,8 +108,6 @@ operacion_elemental <- function(matriz){
 escalodada <- function(){
   tamano <- lectura()
   matriz <- datos_matrix(tamano[1], tamano[2])
-  cat("La matriz ingresada es:")
-  print(matriz)
   operacion_elemental(matriz)
 }
 
