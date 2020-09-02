@@ -10,3 +10,5 @@ a diferencia del problema 1 no debe haber intervención del usuario más que en 
 
 En ninguno de los dos programas se pueden usar comandos o librerías de r que resuelvan directamente el problema. Si puede usar librerías que mejoren la captu-
 ra de datos o la presentación del programa.'
+
+22
