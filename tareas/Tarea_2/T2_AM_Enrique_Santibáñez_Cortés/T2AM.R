@@ -33,9 +33,9 @@ datos_matrix <- function(n,m){
 # Operaciones elementales.
 ## Tipo I.
 tipo_i <- function(matriz){
-  cat("Ingresa la posición del")
+  cat("Ingresa la posición del primer renglón a intercambiar:")
   i <- as.integer(readline())
-  cat("Ingresa as ")
+  cat("Ingresa la posición del segundo renglón a intercambiar: ")
   j <- as.integer(readline())
   aux <- matriz[i,]
   matriz[i,] <- matriz[j,]
@@ -44,9 +44,9 @@ tipo_i <- function(matriz){
 }
 ## Tipo II.
 tipo_ii <- function(matriz){
-  cat("Ingresa el renglón al cual se le aplicará la operación elemental.")
+  cat("Ingresa el renglón al cual se le multiplicará por un escalar.")
   i <- as.integer(readline())
-  cat("Ingresa el escalar (diferente de cero) a multiplicar.")
+  cat("Ingresa el escalar (diferente de cero) que multiplicará al renglón", i,".")
   alpha <- as.numeric(readline())
   matriz[i,] <- alpha*matriz[i,]
   matriz
@@ -66,7 +66,7 @@ tipo_iii <- function(matriz){
 validacion_escalonada <- function(matriz){
   n <- nrow(matriz)
   for (i in 2:n){
-    for (i in 1:(i-1)){
+    for (j in 1:(i-1)){
       if (matriz[i,j]!=0){
         return(0)
       }
@@ -101,21 +101,49 @@ operacion_elemental <- function(matriz){
     operacion_elemental(matriz)
   }
   else{
+    cat("La matriz escalodana por renglones es:")
     matriz
   }
 }
 
-escalodada <- function(){
+escalodada_dinamica <- function(){
   tamano <- lectura()
   matriz <- datos_matrix(tamano[1], tamano[2])
   operacion_elemental(matriz)
 }
 
 '2. Programe una función en r que reciba de entrada una matriz y que realice la eliminación de Gauss y regrese la matriz escalonada por renglones. Es decir, 
-a diferencia del problema 1 no debe haber intervención del usuario más que en la captura de la matriz.
+a diferencia del problema 1 no debe haber intervención del usuario más que en la captura de la matriz.'
+tipo_iii_automatica <- function(matriz, j, i){
+  alpha <- -matriz[j,i]/matriz[i,i]
+  matriz[j,] <- matriz[j,]+alpha*matriz[i,]
+  matriz
+}
+
+eliminacion_gauss <- function(matriz){
+  n <- nrow(matriz)
+  for (i in 1:(n-1)){
+    for (j in (i+1):n){
+      matriz <- tipo_iii_automatica(matriz, j, i)
+      print(matriz)
+    }
+  }
+  salir <- validacion_escalonada(matriz)
+  if (salir==0){
+    eliminacion_gauss(matriz)
+  }
+  else{
+    cat("La matriz escalodana por renglones es:")
+    print(matriz)
+  }
+}
+
+escalonada <- function(){
+  tamano <- lectura()
+  matriz <- datos_matrix(tamano[1], tamano[2])
+  eliminacion_gauss(matriz)
+}
 
 
-En ninguno de los dos programas se pueden usar comandos o librerías de r que resuelvan directamente el problema. Si puede usar librerías que mejoren la captu-
+'En ninguno de los dos programas se pueden usar comandos o librerías de r que resuelvan directamente el problema. Si puede usar librerías que mejoren la captu-
 ra de datos o la presentación del programa.'
-
-22
