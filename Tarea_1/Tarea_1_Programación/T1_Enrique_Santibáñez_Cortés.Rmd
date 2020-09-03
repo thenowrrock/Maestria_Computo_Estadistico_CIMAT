@@ -71,7 +71,7 @@ library(gridExtra) # Gráficas en pares.
 edad <- c(21, 35, 829, 2) 
 sexo <- c("m", "f", "m", "e")
 altura <- c(181, 173, 171, 166)
-peso <- c(89, 58, 75, 60)
+peso <- c(69, 58, 75, 60)
 # Creamos el dataframe:
 df_ejer3 <- data.frame(edad=edad, sexo=sexo, altura=altura, peso=peso)
 df_ejer3
@@ -154,7 +154,7 @@ a. Calculamos los estadísticos de resumen de la mediana del valor de las casas:
 ```{r warning=FALSE,fig.width = 5, fig.asp = 1, fig.align = "center"}
 summary(Boston$medv)
 ```
-Realizamos un boxplot para interpretar un poco más los estadísticos de resumen:
+De lo anterior podemos decir que el minimo del valor de las casas de los datos es 5., el máximo es 50, la mediana 21.20, la media 22.53, los el primer cuantil es 17.02 y el tercer cuantil es 25. Realizamos un boxplot para interpretar un poco más los estadísticos de resumen:
 ```{r, message=FALSE,warning=FALSE,fig.width =7, fig.height=4, fig.align = "center"}
 box_ejer5 <- ggplot(data = Boston, aes(y=medv))+
   geom_boxplot()+
@@ -170,7 +170,7 @@ Observando los estadísticos de resumen y las gráficas podemos decir que la dis
 
 b. Relación entre valor de las casas e indíce criminal:
 ```{r, results='hide', message=FALSE, warning=FALSE,fig.width =6, fig.height=4, fig.align = "center"}
-ggplot(data=Boston, aes(x=crim, y=medv))+
+ggplot(data=Boston, aes(x=medv, y=crim))+
   geom_point()+
   geom_smooth()+labs(title = "Relación entre el índice criminal y valor casa")
 ```
