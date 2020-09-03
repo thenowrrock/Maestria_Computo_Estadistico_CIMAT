@@ -1,18 +1,31 @@
-'1. Programe una función en r que reciba de entrada por parte del usuario el tamaño de una matriz y las entradas de la misma en orden de izquierda a derecha, 
-de arriba a abajo. Luego, debe ir preguntando que operación elemental debe hacerse, y una vez que el usuario indique precisamente cuál, diciendo exactamente
-que renglones y números estarán involucrados, debe mostrarle al usuario la matriz resultante.  Cuando el usuario llegue a una forma escalonada, deberá decir-
-le al usuario, mostrarle la matriz final y terminar el programa. Usted debe especificar al usuario cómo y en que orden debe introducir los valores y hacer 
-las validaciones correspondientes.'
-
+## Funciones modulares.
 # Función para solicitar el tamaño de la matriz.
+validacion_integer <- function(){
+  
+}
+
+
 lectura <- function(){
   cat("Bienvenido.
 Ingresa el tamaño de la matriz a ingresa.
-Ingresa el número de renglones de la matriz (n):")
-  n <- as.integer(readline())
+Ingresa el número de renglones (n):")
+  n <- readline()
+  while(is.na(tryCatch(as.integer(n)))){
+    cat("El número de renglones ingresado debe ser un entero. Intenta de nuevo.")
+    n <- readline()
+  }
+  n <- as.integer(n)
   cat("Ingresa el número de columnas (m):")
-  m <- as.integer(readline())
-  cat("El tamaño de la matriz es: ",n,"x",m,".")
+  m <- readline()
+  while(is.na(tryCatch(as.integer(m)))){
+    cat("El número de renglones ingresado debe ser un entero. Intenta de nuevo.")
+    m <- readline()
+  }
+  m <- as.integer(m)
+  cat("El tamaño de la matriz es:",n,"x",m,".\n")
+  cat("------------------------------------------------------------------------\n")
+  cat("------------------------------------------------------------------------\n")
+  cat("------------------------------------------------------------------------\n")
   tamano <- c(n,m)
   return(tamano)
 }
@@ -26,7 +39,7 @@ datos_matrix <- function(n,m){
       matriz[i,j] <- as.numeric(readline())
     }
   }
-  cat("La matriz ingresada es:")
+  cat("La matriz ingresada es:\n")
   print(matriz)
   matriz
 }
@@ -37,9 +50,17 @@ tipo_i <- function(matriz){
   i <- as.integer(readline())
   cat("Ingresa la posición del segundo renglón a intercambiar: ")
   j <- as.integer(readline())
-  aux <- matriz[i,]
-  matriz[i,] <- matriz[j,]
-  matriz[j,] <- aux
+  n <- nrow(matriz)
+  
+  # Creamos los vectores canonicos:
+  e_j <- matrix(0,n)
+  e_j[j,1] <- 1
+  e_i <- matrix(0,n)
+  e_i[i,1] <- 1 
+  
+  # Definomos la matriz elemental de tipo III:.
+  E_ij <- diag(1, n)-(e_j-e_i)%*%(t((e_j-e_i)))
+  matriz <- E_ij%*%matriz
   matriz
 }
 ## Tipo II.
@@ -48,7 +69,15 @@ tipo_ii <- function(matriz){
   i <- as.integer(readline())
   cat("Ingresa el escalar (diferente de cero) que multiplicará al renglón", i,".")
   alpha <- as.numeric(readline())
-  matriz[i,] <- alpha*matriz[i,]
+  n <- nrow(matriz)
+  
+  # Creamos los vectores canonicos:
+  e_i <- matrix(0,n)
+  e_i[i,1] <- 1 
+  
+  # Definomos la matriz elemental de tipo III:.
+  E_i_alpha <- diag(1, n)+(alpha-1)*e_i%*%t(e_i)
+  matriz <- E_i_alpha%*%matriz
   matriz
 }
 ## Tipo III.
@@ -59,7 +88,17 @@ tipo_iii <- function(matriz){
   j <- as.integer(readline()) 
   cat("Ingresa el escalar.")
   alpha <- as.numeric(readline())
-  matriz[i,] <- matriz[i,]+alpha*matriz[j,]
+  n <- nrow(matriz)
+  
+  # Creamos los vectores canonicos:
+  e_j <- matrix(0,n)
+  e_j[j,1] <- 1
+  e_i <- matrix(0,n)
+  e_i[i,1] <- 1 
+  
+  # Definomos la matriz elemental de tipo III:.
+  E_ij_alpha <- diag(1, n)+alpha*e_j%*%t(e_i)
+  matriz <- E_ij_alpha%*%matriz
   matriz
 }
 
@@ -93,7 +132,7 @@ operacion_elemental <- function(matriz){
   else{
     cat("Número ingresado.")
   }
-  cat("La nueva matriz es:")
+  cat("La nueva matriz es:\n")
   print(matriz)
   
   salir <- validacion_escalonada(matriz)
@@ -101,14 +140,14 @@ operacion_elemental <- function(matriz){
     operacion_elemental(matriz)
   }
   else{
-    cat("La matriz escalodana por renglones es:")
+    cat("La matriz escalodana por renglones es:\n")
     matriz
   }
 }
 
 escalodada_dinamica <- function(){
-  tamano <- lectura()
-  matriz <- datos_matrix(tamano[1], tamano[2])
+  tamano <- lectura() # Solicitamos el tamaño de la matriz.
+  matriz <- datos_matrix(tamano[1], tamano[2]) # Solicitamos la matriz.
   operacion_elemental(matriz)
 }
 
@@ -120,10 +159,23 @@ tipo_iii_automatica <- function(matriz, j, i){
   matriz
 }
 
+tipo_i <- function(matriz, j, i){
+  aux <- matriz[i,]
+  matriz[i,] <- matriz[j,]
+  matriz[j,] <- aux
+  matriz
+}
 eliminacion_gauss <- function(matriz){
   n <- nrow(matriz)
   for (i in 1:(n-1)){
     for (j in (i+1):n){
+      zero <-0
+      while(zero!=1){
+        if (matriz[i,i]=0){
+          matriz<-tipo_i(matriz,i,j)  
+        }
+        
+      }
       matriz <- tipo_iii_automatica(matriz, j, i)
       print(matriz)
     }
@@ -139,8 +191,8 @@ eliminacion_gauss <- function(matriz){
 }
 
 escalonada <- function(){
-  tamano <- lectura()
-  matriz <- datos_matrix(tamano[1], tamano[2])
+  tamano <- lectura() # Solicitamos el tamaño de la matriz.
+  matriz <- datos_matrix(tamano[1], tamano[2]) # Solicitamos la matriz.
   eliminacion_gauss(matriz)
 }
 
