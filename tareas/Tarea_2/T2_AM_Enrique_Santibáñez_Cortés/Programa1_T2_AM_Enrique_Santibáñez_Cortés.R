@@ -85,7 +85,7 @@ tipo_i <- function(matriz){ # El parámetro es más actualizada.
   # Definomos la matriz elemental de tipo III:.
   E_ij <- diag(1, n)-(e_j-e_i)%*%(t((e_j-e_i)))
   
-  # Actualizamos la matriz con los datos solicitados.
+  # Actualizamos la matriz con los datos ingresados.
   matriz <- E_ij%*%matriz
   matriz
 }
@@ -99,7 +99,7 @@ tipo_ii <- function(matriz){ # El parámetro es más actualizada.
   alpha <- readline()
   h <-1
   while(h!=0){
-    while(is.na(tryCatch(as.numeric(alpha)))){ # Validamos que el escalar sea di
+    while(is.na(tryCatch(as.numeric(alpha)))){ # Validamos que el escalar sea diferente de cero.
       cat("El escalar debe ser un número diferente de cero. Intenta de nuevo.")
       alpha <- readline()
     }
@@ -115,9 +115,11 @@ tipo_ii <- function(matriz){ # El parámetro es más actualizada.
   # Creamos los vectores canonicos:
   e_i <- matrix(0,n)
   e_i[i,1] <- 1 
-  print(alpha)
+
   # Definomos la matriz elemental de tipo III:.
   E_i_alpha <- diag(1, n)+(alpha-1)*e_i%*%t(e_i)
+  
+  # Actualizamos la matriz con los datos ingresados.
   matriz <- E_i_alpha%*%matriz
   matriz
 }
@@ -125,7 +127,7 @@ tipo_ii <- function(matriz){ # El parámetro es más actualizada.
 tipo_iii <- function(matriz){
   n <- nrow(matriz)
   h <- 1
-  while(h!=0){
+  while(h!=0){ # Solicitamos las posiciones de los renglones involucrados, validando que sea menor o igual a n y diferentes.
     cat("Ingresa la posición del vector al cual se le sumará el múltiplo escalar de otro renglón.")
     j <- validacion_posicion(n)
     
@@ -139,7 +141,7 @@ tipo_iii <- function(matriz){
     }
   }
   
-  cat("Ingresa el escalar.")
+  cat("Ingresa el escalar.") # Solicitamos el escalar.
   alpha <- readline()
   while(is.na(tryCatch(as.numeric(alpha)))){
     cat("El escalar debe ser un número. Intenta de nuevo.")
@@ -155,11 +157,14 @@ tipo_iii <- function(matriz){
   
   # Definomos la matriz elemental de tipo III:.
   E_ij_alpha <- diag(1, n)+alpha*e_j%*%t(e_i)
+  
+  # Actualizamos la matriz con los datos ingresados.
   matriz <- E_ij_alpha%*%matriz
   matriz
 }
 
-validacion_escalonada <- function(matriz){
+# Función para validar si una matriz esta en su forma escalodana. 
+validacion_escalonada <- function(matriz){ # Comprobamos que los elementos abajo de la diagonal deben de ser ceros.
   n <- nrow(matriz)
   for (i in 2:n){
     for (j in 1:(i-1)){
@@ -171,26 +176,36 @@ validacion_escalonada <- function(matriz){
   return(1)
 }
 
+# Función para llevar a cabo las Operaciones Elementales.
 operacion_elemental <- function(matriz){
   cat("Selecciona una operación elemental por renglones que se le aplicará a la matriz ingresada.\n")
   cat("Ingresa:
 1 para intercambiar dos renglones de la matriz (Tipo I).
 2 para multiplica un renglón por un escalar distinto de cero (Tipo II).
 3 para reemplazar un renglón por la suma de ese renglón con el múltiplo escalar otro renglón (Tipo III).")
-  operacion_ingresada <- as.integer(readline())  
+  operacion_ingresada <- readline() 
+  while(is.na(tryCatch(as.integer(operacion_ingresada)))){
+    cat("El número ingresado es incorrecto.Intenta de nuevo.\n")
+    cat("Ingresa:
+1 para intercambiar dos renglones de la matriz (Tipo I).
+2 para multiplica un renglón por un escalar distinto de cero (Tipo II).
+3 para reemplazar un renglón por la suma de ese renglón con el múltiplo escalar otro renglón (Tipo III).")
+    operacion_ingresada <- readline()
+  }
+  operacion_ingresada <- as.integer(operacion_ingresada)
   if (operacion_ingresada==1){
-    matriz <- tipo_i(matriz)
+    matriz <- tipo_i(matriz) # Llamamos si la función creada anteriormente Tipo I.
   }
   else if (operacion_ingresada==2){
-    matriz <- tipo_ii(matriz)
+    matriz <- tipo_ii(matriz) # Llamamos si la función creada anteriormente Tipo II.
   }
   else if (operacion_ingresada==3){
-    matriz <- tipo_iii(matriz)
+    matriz <- tipo_iii(matriz) # Llamamos si la función creada anteriormente Tipo II.
   }
   else{
-    cat("Número ingresado.")
+    cat("Número ingresado no se encuentra en el menú. Se cerrará el programa...")
   }
-  cat("La nueva matriz es:\n")
+  cat("La nueva matriz es:\n") # Imprimimos la nueva matriz.
   print(matriz)
   
   salir <- validacion_escalonada(matriz)
@@ -199,16 +214,19 @@ operacion_elemental <- function(matriz){
     operacion_elemental(matriz)
   }
   else{
-    cat("Has llegado a obtener la matriz ingresada en la forma escalonada, la cual es:\n")
+    cat("Has llegado a obtener la matriz en su forma escalonada, la cual es:\n")
     matriz
   }
 }
 
+# Función final, se utilizan todas las funciones anteriores para solicitar una matriz, y aplicarle funciones 
+# elementales dependiendo de la selección del usuario hasta llegar hasta su forma escalonada.
 escalodada_dinamica <- function(){
   tamano <- lectura() # Solicitamos el tamaño de la matriz.
   matriz <- datos_matrix(tamano[1], tamano[2]) # Solicitamos la matriz.
-  operacion_elemental(matriz) # Operaciones elementales.
+  operacion_elemental(matriz) # Solicitamos las operaciones elementales iterativamente. 
 }
 
+# Llamamos la función.
 escalodada_dinamica()
 
