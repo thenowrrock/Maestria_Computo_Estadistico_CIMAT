@@ -107,14 +107,12 @@ $$f(Y=y)=\mP(1_{A}(x)=y)=\mP(\{x:1_{A}(x)=y\}).$$
 \begin{equation*}
 f(y)=\left\{ \begin{array}{cc}
 \mP(x\in A) & \text{para y=1}\\
-\mP(x\not{\in} A) & \text{para y=0}\\
+\mP(x\not \in A) & \text{para y=0}\\
 0 & \text{en otro caso}
 \end{array}\right.
 \end{equation*}
-Por lo que 
-
 El valor esperado es
-$$\mE[Y]=\sum y f(y)=1\cdot f(1)+0\cdot f(0)=1\cdot f(1)=\mP(x\in A)$$
+$$\mE[Y]=\sum y f(y)=1\cdot f(1)+0\cdot f(0)=1\cdot f(1)=\mP(x\in A)\ \ \ \finf$$
 
 \item[6.] Las calificaciones de un estudiante de primer semestre en un examen de química se describen
 por la densidad de probabilidad
@@ -125,14 +123,14 @@ donde $y$ representa la proporción de preguntas que el estudiante contesta corr
 \item[b)] Si 6 estudiantes toman el examen, ¿cuál es la probabilidad de exactamente 2 reprueben?
 \end{itemize}
 \res
-Solo para comprobación veamos que realmente sea una función de probabilidad, para ello observemos que
+Por como esta definida la función de probabilidad podemos decir que $Y$ es es una variable continua. Ahora, solo para comprobación veamos que realmente sea una función de probabilidad, para ello observemos que
 $$\int_{-\infty}^\infty f_y(y)=\int_{0}^1 6y(1-y)=3y^2-2y^3|_0^1=1.$$
 Por lo tanto observamos que si es una función de probabilidad. 
 
-La probabilidad de que repruebe es
+Entonces \textbf{la probabilidad de que un estudiante repruebe es}
 $$f_y(Y<0.4)=\int_0^{0.4}f_y(y)=\int_0^{0.4} 6y(1-y)=3y^2-2y^3|_0^{0.4}=0.352 $$
-Ahora, consideremos que $X$ el número de estudiantes de reprueban el examen de los 6 que tomaron el examen. Por definición podemos decir que $X\sim Bin(6,p)$ donde $p$ es la probabilidad de reprobar, es decir, $X\sim Bin(6,0.352).$  Entonces la probabilidad de que exactamente 2 reprueben es:
-$$\mP(X=2)={6\choose 2}0.325^2(1-0.325)^4\ \ \ \finf$$
+Ahora, sea $X$ el número de estudiantes de reprueban el examen de un conjunto de 6 estudiantes que realizaron el examen. Por definición podemos decir que $X\sim Bin(6,p)$ donde $p$ es la probabilidad de reprobar, pero si consideramos que las calificaiones de los estudiantes se distribuye como la variable $Y$, entonces podemos concluir que $X\sim Bin(6,0.352).$  Por lo tanto, \textbf{la probabilidad de que exactamente 2 estudiantes reprueben es} (usamos la función dbinom(x=4, size = 6, prob = 0.325):
+$$\mP(X=2)={6\choose 2}0.325^2(1-0.325)^4 =0.328907 \ \ \ \finf$$
 
 \item[8.] En una oficina de correo los paquetes llegan según un proceso de Poisson de intensidad $\lambda$. Hay un costo de almacenamiento de $c$ pesos por paquete y por unidad de tiempo. Los paquetes se acumulan en el local y se despachan en grupos cada $T$ unidades de tiempo (es decir, se despachan en $T , 2T , 3T , \cdots)$. Hay un costo por despacho fijo de $K$ pesos (es decir, el costo es independiente del número de paquetes que se despachen). (a) ¿Cuál es el costo promedio por paquete por almacenamiento en el primer ciclo $[0, T ]$? (b) ¿Cuál es el costo promedio por paquete por almacenamiento y despacho en el primer ciclo? (c) ¿Cuál es el valor de $T$ que minimiza este costo promedio?
 
