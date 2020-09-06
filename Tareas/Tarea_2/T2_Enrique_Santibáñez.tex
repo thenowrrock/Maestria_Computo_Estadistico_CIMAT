@@ -142,20 +142,30 @@ $$\mE[X]=\lambda T.$$
 
 Por lo que, \textbf{(a) el costo promedio por paquete por almacenamiento es:}
 $$\frac{cT^2\lambda}{\lambda T}=cT.$$
-Ahora sea $G$ el costo total de almacenamiento \textbf{el costo promedio por paquete por almacenamiento y despacho en el primer ciclo} es:
-$$\mE[G]=\mE[X\cdot c \cdot T + KT]=cT^2\lambda+KT.$$
-Utilizando lo anterior, diferenciamos e igualamos a cero para encontrar el mínimo.
-$$\mE'[G]=2cT\lambda+K$$
- Igualamos a cero:
+
+Ahora sea $G$ el costo total de almacenamiento y despacho para el primer ciclo $[0,T]$ definido como
+$$G=cXT+K.$$
+Entonces el costo promedio total por almacenamiento y despacho es
+$$\mE[G]=\mE[cXT+K]=cT^2\lambda+K.$$
+
+Lo anterior implica que \textbf{el costo promedio por paquete por almacenamiento y despacho en el primer ciclo} es:
+$$\bar{\mE[G]}=\frac{cT^2\lambda+K}{\lambda T}.$$
+
+Utilizando el resultado anterior, diferenciamos e igualamos a cero para encontrar el mínimo.
+$$\bar{\mE'[G]}=c-\frac{K}{\lambda T^2}$$
+Igualamos a cero:
 \begin{equation*}
 \begin{array}{ccc}
-2cT\lambda+K &=& 0\\
-T&=&\frac{-K}{2c\lambda}.
+c-\frac{K}{\lambda T^2} &=& 0\\
+&&\\
+T^2&=&\frac{K}{c\lambda}\\
+&&\\
+T&=&\sqrt{\frac{K}{c\lambda}}.
 \end{array}
 \end{equation*}
-Usando el criterio de segunda derivada:
-$$\mE''[G]=2c\lambda.$$
-Por lo que podemos concluir que es mínimo.
+Usando el criterio de segunda derivada para determinar si es un máximo o minino:
+$$\bar{\mE''[G]}=2\frac{K}{\lambda T^3}.$$
+Evaluando la segunda derivada en $T=\sqrt{\frac{K}{c\lambda}}$, observamos que $\bar{\mE''[G]}>0$, por lo que podemos concluir que es un mínimo. En conclusión, \textbf{el valor de $T$ para el cuál minimiza el costo promedio por paquete por almacenamiento y despacho en el primer ciclo es} $\sqrt{\frac{K}{c\lambda}}\ \ \ \finf$
 \item[9.] Considere la siguiente función
 \begin{equation*}
 F(x)=\left\{ \begin{array}{cl}
