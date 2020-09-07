@@ -147,7 +147,3 @@ Si observamos el calendario, probablemente se daba a las vacaciones de semana sa
 ggplot(data=df_delitos, aes(x=SEMANA))+
   geom_density()
 ```
-
-
-
-
