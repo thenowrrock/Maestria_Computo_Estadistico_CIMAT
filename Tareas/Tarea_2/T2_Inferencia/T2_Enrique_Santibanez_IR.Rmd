@@ -1,0 +1,170 @@
+---
+fontsize: 11pt
+geometry: "left=2cm,right=2cm,top=2cm,bottom=2cm"
+documentclass: article
+output:
+    pdf_document:
+        includes:
+            in_header: mystyles.sty
+---
+
+3. Para el siguiente ejercicio es necesario usar R.
+
+a) Considere una moneda desequilibrada que tiene probabilidad $p$ de obtener águila. Usando el comando sample, escriba una función que simule $N$ veces lanzamientos de esta moneda hasta obtener un águila. La función deberá recibir como parámetros a la probabilidad $p$ de obtener águila y al número $N$ de veces que se repite el experimento; y tendrá que regresar un vector de longitud $N$ que contenga el número de lanzamientos hasta obtener un águila en cada uno de los $N$ experimentos.
+
+\res Si $X$ es el número de lanzamientos de la modena hasta obtener un águila, con probabilidad $p$ de obtener águila en un lanzamiento. Entonces, $X\sim Geo(p).$ Por lo que la función que solicitan sería la simulación de $X$ $N$ veces.
+```{r}
+moneda_geometrica <- function(p, N){ # p: probabilidad de aguila, N # repeticiones.
+  resultados <- c() # Inicializamos un vector.
+  for(i in 1:N){ # Repetimos el experimentos N veces.
+    contador <- 0 # Inicializamos el número de lanzamientos.
+    lanzamiento <- ""
+    while(lanzamiento!="aguila"){ # si ya se obtuvo águila deterner.
+      lanzamiento <- sample(x=c("aguila", "sol"), size=1, prob=c(p,1-p)) # simulación moneda.
+      contador <- contador + 1 
+    }
+    resultados[i] <- contador
+  }
+  resultados # regresamos los resultados.
+}
+```
+
+b) Usando la función anterior simule $N = 10^4$ veces una variable aleatoria Geom$(p)$ para $p = 0.5, 0.1, 0.01.$ Grafique las frecuencias normalizadas en color azul. Sobre está última figura empalme en rojo la gráfica de la función de masa correspondiente. ¿Qué observa?
+```{r, message=FALSE, warning=FALSE,fig.width = 5.2, fig.asp = 0.62, fig.align = "center"}
+library(tidyverse)
+geometric_graph_simula_and_teoric <- function(p, N){
+  simular_geometrica <- data.frame(resultado=moneda_geometrica(p, N))
+  max_resul <-max(simular_geometrica$resultado)
+  teoric_geometrica <- data.frame(x=seq(1:max_resul), y=dgeom(x=seq(0,max_resul-1,1), prob = p))
+  g <- ggplot(simular_geometrica, aes(x=resultado))+
+    geom_histogram(bins = max_resul, binwidth=0.5, fill="blue",
+                   aes(y=stat(count)/sum(count)))+
+    geom_line(data=teoric_geometrica, aes(x,y))+
+    geom_point(data=teoric_geometrica, aes(x,y))
+  return(g)
+}
+
+geometric_graph_simula_and_teoric(0.5, 10^4)
+geometric_graph_simula_and_teoric(0.1, 10^4)
+
+#geometric_graph_simula_and_teoric(0.01, 10^4)
+
+```
+
+
+c) Repita el inciso anterior para $N = 10^6$ . Además calcule el promedio y la desviación estándar de las simulaciones que realizó ¿Qué observa?
+```{r}
+geometric_graph_simula_and_teoric(0.5, 10^6)
+```
+
+
+4. Usando las ideas del inciso anterior escriba una función en R que simule N veces los lanzamientos de moneda hasta obtener $r$ águilas. La función deberá recibir como parámetros a la probabilidad $p$ de obtener águila, al número $r$ de águilas a observar antes de detener el experimento y al número $N$ de veces que se repite el experimento; y tendrá que regresar un vector de longitud $N$ que contenga el número de lanzamientos hasta obtener las $r$ águilas en cada uno de los $N$ experimentos. Grafique las frecuencias normalizadas de los experimentos para $N = 10^6$ , $p = 0.2, 0.1$ y $r = 2, 7$ y compárelos contra la función de masa de la distribución más adecuada para modelar este tipo de experimentos.
+
+\res Sea $X$ el número de lanzamientos hasta obtener $r$ aguilas. 
+```{r}
+moneda_desequilibrada_r_exitos <- function(r, p, N){
+  resultados <- c()
+  for(i in 1:N){
+    contador <- 0
+    lanzamiento <- ""
+    num_aguilas <- 0
+    while(num_aguilas<r){
+      lanzamiento <- sample(x=c("aguila", "sol"), size=1, prob=c(p,1-p))
+      contador <- contador + 1
+      if(lanzamiento=="aguila"){
+        num_aguilas<-num_aguilas+1
+      }
+    }
+    resultados[i] <- contador
+  }
+  resultados
+}
+```
+
+ 7. Escriba una función en R que simule una aproximación al proceso Poisson a partir de las 5 hipótesis que usamos en clase para construir tal proceso. Usando esta función, simule tres trayectorias de un proceso Poisson $\lambda=2$ sobre el intervalo $[0, 10]$ y grafíquelas. Además simule $10^4$ veces un proceso de Poisson $N$ con $\lambda 1/2$ y hasta el tiempo $t = 1$. Haga un histograma de $N(1)$ en su simulación anterior y compare contra la distribución de Poisson correspondiente.
+
+```{r}
+ProcesoPois<- function(t,lambda){
+  N<- rpois(1,t*lambda) #Paso 1
+  C<- sort(runif(N,0,t)) #Paso 2 y 3 
+  data.frame(x=c(0,0,C),y=c(0,0:N)) 
+}
+```
+
+```{r, message=FALSE, warning=FALSE}
+library(tidyverse)
+library(plyr)
+NPois<-function(n,t,rate){
+  C<- lapply(1:n, function(n) data.frame(ProcesoPois(t,rate),simulacion=n)) #Genera N dataframes con los procesos
+  C<-ldply(C, data.frame) #Une en una sola dataframe
+  C$simulacion<-factor(C$simulacion) #Convierte en factores
+  C
+}
+```
+
+```{r}
+simulacion_process_a <- NPois(3,10,2)
+head(simulacion_process_a)
+
+qplot(x,y,data=simulacion_process_a,geom=c("step","point"),color=simulacion,xlab="Tiempo",ylab="N(t)",main=sprintf("%d Simulaciones del Proceso de Poisson de Intensidad %.2f",3,2))
+
+```
+
+```{r}
+set.seed(13)
+prueba <- NPois(10^4, 1,0.5)
+
+prueba %>% group_by(simulacion) %>% summarise(a=max(y)) %>% 
+  ggplot(aes(x=a))+geom_bar()
+
+dpois(x = 0,lambda = 0.5)
+dpois(x = 1,lambda = 0.5)
+dpois(x = 2,lambda = 0.5)
+dpois(x = 3,lambda = 0.5)
+dpois(x = 4,lambda = 0.5)
+dpois(x = 5,lambda = 0.5)
+
+```
+
+
+10. \textbf{Este es un problema al que se recurrirá en el futuro,} su intención es que empiecen a jugar con datos reales. El archivo \textsf{ Delitos.csv} contiene información sobre los delitos denunciados en la ciudad de Aguascalientes, para el período comprendido entre enero de 2011 a junio del 2016. Dicho archivo contiene 5 columnas: la primera columna contiene la fecha de denuncia del delito; la columna TIPO muestra una descripción del tipo de delito; la columna CONCATENAD presenta un descripción más amplia del delito; la columna SEMANA contiene la semana del año a la que corresponde la fecha de denuncia; y la columna SEMANA\_COMPLETAS indica la semana a lo largo del estudio en la cual se presentó la denuncia. A través de métodos gráficos (e.g. boxplots) traten de determinar el comportamiento semanal de los delitos y discutan alternativas de modelos para describir los delitos cometidos en forma relativamente apropiada.
+
+```{r, message=FALSE, warning=FALSE}
+# Cargamos las librerias a ocupar.
+library(tidyverse)
+library(lubridate)
+
+# Leamos los datos.
+df_delitos <- read.csv(file = "Delitos.csv")
+```
+Conozcamos un poco los datos.
+
+```{r}
+names(df_delitos)
+head(df_delitos,3)
+```
+
+```{r}
+str(df_delitos)
+```
+
+```{r}
+unique(df_delitos$TIPO)
+```
+
+```{r}
+#df_delitos %>% group_by(TIPO) %>%
+#  count() %>% arrange(desc(n)) %>% head()
+```
+Esto puede deberse a que no todos los delitos se reportan, probablemente exista un sesgo cuando las perdidas son mayores.
+
+```{r}
+#df_delitos %>% group_by(TIPO,SEMANA) %>%
+#  count() %>% group_by(TIPO,SEMANA) %>% arrange(desc(n)) %>% head(4) 
+```
+Si observamos el calendario, probablemente se daba a las vacaciones de semana santas.
+
+```{r}
+ggplot(data=df_delitos, aes(x=SEMANA))+
+  geom_density()
+```
