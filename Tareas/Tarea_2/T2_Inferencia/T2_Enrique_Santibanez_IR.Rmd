@@ -1,5 +1,11 @@
 ---
-output: pdf_document
+fontsize: 11pt
+geometry: "left=2cm,right=2cm,top=2cm,bottom=2cm"
+documentclass: article
+output:
+    pdf_document:
+        includes:
+            in_header: mystyles.sty
 ---
 
 3. Para el siguiente ejercicio es necesario usar R.
