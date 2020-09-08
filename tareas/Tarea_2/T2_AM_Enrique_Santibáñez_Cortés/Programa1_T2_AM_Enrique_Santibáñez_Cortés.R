@@ -40,12 +40,36 @@ datos_matrix <- function(n,m){ # Los parametros es el tamaño de la matriz.
       matriz[i,j] <- as.numeric(num)
     }
   }
+  
   cat("La matriz ingresada es:\n") # Imprimimos la matriz ingresada.
   print(matriz)
   cat("------------------------------------------------------------------------\n")
   cat("------------------------------------------------------------------------\n")
   cat("------------------------------------------------------------------------\n")
-  return(matriz)
+  if(n==1){
+    cat("La matriz ingresada ya esta en su forma escalonda.\n")
+    print(matriz)
+    stop()
+  }
+  
+  if(m==1){
+    if (sum(matriz[,1])==matriz[1,1]){
+      cat("La matriz ingresada ya esta en su forma escalonda.\n")
+      print(matriz)
+      stop()
+    }
+  }
+  
+  for (i in 2:n){
+    for (j in 1:(i-1)){
+      if (matriz[i,j]!=0){
+        return(matriz)
+      }
+    }
+  }
+  cat("La matriz ingresada ya esta en su forma escalonda.\n")
+  print(matriz)
+  stop()
 }
 ## Operaciones elementales.
 # Validación de la posición ingresada.
@@ -166,6 +190,19 @@ tipo_iii <- function(matriz){
 # Función para validar si una matriz esta en su forma escalodana. 
 validacion_escalonada <- function(matriz){ # Comprobamos que los elementos abajo de la diagonal deben de ser ceros.
   n <- nrow(matriz)
+  m <- ncol(matriz)
+  if(m==1){
+    if (sum(matriz[,1])==matriz[1,1]){
+      return(1)
+    }
+    else{
+      return(0)
+    }
+  }
+  if(n==1){
+    return(0)
+  }
+  
   for (i in 2:n){
     for (j in 1:(i-1)){
       if (matriz[i,j]!=0){

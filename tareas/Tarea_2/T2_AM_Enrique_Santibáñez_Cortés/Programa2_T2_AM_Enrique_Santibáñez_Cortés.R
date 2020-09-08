@@ -45,7 +45,30 @@ datos_matrix <- function(n,m){ # Los parametros es el tamaño de la matriz.
   cat("------------------------------------------------------------------------\n")
   cat("------------------------------------------------------------------------\n")
   cat("------------------------------------------------------------------------\n")
-  return(matriz)
+  if(n==1){
+    cat("La matriz ingresada ya esta en su forma escalonda.\n")
+    print(matriz)
+    stop()
+  }
+  
+  if(m==1){
+    new_matriz <- matrix(0,nrow = n,ncol=1)
+    new_matriz[1,1] <-matriz[1,1]
+    cat("La matriz escalodana por renglones es:\n")
+    print(new_matriz)
+    stop()
+    }
+  
+  for (i in 2:n){
+    for (j in 1:(i-1)){
+      if (matriz[i,j]!=0){
+        return(matriz)
+      }
+    }
+  }
+  cat("La matriz ingresada ya esta en su forma escalonda.\n")
+  print(matriz)
+  stop()
 }
 ## Operaciones elementales.
 # Operaciones elementales Tipo III.
