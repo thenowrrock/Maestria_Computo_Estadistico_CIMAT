@@ -107,12 +107,12 @@ geometric_graph_simula_and_teoric <- function(p, N, potencia, titulo, estadistic
 Por lo que las gráficas variando el parámetro $p$ son
 ```{r, message=FALSE, warning=FALSE,fig.width = 5.2, fig.asp = 0.62, fig.align = "center"}
 set.seed(08081997)
-#geometric_graph_simula_and_teoric(0.5, 10^4, 10^4,
-#                                  "Simulación de una variable Geometrica(0.5)")
-#geometric_graph_simula_and_teoric(0.1, 10^4, 10^4,
-#                                  "Simulación de una variable Geometrica(0.1)")
-#geometric_graph_simula_and_teoric(0.01, 10^4, 10^4,
-#                                  "Simulación de una variable Geometrica(0.01)")
+geometric_graph_simula_and_teoric(0.5, 10^4, 10^4,
+                                  "Simulación de una variable Geometrica(0.5)")
+geometric_graph_simula_and_teoric(0.1, 10^4, 10^4,
+                                  "Simulación de una variable Geometrica(0.1)")
+geometric_graph_simula_and_teoric(0.01, 10^4, 10^4,
+                                  "Simulación de una variable Geometrica(0.01)")
 ```
 
 Observemos que si comparamos las frecuencias de las simulaciones y las frecuencias obtenidas de la función de probabilidad de una geometrica se ven muy cercanas. Pero conforme $p$ se acerca a 0 la comparaciones entre estas frecuencias son más notorias. Esto se puede explicar debido a que cuando $p$ es más chico la $\mP(X=x)$ se va hacieno más pequeña, por lo que $x$ toma un rango más amplio de valores posibles. No hay que confundirse por el hecho de que como la función de distribución de una variable aleatoria geometrica esta defina en todos los naturales. Ya que si $p$ es cercano a 1, las probabilidades convergen más rapido a 0, y viceversa, si $p$ es cercano a 0 las probabilidad convergen más lento a 0.
@@ -120,12 +120,12 @@ Observemos que si comparamos las frecuencias de las simulaciones y las frecuenci
 c) Repita el inciso anterior para $N = 10^6$ . Además calcule el promedio y la desviación estándar de las simulaciones que realizó ¿Qué observa?
 ```{r,  warning=FALSE,fig.width = 5.2, fig.asp = 0.62, fig.align = "center"}
 set.seed(08081997)
-#geometric_graph_simula_and_teoric(0.5, 10^6, 10^5, 
-#"Simulación de una variable Geometrica(0.5)",1)
-#geometric_graph_simula_and_teoric(0.1, 10^6, 10^5, 
-#"Simulación de una variable Geometrica(0.1)",1)
-#geometric_graph_simula_and_teoric(0.01, 10^6, 10^5, 
-#"Simulación de una variable Geometrica(0.01)",1)
+geometric_graph_simula_and_teoric(0.5, 10^6, 10^5, 
+"Simulación de una variable Geometrica(0.5)",1)
+geometric_graph_simula_and_teoric(0.1, 10^6, 10^5, 
+"Simulación de una variable Geometrica(0.1)",1)
+geometric_graph_simula_and_teoric(0.01, 10^6, 10^5, 
+"Simulación de una variable Geometrica(0.01)",1)
 ```
 
 Cómo el número de simulaciones son mayores que el inciso anterior, observamos que las diferencias se entre las frecuencias simuladas y frecuencias calculados son muy cercanas "casi nulas". Y esto incita a concluir que la distribución Geometrica modela bien este esperimento de lanzamiento de monedas. Ahora analizando los promedios y desviaciones de las contra  la experanza de $X$ para cada $P$:
@@ -207,21 +207,20 @@ bimneg_graph_simula_and_teoric <- function(r, p, N, potencia, titulo, estadistic
   return(g)
 }
 ```
-
-
 Por lo que las gráficas variando el parámetro $p$ y $r$ son:
 ```{r, warning=FALSE,fig.width = 5.2, fig.asp = 0.62, fig.align = "center"}
 set.seed(08081997)
-#bimneg_graph_simula_and_teoric(2, 0.1, 10^6, 10^5,
-#                               "Simulación de una variable NBinom(2, 0.1)", 1)
-#bimneg_graph_simula_and_teoric(2, 0.2, 10^6, 10^5,
-#                               "Simulación de una variable NBinom(2, 0.2)", 1)
-#bimneg_graph_simula_and_teoric(7, 0.1, 10^6, 10^5,
-#                               "Simulación de una variable NBinom(7, 0.1)", 1)
-#bimneg_graph_simula_and_teoric(7, 0.2, 10^6, 10^5,
-#                               "Simulación de una variable NBinom(7, 0.2)", 1)
+bimneg_graph_simula_and_teoric(2, 0.1, 10^6, 10^5,
+                               "Simulación de una variable NBinom(2, 0.1)", 1)
+bimneg_graph_simula_and_teoric(2, 0.2, 10^6, 10^5,
+                               "Simulación de una variable NBinom(2, 0.2)", 1)
+bimneg_graph_simula_and_teoric(7, 0.1, 10^6, 10^5,
+                               "Simulación de una variable NBinom(7, 0.1)", 1)
+bimneg_graph_simula_and_teoric(7, 0.2, 10^6, 10^5,
+                               "Simulación de una variable NBinom(7, 0.2)", 1)
 ```
-Podemos concluir que la distribución Binomial Negativa ajusta muy bien este experimento. Los parámetros $p$ y $r$ influyen de cierta manera, para ver como in
+Podemos concluir que la distribución Binomial Negativa ajusta muy bien este experimento. Observando el promedio y la desviación estandar calculados, si las comparamos con la esperanza y desviación de la distribución Binomial Negativa. $$E[X]=\frac{r}{p} \ \ \ \sigma = \sqrt{Var[X]}=\sqrt{\frac{r(1-p)}{p^2}}$$
+Comparando cada una de estas observamos que son muy parecidas, es decir, podemos dicer que son buenos estadisticos para estimar la esperanza y la desviación estandar. \ \ \ \ \fin 
 
 5. Considera $X$ una v.a. con función de distribución $F$ y función de densidad $f$, y sea $A$ un intervalo de la línea real $\mathbb{R}$. Definamos la función indicadora $1_{A}(x):$
 \begin{equation*}
@@ -231,13 +230,20 @@ Podemos concluir que la distribución Binomial Negativa ajusta muy bien este exp
 \end{array}\right.
 \end{equation*}
 Sea $Y=1_{A}(x).$ Encuentre una expresión para la distribución acumulada y el valor esperado de $Y$. 
-\res cuando $X$ es discreta tenemos que la función de densidad es 
+\res Para calcular la función de distribución de distribución acumulada primero calculemos la función distribución:
 
 $$f(Y=y)=\mP(1_{A}(x)=y)=\mP(\{x:1_{A}(x)=y\}).$$
 \begin{equation*}
 f(y)=\left\{ \begin{array}{cc}
 \mP(x\in A) & \text{para y=1}\\
 \mP(x\not \in A) & \text{para y=0}\\
+0 & \text{en otro caso}
+\end{array}\right.
+\end{equation*}
+Utilizando como $A = \{ \{x_1 \}, \{ x_2\}, ...\{ x_n\}\}$, donde $x_i$ representa los particiones del intervalor $A$. Por lo que la función de distribución acumulada sería:
+\begin{equation*}
+F(y)=\left\{ \begin{array}{cc}
+\frac{\sum_{1}^i \mP (\ x_i\in A)}{\sum_{i}^n \mP (x_i\in A)} & x_i \\
 0 & \text{en otro caso}
 \end{array}\right.
 \end{equation*}
@@ -258,13 +264,13 @@ Por lo tanto observamos que si es una función de probabilidad.
 
 Entonces \textbf{la probabilidad de que un estudiante repruebe es}
 $$f_y(Y<0.4)=\int_0^{0.4}f_y(y)=\int_0^{0.4} 6y(1-y)=3y^2-2y^3|_0^{0.4}=0.352 $$
-Ahora, sea $X$ el número de estudiantes de reprueban el examen de un conjunto de 6 estudiantes que realizaron el examen. Por definición podemos decir que $X\sim Bin(6,p)$ donde $p$ es la probabilidad de reprobar, pero si consideramos que las calificaiones de los estudiantes se distribuye como la variable $Y$, entonces podemos concluir que $X\sim Bin(6,0.352).$  Por lo tanto, \textbf{la probabilidad de que exactamente 2 estudiantes reprueben es} (usamos la función dbinom(x=4, size = 6, prob = 0.325):
-$$\mP(X=2)={6\choose 2}0.325^2(1-0.325)^4 =0.328907 \ \ \ \finf$$
+Ahora, sea $X$ el número de estudiantes de reprueban el examen de un conjunto de 6 estudiantes que realizaron el examen. Por definición podemos decir que $X\sim Bin(6,p)$ donde $p$ es la probabilidad de reprobar, pero si consideramos que las calificaiones de los estudiantes se distribuye como la variable $Y$, entonces podemos concluir que $X\sim Bin(6,0.352).$  Por lo tanto, \textbf{la probabilidad de que exactamente 2 estudiantes reprueben es} (usamos la función dbinom(x=4, size = 6, prob = 0.352):
+$$\mP(X=2)={6\choose 2}0.352^2(1-0.352)^4 =0.328907 \ \ \ \finf$$
 
 
  7. Escriba una función en R que simule una aproximación al proceso Poisson a partir de las 5 hipótesis que usamos en clase para construir tal proceso. Usando esta función, simule tres trayectorias de un proceso Poisson $\lambda=2$ sobre el intervalo $[0, 10]$ y grafíquelas. Además simule $10^4$ veces un proceso de Poisson $N$ con $\lambda 1/2$ y hasta el tiempo $t = 1$. Haga un histograma de $N(1)$ en su simulación anterior y compare contra la distribución de Poisson correspondiente.
 
-\res 
+\res Utilizando las definiciones y el archivo compartido en clase:
 ```{r}
 ProcesoPois<- function(t,lambda){
   N<- rpois(1,t*lambda) #Paso 1
@@ -284,31 +290,26 @@ NPois<-function(n,t,rate){
   C
 }
 ```
-
+Gráficamos 3 simulaciones
 ```{r}
 simulacion_process_a <- NPois(3,10,2)
 
 # Graficamos.
 qplot(x,y,data=simulacion_process_a,geom=c("step","point"),color=simulacion,
       xlab="Tiempo",ylab="N(t)",main=sprintf("%d Simulaciones del Proceso de Poisson de Intensidad %.2f",3,2))
-
 ```
-
+Graficamos la distribución Poission y el histograma de las simulaciones:
 ```{r}
 set.seed(13)
 prueba <- NPois(10^4, 1,0.5)
 
-prueba %>% group_by(simulacion) %>% summarise(a=max(y)) %>% 
-  ggplot(aes(x=a))+geom_bar()
-
-dpois(x = 0,lambda = 0.5)
-dpois(x = 1,lambda = 0.5)
-dpois(x = 2,lambda = 0.5)
-dpois(x = 3,lambda = 0.5)
-dpois(x = 4,lambda = 0.5)
-dpois(x = 5,lambda = 0.5)
+prueba %>% group_by(simulacion) %>%
+    top_n(1, y) %>% distinct(y, simulacion) %>%
+  ggplot(aes(y))+geom_histogram(fill="blue", aes(y=stat(count)/sum(count)))+
+  geom_line(data=data_frame(x=seq(0,5),y=dpois(x=seq(0,5),lambda = 0.5)), aes(x,y))
 
 ```
+Observamos que las simulaciones realizadas es una forma de realizar un experimento con distribución Poisson. 
 
 8. En una oficina de correo los paquetes llegan según un proceso de Poisson de intensidad $\lambda$. Hay un costo de almacenamiento de $c$ pesos por paquete y por unidad de tiempo. Los paquetes se acumulan en el local y se despachan en grupos cada $T$ unidades de tiempo (es decir, se despachan en $T , 2T , 3T , \cdots)$. Hay un costo por despacho fijo de $K$ pesos (es decir, el costo es independiente del número de paquetes que se despachen). (a) ¿Cuál es el costo promedio por paquete por almacenamiento en el primer ciclo $[0, T ]$? (b) ¿Cuál es el costo promedio por paquete por almacenamiento y despacho en el primer ciclo? (c) ¿Cuál es el valor de $T$ que minimiza este costo promedio?
 
@@ -365,42 +366,334 @@ aleatoria discreta o continua?
 
 10. \textbf{Este es un problema al que se recurrirá en el futuro,} su intención es que empiecen a jugar con datos reales. El archivo \textsf{ Delitos.csv} contiene información sobre los delitos denunciados en la ciudad de Aguascalientes, para el período comprendido entre enero de 2011 a junio del 2016. Dicho archivo contiene 5 columnas: la primera columna contiene la fecha de denuncia del delito; la columna TIPO muestra una descripción del tipo de delito; la columna CONCATENAD presenta un descripción más amplia del delito; la columna SEMANA contiene la semana del año a la que corresponde la fecha de denuncia; y la columna SEMANA\_COMPLETAS indica la semana a lo largo del estudio en la cual se presentó la denuncia. A través de métodos gráficos (e.g. boxplots) traten de determinar el comportamiento semanal de los delitos y discutan alternativas de modelos para describir los delitos cometidos en forma relativamente apropiada.
 
+\res Realicemos un analisis exploratorio. Cargamos los datos:
 ```{r, message=FALSE, warning=FALSE}
 # Cargamos las librerias a ocupar.
 library(tidyverse)
-library(lubridate)
 
 # Leamos los datos.
-df_delitos <- read.csv(file = "Delitos.csv")
+df_delitos <- read_csv(file = "Delitos.csv")
 ```
-Conozcamos un poco los datos.
-
+Conozcamos un poco los datos. Nombre de las columnas y mostramos los primeros 5 registros.
 ```{r}
 names(df_delitos)
 head(df_delitos,3)
 ```
-
+Exploramos el tipo de cada variable.
 ```{r}
 str(df_delitos)
 ```
-
+Imprimimos los valores unicos, observamos que existen 23 diferentes.
 ```{r}
 unique(df_delitos$TIPO)
 ```
-
+Contamos los 
 ```{r}
-#df_delitos %>% group_by(TIPO) %>%
-#  count() %>% arrange(desc(n)) %>% head()
+library(dplyr)
+df_delitos %>% group_by(TIPO) %>%
+  tally() %>% arrange(desc(n)) %>% head()
 ```
-Esto puede deberse a que no todos los delitos se reportan, probablemente exista un sesgo cuando las perdidas son mayores.
+Esto puede deberse a que no todos los delitos se reportan, lo que puede indica que exista un sesgo en los delitos. Puede deberse a que en México no reportan cuando el delito no es muy grave como el robo de una bicicleta, o incluso a que algunos delitos son más complicados que otros como robar un tractor agricola.
 
-```{r}
-#df_delitos %>% group_by(TIPO,SEMANA) %>%
-#  count() %>% group_by(TIPO,SEMANA) %>% arrange(desc(n)) %>% head(4) 
-```
-Si observamos el calendario, probablemente se daba a las vacaciones de semana santas.
-
-```{r}
+La distribución de los delitos reportados durante todo el año se ve de la siguiente forma:
+```{r warning=FALSE,fig.width = 5.2, fig.asp = 0.62, fig.align = "center"}
 ggplot(data=df_delitos, aes(x=SEMANA))+
-  geom_density()
+  geom_density()+
+  ylim(c(0,0.030))
 ```
+Se observamos que en las semanas 15-19 existe un pico notorio con respecto al resto de las semanas, esto se puede deber a que existe por esas fechas es semana santa, y que exista más vulnabilidad para cometer delitos. 
+
+Ahora como los no tienen la misma posiilidad de comenterse, observemos como se ven las semanas de los delitos top 6 con más registros esto para ser más entendible las gráficas: 
+
+```{r warning=FALSE,fig.width = 5.2, fig.asp = 0.62, fig.align = "center"}
+top_5sup <- c(df_delitos %>% group_by(TIPO) %>%
+  tally() %>% arrange(desc(n)) %>% head() %>%select(TIPO))
+
+df_delitos_top <- df_delitos %>% filter(TIPO %in% top_5sup$TIPO)
+
+ggplot(data=df_delitos_top , aes(x=SEMANA, fill=TIPO))+
+         geom_boxplot()
+
+```
+Observamos que los delitos estan centrados en las semanas 20-30, lo que implica que puede estar relacionado con las vacacioens de verano. 
+
+Ahora una forma de modelar el número delitos que ocurrirán en una semana del semana es considerando un proceso poisson. Como observamos la intensidad no es la misma en cada semana del año, por lo que puede ser que un proceso poisson no homogeneo sería una buena alternativa. Aclaro que cada delito tiene que tener su proceso poisson debido a que existe una diferencia entre la intensidad de los delitos. \ \ \ \ \fin 
+
+
+\textbf{Ejercicios de las notas. }
+
+- Distribución uniforme continua.
+
+i) Crea una columna con 100 valores de una $Unif(0,1)$ en el software de tu preferencia.
+
+\res Ocupando el software estadístico R:
+```{r}
+set.seed(080801997)
+y <- runif(100, 0, 1)
+head(y) # Mostramos algunos valores.
+```
+ii) Construye otra columna con la fórmula $x=-2\log(1-y)$
+
+
+\res Creamos la variable $y$ con la formula:
+```{r}
+x <- 2-log(1-y)
+head(x) # Mostramos algunos valores.
+```
+iii) Construye el histograma de esta nueva columna y concluye.
+
+\res Utilizando la librería R:
+
+```{r message=FALSE, warning=FALSE,fig.width = 5.2, fig.asp = 0.62, fig.align = "center"}
+library(tidyverse)
+
+ggplot(data=data_frame(x=x), aes(x))+
+  geom_histogram(fill="blue")
+```
+Por como se construyo la variable $x$ si despejamos la expresión del inciso anterior, obtenemos que 
+$$y=1-e^{-1/2x}.$$
+Por lo que podemos concluir que $x$ se distribuyen como una distribución Exponencial y esto mismo se observa cuando se observa el histograma del inciso anterior. \ \ \ \fin
+
+- El modelo Normal o Gaussiano. Se han realizado ciertas pruebas de resistencia en ladrillos obteniéndose las mediciones que a continuación se muestran, agrupadas en una tabla de frecuencias.
+\begin{table}[H]
+\centering
+\begin{tabular}{ccccc}
+\hline
+Interv. & De & Hasta & Frecuencia & Frec. relativa\\ \hline
+ 1 & 28.70 & 32.65 & 5  &  5.56\\
+ 2 & 32.65 & 36.60 & 6  &  6.67\\
+ 3 & 36.60 & 40.55 & 11 & 12.22\\
+ 4 & 40.55 & 44.50 & 17 & 18.89\\
+ 5 & 44.50 & 48.45 & 19 & 21.11\\
+ 6 & 48.45 & 52.40 & 19 & 21.11\\
+ 7 & 52.40 & 56.35 & 7  &  7.78\\
+ 8 & 56.35 & 60.30 & 2  &  2.22\\
+ 9 & 60.30 & 64.25 & 3  &  3.33\\
+10 & 64.25 & 68.20 & 1  &  1.11\\
+\hline
+\end{tabular}
+\end{table}
+
+a) Traza el histograma.
+\res El histograma es:
+
+```{r}
+df_ladrillo <- data_frame(intervalo=seq(1,10,1),
+                          de=seq(28.70, 64.25, 3.95),
+                          hasta=seq(32.65, 68.20, 3.95),
+                          frec=c(5, 6, 11, 17, 19, 19, 7, 2, 3, 1))
+df_ladrillo <- df_ladrillo %>%
+  mutate(frec_relav=round(frec/sum(frec)*100,2))
+```
+Graficamos
+```{r message=FALSE, warning=FALSE,fig.width = 5.2, fig.asp = 0.62, fig.align = "center"}
+ggplot(data=df_ladrillo, aes(intervalo, frec_relav))+
+  geom_histogram(stat="identity",bins = 10,fill="blue")
+```
+
+
+
+b) Calcula la probabilidad de cada intervalo de clase de la tabla de frecuencias asumiendo que las resistencias siguen una distribución normal con media 45.47 y varianza 58.19.
+
+\res Cómo no se especifica que metodología usar:
+```{r}
+sd_prob <- sqrt(58.19)
+media_prob <- 45.47
+
+df_ladrillo <- df_ladrillo %>% 
+  mutate(prob_a=pnorm(de,media_prob, sd_prob),
+         prob_b=pnorm(hasta,media_prob, sd_prob),
+         prob=(prob_b-prob_a)*100)
+
+```
+
+
+c) Compara las frecuencias relativas con las probabilidades bajo normalidad ¿Qué se puede concluir? Esta es la idea base de una prueba de Bondad de Ajuste conocida como $\chi^2$ de Pearson. Si la media y la varianza de la normal no se conocen de antemano, podemos usar los valores muestrales correspondientes como una aproximación de los mismos. A esto lo llamamos estimación de parámetros y ya hablaremos más adelante de las cualidades de los estimadores.
+
+Veamos las frecuencias del inciso anterior:
+```{r}
+df_ladrillo[c(1,5,8)]
+```
+Observamos que la diferencias entre las probabilidades son muy pequeñas, podría decir que tienen la mismas forma. \ \ \ \fin
+
+- El modelo Weibull. 
+
+1. Gráficar la función Weibull para los siguientes valores de los parámetros:
+\begin{table}[H]
+\centering
+\begin{tabular}{ccc}
+$\alpha=1,\ \beta=2$\\
+$\alpha=2,\ \beta=2$\\
+$\alpha=3,\ \beta=4$
+\end{tabular}
+\end{table}
+Algebraicamente, o bien generando variables con ésta distribución y construyendo un histograma.
+
+\res Recordemos que la función de distribución de una Weibull es:
+$$f(x)=\alpha \beta x^{\beta-1}e^{-\alpha x^\beta}.$$
+Para no tener problemas de versión de parametrización con R, definamos una función que calcule la expreción anterior
+```{r}
+beta_clases <-function(x,alpha, beta){
+  alpha*beta*(x)^{beta-1}*exp({-alpha*x^{beta}})
+}
+```
+Ahora con la ayuda de la función anterior gráficamos la distribución de los distintos parámetros de la Weibull.
+
+```{r  warning=FALSE,fig.width = 5.2, fig.asp = 0.62, fig.align = "center"}
+x <- seq(0,3, 0.05)
+len_x<-length(x)
+y_1 <- beta_clases(x, 1, 2)
+y_2 <- beta_clases(x, 2, 2)
+y_3 <- beta_clases(x, 3, 4)
+
+df_weibull <- data.frame(x = rep(x,3), y =c(y_1, y_2, y_3),
+                         tipo=c(rep("Función 1",len_x), rep( "Función 2",len_x),rep("Función 3",len_x)))
+
+ggplot(data=df_weibull, aes(x,y,fill=tipo,color=tipo))+
+  geom_line()
+```
+
+
+
+2. Gráfica las funciones de confiabilidad y riesgo para cada uno de los casos anteriores.
+
+\res Las funciones de confiabilidad y riesgo de una función de distribución Weibull son:
+$$R(t)=e^{-\alpha t^\beta}\ \ \ h(t)=\alpha \beta t^{\beta-1} $$
+Creamos una función que avalué lo anterior:
+```{r}
+confiabilidad_weibull <- function(t, alpha, beta){
+  exp(-alpha*t^{beta})
+}
+
+riesgo_weibull <- function(t, alpha, beta){
+  alpha*beta*t^{beta-1}
+}
+```
+Ocupando las funciones anteriores generamos las gráficas:
+```{r  warning=FALSE,fig.width = 5.2, fig.asp = 0.62, fig.align = "center"}
+t <- seq(0,5, 0.05)
+len_t<-length(t)
+rt_1 <- confiabilidad_weibull(t, 1, 2)
+rt_2 <- confiabilidad_weibull(t, 2, 2)
+rt_3 <- confiabilidad_weibull(t, 3, 4)
+
+ht_1 <- riesgo_weibull(t, 1, 2)
+ht_2 <- riesgo_weibull(t, 2, 2)
+ht_3 <- riesgo_weibull(t, 3, 4)
+df_weibull <- data.frame(t = rep(t,3), rt=c(rt_1, rt_2, rt_3),
+                         ht=c(ht_1, ht_2, ht_3),
+                         tipo=c(rep("Función 1",len_t), rep( "Función 2",len_t),rep("Función 3",len_t)))
+
+ggplot(data=df_weibull, aes(t,rt,fill=tipo,color=tipo))+
+  geom_line()+
+  labs(title = "Funciones de confiabilidad.")
+
+ggplot(data=df_weibull, aes(t,ht,fill=tipo,color=tipo))+
+  geom_line() +
+  labs(title = "Funciones de riesgo.")
+```
+
+3. Si $h(t)= a+bt$, ¿cuál es la densidad asociada?
+
+\res Cómo $f(t)=h(t)\cdot R(t)$, calculemos primero $R(t)$. Ocupando la siguente relación entre la función de riesgo y confiabilidad:
+$$ R(t)=Ce^{\int h(t)dt}$$
+$$R(t)=Ce^{at+b/2t^2}$$
+Evaluemos en $t=0$ para encontrar $C$, 
+$$R(0)=Ce^{0}=1.$$
+Por lo tanto, la densidad asociada es: $$f(t)=(a+bt)e^{at+b/2t^2}.$$
+4. Estudiar las funciones de riesgo para la distribución Normal, Gamma y Lognormal. ¿Cuál es la principal dificultad en estos casos?
+
+\res Cada una de estas función si observamos su función de probabilidad acumulada, estas no poseen como tal una expresión para calcularlas para algún $x$. Por lo que, como la función de confiabilidad es $R(x)=1-F(x)$ para estas funciones no existe una "igualdad". Y por lo tanto como la función de riesgo es $h(t)=\frac{f(t)}{R(t)}$, como depende de $R(t)$ por lo que el manejo de $h(t)$ se complica debido a que no existe una forma sencilla de calcularla. Es decir, en la distribución Normal, la función acumulada es una integral que no se puede resolver si no esta definida de igual modo que la distribución LogNormal. Y para el caso de la distribución Gamma obtenemos una serie la cual es algo complicado de que converja a algo. \ \ \ \fin
+
+- El modelo exponencial. 
+
+Consideremos un sistema formado por 5 componentes idénticos conectados en serie tal como se muestra a continuación:
+\begin{figure}[H]
+\centering
+\includegraphics{ejercicio_notas_sistema.png}
+\end{figure}
+
+Tan pronto como un componente falla, el sistema completa falla. Supongamos que cada componente sigue un modelo de tiempo a la falla exponencial con $\theta=100,$ y que los componentes fallan en forma independiente una de la otra. Definamos los eventos
+$$A_i=\{i-\text{ésimo componente dura al menos t horas}\}\ i=1,2,3,4,5.$$
+Las $A_i's$ son independientes e identicamente distriuidas. Sea $X$ el tiempo de la falla del sistema.
+\begin{itemize}
+\item[a)] El evento $\{ X\geq t\}$, ¿a cuál evento, en términos de las $A_i's$ es equivalente?
+
+\res Por como se definieron los eventos de cada componente, tenemos que decir que el sistema fallé equivale a que algún componente fallé, lo que se puede escribir como:
+$$\{X\geq t \}=\{A_1\cap \ A_2 \cap A_3 \cap A_4 \cap A_5\}.$$
+
+\item[b)] Usando la independencia de las $A_i's$ calcula $\mP\{ X\geq t\}$. Obtén $F(t)=\mP(X\leq t).$ ¿Cuál es la distribución de $X$?
+
+\res Ocupando la relación anterior y además como cada componente es independiente ($\mP(A_i\cap A_j)=\mP(A_i)\cap \mP(A_j$):
+\begin{equation*}
+\begin{array}{ccc}
+\mP\{ X\geq t\}&=&\mP\{A_1\cap \ A_2 \cap A_3 \cap A_4 \cap A_5\}\\
+&&\\
+&=&\mP\{A_1\}\mP\{A_2\} \mP\{A_3\}\mP\{A_4\} \mP\{A_5\}\\
+&&
+\end{array}
+\end{equation*}
+Ahora considerando que cada componente sigue un modelo de tiempo a la falla exponencial con $\theta =100$, podemos ver que $\mP(A_i)=F(y)=\mP(Y\leq y)$ donde $Y\sim Exp(1/100)$. Ahora sustituyendo en lo anterior: 
+
+\begin{equation*}
+\begin{array}{ccc}
+&=&[1-(1-e^{-\frac{t}{100}})][1-(1-e^{-\frac{t}{100}})][1-(1-e^{-\frac{t}{100}})][1-(1-e^{-\frac{t}{100}})][1-(1-e^{-\frac{t}{100}})]\\
+&&\\
+&=&[e^{-\frac{5t}{100}})]\\
+\end{array}
+\end{equation*}
+
+Por lo que $$F(t)=1-e^{-500t}.$$
+Lo anterior implica que $X$ tiene una distribución Exp(5/100).
+
+\item[c)] Si en lugar de 5 componentes tenemos $n$, ¿cuál es la distribución de $X$?
+
+\res Por inducción podemos probar que cuando existe $n$ componentes
+$$\mP(X\geq t) = \prod_{i=1}^n \mP\{A_i\} $$ 
+
+\textbf{Paso 1.} Probamos para algún $n$. Considerando el inciso b) se cumple.\\
+\textbf{Paso 2.} Suponemos que se cumple para $n$ componentes.\\
+\textbf{Paso 3.} Demostramos para $n+1$ componentes. Como existe independencia entre cualquier $A_i$, tenemos entonces que:
+$$\mP(X\geq t) = \bigcap_{i=1}^n \mP\{A_i\} \cap A_{n+1}=\prod_{i=1}^n \mP\{A_i\}\cdot A_{n+1}=\prod_{i=1}^{n+1}\mP\{A_i\}.$$
+
+Entonces utilizando lo mismo que el inciso anterior tendrías que 
+$$ \mP(X\geq t) = \prod_{i=1}^n \mP\{A_i\}=[1-(1-e^{-\frac{t}{100}})]^n=e^{-\frac{nt}{100}}.$$ 
+Entonces, podemos concluir que para $n$ componentes $X\sim Exp(n/100) \ \ \ \ \finf$
+\end{itemize}
+
+- El modelo Beta. 
+
+En el ejemplo anterior usa la relación con la Binomial para hacer el cálculo de la probabilidad en b). 
+\res Recordemos la relación entre una variable Beta y Binomial. Sea $Y\sim Beta(\alpha =k, \beta =n-(k-1))$ y $X\sim Bin(n,p)$
+$$\mP(Y>p)=\mP(X\leq k-1).$$
+Entonces la probabilidad de que al menos el $.25$ de los restaurantes fracasen considerando $Y\sim Beta(1,4)$ y $X\sim Bin(4,0.25)$: $$\mP(Y>0.25)=\mP (X\leq 0)={4\choose 0} (0.25)^0(0.75)^4=0.3164.$$
+
+Por lo que concluimos que \textbf{la probabilidad de que al menos el $.25$ de los restaurantes fracasen} es 0.3164062.
+
+En muchos proyectos se emplea un método llamado PERT (Program Evaluation and Review Technique) para coordinar varias actividades en proyectos grandes y/o complejos (por ejemplo, fue empleado en la construcción de los Apolo). Un supuesto estándar de esta técnica es que el tiempo necesario para completar cualquier actividad una vez que ha comenzado, se puede modelar mediante una distribución Beta con
+$$A=\text{tiempo optimista (si todo va bien)}$$
+$$B=\text{tiempo pesimista (si todo va mal)}$$
+Por ejemplo, supongamos que estamos construyendo casas habitación y que el tiempo necesario, en días, para poner los cimientos de una casa sigue una distribución Beta con $A = 2$ y $B = 5$. Además, se puede calcular que $\alpha=2$ y $\beta=3$. Calcula la probabilidad de que el tiempo para terminar los cimientos sea menor a 3 días.
+
+\res Sea $X$ una variable aleatoria $Beta(\alpha,\beta)$ con soporte en $[0,1]$, con una transformación lineal podemos obtener una nueva variable $Y\sim Beta(\alpha, \beta)$  con soporte en $[A,B]$. Sea:
+$$Y=X(B-A)+A$$
+La función de probabilidad de $Y$ sería:
+$$f(y)=\frac{f(x)}{B-A}=\frac{\left(\frac{y-A}{B-A}\right)^{\alpha-1} \left( \frac{B-y}{B-A} \right)^{\beta-1} }{(B-A)B(\alpha,\beta)}= \frac{(y-A)^{\alpha -1}(B-y)^{\beta-1}}{(B-A)^{\alpha+\beta-1}B(\alpha, \beta)}.$$
+Entonces para este problema sustituyen los valores de $A$ y $B$ tenemos que la distribución de probabilidad es:
+$$f(y)=\frac{(y-2)^{2-1}(5-y)^{3-1}}{(5-2)^{2+3-1}Beta(2, 3)}=\frac{(y-2)(5-y)^{2}}{81\cdot B(2, 3)},$$
+donde $1/B(2,3)$ es la función Beta, la cual esta definida como $\frac{\Gamma(\alpha+\beta)}{\Gamma(\alpha)\Gamma(\beta)}$.
+
+Por tanto la \textbf{probabilidad de que el tiempo para terminar los cimientos sea menor a 3 días} es:
+\begin{equation*}
+\begin{array}{ccc}
+F(3)&=&\int_2^3\frac{(y-2)(5-y)^2}{81}\frac{\Gamma(5)}{\Gamma(2)\Gamma(3)}dy\\
+&&\\
+&=& \frac{4!}{81\cdot 2!}\int_2^3 y^3-12y^2+45y-50 dy\\
+&&\\
+&=& \frac{4}{27}\left(\frac{y^4}{4}-4y^3+\frac{45y^2}{2}-50y\right)\mid_2^3\\
+&&\\
+&=&\frac{4}{27}*2.75\\
+&&\\
+&=&0.4074074.\ \ \ \finf
+\end{array}
+\end{equation*}

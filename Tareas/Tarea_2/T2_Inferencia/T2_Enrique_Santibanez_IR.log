@@ -1,11 +1,11 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020) (preloaded format=pdflatex 2020.9.7)  7 SEP 2020 20:22
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020) (preloaded format=pdflatex 2020.9.8)  8 SEP 2020 10:31
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
 **T2_Enrique_Santibanez_IR.tex
 (./T2_Enrique_Santibanez_IR.tex
 LaTeX2e <2020-02-02> patch level 5
-L3 programming layer <2020-09-03> (/home/enrique/.TinyTeX/texmf-dist/tex/latex/
+L3 programming layer <2020-09-06> (/home/enrique/.TinyTeX/texmf-dist/tex/latex/
 base/article.cls
 Document Class: article 2019/12/20 v1.4l Standard LaTeX document class
 (/home/enrique/.TinyTeX/texmf-dist/tex/latex/base/size11.clo
@@ -613,45 +613,137 @@ File: t1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
 LaTeX Font Info:    Font shape `T1/lmtt/bx/n' in size <10.95> not available
 (Font)              Font shape `T1/lmtt/b/n' tried instead on input line 272.
 [2]
-Underfull \vbox (badness 1043) detected at line 414
+<T2_Enrique_Santibanez_IR_files/figure-latex/unnamed-chunk-4-1.pdf, id=34, 357.
+335pt x 220.825pt>
+File: T2_Enrique_Santibanez_IR_files/figure-latex/unnamed-chunk-4-1.pdf Graphic
+ file (type pdf)
+<use T2_Enrique_Santibanez_IR_files/figure-latex/unnamed-chunk-4-1.pdf>
+Package pdftex.def Info: T2_Enrique_Santibanez_IR_files/figure-latex/unnamed-ch
+unk-4-1.pdf  used on input line 378.
+(pdftex.def)             Requested size: 357.35048pt x 220.83455pt.
+<T2_Enrique_Santibanez_IR_files/figure-latex/unnamed-chunk-4-2.pdf, id=35, 357.
+335pt x 220.825pt>
+File: T2_Enrique_Santibanez_IR_files/figure-latex/unnamed-chunk-4-2.pdf Graphic
+ file (type pdf)
+<use T2_Enrique_Santibanez_IR_files/figure-latex/unnamed-chunk-4-2.pdf>
+Package pdftex.def Info: T2_Enrique_Santibanez_IR_files/figure-latex/unnamed-ch
+unk-4-2.pdf  used on input line 387.
+(pdftex.def)             Requested size: 357.35048pt x 220.83455pt.
+[3 <./T2_Enrique_Santibanez_IR_files/figure-latex/unnamed-chunk-4-1.pdf>]
+<T2_Enrique_Santibanez_IR_files/figure-latex/unnamed-chunk-4-3.pdf, id=47, 357.
+335pt x 220.825pt>
+File: T2_Enrique_Santibanez_IR_files/figure-latex/unnamed-chunk-4-3.pdf Graphic
+ file (type pdf)
+<use T2_Enrique_Santibanez_IR_files/figure-latex/unnamed-chunk-4-3.pdf>
+Package pdftex.def Info: T2_Enrique_Santibanez_IR_files/figure-latex/unnamed-ch
+unk-4-3.pdf  used on input line 396.
+(pdftex.def)             Requested size: 357.35048pt x 220.83455pt.
+[4 <./T2_Enrique_Santibanez_IR_files/figure-latex/unnamed-chunk-4-2.pdf> <./T2_
+Enrique_Santibanez_IR_files/figure-latex/unnamed-chunk-4-3.pdf>]
+<T2_Enrique_Santibanez_IR_files/figure-latex/unnamed-chunk-5-1.pdf, id=67, 357.
+335pt x 220.825pt>
+File: T2_Enrique_Santibanez_IR_files/figure-latex/unnamed-chunk-5-1.pdf Graphic
+ file (type pdf)
+<use T2_Enrique_Santibanez_IR_files/figure-latex/unnamed-chunk-5-1.pdf>
+Package pdftex.def Info: T2_Enrique_Santibanez_IR_files/figure-latex/unnamed-ch
+unk-5-1.pdf  used on input line 435.
+(pdftex.def)             Requested size: 357.35048pt x 220.83455pt.
+<T2_Enrique_Santibanez_IR_files/figure-latex/unnamed-chunk-5-2.pdf, id=68, 357.
+335pt x 220.825pt>
+File: T2_Enrique_Santibanez_IR_files/figure-latex/unnamed-chunk-5-2.pdf Graphic
+ file (type pdf)
+<use T2_Enrique_Santibanez_IR_files/figure-latex/unnamed-chunk-5-2.pdf>
+Package pdftex.def Info: T2_Enrique_Santibanez_IR_files/figure-latex/unnamed-ch
+unk-5-2.pdf  used on input line 451.
+(pdftex.def)             Requested size: 357.35048pt x 220.83455pt.
+[5 <./T2_Enrique_Santibanez_IR_files/figure-latex/unnamed-chunk-5-1.pdf> <./T2_
+Enrique_Santibanez_IR_files/figure-latex/unnamed-chunk-5-2.pdf>]
+<T2_Enrique_Santibanez_IR_files/figure-latex/unnamed-chunk-5-3.pdf, id=87, 357.
+335pt x 220.825pt>
+File: T2_Enrique_Santibanez_IR_files/figure-latex/unnamed-chunk-5-3.pdf Graphic
+ file (type pdf)
+<use T2_Enrique_Santibanez_IR_files/figure-latex/unnamed-chunk-5-3.pdf>
+Package pdftex.def Info: T2_Enrique_Santibanez_IR_files/figure-latex/unnamed-ch
+unk-5-3.pdf  used on input line 467.
+(pdftex.def)             Requested size: 357.35048pt x 220.83455pt.
+[6 <./T2_Enrique_Santibanez_IR_files/figure-latex/unnamed-chunk-5-3.pdf>] [7]
+<T2_Enrique_Santibanez_IR_files/figure-latex/unnamed-chunk-9-1.pdf, id=105, 357
+.335pt x 220.825pt>
+File: T2_Enrique_Santibanez_IR_files/figure-latex/unnamed-chunk-9-1.pdf Graphic
+ file (type pdf)
+<use T2_Enrique_Santibanez_IR_files/figure-latex/unnamed-chunk-9-1.pdf>
+Package pdftex.def Info: T2_Enrique_Santibanez_IR_files/figure-latex/unnamed-ch
+unk-9-1.pdf  used on input line 602.
+(pdftex.def)             Requested size: 357.35048pt x 220.83455pt.
+<T2_Enrique_Santibanez_IR_files/figure-latex/unnamed-chunk-9-2.pdf, id=106, 357
+.335pt x 220.825pt>
+File: T2_Enrique_Santibanez_IR_files/figure-latex/unnamed-chunk-9-2.pdf Graphic
+ file (type pdf)
+<use T2_Enrique_Santibanez_IR_files/figure-latex/unnamed-chunk-9-2.pdf>
+Package pdftex.def Info: T2_Enrique_Santibanez_IR_files/figure-latex/unnamed-ch
+unk-9-2.pdf  used on input line 618.
+(pdftex.def)             Requested size: 357.35048pt x 220.83455pt.
+[8 <./T2_Enrique_Santibanez_IR_files/figure-latex/unnamed-chunk-9-1.pdf>]
+<T2_Enrique_Santibanez_IR_files/figure-latex/unnamed-chunk-9-3.pdf, id=118, 357
+.335pt x 220.825pt>
+File: T2_Enrique_Santibanez_IR_files/figure-latex/unnamed-chunk-9-3.pdf Graphic
+ file (type pdf)
+<use T2_Enrique_Santibanez_IR_files/figure-latex/unnamed-chunk-9-3.pdf>
+Package pdftex.def Info: T2_Enrique_Santibanez_IR_files/figure-latex/unnamed-ch
+unk-9-3.pdf  used on input line 634.
+(pdftex.def)             Requested size: 357.35048pt x 220.83455pt.
+<T2_Enrique_Santibanez_IR_files/figure-latex/unnamed-chunk-9-4.pdf, id=119, 357
+.335pt x 220.825pt>
+File: T2_Enrique_Santibanez_IR_files/figure-latex/unnamed-chunk-9-4.pdf Graphic
+ file (type pdf)
+<use T2_Enrique_Santibanez_IR_files/figure-latex/unnamed-chunk-9-4.pdf>
+Package pdftex.def Info: T2_Enrique_Santibanez_IR_files/figure-latex/unnamed-ch
+unk-9-4.pdf  used on input line 650.
+(pdftex.def)             Requested size: 357.35048pt x 220.83455pt.
+[9 <./T2_Enrique_Santibanez_IR_files/figure-latex/unnamed-chunk-9-2.pdf> <./T2_
+Enrique_Santibanez_IR_files/figure-latex/unnamed-chunk-9-3.pdf>] [10 <./T2_Enri
+que_Santibanez_IR_files/figure-latex/unnamed-chunk-9-4.pdf>]
+Underfull \hbox (badness 10000) in paragraph at lines 707--708
+
  []
 
-[3] [4] [5]
-Underfull \hbox (badness 10000) in paragraph at lines 589--590
-
- []
-
-[6]
-Underfull \hbox (badness 10000) in paragraph at lines 624--625
-
- []
-
-<T2_Enrique_Santibanez_IR_files/figure-latex/unnamed-chunk-12-1.pdf, id=53, 453
-.695pt x 315.1775pt>
+[11]
+<T2_Enrique_Santibanez_IR_files/figure-latex/unnamed-chunk-12-1.pdf, id=157, 45
+3.695pt x 315.1775pt>
 File: T2_Enrique_Santibanez_IR_files/figure-latex/unnamed-chunk-12-1.pdf Graphi
 c file (type pdf)
 <use T2_Enrique_Santibanez_IR_files/figure-latex/unnamed-chunk-12-1.pdf>
 Package pdftex.def Info: T2_Enrique_Santibanez_IR_files/figure-latex/unnamed-ch
-unk-12-1.pdf  used on input line 660.
+unk-12-1.pdf  used on input line 780.
 (pdftex.def)             Requested size: 453.6939pt x 315.17673pt.
-[7]
-<T2_Enrique_Santibanez_IR_files/figure-latex/unnamed-chunk-13-1.pdf, id=60, 459
-.7175pt x 313.17pt>
+
+Underfull \hbox (badness 3148) in paragraph at lines 780--782
+[][] \T1/lmr/m/n/10.95 (+20) Gra-fi-ca-
+ []
+
+<T2_Enrique_Santibanez_IR_files/figure-latex/unnamed-chunk-13-1.pdf, id=158, 45
+9.7175pt x 315.1775pt>
 File: T2_Enrique_Santibanez_IR_files/figure-latex/unnamed-chunk-13-1.pdf Graphi
 c file (type pdf)
 <use T2_Enrique_Santibanez_IR_files/figure-latex/unnamed-chunk-13-1.pdf>
 Package pdftex.def Info: T2_Enrique_Santibanez_IR_files/figure-latex/unnamed-ch
-unk-13-1.pdf  used on input line 672.
-(pdftex.def)             Requested size: 459.7304pt x 313.17877pt.
-[8 <./T2_Enrique_Santibanez_IR_files/figure-latex/unnamed-chunk-12-1.pdf>] [9 <
-./T2_Enrique_Santibanez_IR_files/figure-latex/unnamed-chunk-13-1.pdf>] [10]
-<ejercicio_9.png, id=90, 342.5297pt x 302.63063pt>
+unk-13-1.pdf  used on input line 804.
+(pdftex.def)             Requested size: 459.74442pt x 315.19595pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 804--807
+[][] \T1/lmr/m/n/10.95 (+20) Ob-
+ []
+
+[12 <./T2_Enrique_Santibanez_IR_files/figure-latex/unnamed-chunk-12-1.pdf>] [13
+ <./T2_Enrique_Santibanez_IR_files/figure-latex/unnamed-chunk-13-1.pdf>]
+<ejercicio_9.png, id=184, 342.5297pt x 302.63063pt>
 File: ejercicio_9.png Graphic file (type png)
 <use ejercicio_9.png>
-Package pdftex.def Info: ejercicio_9.png  used on input line 821.
+Package pdftex.def Info: ejercicio_9.png  used on input line 895.
 (pdftex.def)             Requested size: 342.53407pt x 302.63449pt.
-LaTeX Font Info:    Trying to load font information for T1+lmss on input line 8
-32.
+[14]
+LaTeX Font Info:    Trying to load font information for T1+lmss on input line 9
+06.
 (/home/enrique/.TinyTeX/texmf-dist/tex/latex/lm/t1lmss.fd
 File: t1lmss.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
@@ -659,85 +751,141 @@ Package microtype Info: Loading generic protrusion settings for font family
 (microtype)             `lmss' (encoding: T1).
 (microtype)             For optimal results, create family-specific settings.
 (microtype)             See the microtype manual for details.
-[11pdfTeX warning (ext4): destination with the same identifier (name{figure.1})
+[15pdfTeX warning (ext4): destination with the same identifier (name{figure.1})
  has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.856 \end{Shaded}
-                   <./ejercicio_9.png (PNG copy)>]
-Overfull \hbox (114.6305pt too wide) in paragraph at lines 901--901
-[]\T1/lmtt/m/n/10.95 ##  $ FECHA           : Factor w/ 1988 levels "2011-01-01"
-,"2011-01-02",..: 1 4 16 21 21 23 25 25 34 38 ...[] 
+l.947 \begin{Shaded}
+                     <./ejercicio_9.png (PNG copy)>]
+Overfull \hbox (557.28297pt too wide) in paragraph at lines 985--985
+[]\T1/lmtt/m/n/10.95 ##  $ CONCATENAD      : chr  "COMERCIAL/EMPRESA/INDUSTRIA/
+FARDERO" "COMERCIAL/EMPRESA/INDUSTRIA/FARDERO" "COMERCIAL/EMPRESA/INDUSTRIA/FAR
+DERO" "COMERCIAL/EMPRESA/INDUSTRIA/FARDERO" ...[] 
  []
 
-
-Overfull \hbox (57.14316pt too wide) in paragraph at lines 901--901
-[]\T1/lmtt/m/n/10.95 ##  $ TIPO            : Factor w/ 23 levels "BICICLETA","C
-OMERCIAL",..: 2 2 2 2 2 2 17 3 11 2 ...[] 
- []
-
-
-Overfull \hbox (137.62543pt too wide) in paragraph at lines 901--901
-[]\T1/lmtt/m/n/10.95 ##  $ CONCATENAD      : Factor w/ 305 levels "BICICLETA/PE
-RSONA/ASALTO",..: 44 44 44 44 44 44 223 90 195 44 ...[] 
- []
-
-[12]
-<T2_Enrique_Santibanez_IR_files/figure-latex/unnamed-chunk-20-1.pdf, id=103, 45
-9.7175pt x 313.17pt>
+[16]
+<T2_Enrique_Santibanez_IR_files/figure-latex/unnamed-chunk-19-1.pdf, id=202, 36
+5.365pt x 220.825pt>
+File: T2_Enrique_Santibanez_IR_files/figure-latex/unnamed-chunk-19-1.pdf Graphi
+c file (type pdf)
+<use T2_Enrique_Santibanez_IR_files/figure-latex/unnamed-chunk-19-1.pdf>
+Package pdftex.def Info: T2_Enrique_Santibanez_IR_files/figure-latex/unnamed-ch
+unk-19-1.pdf  used on input line 1049.
+(pdftex.def)             Requested size: 365.38083pt x 220.83455pt.
+<T2_Enrique_Santibanez_IR_files/figure-latex/unnamed-chunk-20-1.pdf, id=203, 36
+0.34625pt x 222.8325pt>
 File: T2_Enrique_Santibanez_IR_files/figure-latex/unnamed-chunk-20-1.pdf Graphi
 c file (type pdf)
 <use T2_Enrique_Santibanez_IR_files/figure-latex/unnamed-chunk-20-1.pdf>
 Package pdftex.def Info: T2_Enrique_Santibanez_IR_files/figure-latex/unnamed-ch
-unk-20-1.pdf  used on input line 952.
-(pdftex.def)             Requested size: 459.7304pt x 313.17877pt.
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 955.
-[13 <./T2_Enrique_Santibanez_IR_files/figure-latex/unnamed-chunk-20-1.pdf>]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 955.
+unk-20-1.pdf  used on input line 1072.
+(pdftex.def)             Requested size: 360.34537pt x 222.83195pt.
+[17 <./T2_Enrique_Santibanez_IR_files/figure-latex/unnamed-chunk-19-1.pdf>]
+Package microtype Info: Character `029' is missing
+(microtype)             in font `T1/lmr/m/sc/10.95'.
+(microtype)             Ignoring protrusion settings for this character.
+[18 <./T2_Enrique_Santibanez_IR_files/figure-latex/unnamed-chunk-20-1.pdf>]
+<T2_Enrique_Santibanez_IR_files/figure-latex/unnamed-chunk-23-1.pdf, id=230, 36
+5.365pt x 220.825pt>
+File: T2_Enrique_Santibanez_IR_files/figure-latex/unnamed-chunk-23-1.pdf Graphi
+c file (type pdf)
+<use T2_Enrique_Santibanez_IR_files/figure-latex/unnamed-chunk-23-1.pdf>
+Package pdftex.def Info: T2_Enrique_Santibanez_IR_files/figure-latex/unnamed-ch
+unk-23-1.pdf  used on input line 1154.
+(pdftex.def)             Requested size: 365.38083pt x 220.83455pt.
+[19 <./T2_Enrique_Santibanez_IR_files/figure-latex/unnamed-chunk-23-1.pdf>]
+<T2_Enrique_Santibanez_IR_files/figure-latex/unnamed-chunk-25-1.pdf, id=244, 36
+5.365pt x 220.825pt>
+File: T2_Enrique_Santibanez_IR_files/figure-latex/unnamed-chunk-25-1.pdf Graphi
+c file (type pdf)
+<use T2_Enrique_Santibanez_IR_files/figure-latex/unnamed-chunk-25-1.pdf>
+Package pdftex.def Info: T2_Enrique_Santibanez_IR_files/figure-latex/unnamed-ch
+unk-25-1.pdf  used on input line 1216.
+(pdftex.def)             Requested size: 365.38083pt x 220.83455pt.
+[20 <./T2_Enrique_Santibanez_IR_files/figure-latex/unnamed-chunk-25-1.pdf>]
+<T2_Enrique_Santibanez_IR_files/figure-latex/unnamed-chunk-29-1.pdf, id=258, 35
+8.33875pt x 220.825pt>
+File: T2_Enrique_Santibanez_IR_files/figure-latex/unnamed-chunk-29-1.pdf Graphi
+c file (type pdf)
+<use T2_Enrique_Santibanez_IR_files/figure-latex/unnamed-chunk-29-1.pdf>
+Package pdftex.def Info: T2_Enrique_Santibanez_IR_files/figure-latex/unnamed-ch
+unk-29-1.pdf  used on input line 1341.
+(pdftex.def)             Requested size: 358.35428pt x 220.83455pt.
+[21]
+<T2_Enrique_Santibanez_IR_files/figure-latex/unnamed-chunk-31-1.pdf, id=264, 36
+0.34625pt x 220.825pt>
+File: T2_Enrique_Santibanez_IR_files/figure-latex/unnamed-chunk-31-1.pdf Graphi
+c file (type pdf)
+<use T2_Enrique_Santibanez_IR_files/figure-latex/unnamed-chunk-31-1.pdf>
+Package pdftex.def Info: T2_Enrique_Santibanez_IR_files/figure-latex/unnamed-ch
+unk-31-1.pdf  used on input line 1392.
+(pdftex.def)             Requested size: 360.34537pt x 220.82445pt.
+[22 <./T2_Enrique_Santibanez_IR_files/figure-latex/unnamed-chunk-29-1.pdf>]
+<T2_Enrique_Santibanez_IR_files/figure-latex/unnamed-chunk-31-2.pdf, id=277, 36
+0.34625pt x 220.825pt>
+File: T2_Enrique_Santibanez_IR_files/figure-latex/unnamed-chunk-31-2.pdf Graphi
+c file (type pdf)
+<use T2_Enrique_Santibanez_IR_files/figure-latex/unnamed-chunk-31-2.pdf>
+Package pdftex.def Info: T2_Enrique_Santibanez_IR_files/figure-latex/unnamed-ch
+unk-31-2.pdf  used on input line 1402.
+(pdftex.def)             Requested size: 360.34537pt x 220.82445pt.
+[23 <./T2_Enrique_Santibanez_IR_files/figure-latex/unnamed-chunk-31-1.pdf> <./T
+2_Enrique_Santibanez_IR_files/figure-latex/unnamed-chunk-31-2.pdf>]
+<ejercicio_notas_sistema.png, id=297, 625.33624pt x 83.31125pt>
+File: ejercicio_notas_sistema.png Graphic file (type png)
+<use ejercicio_notas_sistema.png>
+Package pdftex.def Info: ejercicio_notas_sistema.png  used on input line 1443.
+(pdftex.def)             Requested size: 500.49867pt x 66.67958pt.
+[24 <./ejercicio_notas_sistema.png>] [25]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1559.
+[26]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 1559.
 (./T2_Enrique_Santibanez_IR.aux
 LaTeX Info: Redefining \. on input line 25.
 LaTeX Info: Redefining \% on input line 25.
 )
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 955.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 955.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1559.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1559.
+
 Package rerunfilecheck Info: File `T2_Enrique_Santibanez_IR.out' has not change
 d.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 955.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 1559.
  ) 
 Here is how much of TeX's memory you used:
- 13930 strings out of 482810
- 205793 string characters out of 5955133
- 515423 words of memory out of 5000000
- 28963 multiletter control sequences out of 15000+600000
- 570817 words of font info for 92 fonts, out of 8000000 for 9000
+ 14106 strings out of 482806
+ 213832 string characters out of 5955026
+ 515467 words of memory out of 5000000
+ 29077 multiletter control sequences out of 15000+600000
+ 574727 words of font info for 106 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 43i,9n,42p,987b,418s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 43i,9n,42p,987b,477s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/home/enrique/.TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}{/home/enriqu
 e/.TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}{/home/enrique/.TinyTeX/
 texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}{/home/enrique/.TinyTeX/texmf-dist/font
 s/enc/dvips/lm/lm-mathit.enc}{/home/enrique/.TinyTeX/texmf-dist/fonts/enc/dvips
 /lm/lm-mathex.enc}</home/enrique/.TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx
-10.pfb></home/enrique/.TinyTeX/texmf-dist/fonts/type1/public/lm/lmex10.pfb></ho
-me/enrique/.TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi10.pfb></home/enrique/
-.TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi8.pfb></home/enrique/.TinyTeX/tex
-mf-dist/fonts/type1/public/lm/lmr10.pfb></home/enrique/.TinyTeX/texmf-dist/font
-s/type1/public/lm/lmr6.pfb></home/enrique/.TinyTeX/texmf-dist/fonts/type1/publi
-c/lm/lmr8.pfb></home/enrique/.TinyTeX/texmf-dist/fonts/type1/public/lm/lmri10.p
-fb></home/enrique/.TinyTeX/texmf-dist/fonts/type1/public/lm/lmss10.pfb></home/e
-nrique/.TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy10.pfb></home/enrique/.Tin
-yTeX/texmf-dist/fonts/type1/public/lm/lmsy6.pfb></home/enrique/.TinyTeX/texmf-d
-ist/fonts/type1/public/lm/lmsy8.pfb></home/enrique/.TinyTeX/texmf-dist/fonts/ty
-pe1/public/lm/lmtk10.pfb></home/enrique/.TinyTeX/texmf-dist/fonts/type1/public/
-lm/lmtt10.pfb></home/enrique/.TinyTeX/texmf-dist/fonts/type1/public/lm/lmtti10.
-pfb></home/enrique/.TinyTeX/texmf-dist/fonts/type1/public/amsfonts/symbols/msam
-10.pfb></home/enrique/.TinyTeX/texmf-dist/fonts/type1/public/amsfonts/symbols/m
-sbm10.pfb>
-Output written on T2_Enrique_Santibanez_IR.pdf (13 pages, 315203 bytes).
+10.pfb></home/enrique/.TinyTeX/texmf-dist/fonts/type1/public/lm/lmcsc10.pfb></h
+ome/enrique/.TinyTeX/texmf-dist/fonts/type1/public/lm/lmex10.pfb></home/enrique
+/.TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi10.pfb></home/enrique/.TinyTeX/t
+exmf-dist/fonts/type1/public/lm/lmmi6.pfb></home/enrique/.TinyTeX/texmf-dist/fo
+nts/type1/public/lm/lmmi8.pfb></home/enrique/.TinyTeX/texmf-dist/fonts/type1/pu
+blic/lm/lmr10.pfb></home/enrique/.TinyTeX/texmf-dist/fonts/type1/public/lm/lmr6
+.pfb></home/enrique/.TinyTeX/texmf-dist/fonts/type1/public/lm/lmr8.pfb></home/e
+nrique/.TinyTeX/texmf-dist/fonts/type1/public/lm/lmri10.pfb></home/enrique/.Tin
+yTeX/texmf-dist/fonts/type1/public/lm/lmss10.pfb></home/enrique/.TinyTeX/texmf-
+dist/fonts/type1/public/lm/lmsy10.pfb></home/enrique/.TinyTeX/texmf-dist/fonts/
+type1/public/lm/lmsy6.pfb></home/enrique/.TinyTeX/texmf-dist/fonts/type1/public
+/lm/lmsy8.pfb></home/enrique/.TinyTeX/texmf-dist/fonts/type1/public/lm/lmtk10.p
+fb></home/enrique/.TinyTeX/texmf-dist/fonts/type1/public/lm/lmtt10.pfb></home/e
+nrique/.TinyTeX/texmf-dist/fonts/type1/public/lm/lmtti10.pfb></home/enrique/.Ti
+nyTeX/texmf-dist/fonts/type1/public/amsfonts/symbols/msam10.pfb></home/enrique/
+.TinyTeX/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
+Output written on T2_Enrique_Santibanez_IR.pdf (26 pages, 473657 bytes).
 PDF statistics:
- 184 PDF objects out of 1000 (max. 8388607)
- 140 compressed objects within 2 object streams
- 27 named destinations out of 1000 (max. 500000)
- 8213 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 391 PDF objects out of 1000 (max. 8388607)
+ 282 compressed objects within 3 object streams
+ 49 named destinations out of 1000 (max. 500000)
+ 10346 words of extra memory for PDF output out of 12000 (max. 10000000)
 
