@@ -1,11 +1,11 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020) (preloaded format=pdflatex 2020.8.28)  6 SEP 2020 23:44
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020) (preloaded format=pdflatex 2020.9.7)  7 SEP 2020 20:08
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
 **T2_Enrique_Santibáñez.tex
 (./T2_Enrique_Santibáñez.tex
 LaTeX2e <2020-02-02> patch level 5
-L3 programming layer <2020-08-07>
+L3 programming layer <2020-09-03>
 (/home/enrique/.TinyTeX/texmf-dist/tex/latex/base/article.cls
 Document Class: article 2019/12/20 v1.4l Standard LaTeX document class
 (/home/enrique/.TinyTeX/texmf-dist/tex/latex/base/size11.clo
@@ -32,10 +32,10 @@ Package: inputenc 2018/08/11 v1.3c Input encoding file
 Package: fontenc 2020/02/11 v2.0o Standard LaTeX package
 )
 (/home/enrique/.TinyTeX/texmf-dist/tex/generic/babel/babel.sty
-Package: babel 2020/07/13 3.47 The Babel package
+Package: babel 2020/09/01 3.48 The Babel package
 
 (/home/enrique/.TinyTeX/texmf-dist/tex/generic/babel/babel.def
-File: babel.def 2020/07/13 3.47 Babel common definitions
+File: babel.def 2020/09/01 3.48 Babel common definitions
 \babel@savecnt=\count176
 \U@D=\dimen135
 \l@babelnohyphens=\language4
@@ -142,7 +142,7 @@ File: graphics.cfg 2016/06/04 v1.11 sample graphics configuration
 Package graphics Info: Driver file: pdftex.def on input line 105.
 
 (/home/enrique/.TinyTeX/texmf-dist/tex/latex/graphics-def/pdftex.def
-File: pdftex.def 2018/01/08 v1.0l Graphics/color driver for pdftex
+File: pdftex.def 2020/08/26 v1.2 Graphics/color driver for pdftex
 ))
 \Gin@req@height=\dimen145
 \Gin@req@width=\dimen146
@@ -424,8 +424,8 @@ Package: ifvtex 2019/10/25 v1.7 ifvtex legacy package. Use iftex instead.
 \Gm@layoutvoffset=\dimen169
 \Gm@dimlist=\toks27
 )
-(/home/enrique/.TinyTeX/texmf-dist/tex/latex/l3backend/l3backend-pdfmode.def
-File: l3backend-pdfmode.def 2020-08-07 L3 backend support: PDF mode
+(/home/enrique/.TinyTeX/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
+File: l3backend-pdftex.def 2020-09-01 L3 backend support: PDF output (pdfTeX)
 \l__kernel_color_stack_int=\count281
 \l__pdf_internal_box=\box97
 )
@@ -618,10 +618,10 @@ Package rerunfilecheck Info: File `T2_Enrique_Santibáñez.out' has not changed
 Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 261.
  ) 
 Here is how much of TeX's memory you used:
- 8192 strings out of 482823
- 119983 string characters out of 5955510
- 405285 words of memory out of 5000000
- 23377 multiletter control sequences out of 15000+600000
+ 8213 strings out of 482810
+ 120428 string characters out of 5955133
+ 407621 words of memory out of 5000000
+ 23411 multiletter control sequences out of 15000+600000
  564641 words of font info for 52 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  43i,9n,37p,758b,468s stack positions out of 5000i,500n,10000p,200000b,80000s

@@ -7,6 +7,29 @@ output:
         includes:
             in_header: mystyles.sty
 ---
+\begin{table}[ht]
+\centering
+\begin{tabular}{c}
+\textbf{Maestría en Computo Estadístico}\\
+\textbf{Inferencia Estadística} \\
+\textbf{Tarea 2}\\
+\today \\
+\emph{Enrique Santibáñez Cortés}\\
+Repositorio de Git: \href{https://github.com/Enriquesec/Inferencia_Estad-stica/tree/master/Tareas/Tarea_2}{Tarea 2, IE}.
+\end{tabular}
+\end{table}
+
+1. Cuando una máquina no se ajusta adecuadamente tiene una probabilidad 0.15 de producir un artículo defectuoso. Diariamente, la máquina trabaja hasta que se producen 3 artículos defectuosos. Se detiene la máquina y se revisa para ajustarla. ¿Cuál es la probabilidad de que una máquina mal ajustada produzca 5 o más artículos antes de que sea detenida? ¿Cuál es el número promedio de artículos que la máquina producirá antes de ser detenida?
+
+\res Sea $X$ el número de artículos producidos antes de que se produzcan 3 artículos defectuosos, entonces podemos decir que $X\sim BN(3,0.15).$ Por lo tanto, \textbf{la probabilidad de que una máquina mal ajustada produzca 5 o más artículos antes de que sea detenida} es (ocupamos la función en R pnbinom(1, 3, 0.15)):
+$$\mP(X\geq 5) =1-\mP(X\leq 4)=1-\sum_{x=3}^4{x-1 \choose 3-1}(1-0.15)^{x-3}(0.15)^3= 1-0.01198125=0.9880187.$$
+Por como se distribuye $X$ podemos decir que \textbf{el número promedio de artículos que la máquina producirá antes de ser detenida} es
+$$\mE(X)=\frac{r}{p}=\frac{3}{0.15}=20. \finf$$
+
+2. Los empleados de una compañía de aislantes son sometidos a pruebas para detectar residuos de asbesto en sus pulmones. Se le ha pedido a la compañía que envíe a tres empleados, cuyas pruebas resulten positivas, a un centro médico para realizarles más análisis. Si se sospecha que el 40 \% de los empleados tienen residuos de asbesto en sus pulmones, encuentre la probabilidad de que deban ser analizados 10 trabajadores para poder encontrar a 3 con resultado positivo.
+
+\res Sea $Y$ el número de trabajadores que se realizan las pruebas hasta encontrar 3 empleados con resultados positivos. Y como la probabilidad de que algún empleado tenga residuos de asbesto en sus pulmones (dar positivo en la pruebas) es de $0.40$. Entonces podemos concluir que $Y\sim BN(3,0.4).$ Por lo que la \textbf{probabilidad de que deban analizar 10 trabajadores para encontrar a 3 con resultado positivo es} (ocupamos la función en dnbinom(10, 3, 0.40) en R):
+$$\mP(Y=10) = {10-1 \choose 3-1}(1-0.40)^{10-3}(0.40)^3= 0.06449725\ \ \ \ \finf$$
 
 3. Para el siguiente ejercicio es necesario usar R.
 
@@ -51,9 +74,15 @@ b) Usando la función anterior simule $N = 10^4$ veces una variable aleatoria Ge
 \res Creemos otra función que utilice la función del inciso a) y que grafique las frecuencias normalizadas en azul y en rojo las frecuencias obtenidas de función de distribución de un variable Geometrica. 
 ```{r, message=FALSE, warning=FALSE,fig.width = 5.2, fig.asp = 0.62, fig.align = "center"}
 library(tidyverse) # ggplot and dplyr
-geometric_graph_simula_and_teoric <- function(p, N, potencia, titulo){
+geometric_graph_simula_and_teoric <- function(p, N, potencia, titulo, estadisticos=0){
   # Utilizamos la opción del inciso a).
   simular_geometrica <- data.frame(resultado=moneda_geometrica_optimizada(p, N, potencia))
+  if(estadisticos==1){
+    print("La media de las simulaciones es:")
+    print(mean(simular_geometrica$resultado))
+        print("La desviación estandar de las simulaciones es:")
+        print(sqrt(var(simular_geometrica$resultado)))
+  }
   # Generamos las frecuenciass normalizadas.
   simular_geometrica <- data.frame(table(simular_geometrica)/N)
   names(simular_geometrica) <- c("x", "y")
@@ -78,12 +107,12 @@ geometric_graph_simula_and_teoric <- function(p, N, potencia, titulo){
 Por lo que las gráficas variando el parámetro $p$ son
 ```{r, message=FALSE, warning=FALSE,fig.width = 5.2, fig.asp = 0.62, fig.align = "center"}
 set.seed(08081997)
-geometric_graph_simula_and_teoric(0.5, 10^4, 10^4,
-                                  "Simulación de una variable Geometrica(0.5)")
-geometric_graph_simula_and_teoric(0.1, 10^4, 10^4,
-                                  "Simulación de una variable Geometrica(0.1)")
-geometric_graph_simula_and_teoric(0.01, 10^4, 10^4,
-                                  "Simulación de una variable Geometrica(0.01)")
+#geometric_graph_simula_and_teoric(0.5, 10^4, 10^4,
+#                                  "Simulación de una variable Geometrica(0.5)")
+#geometric_graph_simula_and_teoric(0.1, 10^4, 10^4,
+#                                  "Simulación de una variable Geometrica(0.1)")
+#geometric_graph_simula_and_teoric(0.01, 10^4, 10^4,
+#                                  "Simulación de una variable Geometrica(0.01)")
 ```
 
 Observemos que si comparamos las frecuencias de las simulaciones y las frecuencias obtenidas de la función de probabilidad de una geometrica se ven muy cercanas. Pero conforme $p$ se acerca a 0 la comparaciones entre estas frecuencias son más notorias. Esto se puede explicar debido a que cuando $p$ es más chico la $\mP(X=x)$ se va hacieno más pequeña, por lo que $x$ toma un rango más amplio de valores posibles. No hay que confundirse por el hecho de que como la función de distribución de una variable aleatoria geometrica esta defina en todos los naturales. Ya que si $p$ es cercano a 1, las probabilidades convergen más rapido a 0, y viceversa, si $p$ es cercano a 0 las probabilidad convergen más lento a 0.
@@ -91,21 +120,24 @@ Observemos que si comparamos las frecuencias de las simulaciones y las frecuenci
 c) Repita el inciso anterior para $N = 10^6$ . Además calcule el promedio y la desviación estándar de las simulaciones que realizó ¿Qué observa?
 ```{r,  warning=FALSE,fig.width = 5.2, fig.asp = 0.62, fig.align = "center"}
 set.seed(08081997)
-geometric_graph_simula_and_teoric(0.5, 10^6, 10^5, 
-"Simulación de una variable Geometrica(0.5)")
-geometric_graph_simula_and_teoric(0.1, 10^6, 10^5, 
-"Simulación de una variable Geometrica(0.1)")
-geometric_graph_simula_and_teoric(0.01, 10^6, 10^5, 
-"Simulación de una variable Geometrica(0.01)")
+#geometric_graph_simula_and_teoric(0.5, 10^6, 10^5, 
+#"Simulación de una variable Geometrica(0.5)",1)
+#geometric_graph_simula_and_teoric(0.1, 10^6, 10^5, 
+#"Simulación de una variable Geometrica(0.1)",1)
+#geometric_graph_simula_and_teoric(0.01, 10^6, 10^5, 
+#"Simulación de una variable Geometrica(0.01)",1)
 ```
 
-Cómo el número de simulaciones son mayores que el inciso anterior, observamos que las diferencias se entre las frecuencias simuladas y frecuencias calculados son muy cercanas "casi nulas". Y esto incita a concluir que la distribución Geometrica modela bien este esperimento de lanzamiento de monedas. \ \ \ \ \ \fin
+Cómo el número de simulaciones son mayores que el inciso anterior, observamos que las diferencias se entre las frecuencias simuladas y frecuencias calculados son muy cercanas "casi nulas". Y esto incita a concluir que la distribución Geometrica modela bien este esperimento de lanzamiento de monedas. Ahora analizando los promedios y desviaciones de las contra  la experanza de $X$ para cada $P$:
+
+
+\ \ \ \ \ \fin
 
 4. Usando las ideas del inciso anterior escriba una función en R que simule N veces los lanzamientos de moneda hasta obtener $r$ águilas. La función deberá recibir como parámetros a la probabilidad $p$ de obtener águila, al número $r$ de águilas a observar antes de detener el experimento y al número $N$ de veces que se repite el experimento; y tendrá que regresar un vector de longitud $N$ que contenga el número de lanzamientos hasta obtener las $r$ águilas en cada uno de los $N$ experimentos. Grafique las frecuencias normalizadas de los experimentos para $N = 10^6$ , $p = 0.2, 0.1$ y $r=2,7$ y compárelos contra la función de masa de la distribución más adecuada para modelar este tipo de experimentos.
 
-\res Sea $X$ el número de lanzamientos hasta obtener $r$ aguilas. Esto implica que $X\BN(r,p)$, donde $p$ es la probabilidad de obtener águila en un lanzamiento.  
+\res Sea $X$ el número de lanzamientos hasta obtener $r$ aguilas. Esto implica que $X\sim BN(r,p)$, donde $p$ es la probabilidad de obtener águila en un lanzamiento. Entonces la función que simula este experimento sería:
 ```{r}
-moneda_desequilibrada_r_exitos <- function(r, p, N){
+moneda_nbinom <- function(r, p, N){
   resultados <- c()
   for(i in 1:N){
     contador <- 0
@@ -123,17 +155,17 @@ moneda_desequilibrada_r_exitos <- function(r, p, N){
   resultados
 }
 ```
-
-
+La función anterior tiene un problema, ya que es muy lenta. Por lo que se vectorizo para tener un mejor rendimiento. 
 ```{r}
-moneda_desequilibrada_r_exitos_optimizada <- function(r, p, N, potencia){
+moneda_nbinom_optimizada <- function(r, p, N, potencia){
   resultados <- c()
   while(length(resultados)<N) { # Repetimos el experimentos N veces.
     contador <- 0 # Inicializamos el número de lanzamientos.
     resultados_preliminar <- c()
     inicial <- rep(0, potencia)
     while(length(resultados_preliminar)<potencia){ # si ya se obtuvo águila deterner.
-      inicial <- inicial + sample(x=c(1,0), size=potencia-length(resultados_preliminar), prob=c(p,1-p), replace=TRUE)
+      inicial <- inicial + sample(x=c(1,0), size=potencia-length(resultados_preliminar), 
+                                  prob=c(p,1-p), replace=TRUE)
       contador_s <- sum(inicial==r)
       contador <- contador + 1 
      resultados_preliminar<- c(resultados_preliminar, rep(contador, contador_s))
@@ -144,11 +176,95 @@ moneda_desequilibrada_r_exitos_optimizada <- function(r, p, N, potencia){
   resultados # regresamos los resultados.
 }
 ```
-
+Ahora modificamos la función del problema 3 para adaptarla a este problema,
+```{r}
+bimneg_graph_simula_and_teoric <- function(r, p, N, potencia, titulo, estadisticos=0){
+  # Utilizamos la opción del inciso a).
+  simular_geometrica <- data.frame(resultado=moneda_nbinom_optimizada(r, p, N, potencia))
+  if(estadisticos==1){
+    print("La media de las simulaciones es:")
+    print(mean(simular_geometrica$resultado))
+        print("La desviación estandar de las simulaciones es:")
+        print(sqrt(var(simular_geometrica$resultado)))
+  }
+  # Generamos las frecuenciass normalizadas.
+  simular_geometrica <- data.frame(table(simular_geometrica)/N)
+  names(simular_geometrica) <- c("x", "y")
+  simular_geometrica$x <- as.numeric(simular_geometrica$x)+r-1
+  # Variable auxiliar.
+  simular_geometrica$origen <- "simulacion"
+  max_resul <- max(simular_geometrica$x)
+  # Función de distribución utilizando la formula.
+  teoric_geometrica <- data.frame(x=seq(r,max_resul,1),
+                                  y=dnbinom(x=seq(0,(max_resul-r),1), size=r,prob = p), origen=rep("teorica",max_resul-r+1))
   
+  # Concatenamos las frecuencias obtenidas.
+  geometrica <- rbind(teoric_geometrica, simular_geometrica)
+  # Graficamos
+  g <- ggplot(geometrica, mapping=aes(x,y,fill=origen))+
+    geom_histogram(position="dodge", stat="identity", bins = max_resul)+
+    labs(title=titulo)
+  return(g)
+}
+```
+
+
+Por lo que las gráficas variando el parámetro $p$ y $r$ son:
+```{r, warning=FALSE,fig.width = 5.2, fig.asp = 0.62, fig.align = "center"}
+set.seed(08081997)
+#bimneg_graph_simula_and_teoric(2, 0.1, 10^6, 10^5,
+#                               "Simulación de una variable NBinom(2, 0.1)", 1)
+#bimneg_graph_simula_and_teoric(2, 0.2, 10^6, 10^5,
+#                               "Simulación de una variable NBinom(2, 0.2)", 1)
+#bimneg_graph_simula_and_teoric(7, 0.1, 10^6, 10^5,
+#                               "Simulación de una variable NBinom(7, 0.1)", 1)
+#bimneg_graph_simula_and_teoric(7, 0.2, 10^6, 10^5,
+#                               "Simulación de una variable NBinom(7, 0.2)", 1)
+```
+Podemos concluir que la distribución Binomial Negativa ajusta muy bien este experimento. Los parámetros $p$ y $r$ influyen de cierta manera, para ver como in
+
+5. Considera $X$ una v.a. con función de distribución $F$ y función de densidad $f$, y sea $A$ un intervalo de la línea real $\mathbb{R}$. Definamos la función indicadora $1_{A}(x):$
+\begin{equation*}
+1_{A}(x) = \left\{\begin{array}{ccr}
+1 & \text{si} \ x\in A\\
+0 & \text{en otro caso}
+\end{array}\right.
+\end{equation*}
+Sea $Y=1_{A}(x).$ Encuentre una expresión para la distribución acumulada y el valor esperado de $Y$. 
+\res cuando $X$ es discreta tenemos que la función de densidad es 
+
+$$f(Y=y)=\mP(1_{A}(x)=y)=\mP(\{x:1_{A}(x)=y\}).$$
+\begin{equation*}
+f(y)=\left\{ \begin{array}{cc}
+\mP(x\in A) & \text{para y=1}\\
+\mP(x\not \in A) & \text{para y=0}\\
+0 & \text{en otro caso}
+\end{array}\right.
+\end{equation*}
+El valor esperado es
+$$\mE[Y]=\sum y f(y)=1\cdot f(1)+0\cdot f(0)=1\cdot f(1)=\mP(x\in A)\ \ \ \finf$$
+6. Las calificaciones de un estudiante de primer semestre en un examen de química se describen
+por la densidad de probabilidad
+$$f_y(y)=6y(1-y)\ \ \ \ 0\leq y \leq 1,$$
+donde $y$ representa la proporción de preguntas que el estudiante contesta correctamente. Cualquier calificación menor a 0.4 es reprobatoria. Responda lo siguiente:
+\begin{itemize}
+\item[a)] ¿Cuál es la probabilidad de que un estudiante repruebe?
+\item[b)] Si 6 estudiantes toman el examen, ¿cuál es la probabilidad de exactamente 2 reprueben?
+\end{itemize}
+\res
+Por como esta definida la función de probabilidad podemos decir que $Y$ es es una variable continua. Ahora, solo para comprobación veamos que realmente sea una función de probabilidad, para ello observemos que
+$$\int_{-\infty}^\infty f_y(y)=\int_{0}^1 6y(1-y)=3y^2-2y^3|_0^1=1.$$
+Por lo tanto observamos que si es una función de probabilidad. 
+
+Entonces \textbf{la probabilidad de que un estudiante repruebe es}
+$$f_y(Y<0.4)=\int_0^{0.4}f_y(y)=\int_0^{0.4} 6y(1-y)=3y^2-2y^3|_0^{0.4}=0.352 $$
+Ahora, sea $X$ el número de estudiantes de reprueban el examen de un conjunto de 6 estudiantes que realizaron el examen. Por definición podemos decir que $X\sim Bin(6,p)$ donde $p$ es la probabilidad de reprobar, pero si consideramos que las calificaiones de los estudiantes se distribuye como la variable $Y$, entonces podemos concluir que $X\sim Bin(6,0.352).$  Por lo tanto, \textbf{la probabilidad de que exactamente 2 estudiantes reprueben es} (usamos la función dbinom(x=4, size = 6, prob = 0.325):
+$$\mP(X=2)={6\choose 2}0.325^2(1-0.325)^4 =0.328907 \ \ \ \finf$$
+
 
  7. Escriba una función en R que simule una aproximación al proceso Poisson a partir de las 5 hipótesis que usamos en clase para construir tal proceso. Usando esta función, simule tres trayectorias de un proceso Poisson $\lambda=2$ sobre el intervalo $[0, 10]$ y grafíquelas. Además simule $10^4$ veces un proceso de Poisson $N$ con $\lambda 1/2$ y hasta el tiempo $t = 1$. Haga un histograma de $N(1)$ en su simulación anterior y compare contra la distribución de Poisson correspondiente.
 
+\res 
 ```{r}
 ProcesoPois<- function(t,lambda){
   N<- rpois(1,t*lambda) #Paso 1
@@ -158,21 +274,23 @@ ProcesoPois<- function(t,lambda){
 ```
 
 ```{r, message=FALSE, warning=FALSE}
-library(tidyverse)
 library(plyr)
 NPois<-function(n,t,rate){
-  C<- lapply(1:n, function(n) data.frame(ProcesoPois(t,rate),simulacion=n)) #Genera N dataframes con los procesos
-  C<-ldply(C, data.frame) #Une en una sola dataframe
-  C$simulacion<-factor(C$simulacion) #Convierte en factores
+  C<- lapply(1:n, function(n)
+    #Genera N dataframes con los procesos
+    data.frame(ProcesoPois(t,rate),simulacion=n)) 
+  C<-ldply(C, data.frame) # Une en una sola dataframe
+  C$simulacion<-factor(C$simulacion) # Convierte en factores
   C
 }
 ```
 
 ```{r}
 simulacion_process_a <- NPois(3,10,2)
-head(simulacion_process_a)
 
-qplot(x,y,data=simulacion_process_a,geom=c("step","point"),color=simulacion,xlab="Tiempo",ylab="N(t)",main=sprintf("%d Simulaciones del Proceso de Poisson de Intensidad %.2f",3,2))
+# Graficamos.
+qplot(x,y,data=simulacion_process_a,geom=c("step","point"),color=simulacion,
+      xlab="Tiempo",ylab="N(t)",main=sprintf("%d Simulaciones del Proceso de Poisson de Intensidad %.2f",3,2))
 
 ```
 
@@ -192,6 +310,58 @@ dpois(x = 5,lambda = 0.5)
 
 ```
 
+8. En una oficina de correo los paquetes llegan según un proceso de Poisson de intensidad $\lambda$. Hay un costo de almacenamiento de $c$ pesos por paquete y por unidad de tiempo. Los paquetes se acumulan en el local y se despachan en grupos cada $T$ unidades de tiempo (es decir, se despachan en $T , 2T , 3T , \cdots)$. Hay un costo por despacho fijo de $K$ pesos (es decir, el costo es independiente del número de paquetes que se despachen). (a) ¿Cuál es el costo promedio por paquete por almacenamiento en el primer ciclo $[0, T ]$? (b) ¿Cuál es el costo promedio por paquete por almacenamiento y despacho en el primer ciclo? (c) ¿Cuál es el valor de $T$ que minimiza este costo promedio?
+
+\res Sea X el número de paquetes que llegan al correo en un intervalo de tiempo $T$, este se distribuye como un proceso Poisson con intensidad $\lambda$. Entonces el costo total promedio por almacenamiento es: 
+$$\mE[C]=\mE[X\cdot c \cdot T]=cT\mE[X]=cT\cdot (\lambda T)=cT^2\lambda.$$
+Y ahora el número esperado de paquetes en el primer ciclo es: 
+$$\mE[X]=\lambda T.$$
+
+Por lo que, \textbf{(a) el costo promedio por paquete por almacenamiento es:}
+$$\frac{cT^2\lambda}{\lambda T}=cT.$$
+
+Ahora sea $G$ el costo total de almacenamiento y despacho para el primer ciclo $[0,T]$ definido como
+$$G=cXT+K.$$
+Entonces el costo promedio total por almacenamiento y despacho es
+$$\mE[G]=\mE[cXT+K]=cT^2\lambda+K.$$
+
+Lo anterior implica que \textbf{el costo promedio por paquete por almacenamiento y despacho en el primer ciclo} es:
+$$\bar{\mE[G]}=\frac{cT^2\lambda+K}{\lambda T}.$$
+
+Utilizando el resultado anterior, diferenciamos e igualamos a cero para encontrar el mínimo.
+$$\bar{\mE'[G]}=c-\frac{K}{\lambda T^2}$$
+Igualamos a cero:
+\begin{equation*}
+\begin{array}{ccc}
+c-\frac{K}{\lambda T^2} &=& 0\\
+&&\\
+T^2&=&\frac{K}{c\lambda}\\
+&&\\
+T&=&\sqrt{\frac{K}{c\lambda}}.
+\end{array}
+\end{equation*}
+Usando el criterio de segunda derivada para determinar si es un máximo o minino:
+$$\bar{\mE''[G]}=2\frac{K}{\lambda T^3}.$$
+Evaluando la segunda derivada en $T=\sqrt{\frac{K}{c\lambda}}$, observamos que $\bar{\mE''[G]}>0$, por lo que podemos concluir que es un mínimo. En conclusión, \textbf{el valor de $T$ para el cuál minimiza el costo promedio por paquete por almacenamiento y despacho en el primer ciclo es} $\sqrt{\frac{K}{c\lambda}}\ \ \ \finf$
+
+9. Considere la siguiente función
+\begin{equation*}
+F(x)=\left\{ \begin{array}{cl}
+0 & \text{para} \ x<0\\
+0.1 & \text{para} \ x=0\\
+0.1+0.8x & \text{para} \ 0<x<3/4\\
+1 & \text{para } 3/4\leq x
+\end{array} \right.
+\end{equation*}
+¿Es una función de distribución? Si es una función de distribución, ¿corresponde a una variable
+aleatoria discreta o continua?
+
+\res Observemos por como esta definida la función tenemos que $0\leq F(x) \leq 1$. Y además $\lim_{x\rightarrow\infty^-}F(x)=0$ y $\lim_{x\rightarrow\infty^+}F(x)=1$. Por lo que podemos concluir que $F(x)$ si es una función de distribución. Ahora, observemos que la función esta definida para $x=0$ y $x=3/4$, si $X$ fuera una $X$ fuera una variable continua, por definición $F(x=a)=0,$ por lo que $X$ es discreta en $x=0$ y $x=3/4$. Y como $F(x)$ es continua en $0<x<3/4$ podemos decir que $X$ es continua en ese intervalo. Entonces como $X$ es continua y discreta para ciertos valores, decimos que $X$ es "mixta". Esto igual se puede mostrar observando la grafica de la función $F(X) \ \ \ \ \finf$
+\begin{figure}[H]
+\centering
+\includegraphics{ejercicio_9.png}
+\caption{Función de densidad mixta.}
+\end{figure}
 
 10. \textbf{Este es un problema al que se recurrirá en el futuro,} su intención es que empiecen a jugar con datos reales. El archivo \textsf{ Delitos.csv} contiene información sobre los delitos denunciados en la ciudad de Aguascalientes, para el período comprendido entre enero de 2011 a junio del 2016. Dicho archivo contiene 5 columnas: la primera columna contiene la fecha de denuncia del delito; la columna TIPO muestra una descripción del tipo de delito; la columna CONCATENAD presenta un descripción más amplia del delito; la columna SEMANA contiene la semana del año a la que corresponde la fecha de denuncia; y la columna SEMANA\_COMPLETAS indica la semana a lo largo del estudio en la cual se presentó la denuncia. A través de métodos gráficos (e.g. boxplots) traten de determinar el comportamiento semanal de los delitos y discutan alternativas de modelos para describir los delitos cometidos en forma relativamente apropiada.
 
