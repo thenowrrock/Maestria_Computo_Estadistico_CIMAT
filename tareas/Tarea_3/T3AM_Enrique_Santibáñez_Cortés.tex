@@ -1,0 +1,223 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish]{babel}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{lmodern}
+\usepackage{xspace}
+\usepackage{multicol}
+\usepackage{hyperref}
+\usepackage{float}
+\usepackage{hyperref}
+\usepackage{color}
+
+\newcommand{\azul}[1]{\textcolor{MaterialBlue900}{#1}}
+\usepackage{array}
+
+\hypersetup{colorlinks=true,   linkcolor=MaterialBlue900}
+%\usepackage[colorlinks=true, linkcolor=black, urlcolor=blue, pdfborder={0 0 0}]{hyperref}
+
+\usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
+\title{Modelos no paramétricos y de regresión 2018-1}
+\author{Tarea examen: pruebas binomiales y tablas de contingencia}
+\date{Fecha de entrega: 08/01/2017}
+\setlength{\parindent}{0in}
+\spanishdecimal{.}
+
+
+\newcommand{\X}{\mathbb{X}}
+\newcommand{\x}{\mathbf{x}}
+\newcommand{\Y}{\mathbf{Y}}
+\newcommand{\y}{\mathbf{y}}
+\newcommand{\xbarn}{\bar{x}_n}
+\newcommand{\ybarn}{\bar{y}_n}
+\newcommand{\paren}[1]{\left( #1 \right)}
+\newcommand{\llaves}[1]{\left\lbrace #1 \right\rbrace}
+\newcommand{\barra}{\,\vert\,}
+\newcommand{\mP}{\mathbb{P}}
+\newcommand{\mE}{\mathbb{E}}
+\newcommand{\mI}{\mathbf{I}}
+\newcommand{\mJ}{\mathbf{J}}
+\newcommand{\mX}{\mathbf{X}}
+\newcommand{\mS}{\mathbf{S}}
+\newcommand{\mA}{\mathbf{A}}
+\newcommand{\unos}{\boldsymbol{1}}
+\newcommand{\xbarnv}{\bar{\mathbf{x}}_n}
+\newcommand{\abs}[1]{\left\vert #1 \right\vert}
+\newcommand{\muv}{\boldsymbol{\mu}}
+\newcommand{\mcov}{\boldsymbol{\Sigma}}
+\newcommand{\vbet}{\boldsymbol{\beta}}
+\newcommand{\veps}{\boldsymbol{\epsilon}}
+\newcommand{\mC}{\mathbf{C}}
+\newcommand{\ceros}{\boldsymbol{0}}
+\newcommand{\mH}{\mathbf{H}}
+\newcommand{\ve}{\mathbf{e}}
+\newcommand{\avec}{\mathbf{a}}
+\newcommand{\res}{\textbf{RESPUESTA}\\}
+\newcommand{\rojo}[1]{\textcolor{MaterialRed900}{#1}}
+
+\newcommand{\defi}[3]{\textbf{Definición:#3}}
+\newcommand{\fin}{$\blacksquare.$}
+\newcommand{\finf}{\blacksquare.}
+\newcommand{\tr}{\text{tr}}
+
+\begin{document}
+\begin{table}[ht]
+\centering
+\begin{tabular}{c}
+\textbf{Maestría en Computo Estadístico}\\
+\textbf{Álgebra Matricial} \\
+\textbf{Tarea 3}\\
+\today \\
+\emph{Enrique Santibáñez Cortés}\\
+Repositorio de Git: \href{https://github.com/Enriquesec/Algebra_matricial/tree/feature/tareas/tareas/Tarea_3}{Tarea 3, AM}.
+\end{tabular}
+\end{table}
+Todos los cálculos deben ser a mano.
+
+\begin{enumerate}
+% Problema 1.
+%------------------------------------------------------------------------------
+%------------------------------------------------------------------------------
+\item Dada la matriz
+\begin{equation*}
+\left( \begin{array}{rrrr}
+-4 & 5 & -6 &7\\
+-1 & 1 &  1 &3\\
+1  & 2 & -3 &-1
+\end{array} \right)
+\end{equation*}
+encuentre su forma escalonada reducida por renglones. Escriba todas las matrices elementales correspondientes a las operaciones que usó para llevar la matriz a la forma que obtuvo.
+
+% Problema 2.
+%------------------------------------------------------------------------------
+%------------------------------------------------------------------------------
+\item Dada el sistema $Ax=b$, donde 
+\begin{equation*}
+A=\left( \begin{array}{rrr}
+1 & 3 & -1\\
+a_1 & -1 & -3\\
+1 & 2 &2
+\end{array} \right) \ \ \ \text{y} \ \ \ b=\left(\begin{array}{c}
+0\\
+1\\
+a_2
+\end{array} \right)
+\end{equation*}
+encuentre condiciones generales sobre $a_1$ y $a_2$ para que el sistema sea consistente. Si se quiere que la solución sea exactamente $x=(3,-1,2)^t$ , ¿qué valores deben
+tener $a_1$ y $a_2$?
+
+% Problema 3.
+%------------------------------------------------------------------------------
+%------------------------------------------------------------------------------
+\item Encuentre la solución general, escribiéndola como combinación lineal de vectores, del sistema homogéneo $Ax=0$ donde
+
+\begin{equation*}
+\left(\begin{array}{rrrrrr}
+1  & -3 & 1 & -1 &  0 & 1\\
+-1 &  3 & 0 &  3 &  1 & 3 \\
+2  & -6 & 3 &  0 & -1 & 2\\
+-1 &  3 & 1 &  5 &  1 & 6
+\end{array}\right).
+\end{equation*}
+
+% Problema 4.
+%------------------------------------------------------------------------------
+%------------------------------------------------------------------------------
+\item encuentra la inversa de 
+\begin{equation*}
+\left(\begin{array}{rrr}
+ 1 &  0 & -2\\
+-3 &  1 &  4\\
+ 2 & -3 &  4
+\end{array}\right).
+\end{equation*}
+
+
+% Problema 5.
+%------------------------------------------------------------------------------
+%------------------------------------------------------------------------------
+\item Sea 
+\begin{equation*}
+A=\left(\begin{array}{rrr}
+ 1 & 1 & 1\\
+ 0 & 2 & 3\\
+ 5 & 5 & 1
+\end{array}\right).
+\end{equation*}
+Demuestre que $A$ es no singular y luego escriba $A$ como producto de matrices elementales.
+
+% Problema 6.
+%------------------------------------------------------------------------------
+%------------------------------------------------------------------------------
+\item i) Encuentre dos matrices que sean invertibles pero que su suma no sea invertible. ii) Encuentre dos matrices singulares cuya suma sea invertible. Justifique todas sus aseveraciones.
+
+
+% Problema 7.
+%------------------------------------------------------------------------------
+%------------------------------------------------------------------------------
+\item Encuentre la descomposición LU de la matriz
+\begin{equation*}
+\left(\begin{array}{rrrr}
+ 1 &  2 & -1 & 4\\
+ 0 & -1 &  5 & 8\\
+ 2 &  3 &  1 & 4\\
+ 1 & -1 &  6 & 4
+\end{array} \right).
+\end{equation*}
+
+% Problema 8.
+%------------------------------------------------------------------------------
+%------------------------------------------------------------------------------
+\item Encuentre la descomposición LU de la matriz
+\begin{equation*}
+A=\left(\begin{array}{rrrr}
+ 2 &  3 & -1 & 6\\
+ 4 &  7 &  2 & 1\\
+-2 &  5 & -2 & 0\\
+ 0 & -4 &  5 & 2
+\end{array} \right),
+\end{equation*}
+y luego úsela para encontrar la solución del sistema $Ax=b$, donde 
+\begin{equation*}
+b=\left(\begin{array}{c}
+1\\
+0\\
+0\\
+4
+\end{array} \right).
+\end{equation*}
+% Problema 9.
+%------------------------------------------------------------------------------
+%------------------------------------------------------------------------------
+\item Encuentre la descomposición LU de la matriz 
+\begin{equation*}
+A=\left(\begin{array}{rrrr}
+ 1 & -2 & -2 &-3\\
+ 3 & -9 &  0 &-9\\
+-1 &  2 &  4 & 7\\
+-3 & -6 & 26 & 2
+\end{array} \right),
+\end{equation*}
+Usando esta misma descomposición como ayuda, encuentre $A^{-1}$.
+
+
+% Problema 10.
+%------------------------------------------------------------------------------
+%------------------------------------------------------------------------------
+\item Encuentre la descomposición LU de la matriz por bandas
+\begin{equation*}
+A=\left(\begin{array}{cccc}
+a_{11} & a_{12} &   0    &    0  \\
+a_{21} & a_{22} & a_{23} &    0  \\
+    0  & a_{32} & a_{33} & a_{34}\\
+    0  &   0    & a_{43} & a_{44}
+\end{array} \right),
+\end{equation*}
+(Para una interesante aplicación de matrices por bandas a problemas de flujo de calor en física y la importancia de obtener su descomposición LU, ver problemas 31 y 32 de Linear Algebra, D. Lay, 4th ed., p. 131 y las explicaciones que ahí se dan.)
+
+\end{enumerate}
+\end{document}
