@@ -63,6 +63,13 @@
 \newcommand{\fin}{$\blacksquare.$}
 \newcommand{\finf}{\blacksquare.}
 \newcommand{\tr}{\text{tr}}
+\newcommand*{\temp}{\multicolumn{1}{r|}{}}
+
+\newcommand{\grstep}[2][\relax]{%
+   \ensuremath{\mathrel{
+       {\mathop{\longrightarrow}\limits^{#2\mathstrut}_{
+                                     \begin{subarray}{l} #1 \end{subarray}}}}}}
+\newcommand{\swap}{\leftrightarrow}
 
 \begin{document}
 \begin{table}[ht]
@@ -92,6 +99,31 @@ Todos los cálculos deben ser a mano.
 \end{equation*}
 encuentre su forma escalonada reducida por renglones. Escriba todas las matrices elementales correspondientes a las operaciones que usó para llevar la matriz a la forma que obtuvo.
 
+\res
+Realizando las operaciones elementales tenemos que 
+\begin{equation*}
+\begin{pmatrix}
+-4 & 5 & -6 &7\\
+-1 & 1 &  1 &3\\
+1  & 2 & -3 &-1
+\end{pmatrix}
+%
+\grstep[]{R1 \Longleftrightarrow R3}
+ %
+\begin{pmatrix}
+1  & 2 & -3 &-1\\
+-1 & 1 &  1 &3\\
+-4 & 5 & -6 &7
+\end{pmatrix}%
+\grstep[R3 \rightarrow R_3 +4R_1]{R_2 \rightarrow R_2 +R_1}
+%
+\begin{pmatrix}
+1  & 2 & -3 &-1\\
+-1 & 1 &  1 &3\\
+-4 & 5 & -6 &7
+\end{pmatrix}
+%
+\end{equation*}
 % Problema 2.
 %------------------------------------------------------------------------------
 %------------------------------------------------------------------------------
