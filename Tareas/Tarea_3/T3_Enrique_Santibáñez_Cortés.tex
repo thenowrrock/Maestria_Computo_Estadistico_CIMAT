@@ -1,0 +1,119 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish]{babel}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{lmodern}
+\usepackage{xspace}
+\usepackage{multicol}
+\usepackage{hyperref}
+\usepackage{float}
+\usepackage{hyperref}
+\usepackage{color}
+
+\newcommand{\azul}[1]{\textcolor{MaterialBlue900}{#1}}
+\usepackage{array}
+
+\hypersetup{colorlinks=true,   linkcolor=MaterialBlue900}
+%\usepackage[colorlinks=true, linkcolor=black, urlcolor=blue, pdfborder={0 0 0}]{hyperref}
+
+\usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
+\title{Modelos no paramétricos y de regresión 2018-1}
+\author{Tarea examen: pruebas binomiales y tablas de contingencia}
+\date{Fecha de entrega: 08/01/2017}
+\setlength{\parindent}{0in}
+\spanishdecimal{.}
+
+
+\newcommand{\X}{\mathbb{X}}
+\newcommand{\x}{\mathbf{x}}
+\newcommand{\Y}{\mathbf{Y}}
+\newcommand{\y}{\mathbf{y}}
+\newcommand{\xbarn}{\bar{x}_n}
+\newcommand{\ybarn}{\bar{y}_n}
+\newcommand{\paren}[1]{\left( #1 \right)}
+\newcommand{\llaves}[1]{\left\lbrace #1 \right\rbrace}
+\newcommand{\barra}{\,\vert\,}
+\newcommand{\mP}{\mathbb{P}}
+\newcommand{\mE}{\mathbb{E}}
+\newcommand{\mI}{\mathbf{I}}
+\newcommand{\mJ}{\mathbf{J}}
+\newcommand{\mX}{\mathbf{X}}
+\newcommand{\mS}{\mathbf{S}}
+\newcommand{\mA}{\mathbf{A}}
+\newcommand{\unos}{\boldsymbol{1}}
+\newcommand{\xbarnv}{\bar{\mathbf{x}}_n}
+\newcommand{\abs}[1]{\left\vert #1 \right\vert}
+\newcommand{\muv}{\boldsymbol{\mu}}
+\newcommand{\mcov}{\boldsymbol{\Sigma}}
+\newcommand{\vbet}{\boldsymbol{\beta}}
+\newcommand{\veps}{\boldsymbol{\epsilon}}
+\newcommand{\mC}{\mathbf{C}}
+\newcommand{\ceros}{\boldsymbol{0}}
+\newcommand{\mH}{\mathbf{H}}
+\newcommand{\ve}{\mathbf{e}}
+\newcommand{\avec}{\mathbf{a}}
+\newcommand{\res}{\textbf{RESPUESTA}\\}
+\newcommand{\rojo}[1]{\textcolor{MaterialRed900}{#1}}
+
+\newcommand{\defi}[3]{\textbf{Definición:#3}}
+\newcommand{\fin}{$\blacksquare.$}
+\newcommand{\finf}{\blacksquare.}
+
+\begin{document}
+\begin{table}[ht]
+\centering
+\begin{tabular}{c}
+\textbf{Maestría en Computo Estadístico}\\
+\textbf{Inferencia Estadística} \\
+\textbf{Tarea 3}\\
+\today \\
+\emph{Enrique Santibáñez Cortés}\\
+Repositorio de Git: \href{https://github.com/Enriquesec/Inferencia_Estad-stica/tree/master/Tareas/Tarea_3}{Tarea 3, IE}.
+\end{tabular}
+\end{table}
+Escriba de manera concisa y clara sus resultados, justificando los pasos necesarios. Serán descontados puntos de los ejercicios mal escritos y que contenga ecuaciones sin una estructura gramatical adecuada. Las conclusiones deben escribirse en el contexto del problema. Todos los programas y
+simulaciones tienen que realizarse en R.\\
+
+1. Resuelva lo siguiente:
+
+\begin{itemize}
+\item[a)] Sea $X\sim Exponencial(\beta)$. Encuentre $\mP(|X-\mu_X\geq k\sigma_X)$ para $k>1$. Compare esta probabilidad con la que obtiene de la desigualdad de Chebyshev. 
+
+\item[b)] Sean $X_1,\cdots,X_n\sim Bernoulli(p)$ y $\bar{X}=n^{-1}\sum_{i=1}^n X_i$. Usando las desigualdades de Chebyshev y Hoeffding, acote $\mP(|\bar{X}-p|>\epsilon)$. Demuestre que para $n$ grande la cota de Hoeffding es más pequeña que la cota de Chebyshev. ¿En qué beneficia esto?
+\end{itemize}
+
+2. Sean  $X_1,\cdots,X_n\sim Bernoulli(p)$.
+\begin{itemize}
+\item[a)] Sea $\alpha >0 $ fijo y defina 
+$$\epsilon_n = \sqrt{\frac{1}{2n} \log\left(\frac{2}{\alpha}\right)}.$$
+Sea $\hat{p}=n^{-1}\sum_{i=1}^n X_i.$ Defina $C_n=(\hat{p}_n-\epsilon_n,\hat{p}_n+\epsilon_n)$. Use la desigualdad de Hoeffding para demostrar que $$\mP(C_n \text{contiene a } p)\neq 1-\alpha$$.
+Diremos que $C_n$ es un $(1-\alpha)-$intervalo de confianza para $p$. En la practica, se trunca el intervalo de tal manera de que no vaya debajo del 0 o arriba del 1.
+
+\item[b)] Sea $\alpha=0.05$ y $p=0.4$.Mediante simulaciones, realice un estudio para ver que tan a menudo el intervalo de confianza contiene a $p$ (la cobertura). Haga esto para $n=
+10, 50, 100, 250, 500, 1000, 2500, 5000, 10000$. Grafique la cobertura contra $n$.
+
+\item[c)] Grafique la longitud del intervalo contra $n$. Suponga que deseamos que la longitud del intervalo sea menor que 0.05. ¿Qué tan grande debe ser $n$?
+\end{itemize}
+
+3. Una partícula se encuentra inicialmente en el origen de la recta real y se mueve en saltos de una unidad. Para cada salto, la probabilidad de que la partícula salte una unidad a la izquierda es $p$ y la probabilidad de que salte una unidad a la derecha es $1-p$. Denotemos por $X_n$ a la posición de la partícula después de n unidades. Encuentre $\mE(X_n)$ y Var$(X_n)$. Esto se conoce como una caminata aleatoria en una dimensión. \\
+
+
+
+7. Demuestre que la fórmula de la densidad de la Beta integra 1.
+
+
+\textbf{Honors problems} \\
+1. \begin{itemize}
+\item[a)] Sea $X$ una v.a. discreta con media finita y que toma valores en el conjunto $0,1,2\cdots .$ Demuestre que 
+$$E(X)=\sum_{k=1}^\infty \mP(X\geq k).$$
+\item[b)] Sea $X$ una v.a. continua no-negativa con media finita, función de densidad $f$ y función de distribución $F$. Demuestre que 
+$$E(X)=\int_0^\infty (1-F(t))dt.$$
+
+\item[c)] ¿Cómo cambia la fórmula del caso anterior cuando el soporte de $X$ es todo $\mathbb{R}?$
+\end{itemize}
+2. Sea $X$ una v.a. continua con primer momento finito. Demuestre que la función $G(c)=E(|X-c|). c\in \mathbb{R},$ se minimiza en $c=M(X)$ para $M(X)$ la mediana de $X$.
+\end{document}
