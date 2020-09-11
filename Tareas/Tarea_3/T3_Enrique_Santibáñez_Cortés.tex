@@ -81,7 +81,12 @@ simulaciones tienen que realizarse en R.\\
 1. Resuelva lo siguiente:
 
 \begin{itemize}
-\item[a)] Sea $X\sim Exponencial(\beta)$. Encuentre $\mP(|X-\mu_X\geq k\sigma_X)$ para $k>1$. Compare esta probabilidad con la que obtiene de la desigualdad de Chebyshev. 
+\item[a)] Sea $X\sim Exponencial(\beta)$. Encuentre $\mP(|X-\mu_X |\geq k\sigma_X)$ para $k>1$. Compare esta probabilidad con la que obtiene de la desigualdad de Chebyshev. 
+
+\res 
+Cómo $X\sim Exponencial(\beta)$ entonces $\mu_X=\beta$ y $\sigma_X=\sqrt{\beta^2}=\beta.$ Por lo que:
+
+$$\mP(|X-\mu_X |\geq k\sigma_X)=\mP(|X-\mu_X |^2\geq k^2\sigma_X^2)$$
 
 \item[b)] Sean $X_1,\cdots,X_n\sim Bernoulli(p)$ y $\bar{X}=n^{-1}\sum_{i=1}^n X_i$. Usando las desigualdades de Chebyshev y Hoeffding, acote $\mP(|\bar{X}-p|>\epsilon)$. Demuestre que para $n$ grande la cota de Hoeffding es más pequeña que la cota de Chebyshev. ¿En qué beneficia esto?
 \end{itemize}

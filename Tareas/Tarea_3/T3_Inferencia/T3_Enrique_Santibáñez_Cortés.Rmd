@@ -20,24 +20,60 @@ Repositorio de Git: \href{https://github.com/Enriquesec/Inferencia_Estad-stica/t
 \end{table}
 
 4. El siguiente conjuntos de datos contiene mediciones del diámetro de un agave, medido en decímetros, en distintas localizaciones no cercanas.
+\begin{equation*}
+\begin{array}{cccccccccc}
+23.37 & 21.87 & 24.41 & 21.27 & 23.33 & 15.20 & 24.21 & 27.52 & 15.48 & 27.19 \\
+25.05 & 20.40 & 21.05 & 28.83 & 22.90 & 18.00 & 17.55 & 25.92 & 23.64 & 28.96 \\
+23.02 & 17.32 & 30.74 & 26.73 & 17.22 & 22.81 & 20.78 & 23.17 & 21.60 & 22.37
+\end{array}
+\end{equation*}
+a) Escriba una función en R que calcule la función de distribución empírica para un conjunto de datos dado $D$. La función debe tomar como parámetros al valor $x$ donde se evalúa y al conjunto de datos $D$. Utilizando esta función grafique la función de distribución empírica asociada al conjunto de datos de agave. Ponga atención a los puntos de discontinuidad. ¿Qué observa? \textbf{Nota}: Escriba la función mediante el algoritmo descrito en las notas de la clase; para este ejercicio no vale usar la funciones implementadas en R que hacen lo pedido.
 
-a) Escriba una función en R que calcule la función de distribución empírica para un conjunto de datos dado D. La función debe tomar como parámetros al valor $x$ donde se evalúa y al conjunto de datos $D$. Utilizando esta función grafique la función de distribución empírica asociada al conjunto de datos de agave. Ponga atención a los puntos de discontinuidad. ¿Qué observa? Nota: Escriba la función mediante el algoritmo descrito en las notas de la clase; para este ejercicio no vale usar la funciones implementadas en R que hacen lo
-pedido.
+\res Sea $X_i, \cdots , X_n\sim F$, la función de densidad empírica $\hat{F}$ es la función de distribución acumulada que asigna masa 1/n en cada punto $X_i$. Formalmente,
+$$\hat{F}(x)=\frac{\sum_{1=i}^n 1_{X_i\leq x}}{n},$$
+donde $$1_{X_i\leq x} = \left\{ \begin{array}{cc} 1 & \text{si } X_i\leq x\\
+0 & \text{si } X_i >x\end{array}\right.$$
+Utilizando la definición anterior construímos la función en R:
+```{r}
+fde <- function(x, D){
+  n <- length(D)
+  fde_x <- sum(D<x)/n
+}
+```
+Procedemos a calcular con la función anterior la fde en los puntos de discontinuidad, para ello primero ingresemos los datos:
+```{r}
+diametro_agave<-c(23.37, 21.87, 24.41, 21.27, 23.33, 15.20, 24.21, 27.52, 15.48, 27.19,
+25.05, 20.40, 21.05, 28.83, 22.90, 18.00, 17.55, 25.92, 23.64, 28.96, 23.02, 17.32, 
+30.74, 26.73, 17.22, 22.81, 20.78, 23.17, 21.60, 22.37)
+
+
+sort(diametro_agave)
+```
+Los puntos de discontinuidad serían cuando cambia fde, es decir, cuando se evalua en un $x+\epsilon$ tal que $\hat{F}(x)\neq \hat{F}(x+\epsilon)$
 
 b) Usando la desigualdad de Dvoretzky-Kiefer-Wolfowitz, escriba una función en R que calcule y grafique una región de confianza para la función de distribución empírica. La función debe tomar como parámetros al conjunto de datos que se usan para contruir la función de distribución empírica.
 
-c) Escriba una función en R que determine la gráfica Q-Q normal de un conjunto de datos. La función debe tomar como parámetro al conjunto de datos y deberá graficar contra el percentil estandarizado de la normal. Para poder comparar el ajuste más claramente, la función además deberá ajustar en rojo a la recta $sx + \bar{x} (s $=desviación estándar muestral y $\bar{x}$=media muestral). Usando esta función, determine la gráfica Q-Q normal. ¿Qué observa? Nota: La misma del inciso a).
+c) Escriba una función en R que determine la gráfica Q-Q normal de un conjunto de datos. La función debe tomar como parámetro al conjunto de datos y deberá graficar contra el percentil estandarizado de la normal. Para poder comparar el ajuste más claramente, la función además deberá ajustar en rojo a la recta $sx + \bar{x}$ $s(=$desviación estándar muestral y $x$=media muestral). Usando esta función, determine la gráfica Q-Q normal. ¿Qué observa? \textbf{Nota:} La misma del inciso a).
 d ) Escriba una función en R que determine el gráfico de probabilidad normal. La función debe tomar como parámetro al conjunto de datos. ¿Qué observa? Nota: La misma del inciso a).
 e) ¿Los datos anteriores se distribuyen normalmente? Argumente.
 
 5. En este ejercicio repasará la estimación de densidades.
+a ) Escriba una función en R que estime una densidad por el método de kerneles. La función deberá recibir al punto $x$ donde se evalúa al estimador, al parámetro de suavidad $h$, al kernel que se utilizará en la estimación y al conjunto de datos.
+b) Cargue en R al archivo “Tratamiento.csv”, el cual contiene la duración de los períodos de tratamiento (en días) de los pacientes de control en un estudio de suicidio. Utilice
+la función del inciso anterior para estimar la densidad del conjunto de datos para $h =20, 30, 60$. Grafique las densidades estimadas. ¿Cuál es el mejor valor para $h$? Argumente.
+c) En el contexto de la estimación de densidades, escriba una función en R que determine el ancho de banda que optimiza al ISE. Grafique la densidad con ancho de banda óptimo para el conjunto de datos de “Tratamiento.csv”.
 
+6. Cargue en R al conjunto de datos “Maíz.csv”, el cual contiene el precio mensual de la tonelada de maíz y el precio de la tonelada de tortillas en USD. En este ejercicio tendrá que estimar los coeficientes de una regresión lineal simple.
 
+a) Calcule de forma explícita la estimación de los coeficientes via mínimos cuadrados y ajuste la regresión correspondiente. Concluya.
+b) Calcule de forma explícita la estimación de los coeficientes via regresión no-paramétrica tipo kernel (ver Nadaraya, E. A. (1964). “On Estimating Regression”. Theory of Probability and its Applications. 9 (1): 141–2. doi:10.1137/1109020) y ajuste la regresión correspondiente. Concluya.
 
-8. En este ejercicio se comprobará que tan buena es la aproximación dada por las reglas empíricas para algunas de las distribuciones estudiadas en la clase. Considerese las distribuciones $Unif(a = −3, b = 3)$, $Normal(0, 1)$, $Exponencial(2)$, $Gamma(\alpha= 2, \beta = 1)$, $Gamma(\alpha=3, \beta= 1)$, $Beta(\alpha= 2, \beta= 2)$, $Weibull(\alpha= 4, \beta= 1)$ y Lognormal$(\mu = 3, \sigma = 2)$.
-a) Para cada una de las distribuciones anteriores, haga una tabla que muestre las probabilidades contenidas en los intervalos $(\mu − k\sigma, \mu + k\sigma)$, para $k = 1, 2, 3$. Utilice las fórmulas de las medias y varianzas contenidas en las notas para determinar $\mu$ y $\sigma$ en cada caso. Puede usar R para determinar las probabilidades pedidas.
+c) Compare ambos resultados. ¿Qué diferencias observa?
 
-b) En R, simule $n = 1000$ muestras de cada una de las distribuciones anteriores y calcule la media muestral $\bar{X}$ y la varianza muestral $s^2$ como se mencionó en la clase. En cada caso, calcule la proporción de observaciones que quedan en los intervalos $(\bar{x} − k\sigma, \bar{x} + k\sigma)$), para k = 1, 2, 3. Reporte sus hallazgos en una tabla como la del inciso anterior. ¿Qué tanto
+8. En este ejercicio se comprobará que tan buena es la aproximación dada por las reglas empíricas para algunas de las distribuciones estudiadas en la clase. Considerese las distribuciones $Unif(a =-3, b = 3)$, $Normal(0, 1)$, $Exponencial(2)$, $Gamma(\alpha= 2, \beta = 1)$, $Gamma(\alpha=3, \beta= 1)$, $Beta(\alpha= 2, \beta= 2)$, $Weibull(\alpha= 4, \beta= 1)$ y Lognormal$(\mu = 3, \sigma = 2)$.
+a) Para cada una de las distribuciones anteriores, haga una tabla que muestre las probabilidades contenidas en los intervalos $(\mu - k\sigma, \mu + k\sigma)$, para $k = 1, 2, 3$. Utilice las fórmulas de las medias y varianzas contenidas en las notas para determinar $\mu$ y $\sigma$ en cada caso. Puede usar R para determinar las probabilidades pedidas.
+
+b) En R, simule $n = 1000$ muestras de cada una de las distribuciones anteriores y calcule la media muestral $\bar{x}$ y la varianza muestral $s^2$ como se mencionó en la clase. En cada caso, calcule la proporción de observaciones que quedan en los intervalos $(\bar{x}- k\sigma, \bar{x} + k\sigma)$), para k = 1, 2, 3. Reporte sus hallazgos en una tabla como la del inciso anterior. ¿Qué tanto
 se parecen la tabla de este inciso y la del anterior?
 
 

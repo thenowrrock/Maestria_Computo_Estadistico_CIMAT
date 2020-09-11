@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020) (preloaded format=pdflatex 2020.9.8)  10 SEP 2020 01:43
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020) (preloaded format=pdflatex 2020.9.8)  10 SEP 2020 12:02
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -573,7 +573,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 78--80
  []
 
 
-Overfull \hbox (36.74889pt too wide) in paragraph at lines 96--98
+Overfull \hbox (36.74889pt too wide) in paragraph at lines 101--103
 \T1/lmr/m/n/10.95 va-lo de con-fian-za con-tie-ne a $\OML/lmm/m/it/10.95 p$ \T1
 /lmr/m/n/10.95 (la co-ber-tu-ra). Ha-ga es-to pa-ra $\OML/lmm/m/it/10.95 n \OT1
 /lmr/m/n/10.95 = 10\OML/lmm/m/it/10.95 ; \OT1/lmr/m/n/10.95 50\OML/lmm/m/it/10.
@@ -585,27 +585,27 @@ Overfull \hbox (36.74889pt too wide) in paragraph at lines 96--98
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 102--103
+Underfull \hbox (badness 10000) in paragraph at lines 107--108
 
  []
 
 [1
 
 {/home/enrique/.TinyTeX/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 119.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 124.
 
 [2]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 119.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 124.
  (./T3_Enrique_Santibáñez_Cortés.aux
 LaTeX Info: Redefining \. on input line 25.
 LaTeX Info: Redefining \% on input line 25.
 )
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 119.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 119.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 124.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 124.
 Package rerunfilecheck Info: File `T3_Enrique_Santibáñez_Cortés.out' has not
  changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 119.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 124.
  ) 
 Here is how much of TeX's memory you used:
  8184 strings out of 482806
@@ -615,9 +615,9 @@ Here is how much of TeX's memory you used:
  564641 words of font info for 52 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  43i,8n,37p,490b,402s stack positions out of 5000i,500n,10000p,200000b,80000s
-{/home/enrique/.TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathex.enc}{/home/en
-rique/.TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}{/home/enrique/.Tiny
-TeX/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}{/home/enrique/.TinyTeX/texmf-dist/
+{/home/enrique/.TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}{/home/en
+rique/.TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}{/home/enrique/.TinyTeX/
+texmf-dist/fonts/enc/dvips/lm/lm-mathex.enc}{/home/enrique/.TinyTeX/texmf-dist/
 fonts/enc/dvips/lm/lm-mathit.enc}{/home/enrique/.TinyTeX/texmf-dist/fonts/enc/d
 vips/lm/lm-ec.enc}</home/enrique/.TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx
 10.pfb></home/enrique/.TinyTeX/texmf-dist/fonts/type1/public/lm/lmex10.pfb></ho
@@ -628,7 +628,7 @@ s/type1/public/lm/lmr8.pfb></home/enrique/.TinyTeX/texmf-dist/fonts/type1/publi
 c/lm/lmri10.pfb></home/enrique/.TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy10
 .pfb></home/enrique/.TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy8.pfb></home/
 enrique/.TinyTeX/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on T3_Enrique_Santibáñez_Cortés.pdf (2 pages, 123051 bytes).
+Output written on T3_Enrique_Santibáñez_Cortés.pdf (2 pages, 130493 bytes).
 PDF statistics:
  65 PDF objects out of 1000 (max. 8388607)
  50 compressed objects within 1 object stream
