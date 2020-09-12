@@ -54,7 +54,9 @@ Los puntos de discontinuidad serían cuando cambia fde, es decir, cuando se eval
 b) Usando la desigualdad de Dvoretzky-Kiefer-Wolfowitz, escriba una función en R que calcule y grafique una región de confianza para la función de distribución empírica. La función debe tomar como parámetros al conjunto de datos que se usan para contruir la función de distribución empírica.
 
 c) Escriba una función en R que determine la gráfica Q-Q normal de un conjunto de datos. La función debe tomar como parámetro al conjunto de datos y deberá graficar contra el percentil estandarizado de la normal. Para poder comparar el ajuste más claramente, la función además deberá ajustar en rojo a la recta $sx + \bar{x}$ $s(=$desviación estándar muestral y $x$=media muestral). Usando esta función, determine la gráfica Q-Q normal. ¿Qué observa? \textbf{Nota:} La misma del inciso a).
-d ) Escriba una función en R que determine el gráfico de probabilidad normal. La función debe tomar como parámetro al conjunto de datos. ¿Qué observa? Nota: La misma del inciso a).
+
+d) Escriba una función en R que determine el gráfico de probabilidad normal. La función debe tomar como parámetro al conjunto de datos. ¿Qué observa? Nota: La misma del inciso a).
+
 e) ¿Los datos anteriores se distribuyen normalmente? Argumente.
 
 5. En este ejercicio repasará la estimación de densidades.
@@ -154,7 +156,16 @@ c) En el contexto de la estimación de densidades, escriba una función en R que
 
 a) Calcule de forma explícita la estimación de los coeficientes via mínimos cuadrados y ajuste la regresión correspondiente. Concluya.
 
+\res Cargamos los datos:
+```{r}
+maiz <- read.csv("Maiz.csv", col.names = c("p_tonelada_maiz", "p_tonelada_tortilla"))
+head(maiz)
+```
+
+
 b) Calcule de forma explícita la estimación de los coeficientes via regresión no-paramétrica tipo kernel (ver Nadaraya, E. A. (1964). “On Estimating Regression”. Theory of Probability and its Applications. 9 (1): 141–2. doi:10.1137/1109020) y ajuste la regresión correspondiente. Concluya.
+
+
 
 c) Compare ambos resultados. ¿Qué diferencias observa?
 
@@ -162,30 +173,136 @@ c) Compare ambos resultados. ¿Qué diferencias observa?
 
 a) Para cada una de las distribuciones anteriores, haga una tabla que muestre las probabilidades contenidas en los intervalos $(\mu - k\sigma, \mu + k\sigma)$, para $k = 1, 2, 3$. Utilice las fórmulas de las medias y varianzas contenidas en las notas para determinar $\mu$ y $\sigma$ en cada caso. Puede usar R para determinar las probabilidades pedidas.
 
-\res Determinemos para cada distribución su media y varianza, 
-\begin{itemize}
-\item Si $X\sim Unif(a,b)$,
-$$E[X]= , \ \ \ \ Var(X)$$
-\item Si $X\sim Normal(\mu, \sigma)$,
-$$E[X]= , \ \ \ \ Var(X)$$
+\res Determinemos para cada distribución su media y varianza las cuales se pueden calcular con la table
 
-\item Si $X\sim Exponencial(\theta)$,
-$$E[X]= , \ \ \ \ Var(X)$$
+\begin{table}[H]
+\centering
+\begin{tabular}{ccc}
+Distribución de $X$ & $\mE[X]$ & Var($X$)\\ \hline \hline
+$Unif(a,b)$& $\frac{b+a}{2}$ & $\frac{(a-b)^2}{12}$\\  
+\\
+$Normal(\mu, \sigma)$ & $\mu$& $\sigma^2$\\
+\\
+$Exponencial(\theta)$ & $\theta$& $\theta^2$\\
+\\
+$Gamma(\alpha, \beta)$ &$\alpha \beta$ & $\alpha\beta^2$\\
+\\
+$Beta(\alpha,\beta)$ &$\frac{\alpha}{\alpha+\beta}$&$\frac{\alpha \beta}{(\alpha+\beta^2)(\alpha +\beta+1)}$ \\
+\\
+$Weibull(\alpha,\beta)$ &$\alpha^{-\frac{1}{\beta}}\Gamma \left( \frac{1}{\beta}\right)$ & $\alpha^{-\frac{1}{\beta}} \left(\Gamma \left(\frac{2}{\beta}+1 \right)-\Gamma^2\left( \frac{1}{\beta}+1\right) \right)$ \\
+\\
+$LogNormal(\mu,\sigma)$& $e^{\mu+\frac{\sigma^2}{2}}$& $e^{2\mu+\sigma^2}\left(e^{\sigma^2}-1 \right)$\\
+\hline \hline
+\end{tabular}
+\end{table}
 
-\item Si $X\sim Gamma(\alpha, \beta)$,
-$$E[X]= , \ \ \ \ Var(X)$$
+Para este problema sería:
+\begin{table}[H]
+\centering
+\begin{tabular}{cccc}
+Distribución de $X$ & $\mE[X]$ & Var($X$) &$\sigma$  \\ \hline \hline
+$Unif(-3,3)$& $\frac{3-3}{2}=\textbf{0}$ & $\frac{(a-b)^2}{12}=\frac{(-3-3)^2}{12}=3$& 1.73\\  
+\\
+$Normal(0,1)$ & $\textbf{0}$& $\textbf{1}$ & 1\\
+\\
+$Exponencial(2)$ & $\textbf{2}$& $\textbf{4}$ & 2\\
+\\
+$Gamma(2, 1)$ &$\textbf{2}$ & $\textbf{2}$ & 1.41\\
+\\
+$Gamma(3, 1)$ &$\textbf{3}$ & $\textbf{3}$ &1.73\\
+\\
+$Beta(2,2)$ &$\frac{2}{2+2}=\frac{1}{2}$&$\frac{2 (2)}{(2+2^2)(2 +2+1)}=\frac{4}{30}$ & 3\\
+\\
+$Weibull(\alpha,\beta)$ &$\alpha^{-\frac{1}{\beta}}\Gamma \left( \frac{1}{\beta}\right)$ & $\alpha^{-\frac{1}{\beta}} \left(\Gamma \left(\frac{2}{\beta}+1 \right)-\Gamma^2\left( \frac{1}{\beta}+1\right) \right)$ \\
+\\
+$LogNormal(3,2)$& $e^{3+\frac{2^2}{2}}=148.41$& $e^{2(3)+4}\left(e^{3} -1\right)$ & 1086.544\\
+\hline \hline
+\end{tabular}
+\end{table}
 
-\item Si $X\sim Beta(\alpha,\beta)$,
-$$E[X]= , \ \ \ \ Var(X)$$
-\item Si $X\sim  Weibull(\alpha,\beta)$,
-$$E[X]= , \ \ \ \ Var(X)$$
-\item Si $X\sim  LogNormal(\mu,\sigma)$,
-$$E[X]= , \ \ \ \ Var(X).$$
+Calculemos las probabilidades:
+```{r}
+parametros_distribuciones <- data.frame(distribucion=c("Unif","Normal", "Exp", "Gamma","Gamma_2", "Beta", "Weibull", "LNormal"), mu = c(0, 0, 2, 2, 3, 0.5, 1, 148.41), std=c(1.73, 1, 2, 1.41, 1.73, 0.342,0.25, 10865))
 
-\end{itemize}
+resultados_uniforme <- parametros_distribuciones %>% filter(distribucion=="Unif")%>%
+  mutate(prob_between_x_s=punif(mu+std, min=-3, max=3)-punif(mu-std, min=-3, max=3),
+         prob_between_x_2s=punif(mu+2*std, min=-3, max=3)-punif(mu-2*std, min=-3, max=3),
+         prob_between_x_3s=punif(mu+3*std, min=-3, max=3)-punif(mu-3*std, min=-3, max=3))
+
+resultados_normal <- parametros_distribuciones %>% filter(distribucion=="Normal")%>%
+  mutate(prob_between_x_s=pnorm(mu+std)-punif(mu-std),
+         prob_between_x_2s=pnorm(mu+2*std)-pnorm(mu-2*std),
+         prob_between_x_3s=pnorm(mu+3*std)-pnorm(mu-3*std))
+
+resultados_exponencial <- parametros_distribuciones %>% filter(distribucion=="Exp")%>%
+  mutate(prob_between_x_s=pexp(mu+std, 2)-pexp(mu-std,2),
+         prob_between_x_2s=pexp(mu+2*std, 2)-pexp(mu-2*std, 2),
+         prob_between_x_3s=pexp(mu+3*std, 2)-pexp(mu-3*std, 2))
+
+resultados_gamma <- parametros_distribuciones %>% filter(distribucion=="Gamma")%>%
+  mutate(prob_between_x_s=pgamma(mu+std, 2, 1)-pgamma(mu-std, 2, 1),
+         prob_between_x_2s=pgamma(mu+2*std, 2, 1)-pgamma(mu-2*std, 2, 1),
+         prob_between_x_3s=pgamma(mu+3*std, 2, 1)-pgamma(mu-3*std, 2, 1))
+
+resultados_gamma2 <- parametros_distribuciones %>% filter(distribucion=="Gamma")%>%
+  mutate(prob_between_x_s=pgamma(mu+std, 3, 1)-pgamma(mu-std, 3, 1),
+         prob_between_x_2s=pgamma(mu+2*std, 3, 1)-pgamma(mu-2*std, 3, 1),
+         prob_between_x_3s=pgamma(mu+3*std, 3, 1)-pgamma(mu-3*std, 3, 1))
+
+resultados_beta <- parametros_distribuciones %>% filter(distribucion=="Beta")%>%
+  mutate(prob_between_x_s=pgamma(mu+std, 2, 2)-pgamma(mu-std, 2, 2),
+         prob_between_x_2s=pgamma(mu+2*std, 2, 2)-pgamma(mu-2*std, 2, 2),
+         prob_between_x_3s=pgamma(mu+3*std, 2, 2)-pgamma(mu-3*std, 2, 2))
+
+resultados_weibull <- parametros_distribuciones %>% filter(distribucion=="Weibull")%>%
+  mutate(prob_between_x_s=pgamma(mu+std, 4, 1)-pgamma(mu-std, 3, 1),
+         prob_between_x_2s=pgamma(mu+2*std, 4, 1)-pgamma(mu-2*std, 4, 1),
+         prob_between_x_3s=pgamma(mu+3*std, 4, 1)-pgamma(mu-3*std, 4, 1))
+
+resultados_lnorm <- parametros_distribuciones %>% filter(distribucion=="LNormal")%>%
+  mutate(prob_between_x_s=pgamma(mu+std, 3, 2)-pgamma(mu-std, 3, 2),
+         prob_between_x_2s=pgamma(mu+2*std, 3, 2)-pgamma(mu-2*std, 3, 2),
+         prob_between_x_3s=pgamma(mu+3*std, 3, 2)-pgamma(mu-3*std, 3, 2))
+
+resultados_teoricos <- rbind(resultados_beta, resultados_exponencial, resultados_gamma, resultados_gamma2,
+                             resultados_lnorm, resultados_normal, resultados_uniforme, resultados_weibull)
+
+resultados_teoricos %>% select(distribucion, prob_between_x_s, prob_between_x_2s, prob_between_x_3s)
+ 
+```
 
 
 
-b) En R, simule $n = 1000$ muestras de cada una de las distribuciones anteriores y calcule la media muestral $\bar{x}$ y la varianza muestral $s^2$ como se mencionó en la clase. En cada caso, calcule la proporción de observaciones que quedan en los intervalos $(\bar{x}- k\sigma, \bar{x} + k\sigma)$), para k = 1, 2, 3. Reporte sus hallazgos en una tabla como la del inciso anterior. ¿Qué tanto se parecen la tabla de este inciso y la del anterior?
+b) En R, simule $n = 1000$ muestras de cada una de las distribuciones anteriores y calcule la media muestral $\bar{x}$ y la varianza muestral $s^2$ como se mencionó en la clase. En cada caso, calcule la proporción de observaciones que quedan en los intervalos $(\bar{x}- k, \bar{x} + ks)$), para k = 1, 2, 3. Reporte sus hallazgos en una tabla como la del inciso anterior. ¿Qué tanto se parecen la tabla de este inciso y la del anterior?
 
+\res Calculemos 
+```{r}
+set.seed(08081997)
+
+muestras_simuladas<- data.frame(x=c(runif(1000, -3, 3), rnorm(1000), rexp(1000, 2),
+rgamma(1000, 2, 1), rgamma(1000, 3, 1), rbeta(1000, 2, 2), rweibull(1000, 4, 1), 
+rlnorm(1000,meanlog= 3, sdlog = 2)), distribucion=c(rep("Uniforme", 1000), rep("Normal", 1000), 
+rep("Exp", 1000), rep("Gamma_1", 1000), rep("Gamma_2", 1000), rep("Beta", 1000), 
+rep("Weib", 1000), rep("LNormal", 1000)))
+
+estadisticos_muestrales <- muestras_simuladas %>% group_by(distribucion) %>% 
+  summarise(mean_muestral = mean(x),
+            std_muestral = sqrt(var(x)))
+
+head(estadisticos_muestrales,8)
+
+resultados <- merge(muestras_simuladas, estadisticos_muestrales)
+
+resultados %>% mutate( 
+  x_s = ifelse(x>(mean_muestral-std_muestral) & x<(mean_muestral+std_muestral), 1, 0),
+  x_2s = ifelse(x>(mean_muestral-2*std_muestral) & x<(mean_muestral+2*std_muestral), 1, 0),
+  x_3s = ifelse(x>(mean_muestral-3*std_muestral) & x<(mean_muestral+3*std_muestral), 1, 0)) %>%
+  group_by(distribucion) %>% summarise(propor_x_s = sum(x_s)/1000,
+                                       propor_x_2s = sum(x_2s)/1000,
+                                       propor_x_3s = sum(x_3s)/1000)
+```
+
+```{r}
+resultados_teoricos %>% select(distribucion, prob_between_x_s, prob_between_x_2s, prob_between_x_3s)
+```
 
