@@ -58,22 +58,134 @@ d ) Escriba una función en R que determine el gráfico de probabilidad normal. 
 e) ¿Los datos anteriores se distribuyen normalmente? Argumente.
 
 5. En este ejercicio repasará la estimación de densidades.
-a ) Escriba una función en R que estime una densidad por el método de kerneles. La función deberá recibir al punto $x$ donde se evalúa al estimador, al parámetro de suavidad $h$, al kernel que se utilizará en la estimación y al conjunto de datos.
-b) Cargue en R al archivo “Tratamiento.csv”, el cual contiene la duración de los períodos de tratamiento (en días) de los pacientes de control en un estudio de suicidio. Utilice
-la función del inciso anterior para estimar la densidad del conjunto de datos para $h =20, 30, 60$. Grafique las densidades estimadas. ¿Cuál es el mejor valor para $h$? Argumente.
+
+a) Escriba una función en R que estime una densidad por el método de kerneles. La función deberá recibir al punto $x$ donde se evalúa al estimador, al parámetro de suavidad $h$, al kernel que se utilizará en la estimación y al conjunto de datos.
+
+\res Para el caso univariado, el $KDE$ está dado por 
+$$\hat{f}=\frac{1}{nh} \sum_{i=1}^nK\left( \frac{x-x_1}{h}\right), \ \ \ \ x\in \mathbb{R}, \ h>0.$$
+$K$ es la función Kernel, y $h$ es el acho de banda que determina la suavidad de la estimación. Procedemos a definir las funciones Kernel's, solo consideraremos las siguientes: gaussian, epanechnikov, rectangular, triangular, consine.
+```{r}
+# Definimos las funciones kernel:
+kernel_gaussian <- function(x,x_i,h){
+  dnorm((x-x_i)/h)
+}
+
+kernel_rectangular <- function(x,x_i,h){ 
+  dunif((x_i - x)/h, min = -1, max = 1)
+}
+
+kernel_triangular <- function(x, x_i, h){
+  u = (x_i-x)/h
+  (1-abs(u))*(abs(u) <= 1)
+}
+
+kernel_epanechnikov <- function(x, x_i, h){
+  u = (x_i - x)/h
+  3/4*(1-u^2)*(abs(u) <= 1)
+}
+
+kernel_cosine <- function(x, x_i, h){
+  u = (x_i - x)/h
+  (1+cos(pi*u))/2*(abs(u) <= 1)
+}
+```
+Una vez definido lo anterior procedemos a definir la función para estimar la densidad por el método de kerneles (https://github.com/JonasMoss/kdensity/blob/master/R/builtin_kernels.R):
+```{r fig.width = 5.2, fig.asp = 0.62, fig.align = "center"}
+kde <- function(x, h, kernel, D){
+  f_hat <- 0
+  n <- length(D)
+  for (i in 1:n){
+    if (kernel=="gaussian"){
+      f_hat <- f_hat + kernel_gaussian(x, D[i], h)
+    }
+    else if(kernel=="epanechnikov"){
+      f_hat <- f_hat + kernel_epanechnikov(x, D[i], h)
+    }
+    else if(kernel=="rectangular"){
+      f_hat <- f_hat + kernel_rectangular(x, D[i], h)
+    }
+    else if(kernel=="triangular"){
+      f_hat <- f_hat + kernel_triangular(x, D[i], h)
+    }
+    else if(kernel=="consine"){
+      f_hat <- f_hat + kernel_cosine(x, D[i], h)
+    }
+    else{
+      print("Kernel incorrecto")
+      break()
+    }
+  }
+  f_hat/(n*h)
+}
+```
+
+b) Cargue en R al archivo “Tratamiento.csv”, el cual contiene la duración de los períodos de tratamiento (en días) de los pacientes de control en un estudio de suicidio. Utilice la función del inciso anterior para estimar la densidad del conjunto de datos para $h =20, 30, 60$. Grafique las densidades estimadas. ¿Cuál es el mejor valor para $h$? Argumente.
+
+\res Cargamos los datos:
+```{r, message=FALSE, warning=FALSE}
+library(tidyverse)
+tratamiento <- read.csv("Tratamiento.csv")
+```
+
+
+```{r}
+fd_tratamiento <-data.frame(x=seq(0,1000, 10))
+
+fd_tratamiento$h_20<- kde(fd_tratamiento$x, 20, "gaussian", tratamiento$X1)
+
+fd_tratamiento$h_30 <- kde(fd_tratamiento$x, 30, "gaussian", tratamiento$X1)
+
+fd_tratamiento$h_60 <- kde(fd_tratamiento$x, 60, "gaussian", tratamiento$X1)
+
+ggplot(fd_tratamiento, aes(x, h_20))+
+  geom_line()
+
+ggplot(fd_tratamiento, aes(x, h_30))+
+  geom_line()
+
+ggplot(fd_tratamiento, aes(x, h_60))+
+  geom_line()
+```
+
+
 c) En el contexto de la estimación de densidades, escriba una función en R que determine el ancho de banda que optimiza al ISE. Grafique la densidad con ancho de banda óptimo para el conjunto de datos de “Tratamiento.csv”.
 
 6. Cargue en R al conjunto de datos “Maíz.csv”, el cual contiene el precio mensual de la tonelada de maíz y el precio de la tonelada de tortillas en USD. En este ejercicio tendrá que estimar los coeficientes de una regresión lineal simple.
 
 a) Calcule de forma explícita la estimación de los coeficientes via mínimos cuadrados y ajuste la regresión correspondiente. Concluya.
+
 b) Calcule de forma explícita la estimación de los coeficientes via regresión no-paramétrica tipo kernel (ver Nadaraya, E. A. (1964). “On Estimating Regression”. Theory of Probability and its Applications. 9 (1): 141–2. doi:10.1137/1109020) y ajuste la regresión correspondiente. Concluya.
 
 c) Compare ambos resultados. ¿Qué diferencias observa?
 
 8. En este ejercicio se comprobará que tan buena es la aproximación dada por las reglas empíricas para algunas de las distribuciones estudiadas en la clase. Considerese las distribuciones $Unif(a =-3, b = 3)$, $Normal(0, 1)$, $Exponencial(2)$, $Gamma(\alpha= 2, \beta = 1)$, $Gamma(\alpha=3, \beta= 1)$, $Beta(\alpha= 2, \beta= 2)$, $Weibull(\alpha= 4, \beta= 1)$ y Lognormal$(\mu = 3, \sigma = 2)$.
+
 a) Para cada una de las distribuciones anteriores, haga una tabla que muestre las probabilidades contenidas en los intervalos $(\mu - k\sigma, \mu + k\sigma)$, para $k = 1, 2, 3$. Utilice las fórmulas de las medias y varianzas contenidas en las notas para determinar $\mu$ y $\sigma$ en cada caso. Puede usar R para determinar las probabilidades pedidas.
 
-b) En R, simule $n = 1000$ muestras de cada una de las distribuciones anteriores y calcule la media muestral $\bar{x}$ y la varianza muestral $s^2$ como se mencionó en la clase. En cada caso, calcule la proporción de observaciones que quedan en los intervalos $(\bar{x}- k\sigma, \bar{x} + k\sigma)$), para k = 1, 2, 3. Reporte sus hallazgos en una tabla como la del inciso anterior. ¿Qué tanto
-se parecen la tabla de este inciso y la del anterior?
+\res Determinemos para cada distribución su media y varianza, 
+\begin{itemize}
+\item Si $X\sim Unif(a,b)$,
+$$E[X]= , \ \ \ \ Var(X)$$
+\item Si $X\sim Normal(\mu, \sigma)$,
+$$E[X]= , \ \ \ \ Var(X)$$
+
+\item Si $X\sim Exponencial(\theta)$,
+$$E[X]= , \ \ \ \ Var(X)$$
+
+\item Si $X\sim Gamma(\alpha, \beta)$,
+$$E[X]= , \ \ \ \ Var(X)$$
+
+\item Si $X\sim Beta(\alpha,\beta)$,
+$$E[X]= , \ \ \ \ Var(X)$$
+\item Si $X\sim  Weibull(\alpha,\beta)$,
+$$E[X]= , \ \ \ \ Var(X)$$
+\item Si $X\sim  LogNormal(\mu,\sigma)$,
+$$E[X]= , \ \ \ \ Var(X).$$
+
+\end{itemize}
+
+
+
+b) En R, simule $n = 1000$ muestras de cada una de las distribuciones anteriores y calcule la media muestral $\bar{x}$ y la varianza muestral $s^2$ como se mencionó en la clase. En cada caso, calcule la proporción de observaciones que quedan en los intervalos $(\bar{x}- k\sigma, \bar{x} + k\sigma)$), para k = 1, 2, 3. Reporte sus hallazgos en una tabla como la del inciso anterior. ¿Qué tanto se parecen la tabla de este inciso y la del anterior?
 
 
