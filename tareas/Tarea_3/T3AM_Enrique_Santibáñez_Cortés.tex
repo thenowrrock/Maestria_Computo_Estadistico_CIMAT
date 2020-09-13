@@ -100,7 +100,7 @@ Todos los cálculos deben ser a mano.
 encuentre su forma escalonada reducida por renglones. Escriba todas las matrices elementales correspondientes a las operaciones que usó para llevar la matriz a la forma que obtuvo.
 
 \res
-Realizando las operaciones elementales tenemos que 
+Para encontrar la forma escalonada reducida por renglones ocuparemos eliminación de Gauss-Jordan:
 \begin{equation*}
 \begin{array}{c}
 \begin{pmatrix}
@@ -147,8 +147,39 @@ Realizando las operaciones elementales tenemos que
 \end{pmatrix}.
 \end{array}
 \end{equation*}
-Lo anterior se puede escribir como las matrices elementales:
-$$E_3(-3/28)E_32(-13)E_2(1/3)E_{31}(4)E_{21}(1)E_{13}\ \ \ \ \finf$$
+Las matrices elementales que corresponden a las operaciones que se utilizaron para lleva la matriz a la forma escalonada reducida por renglones son:
+$$E_3(-3/28)E_{32}(-13)E_2(1/3)E_{31}(4)E_{21}(1)E_{13}A$$
+o
+$$\begin{pmatrix}
+1 & 0 & 0\\
+0 & 1 & 0\\
+0 & 0 & -\frac{3}{28}\\
+\end{pmatrix} \begin{pmatrix}
+1 & 0 & 0\\
+0 & 1 & 0\\
+0 & -13 & 1\\
+\end{pmatrix} \begin{pmatrix}
+1 & 0 & 0 \\
+0 &\frac{1}{3} & 0 \\
+0 & 0 & 1 \\
+\end{pmatrix} \begin{pmatrix}
+1 & 0 & 0\\
+0 & 1 & 0\\
+4 & 0 & 1\\
+\end{pmatrix} \begin{pmatrix}
+1 & 0 & 0\\
+1 & 1 & 0\\
+0 & 0 & 1\\
+\end{pmatrix} \begin{pmatrix}
+0 & 0 & 1\\
+0 & 1 & 0\\
+1 & 0 & 0\\
+\end{pmatrix}\begin{pmatrix}
+-4 & 5 & -6 &7\\
+-1 & 1 &  1 &3\\
+1  & 2 & -3 &-1
+\end{pmatrix}\ \ \ \finf$$
+
 % Problema 2.
 %------------------------------------------------------------------------------
 %------------------------------------------------------------------------------
@@ -167,7 +198,7 @@ a_2
 encuentre condiciones generales sobre $a_1$ y $a_2$ para que el sistema sea consistente. Si se quiere que la solución sea exactamente $x=(3,-1,2)^t$ , ¿qué valores deben
 tener $a_1$ y $a_2$?
 
-\res Ocupemos Gauss Jordan para encontrar su forma escalonada:
+\res Recordemos que un sistema es inconsistente cuando no tiene ninguna solución. Para determinar si el sistema es inconsistente o consistente ocuparemos eliminación gaussiana para resolver el sistema. El cual consiste primero en reducir por renglones la matriz aumentada a la forma escalonada por renglones y después sustitución hacia atrás. Reducimos la matriz aumentada a su forma escalonada reducida: 
 \begin{equation*}
 \begin{array}{c}
 \left( \begin{array}{rrr|r}
@@ -196,20 +227,46 @@ a_1 & -1 & -3 & 1 \\
 \left( \begin{array}{rrr|r}
 1 &  3 & -1 & 0\\
 0 & -1 & 3 & a_2\\
-0 &  0 & -6-8a_1 &  1-a2-a_2a_1\\
+0 &  0 & -6-8a_1 &  1-a_2-3a_2a_1\\
 \end{array} \right)
 \end{array}
 \end{equation*}
-Por lo tanto el sistema es inconsistente cuando no tiene ninguna solución. El sistema anterior no tiene solución si $-6-8a_1=0$ y $1-a_2-a_2a_1\neq 0$.\\
+El sistema anterior es \textbf{inconsistente o no tiene solución si} $-6-8a_1=0$ y $1-a_2(1+3a_1)\neq 0$, despejando de ambos lados tenemos $a_1=-\frac{3}{4}$ y $ a_2\neq -\frac{1}{1-3a_1}\neq\frac{4}{5}$.\\
 
-Si $-6-8a_1\neq 0$, tenemos que 
+Ahora, determinemos los valores de $a_1$ y $a_2$ para que la solución del sistema sea $x=(3,-1,2)^t$. Para que $(3,-1,2)^t$ sea solución se tiene que cumplir $A(3,-1,2)^t=b$, es decir,
 \begin{equation*}
-\left( \begin{array}{rrr|r}
-1 &  3 & -1 & 0\\
-0 & -1 & 3 & a_2\\
-0 &  0 & 1 &  \frac{1-a2-a_2a_1}{-6-8a_1}\\
-\end{array} \right).
+\left( \begin{array}{rrr}
+1 & 3 & -1\\
+a_1 & -1 & -3\\
+1 & 2 &2
+\end{array} \right) \begin{pmatrix}
+3\\
+-1\\
+2
+\end{pmatrix}=
+\left(\begin{array}{c}
+0\\
+1\\
+a_2
+\end{array}\right) \Rightarrow \begin{pmatrix}
+3-3-2\\
+3a_1+1-6\\
+3-2+4
+\end{pmatrix} = \begin{pmatrix}
+0\\
+1\\
+a_2
+\end{pmatrix} \Rightarrow \begin{pmatrix}
+-2\\
+3a_1+1-6\\
+3-2+4
+\end{pmatrix} = \begin{pmatrix}
+0\\
+1\\
+a_2
+\end{pmatrix}
 \end{equation*}
+Pero si observamos el primer renglón de lo anterior, notamos que $x=(3,-1, 2)^t$ no puede ser solución del sistema debido a que no cumple la primera igualdad, independientemente de los valores que tomen $a_1$ y $a_2$.\ \ \ \fin 
 
 % Problema 3.
 %------------------------------------------------------------------------------
@@ -273,7 +330,11 @@ Entonces ocupando reducción
 \end{equation*}
 
 \res
-Usando Gauss Jordan
+Para encontrar $A^{-1}$, tenemos la ecuación $AX=I$ que puede verse como un conjunto de sistemas de ecuaciones $Ax_i=e_i$ donde $x_i$ son las columnas de $X$. Luego con el método de Gauss, si es posible resolver cada uno de estos sistemas con solución $x_i$, encontramos la inversas de $A$ dada por $X=(x_1, \cdots , x_n)$. Usando Gauss Jordan
+$$L(A|I)=(LA|LI)=(I|L)$$
+implica que $L=A^{-1}$. 
+
+Ocupando lo anterior tenemos que:
 \begin{equation*}
 \begin{array}{c}
 \left(\begin{array}{rrr|rrr}
@@ -373,15 +434,151 @@ Haciendo reducción hacia atras:
  0 & 2 & 3\\
  0 & 0 & 1
 \end{pmatrix}%
-\grstep[R2 \rightarrow ]{R_1 \rightarrow -R_3/4}
+\grstep[R_2 \rightarrow R_2-3R_3 ]{R_1 \rightarrow R_1-R3}
 %
+\begin{pmatrix}
+ 1 & 1 & 0\\
+ 0 & 2 & 0\\
+ 0 & 0 & 1
+\end{pmatrix}%
+\grstep[]{R_2 \rightarrow R_2/2}
+%
+\begin{pmatrix}
+ 1 & 1 & 0\\
+ 0 & 1 & 0\\
+ 0 & 0 & 1
+\end{pmatrix}%
+\grstep[]{R_1 \rightarrow R_1-R_2}
+%
+\begin{pmatrix}
+ 1 & 0 & 0\\
+ 0 & 1 & 0\\
+ 0 & 0 & 1
+\end{pmatrix}.
 \end{equation*}
+Por lo anterior,tenemos que:
+\begin{equation*}
+\begin{pmatrix}
+ 1 &-1 & 0\\
+ 0 & 1 & 0\\
+ 0 & 0 & 1
+\end{pmatrix}
+\begin{pmatrix}
+ 1 & 0 & 0\\
+ 0 & \frac{1}{2} & 0\\
+ 0 & 0 & 1
+\end{pmatrix}
+\begin{pmatrix}
+ 1 & 0 & -1\\
+ 0 & 1 & 0\\\
+ 0 & 0 & 1
+\end{pmatrix}
+\begin{pmatrix}
+ 1 & 0 & 0\\
+ 0 & 1 & -3\\
+ 0 & 0 & 1
+\end{pmatrix}
+\begin{pmatrix}
+ 1 & 0 & 0\\
+ 0 & 1 & 0\\
+ 0 & 0 & -\frac{1}{4}
+\end{pmatrix}
+\begin{pmatrix}
+ 1 & 0 & 0\\
+ 0 & 1 & 0\\
+-5 & 0 & 1
+\end{pmatrix}A=I \Rightarrow
+\end{equation*}
+\begin{equation*}
+A=\begin{pmatrix}
+ 1 & 0 & 0\\
+ 0 & 1 & 0\\
+-5 & 0 & 1
+\end{pmatrix}^{-1}\begin{pmatrix}
+ 1 & 0 & 0\\
+ 0 & 1 & 0\\
+ 0 & 0 & -\frac{1}{4}
+\end{pmatrix}^{-1}\begin{pmatrix}
+ 1 & 0 & 0\\
+ 0 & 1 & -3\\
+ 0 & 0 & 1
+\end{pmatrix}^{-1}
+\begin{pmatrix}
+ 1 & 0 & -1\\
+ 0 & 1 & 0\\\
+ 0 & 0 & 1
+\end{pmatrix}^{-1}
+\begin{pmatrix}
+ 1 & 0 & 0\\
+ 0 & \frac{1}{2} & 0\\
+ 0 & 0 & 1
+\end{pmatrix}^{-1}\begin{pmatrix}
+ 1 &-1 & 0\\
+ 0 & 1 & 0\\
+ 0 & 0 & 1
+\end{pmatrix}^{-1}I \Rightarrow 
+\end{equation*}
+Ahora para calcular las inversas ocupemos lo visto en clase:\\
+\textit{Sea $A=I_n+uv^t$ una matriz elemental. Entonces $A$ es invertible con inversa dada por}
+$$A^{-1}=I-\frac{uv^t}{1+v^tu}.$$ 
 
+
+\begin{equation*}
+A=\begin{pmatrix}
+ 1 & 0 & 0\\
+ 0 & 1 & 0\\
+ 5 & 0 & 1
+\end{pmatrix}
+\begin{pmatrix}
+ 1 & 0 & 0\\
+ 0 & 1 & 0\\
+ 0 & 0 & -4
+\end{pmatrix}
+\begin{pmatrix}
+ 1 & 0 & 0\\
+ 0 & 1 & 3\\
+ 0 & 0 & 1
+\end{pmatrix}
+\begin{pmatrix}
+ 1 & 0 & 1\\
+ 0 & 1 & 0\\\
+ 0 & 0 & 1
+\end{pmatrix}
+\begin{pmatrix}
+ 1 & 0 & 0\\
+ 0 & 2 & 0\\
+ 0 & 0 & 1
+\end{pmatrix}
+\begin{pmatrix}
+ 1 & 1 & 0\\
+ 0 & 1 & 0\\
+ 0 & 0 & 1
+\end{pmatrix}\ \ \ \ \finf
+\end{equation*}
 % Problema 6.
 %------------------------------------------------------------------------------
 %------------------------------------------------------------------------------
 \item i) Encuentre dos matrices que sean invertibles pero que su suma no sea invertible. ii) Encuentre dos matrices singulares cuya suma sea invertible. Justifique todas sus aseveraciones.
 
+\res
+Sea $A$ y $B$ dos matrices de tamaño $2\times 2$. Por convicción sea $A=I$. Entonces busquemos una matriz $B$ tal que $A+B$ no sea invertible, para ello consideremos el criterio de determinantes:\\
+
+\textit{Una matriz es invertible si su determinante es cero.}\\
+Sea 
+$$B=\begin{pmatrix}
+b_{11} & b_{12}\\
+b_{21} & b_{22}
+\end{pmatrix}$$ tal que
+$$A+B=\begin{pmatrix}
+1 & 0\\
+0 & 1
+\end{pmatrix}+\begin{pmatrix}
+b_{11} & b_{12}\\
+b_{21} & b_{22}
+\end{pmatrix}=\begin{pmatrix}
+1+b_{11} & b_{12}\\
+b_{21} & 1+b_{22}
+\end{pmatrix}$$
 
 % Problema 7.
 %------------------------------------------------------------------------------
@@ -396,7 +593,14 @@ Haciendo reducción hacia atras:
 \end{array} \right).
 \end{equation*}
 
-\res Usamos la eliminación gaussiana:
+\res Sea $T_i$  una matriz inferior elemental y si no se requieren intercambios de renglones se pueden hacer $n-1$
+multiplicaciones por la izquierda de $A_{n\times n}$ por matrices triangulares inferiores elementales para llevar a A a una forma triangular superior, es decir:
+$$T_{n-1} \cdots T_1 A=U$$ 
+Luego 
+$$A=T^{-1}_1\cdots T^{-1}_{n-1}U=LU,$$
+donde $L=T^{-1}_1\cdots T^{-1}_n$.\\
+
+Entonces, usemos eliminación gaussiana para determinar la matriz $U$:
 \begin{equation*}
 \begin{array}{c}
 \left(
@@ -416,61 +620,52 @@ Haciendo reducción hacia atras:
  0 & -1 &  3 & -4\\
  0 & -3 &  7 &  0
 \end{array}
-\right)%
-\grstep[]{R_2 \rightarrow -R_2}
-%
-\left(
-\begin{array}{rrrr}
- 1 &  2 & -1 &  4\\
- 0 &  1 & -5 & -8\\
- 0 & -1 &  3 & -4\\
- 0 & -3 &  7 &  0
-\end{array}
-\right)%
-\grstep[R_4 \rightarrow R_4+3R_2]{R_3 \rightarrow R_3+R_2}\\
-\\
+\right) %
+\grstep[R_4 \rightarrow R_4-3R_2]{R_3 \rightarrow R_3-R_2}
+% 
 \left(
 \begin{array}{rrrr}
  1 &  2 & -1 &   4\\
- 0 &  1 & -5 &  -8\\
+ 0 & -1 &  5 &   8\\
  0 &  0 & -2 & -12\\
  0 &  0 & -8 & -24
 \end{array}
-\right)%
-\grstep[]{R_3 \rightarrow -R_3/2}
-%
-\left(
-\begin{array}{rrrr}
- 1 &  2 & -1 &   4\\
- 0 &  1 & -5 &  -8\\
- 0 &  0 &  1 &   6\\
- 0 &  0 & -8 & -24
-\end{array}
-\right)%
-\grstep[]{R_4 \rightarrow R_4+8R_3}
-%
-\left(
-\begin{array}{rrrr}
- 1 &  2 & -1 &   4\\
- 0 &  1 & -5 &  -8\\
- 0 &  0 &  1 &   6\\
- 0 &  0 &  0 &  24
-\end{array}
-\right)%
-\grstep[]{R_4 \rightarrow R_4/24}
+\right) %
+\grstep[]{R_4 \rightarrow R_4-4R_3}
 \\
 \\
 \left(
 \begin{array}{rrrr}
  1 &  2 & -1 &   4\\
- 0 &  1 & -5 &  -8\\
- 0 &  0 &  1 &   6\\
- 0 &  0 &  0 &  1
+ 0 & -1 &  5 &   8\\
+ 0 &  0 & -2 & -12\\
+ 0 &  0 &  0 & 24
 \end{array}
-\right)= U
+\right).
 \end{array} 
 \end{equation*}
+Por lo tanto, 
+\begin{equation*}
+U=\left(
+\begin{array}{rrrr}
+ 1 &  2 & -1 &   4\\
+ 0 & -1 &  5 &   8\\
+ 0 &  0 & -2 & -12\\
+ 0 &  0 &  0 & 24
+\end{array}
+\right)
+\end{equation*}
+Ahora determinaremos $L$, 
 
+$$E_{43}(-4)E_{42}(-3)E_{32}(-1)E_{41}(-1)E_{31}(-2)A=U $$
+
+$$L=\left(
+\begin{array}{rrrr}
+ 1 &  0 & 0 &  0\\
+ 0 &  1 & 0 &  0\\
+ 2 &  1 & 1 &  0\\
+ 1 &  3 & 4 &  1
+\end{array}\right)$$
 
 % Problema 8.
 %------------------------------------------------------------------------------
@@ -494,8 +689,8 @@ b=\left(\begin{array}{c}
 \end{array} \right).
 \end{equation*}
 \res 
-El problema anterior se resolvió utilizando .... . Ahora se hará uso de
-un método más sencillo. Si $A =LU$, se sabe que $A$ se puede factorizar como:
+El problema anterior se resolvió utilizando la metodología vista en clase. Ahora se hará uso de
+un método más sencillo(). Si $A =LU$, si sabe que $A$ se puede factorizar como:
 \begin{equation*}
 \left(\begin{array}{rrrr}
  2 &  3 & -1 & 6\\
@@ -552,6 +747,35 @@ Por lo que:
  0 &  0 &  0 & 72/5
 \end{array} \right)=LU
 \end{equation*}
+Ahora, para resolver un sistema lineal $Ax=b$ cuando $A=LU$ se resuelven dos sistemas triangulares $Ly=b$ y $Ux=y.$ Primero se una sustitución hacia adelante en $Ly=b$, y luego se resuelve el sistema $Ux=y$ usando sustitución hacia atras (esta metodología se presento en clase). Entonces para este problema tenemos que:
+\begin{equation*}
+\left(\begin{array}{rrrr}
+ 1 &  0 &  0 & 0\\
+ 2 &  1 &  0 & 0\\
+-1 &  8 &  1 & 0\\
+ 0 &  -4 & -3/5 & 1
+\end{array} \right) \begin{pmatrix}
+y_1\\
+y_2\\
+y_3\\
+y_4
+\end{pmatrix}= \begin{pmatrix}
+1\\
+0\\
+0\\
+4
+\end{pmatrix}
+\end{equation*}
+Esto implica que 
+$$y_1=1$$
+$$2(1)+y_2=0\Rightarrow y_2=-2$$
+$$-(1)+8(-2)+y_3=0\Rightarrow y_3=17$$
+$$0-4(-2)+-3(17)/5+y_4=0\Rightarrow y_4=17$$
+Sea acaba de realizar la sustitución hacia adelante. Ahora, de $Ux=y$ se obtiene:
+
+La solución es:
+
+
 % Problema 9.
 %------------------------------------------------------------------------------
 %------------------------------------------------------------------------------
@@ -586,6 +810,11 @@ A=\left(\begin{array}{rrrr}
  0 &  0 &  0 &  1
 \end{array} \right)=LU
 \end{equation*}
+Recordando las propiedades de la inversa de una matriz:
+
+$$A^{-1} = (LU)^{-1}=U^{-1}L^{-1}$$
+
+
 
 % Problema 10.
 %------------------------------------------------------------------------------
