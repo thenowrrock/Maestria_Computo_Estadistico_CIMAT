@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020) (preloaded format=pdflatex 2020.9.8)  10 SEP 2020 01:16
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020) (preloaded format=pdflatex 2020.9.12)  14 SEP 2020 01:28
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -393,17 +393,7 @@ File: color.cfg 2016/01/02 v1.6 sample color configuration
 )
 Package color Info: Driver file: pdftex.def on input line 147.
 )
-(/home/enrique/.TinyTeX/texmf-dist/tex/latex/tools/array.sty
-Package: array 2019/08/31 v2.4l Tabular extension package (FMi)
-\col@sep=\dimen160
-\ar@mcellbox=\box95
-\extrarowheight=\dimen161
-\NC@list=\toks26
-\extratabsurround=\skip55
-\backup@length=\skip56
-\ar@cellbox=\box96
-)
-Package hyperref Info: Option `colorlinks' set `true' on input line 20.
+Package hyperref Info: Option `colorlinks' set `true' on input line 17.
 
 (/home/enrique/.TinyTeX/texmf-dist/tex/latex/geometry/geometry.sty
 Package: geometry 2020/01/02 v5.9 Page Geometry
@@ -414,20 +404,20 @@ Package: ifvtex 2019/10/25 v1.7 ifvtex legacy package. Use iftex instead.
 \Gm@cnth=\count278
 \Gm@cntv=\count279
 \c@Gm@tempcnt=\count280
-\Gm@bindingoffset=\dimen162
-\Gm@wd@mp=\dimen163
-\Gm@odd@mp=\dimen164
-\Gm@even@mp=\dimen165
-\Gm@layoutwidth=\dimen166
-\Gm@layoutheight=\dimen167
-\Gm@layouthoffset=\dimen168
-\Gm@layoutvoffset=\dimen169
-\Gm@dimlist=\toks27
+\Gm@bindingoffset=\dimen160
+\Gm@wd@mp=\dimen161
+\Gm@odd@mp=\dimen162
+\Gm@even@mp=\dimen163
+\Gm@layoutwidth=\dimen164
+\Gm@layoutheight=\dimen165
+\Gm@layouthoffset=\dimen166
+\Gm@layoutvoffset=\dimen167
+\Gm@dimlist=\toks26
 )
 (/home/enrique/.TinyTeX/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
-File: l3backend-pdftex.def 2020-09-01 L3 backend support: PDF output (pdfTeX)
+File: l3backend-pdftex.def 2020-09-11 L3 backend support: PDF output (pdfTeX)
 \l__kernel_color_stack_int=\count281
-\l__pdf_internal_box=\box97
+\l__pdf_internal_box=\box95
 )
 (./T3AM_Enrique_Santibáñez_Cortés.aux
 LaTeX Info: Redefining \. on input line 25.
@@ -435,30 +425,30 @@ LaTeX Info: Redefining \% on input line 25.
 )
 \openout1 = `T3AM_Enrique_Santibáñez_Cortés.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 74.
-LaTeX Font Info:    ... okay on input line 74.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 74.
-LaTeX Font Info:    ... okay on input line 74.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 74.
-LaTeX Font Info:    ... okay on input line 74.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 74.
-LaTeX Font Info:    ... okay on input line 74.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 74.
-LaTeX Font Info:    ... okay on input line 74.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 74.
-LaTeX Font Info:    ... okay on input line 74.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 74.
-LaTeX Font Info:    ... okay on input line 74.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 74.
-LaTeX Font Info:    ... okay on input line 74.
-LaTeX Font Info:    Trying to load font information for T1+lmr on input line 74
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 70.
+LaTeX Font Info:    ... okay on input line 70.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 70.
+LaTeX Font Info:    ... okay on input line 70.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 70.
+LaTeX Font Info:    ... okay on input line 70.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 70.
+LaTeX Font Info:    ... okay on input line 70.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 70.
+LaTeX Font Info:    ... okay on input line 70.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 70.
+LaTeX Font Info:    ... okay on input line 70.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 70.
+LaTeX Font Info:    ... okay on input line 70.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 70.
+LaTeX Font Info:    ... okay on input line 70.
+LaTeX Font Info:    Trying to load font information for T1+lmr on input line 70
 .
 
 (/home/enrique/.TinyTeX/texmf-dist/tex/latex/lm/t1lmr.fd
 File: t1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
-LaTeX Info: Redefining \. on input line 74.
-LaTeX Info: Redefining \% on input line 74.
+LaTeX Info: Redefining \. on input line 70.
+LaTeX Info: Redefining \% on input line 70.
 
 (/home/enrique/.TinyTeX/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
 Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
@@ -469,8 +459,8 @@ Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 ))
-\AtBeginShipoutBox=\box98
-Package hyperref Info: Link coloring ON on input line 74.
+\AtBeginShipoutBox=\box96
+Package hyperref Info: Link coloring ON on input line 70.
 
 (/home/enrique/.TinyTeX/texmf-dist/tex/latex/hyperref/nameref.sty
 Package: nameref 2019/09/16 v2.46 Cross-referencing by name of section
@@ -484,9 +474,9 @@ Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
 )
 \c@section@level=\count282
 )
-LaTeX Info: Redefining \ref on input line 74.
-LaTeX Info: Redefining \pageref on input line 74.
-LaTeX Info: Redefining \nameref on input line 74.
+LaTeX Info: Redefining \ref on input line 70.
+LaTeX Info: Redefining \pageref on input line 70.
+LaTeX Info: Redefining \nameref on input line 70.
  (./T3AM_Enrique_Santibáñez_Cortés.out)
 (./T3AM_Enrique_Santibáñez_Cortés.out)
 \@outlinefile=\write3
@@ -528,113 +518,197 @@ LaTeX Info: Redefining \nameref on input line 74.
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
 LaTeX Font Info:    Trying to load font information for OT1+lmr on input line 7
-7.
+3.
 (/home/enrique/.TinyTeX/texmf-dist/tex/latex/lm/ot1lmr.fd
 File: ot1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 LaTeX Font Info:    Trying to load font information for OML+lmm on input line 7
-7.
+3.
 
 (/home/enrique/.TinyTeX/texmf-dist/tex/latex/lm/omllmm.fd
 File: omllmm.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 LaTeX Font Info:    Trying to load font information for OMS+lmsy on input line 
-77.
+73.
 
 (/home/enrique/.TinyTeX/texmf-dist/tex/latex/lm/omslmsy.fd
 File: omslmsy.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 LaTeX Font Info:    Trying to load font information for OMX+lmex on input line 
-77.
+73.
 
 (/home/enrique/.TinyTeX/texmf-dist/tex/latex/lm/omxlmex.fd
 File: omxlmex.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <10.95> on input line 77.
+(Font)              <10.95> on input line 73.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <8> on input line 77.
+(Font)              <8> on input line 73.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <6> on input line 77.
-LaTeX Font Info:    Trying to load font information for U+msa on input line 77.
+(Font)              <6> on input line 73.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 73.
 
 
 (/home/enrique/.TinyTeX/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 77.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 73.
 
 
 (/home/enrique/.TinyTeX/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-Overfull \hbox (58.79752pt too wide) detected at line 202
-[]
+Overfull \hbox (6.13268pt too wide) detected at line 177
+[] [] [] [] [] [] []    \U/msa/m/n/10.95 ^^D\OML/lmm/m/it/10.95 :
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 202--204
-
+Overfull \hbox (57.59734pt too wide) detected at line 229
+[]
  []
 
 [1
 
 {/home/enrique/.TinyTeX/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
-Overfull \hbox (43.32379pt too wide) detected at line 280
+Underfull \hbox (badness 10000) in paragraph at lines 229--231
+
+ []
+
+[2]
+Overfull \hbox (42.12352pt too wide) detected at line 474
 []
  []
 
-[2] [3]
-Overfull \hbox (6.26369pt too wide) in paragraph at lines 492--499
+[3]
+Overfull \hbox (15.00119pt too wide) detected at line 557
+[] [] [] [] [] [] [] [] [] \OML/lmm/m/it/10.95 :
+ []
+
+
+Overfull \hbox (20.61855pt too wide) detected at line 620
+\OML/lmm/m/it/10.95 A \OT1/lmr/m/n/10.95 = [][] [][] [][] [][] [][] [][] \OML/l
+mm/m/it/10.95 I \OMS/lmsy/m/n/10.95 )
+ []
+
+[4] [5]
+Underfull \hbox (badness 10000) in paragraph at lines 822--824
+
+ []
+
+
+Overfull \hbox (23.51865pt too wide) detected at line 862
+\OML/lmm/m/it/10.95 A \OT1/lmr/m/n/10.95 + \OML/lmm/m/it/10.95 B \OT1/lmr/m/n/1
+0.95 = [] + [] = []  [] \OML/lmm/m/it/10.95 a[] \OMS/lmsy/m/n/10.95 6\OT1/lmr/m
+/n/10.95 = 0 []\OML/lmm/m/it/10.95 b[] \OMS/lmsy/m/n/10.95 6\OT1/lmr/m/n/10.95 
+= 0\OML/lmm/m/it/10.95 :
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 862--864
+
+ []
+
+[6]
+Underfull \hbox (badness 10000) in paragraph at lines 896--898
+
+ []
+
+
+Overfull \hbox (17.10782pt too wide) detected at line 942
+[]
+ []
+
+
+Overfull \hbox (43.88646pt too wide) detected at line 983
+[] [] [] [] [] \OML/lmm/m/it/10.95 A \OT1/lmr/m/n/10.95 = \OML/lmm/m/it/10.95 U
+ \OMS/lmsy/m/n/10.95 ) \OML/lmm/m/it/10.95 A \OT1/lmr/m/n/10.95 =
+ []
+
+
+Overfull \hbox (42.9006pt too wide) detected at line 1010
+[][] [][] [][] [][] [][] \OML/lmm/m/it/10.95 U:
+ []
+
+
+Overfull \hbox (52.6326pt too wide) detected at line 1037
+\OML/lmm/m/it/10.95 L \OT1/lmr/m/n/10.95 = [][] [][] [][] [][] [][]
+ []
+
+
+Overfull \hbox (41.61615pt too wide) detected at line 1071
+\OT1/lmr/m/n/10.95 = [] [] [] [] [] = [] \OML/lmm/m/it/10.95 :
+ []
+
+[7] [8]
+Overfull \hbox (5.8637pt too wide) in paragraph at lines 1282--1289
  [][] 
  []
 
-
-Underfull \hbox (badness 10000) in paragraph at lines 534--535
+[9] [10] [11] [12]
+Underfull \hbox (badness 10000) in paragraph at lines 1580--1584
 
  []
 
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 570.
-[4]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 570.
+
+Overfull \hbox (69.33344pt too wide) in paragraph at lines 1615--1623
+ [][] 
+ []
+
+[13]
+Overfull \hbox (39.58096pt too wide) detected at line 1645
+[] []
+ []
+
+
+Overfull \hbox (47.36943pt too wide) detected at line 1672
+\OML/lmm/m/it/10.95 A \OT1/lmr/m/n/10.95 = [] = [] [] = \OML/lmm/m/it/10.95 LU\
+U/msa/m/n/10.95 ^^D\OML/lmm/m/it/10.95 :
+ []
+
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1676.
+[14]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 1676.
  (./T3AM_Enrique_Santibáñez_Cortés.aux
 LaTeX Info: Redefining \. on input line 25.
 LaTeX Info: Redefining \% on input line 25.
 )
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 570.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 570.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1676.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1676.
+
 Package rerunfilecheck Info: File `T3AM_Enrique_Santibáñez_Cortés.out' has n
 ot changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 570.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 1676.
  ) 
 Here is how much of TeX's memory you used:
- 8203 strings out of 482806
- 120361 string characters out of 5955026
- 418795 words of memory out of 5000000
- 23403 multiletter control sequences out of 15000+600000
+ 8171 strings out of 482806
+ 119958 string characters out of 5955025
+ 440866 words of memory out of 5000000
+ 23363 multiletter control sequences out of 15000+600000
  564641 words of font info for 52 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 43i,13n,37p,300b,439s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 43i,13n,37p,590b,444s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/home/enrique/.TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}{/home/en
-rique/.TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}{/home/enrique/.TinyTeX/
-texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}{/home/enrique/.TinyTeX/texmf-dist/
+rique/.TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}{/home/enrique/.Tiny
+TeX/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}{/home/enrique/.TinyTeX/texmf-dist/
 fonts/enc/dvips/lm/lm-mathex.enc}{/home/enrique/.TinyTeX/texmf-dist/fonts/enc/d
 vips/lm/lm-ec.enc}</home/enrique/.TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx
 10.pfb></home/enrique/.TinyTeX/texmf-dist/fonts/type1/public/lm/lmex10.pfb></ho
 me/enrique/.TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi10.pfb></home/enrique/
-.TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi8.pfb></home/enrique/.TinyTeX/tex
-mf-dist/fonts/type1/public/lm/lmr10.pfb></home/enrique/.TinyTeX/texmf-dist/font
-s/type1/public/lm/lmr6.pfb></home/enrique/.TinyTeX/texmf-dist/fonts/type1/publi
-c/lm/lmr8.pfb></home/enrique/.TinyTeX/texmf-dist/fonts/type1/public/lm/lmri10.p
-fb></home/enrique/.TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy10.pfb></home/e
-nrique/.TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy8.pfb></home/enrique/.Tiny
-TeX/texmf-dist/fonts/type1/public/amsfonts/symbols/msam10.pfb>
-Output written on T3AM_Enrique_Santibáñez_Cortés.pdf (4 pages, 155482 bytes)
-.
+.TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi6.pfb></home/enrique/.TinyTeX/tex
+mf-dist/fonts/type1/public/lm/lmmi8.pfb></home/enrique/.TinyTeX/texmf-dist/font
+s/type1/public/lm/lmr10.pfb></home/enrique/.TinyTeX/texmf-dist/fonts/type1/publ
+ic/lm/lmr6.pfb></home/enrique/.TinyTeX/texmf-dist/fonts/type1/public/lm/lmr8.pf
+b></home/enrique/.TinyTeX/texmf-dist/fonts/type1/public/lm/lmri10.pfb></home/en
+rique/.TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy10.pfb></home/enrique/.Tiny
+TeX/texmf-dist/fonts/type1/public/lm/lmsy6.pfb></home/enrique/.TinyTeX/texmf-di
+st/fonts/type1/public/lm/lmsy8.pfb></home/enrique/.TinyTeX/texmf-dist/fonts/typ
+e1/public/amsfonts/symbols/msam10.pfb>
+Output written on T3AM_Enrique_Santibáñez_Cortés.pdf (14 pages, 208802 bytes
+).
 PDF statistics:
- 90 PDF objects out of 1000 (max. 8388607)
- 72 compressed objects within 1 object stream
- 15 named destinations out of 1000 (max. 500000)
+ 144 PDF objects out of 1000 (max. 8388607)
+ 113 compressed objects within 2 object streams
+ 25 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 
