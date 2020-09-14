@@ -14,9 +14,6 @@
 \usepackage{hyperref}
 \usepackage{color}
 
-\newcommand{\azul}[1]{\textcolor{MaterialBlue900}{#1}}
-\usepackage{array}
-
 \hypersetup{colorlinks=true,   linkcolor=MaterialBlue900}
 %\usepackage[colorlinks=true, linkcolor=black, urlcolor=blue, pdfborder={0 0 0}]{hyperref}
 
@@ -26,7 +23,6 @@
 \date{Fecha de entrega: 08/01/2017}
 \setlength{\parindent}{0in}
 \spanishdecimal{.}
-
 
 \newcommand{\X}{\mathbb{X}}
 \newcommand{\x}{\mathbf{x}}
@@ -1254,7 +1250,7 @@ b=\left(\begin{array}{c}
 \end{equation*}
 \res 
 El problema anterior se resolvió utilizando la metodología vista en clase. Ahora se hará uso de
-un método "más sencillo" (). Si $A =LU$, si sabe que $A$ se puede factorizar como:
+un método "más sencillo" (Álgebra Lineal, Grossman (2012)). Si $A =LU$, si sabe que $A$ se puede factorizar como:
 \begin{equation*}
 A=\left(\begin{array}{rrrr}
  2 &  3 & -1 & 6\\
@@ -1334,12 +1330,38 @@ Esto implica que
 $$y_1=1$$
 $$2(1)+y_2=0\Rightarrow y_2=-2$$
 $$-(1)+8(-2)+y_3=0\Rightarrow y_3=17$$
-$$0-4(-2)+-3(17)/5+y_4=0\Rightarrow y_4=17$$
+$$0-4(-2)-3(17)/5+y_4=4\Rightarrow y_4=31/5$$
 Sea acaba de realizar la sustitución hacia adelante. Ahora, de $Ux=y$ se obtiene:
+\begin{equation*}
+\begin{array}{rcr}
+2x_1+3x_2-x_3+6x_4&=&1\\
+x_2+4x_3-11x_4&=&-2\\
+-35x_3 +94x_4 &=&17\\
+72/5x_4&=&31/5
+\end{array}
+\end{equation*}
+o
+\begin{equation*}
+\begin{array}{lll}
+x_4&=&\frac{31}{72}\\ \\
+-35x_3 +94(\frac{31}{72}) &=&17,\text{de manera que } x_3=\frac{17-94\left(\frac{31}{72}\right)}{-35}=\frac{17*72-94*31}{-35*72}=\frac{-1690}{-2520}=\frac{169}{252}\\ \\
+x_2+4x_3-11x_4&=&-2, \text{de manera que } x_2=-2+11\left(\frac{31}{72}\right) -4\left(\frac{169}{252}\right)=\frac{3}{56}\\ \\
+2x_1+3x_2-x_3+6x_4&=&1, \text{de manera que } x_1=\frac{1}{2}-3\left(\frac{31}{72}\right) + \frac{169}{504}-3\left( \frac{3}{112} \right)=-\frac{541}{1008}\\
+\end{array}
+\end{equation*}
 
-La solución es:
+Por lo tanto la solución es:
+$$x=\begin{pmatrix}
+-\frac{541}{1008}\\ \\
+\frac{3}{56}\\ \\ 
+\frac{169}{252}\\ \\
+\frac{31}{72}
+\end{pmatrix} \ \ \ \ \finf
+$$
+\textit{Cálculos de la simplificación de $x_2$ y $x_1:$}
+$$-2+11\left(\frac{31}{72}\right) -4\left(\frac{169}{252}\right)=-2+\frac{341}{72}-\frac{338}{126}=\frac{-18144+42966-24336}{9000}=\frac{486}{72*126}=\frac{3}{56}.$$
 
-
+$$\frac{1}{2}-3\left(\frac{31}{72}\right) + \frac{169}{504}-3\left( \frac{3}{112} \right)=\frac{1}{2}-\frac{31}{24}+\frac{169}{504}-\frac{9}{112}=\frac{504-1302+338-81}{1008}=-\frac{541}{1008}.$$
 % Problema 9.
 %------------------------------------------------------------------------------
 %------------------------------------------------------------------------------
@@ -1355,6 +1377,44 @@ A=\left(\begin{array}{rrrr}
 Usando esta misma descomposición como ayuda, encuentre $A^{-1}$.
 
 \res 
+Utilizando la metodología que el ejercicio anterior. Tenemos que si $A=LU$, si se sabe que $A$ se puede factorizar como:
+\begin{equation*}
+A=\left(\begin{array}{rrrr}
+ 1 & -2 & -2 &-3\\
+ 3 & -9 &  0 &-9\\
+-1 &  2 &  4 & 7\\
+-3 & -6 & 26 & 2
+\end{array} \right)=
+\left(\begin{array}{rrrr}
+ 1 &  0 &  0 & 0\\
+ a &  1 &  0 & 0\\
+ b &  c &  1 & 0\\
+ d &  e &  f & 1
+\end{array} \right) \left(\begin{array}{rrrr}
+ 1 & -2 & -2 & -3\\
+ 0 &  u &  v &  w\\
+ 0 &  0 &  x &  y\\
+ 0 &  0 &  0 &  z
+\end{array} \right)=LU
+\end{equation*}
+Observe que el primer renglón de U es el mismo que el primer renglón de A porque al reducir A a la forma triangular, no hace falta modificar los elementos del primer renglón.\\
+Se pueden obtener todos los coeficientes faltantes con tan sólo multiplicar las matrices. La
+componente 2, 1 de $A$ es 3. De este modo, el producto escalar del segundo renglón de $L$ y la primera columna de $U$ es igual a 3:
+$$3=a \ \ \ \text{o}  \ \ \ \ a=3$$
+Después se tiene:\\
+componente $2,2$: $-9=-6+u \rightarrow \ u=-3.$\\
+De aquí en adelante se pueden insertar los valores que se encuentran en $L$ y $U$:
+\begin{table}[H]
+\centering
+\begin{tabular}{l|l}
+componente $2,3$: $0=-6+v \rightarrow \ v=6.$ & componente $3,4$: $7=3+y \rightarrow \ y=4.$\\ \\
+componente $2,4$: $-9=-9+w \rightarrow \ w=0.$ & componente $4,1$: $-3=d \rightarrow \ d=-3.$\\ \\
+componente $3,1$: $-1=b \rightarrow \ b=-1.$ & componente $4,2$: $-6=6-3e \rightarrow \ e=4.$\\ \\
+componente $3,2$: $2=2+-3c \rightarrow \ c=0.$ & componente $4,3$: $26=6+24+2f \rightarrow \ f=-2.$\\ \\
+componente $3,3$: $4=2+x \rightarrow \ x=2.$ & componente $4,4$: $2=9+-8+z \rightarrow \ z=1.$\\ 
+\end{tabular}
+\end{table}
+Por lo que:
 \begin{equation*}
 A=\left(\begin{array}{rrrr}
  1 & -2 & -2 &-3\\
@@ -1374,12 +1434,125 @@ A=\left(\begin{array}{rrrr}
  0 &  0 &  0 &  1
 \end{array} \right)=LU
 \end{equation*}
-Recordando las propiedades de la inversa de una matriz:
-
+Ahora, considerando la propiedad de la inversa de una matriz (demostrada en clase):
+$$(AB)^{-1}=B^{-1}A^{-1}.$$
+Entonces tenemos que:
 $$A^{-1} = (LU)^{-1}=U^{-1}L^{-1}$$
+Calculemos la inversa de $U^{-1}$ y $L^{-1}$:
+\begin{equation*}
+\begin{array}{c}
+\left(\begin{array}{rrrr|rrrr}
+ 1 &  0 &  0 & 0&1&0&0&0\\
+ 3 &  1 &  0 & 0&0&1&0&0\\
+-1 &  0 &  1 & 0&0&0&1&0\\
+-3 &  4 & -2 & 1&0&0&0&1
+\end{array} \right)%
+\grstep[R_3 \rightarrow R_3+R_1]{R_2 \rightarrow R_2-3R_1}
+%
+\left(\begin{array}{rrrr|rrrr}
+ 1 &  0 &  0 & 0&1&0&0&0\\
+ 0 &  1 &  0 & 0&-3&1&0&0\\
+ 0 &  0 &  1 & 0&1&0&1&0\\
+-3 &  4 & -2 & 1&0&0&0&1
+\end{array} \right)%
+\grstep[R_4 \rightarrow R_4-4R_2]{R_4 \rightarrow R_4+3R_1}
+\\ \\
+\left(\begin{array}{rrrr|rrrr}
+ 1 &  0 &  0 & 0&1&0&0&0\\
+ 0 &  1 &  0 & 0&-3&1&0&0\\
+ 0 &  0 &  1 & 0&1&0&1&0\\
+ 0 &  0 & -2 & 1&15&-4&0&1
+\end{array} \right)%
+\grstep[]{R_4 \rightarrow R_4+2R_3}
+\left(\begin{array}{rrrr|rrrr}
+ 1 &  0 &  0 & 0&1&0&0&0\\
+ 0 &  1 &  0 & 0&-3&1&0&0\\
+ 0 &  0 &  1 & 0&1&0&1&0\\
+ 0 &  0 &  0 & 1&17&-4&2&1
+\end{array} \right)\Rightarrow\\ \\ 
+L^{-1} =\begin{pmatrix}
+1&0&0&0\\
+-3&1&0&0\\
+1&0&1&0\\
+17&-4&2&1
+\end{pmatrix}.
+\end{array}
+\end{equation*}
+\begin{equation*}
+\begin{array}{c}
+\left(\begin{array}{rrrr|rrrr}
+ 1 & -2 & -2 &-3&1&0&0&0\\
+ 0 & -3 &  6 & 0&0&1&0&0\\
+ 0 &  0 &  2 & 4&0&0&1&0\\
+ 0 &  0 &  0 & 1&0&0&0&1
+\end{array} \right)%
+\grstep[R_3 \rightarrow R_3-4R_4]{R_1 \rightarrow R_1+3R_4}
+%
+\left(\begin{array}{rrrr|rrrr}
+ 1 & -2 & -2 & 0&1&0&0&3\\
+ 0 & -3 &  6 & 0&0&1&0&0\\
+ 0 &  0 &  2 & 0&0&0&1&-4\\
+ 0 &  0 &  0 & 1&0&0&0&1
+\end{array} \right)%
+\grstep[]{R_3 \rightarrow R_3/2}
+\\ \\
+\left(\begin{array}{rrrr|rrrr}
+ 1 & -2 & -2 & 0&1&0&0&3\\
+ 0 & -3 &  6 & 0&0&1&0&0\\
+ 0 &  0 &  1 & 0&0&0&0.5&-2\\
+ 0 &  0 &  0 & 1&0&0&0&1
+\end{array} \right)%
+\grstep[R_1 \rightarrow R_1+2R_3]{R_2 \rightarrow R_2-6R_3}
+\left(\begin{array}{rrrr|rrrr}
+ 1 & -2 &  0 & 0&1&0&1  &-1\\
+ 0 & -3 &  0 & 0&0&1&-3 &12\\
+ 0 &  0 &  1 & 0&0&0&0.5&-2\\
+ 0 &  0 &  0 & 1&0&0&0&1
+\end{array} \right)%
+\grstep[]{R_2 \rightarrow -R_2/3}
+\\ \\
+\left(\begin{array}{rrrr|rrrr}
+ 1 & -2 &  0 & 0&1&0&1  &-1\\
+ 0 &  1 &  0 & 0&0&-1/3&1 &-4\\
+ 0 &  0 &  1 & 0&0&0&0.5&-2\\
+ 0 &  0 &  0 & 1&0&0&0&1
+\end{array} \right)%
+\grstep[]{R_1 \rightarrow R_1+2R_2}
+%
+\left(\begin{array}{rrrr|rrrr}
+ 1 &  0 &  0 & 0&1&-2/3&3 &-9\\
+ 0 &  1 &  0 & 0&0&-1/3&1 &-4\\
+ 0 &  0 &  1 & 0&0&0&0.5&-2\\
+ 0 &  0 &  0 & 1&0&0&0&1
+\end{array} \right) \Rightarrow
+\\ \\
 
+U^{-1} =\begin{pmatrix}
+1&-2/3&3 &-9\\
+0&-1/3&1 &-4\\
+0&0&0.5&-2\\
+0&0&0&1
+\end{pmatrix}.
+\end{array}
+\end{equation*}
 
-
+$$A^{-1}=U^{-1}L^{-1} =\begin{pmatrix}
+1&-2/3&3 &-9\\
+0&-1/3&1 &-4\\
+0&0&0.5&-2\\
+0&0&0&1
+\end{pmatrix}\begin{pmatrix}
+1&0&0&0\\
+-3&1&0&0\\
+1&0&1&0\\
+17&-4&2&1
+\end{pmatrix} =\begin{pmatrix}
+-147 & \frac{106}{3} & -15 & -9\\
+-66 & \frac{47}{3} & -7 & -4\\
+\frac{-67}{2} & 8 & \frac{-7}{2} & -2\\
+17 & -4 & 2 & 1
+\end{pmatrix}\blacksquare
+$$
 % Problema 10.
 %------------------------------------------------------------------------------
 %------------------------------------------------------------------------------
@@ -1395,8 +1568,22 @@ a_{21} & a_{22} & a_{23} &    0  \\
 (Para una interesante aplicación de matrices por bandas a problemas de flujo de calor en física y la importancia de obtener su descomposición LU, ver problemas 31 y 32 de Linear Algebra, D. Lay, 4th ed., p. 131 y las explicaciones que ahí se dan.)
 
 \res
-Considerando la metodología del inciso 9.
-Si $A =LU$, se sabe que $A$ se puede factorizar como:
+Para hacer un poco más facil este problema, definamos las siguientes submatrices de $A$:
+$$A_1^*=\begin{pmatrix}
+a_{11} & a_{12}\\
+a_{21} & a_{22}
+\end{pmatrix}, \ \ A_2^*=\begin{pmatrix}
+a_{11} & a_{12} & 0\\
+a_{21} & a_{22} & a_{23}\\
+0 & a_{32} & a_{33}
+\end{pmatrix}.\Rightarrow $$
+$$\det(A_1^*)=a_{11}a_{22}-a_{12}a_{21}, \ \ y \ \ \det(A_2^*)=a_{33}\det(A_1^*)-a_{32}a_{11}a_{23}.$$
+Ahora utilizando (\textit{demostrado en clase}):\\
+\textit{$A$ tiene una factorización $LU$ si y solo si todas sus submatrices principales líderes son no singulares.}
+\\
+
+Entonces para que $A$ tenga su factorización $LU$ asumimos que $[a_{11}]$, $A_1^*$ y $A_2^*$ son no singulares, es decir, $a_{11} \neq 0$, $\det(A_1^*)\neq 0$ y $\det(A_2^*)\neq 0.$\\
+Ahora, considerando la metodología del inciso 9: Si $A =LU$, se sabe que $A$ se puede factorizar como:
 \begin{equation*}
 A=\left(\begin{array}{cccc}
 a_{11} & a_{12} &   0    &    0  \\
@@ -1429,11 +1616,41 @@ De aquí en adelante se pueden insertar los valores que se encuentran en $L$ y $
 componente $2,3$: $a_{23}=0+v \rightarrow \ v=a_{23}.$ & componente $3,4$: $a_{34}=0+y \rightarrow \ y=a_{34}.$\\ \\
 componente $2,4$: $0=0+w \rightarrow \ w=0.$ & componente $4,1$: $0=a_{11}d \rightarrow \ d=0.$\\ \\
 componente $3,1$: $0=a_{11}b \rightarrow \ b=0.$ & componente $4,2$: $0=\left(a_{22}-a_{12}\cdot \frac{a_{21}}{a_{11}}\right) e \rightarrow \ e=0.$\\ \\
-componente $3,2$: $a_{32}=(a_{22}-a_{12}\cdot \left. \frac{a_{21}}{a_{11}}\right.)c \rightarrow \ c=\frac{a_{32}a_{11}}{a_{22}a_{11}-a_{12}a_{21}}.$ & componente $4,3$: $5=-16-35f \rightarrow \ f=-3/5.$\\ \\
-componente $3,3$: $a_{33}=a_{23}\left(\frac{a_{32}a_{11}}{a_{22}a_{11}-a_{12}a_{21}}\right)+x \rightarrow \ x=-35.$ & componente $4,4$: $2=44-3(94)/5+z \rightarrow \ z=72/5.$\\ 
+componente $3,2$: $a_{32}=(a_{22}-a_{12}\cdot \left. \frac{a_{21}}{a_{11}}\right.)c \rightarrow \ c=\frac{a_{32}a_{11}}{a_{22}a_{11}-a_{12}a_{21}}.$ & componente $4,3$: $a_{43}=(\frac{a_{33}\cdot \det(A_1^*)-a_{23}a_{32}a_{11}}{\det(A_1^*)})f \rightarrow $\\ \\
+componente $3,3$: $a_{33}=a_{23}\left(\frac{a_{32}a_{11}}{a_{22}a_{11}-a_{12}a_{21}}\right)+x \rightarrow$ & $f=\frac{a_{43}}{\frac{a_{33}\cdot \det(A_1^*)-a_{23}a_{32}a_{11}}{\det(A_1^*)}}=\frac{a_{43}\cdot \det(A_1^*)}{a_{33}\cdot \det(A_1^*)-a_{23}a_{32}a_{11}}$\\ \\ $x=a_{33}-a_{23}\left(\frac{a_{32}a_{11}}{a_{22}a_{11}-a_{12}a_{21}}\right)=\frac{a_{33}\cdot \det(A_1^*)-a_{23}a_{32}a_{11}}{\det(A_1^*)}$ & componente $4,4$: $a_{44}=a_{34}\frac{a_{43}\cdot \det(A_1^*)}{a_{33}\cdot \det(A_1^*)-a_{23}a_{32}a_{11}}+z \rightarrow $\\ \\
+& $z=a_{44}-\frac{a_{34}a_{43}\cdot \det(A_1^*)}{a_{33}\cdot \det(A_1^*)-a_{23}a_{32}a_{11}}$.
 \end{tabular}
 \end{table}
-Por lo que:
+Por lo tanto:
+\begin{equation*}
+A=\left(\begin{array}{cccc}
+a_{11} & a_{12} &   0    &    0  \\
+a_{21} & a_{22} & a_{23} &    0  \\
+    0  & a_{32} & a_{33} & a_{34}\\
+    0  &   0    & a_{43} & a_{44}
+\end{array} \right)=
+\end{equation*}
+\begin{equation*}
+\left(\begin{array}{cccc}
+ 1 &  0 &  0 & 0\\
+ \frac{a_{21}}{a_{11}} &  1 &  0 & 0\\
+ 0 &  \frac{a_{32}a_{11}}{\det(A_1^*)} &  1 & 0\\
+ 0 &  0 &  \frac{a_{43}\cdot \det(A_1^*)}{a_{33}\cdot \det(A_1^*)-a_{23}a_{32}a_{11}} & 1
+\end{array} \right) \left(\begin{array}{cccc}
+ a_{11} &  a_{12} & 0 & 0\\
+ 0 & \frac{\det(A_1^*)}{a_{11}}&  a_{23} & 0\\
+ 0 &  0 &  \frac{a_{33}\cdot \det(A_1^*)-a_{23}a_{32}a_{11}}{\det(A_1^*)} & a_{34}\\
+ 0 &  0 &  0 & a_{44}-\frac{a_{34}a_{43}\cdot \det(A_1^*)}{a_{33}\cdot \det(A_1^*)-a_{23}a_{32}a_{11}}
+\end{array} \right)
+\end{equation*}
+
+\begin{equation*}
+=LU.
+\end{equation*}
+
+Ahora, recordando la notación del inicio podemos ver que:
+$$\det (A_2^*)=a_{33}\det(A_1^*)-a_{23}a_{32}a_{11}, \ \ y\ \ \det(A)=a_{44}\cdot(a_{33}\cdot \det(A_1^*)-a_{23}a_{32}a_{11})-a_{34}a_{43}\det(A_1^*).$$
+Es decir, el resultado anterior se puede simplificar a:
 \begin{equation*}
 A=\left(\begin{array}{cccc}
 a_{11} & a_{12} &   0    &    0  \\
@@ -1444,14 +1661,16 @@ a_{21} & a_{22} & a_{23} &    0  \\
 \left(\begin{array}{cccc}
  1 &  0 &  0 & 0\\
  \frac{a_{21}}{a_{11}} &  1 &  0 & 0\\
- 0 &  \frac{a_{32}a_{11}}{a_{22}a_{11}-a_{12}a_{21}} &  1 & 0\\
- 0 &  0 &  f & 1
+ 0 &  \frac{a_{32}a_{11}}{\det(A_1^*)} &  1 & 0\\
+ 0 &  0 &  \frac{a_{43}\cdot \det(A_1^*)}{\det(A_2^*)} & 1
 \end{array} \right) \left(\begin{array}{cccc}
  a_{11} &  a_{12} & 0 & 0\\
- 0 &  a_{22}-a_{12} \cdot \frac{a_{21}}{a_{11}}&  a_{23} & 0\\
- 0 &  0 &  x & a_{34}\\
- 0 &  0 &  0 & z
-\end{array} \right)=LU
+ 0 & \frac{\det(A_1^*)}{a_{11}}&  a_{23} & 0\\
+ 0 &  0 &  \frac{\det(A_2^*)}{\det(A_1^*)} & a_{34}\\
+ 0 &  0 &  0 & \frac{\det(A)}{\det(A_2^*)}
+\end{array} \right)=LU\finf
 \end{equation*}
+Algo curioso de esas matrices con bandas, es que se puede observar que tanto $L$ y $U$ igual son matrices por bandas.
 \end{enumerate}
+
 \end{document}
