@@ -132,24 +132,51 @@ Para encontrar la forma escalonada reducida por renglones ocuparemos eliminació
 \begin{pmatrix}
 1  & 2 & -3 &-1\\
 0 &  1 & -2/3 & 2/3\\
-0 &  0 & -28/3 & 17/3
+0 &  0 & -28/3 & -17/3
 \end{pmatrix}%
 \grstep[]{R3 \rightarrow -3R3/28}
 %
 \begin{pmatrix}
 1  & 2 & -3 &-1\\
 0 &  1 & -2/3 & 2/3\\
-0 &  0 & 1 & -17/28
-\end{pmatrix}.
+0 &  0 & 1 & 17/28
+\end{pmatrix}%
+\grstep[R2 \rightarrow R_2+2R_3/3]{R_1 \rightarrow R_1 +R_3}\\ \\
+\begin{pmatrix}
+1  & 2 & 0 & 23/28\\
+0 &  1 & 0 & 15/14\\
+0 &  0 & 1 & 17/28
+\end{pmatrix}%
+\grstep[]{R_1 \rightarrow R_1 -2R_2}%
+\begin{pmatrix}
+1  & 0 & 0 & -37/28\\
+0 &  1 & 0 & 15/14\\
+0 &  0 & 1 & 17/28
+\end{pmatrix}
 \end{array}
 \end{equation*}
 Las matrices elementales que corresponden a las operaciones que se utilizaron para lleva la matriz a la forma escalonada reducida por renglones son:
-$$E_3(-3/28)E_{32}(-13)E_2(1/3)E_{31}(4)E_{21}(1)E_{13}A$$
+$$E_{12}(-2)E_{23}(2/3)E_{13}(3)E_3(-3/28)E_{32}(-13)E_2(1/3)E_{31}(4)E_{21}(1)E_{13}A$$
 o
 $$\begin{pmatrix}
+1 & -2 & 0\\
+0 & 1 & 0\\
+0 & 0 & 1
+\end{pmatrix}
+\begin{pmatrix}
+1 & 0 & 0\\
+0 & 1 & 2/3\\
+0 & 0 & 1
+\end{pmatrix}
+\begin{pmatrix}
+1 & 0 & 3\\
+0 & 1 & 0\\
+0 & 0 & 1
+\end{pmatrix}
+\begin{pmatrix}
 1 & 0 & 0\\
 0 & 1 & 0\\
-0 & 0 & -\frac{3}{28}\\
+0 & 0 & -\frac{3}{28}
 \end{pmatrix} \begin{pmatrix}
 1 & 0 & 0\\
 0 & 1 & 0\\
@@ -166,10 +193,11 @@ $$\begin{pmatrix}
 1 & 0 & 0\\
 1 & 1 & 0\\
 0 & 0 & 1\\
-\end{pmatrix} \begin{pmatrix}
+\end{pmatrix}$$
+$$\cdot \begin{pmatrix}
 0 & 0 & 1\\
 0 & 1 & 0\\
-1 & 0 & 0\\
+1 & 0 & 0
 \end{pmatrix}\begin{pmatrix}
 -4 & 5 & -6 &7\\
 -1 & 1 &  1 &3\\
@@ -1092,6 +1120,7 @@ $$
 \right) \ \ \ \finf
 $$
 Para que quede más especifico que se realizaron las matrices inversas a mano:
+
 \begin{equation*}
  \begin{array}{c}
 \cdot \left(\begin{array}{cccc|cccc}
@@ -1144,7 +1173,7 @@ Para que quede más especifico que se realizaron las matrices inversas a mano:
 0&1&0&0\\
 0&0&1&0\\
 1&0&0&1
-\end{array} \right). \\ \\
+\end{array} \right).\\ \\
 \left(\begin{array}{cccc|cccc}
 1&0&0&0&1&0&0&0\\
 0&1&0&0&0&1&0&0\\
@@ -1158,7 +1187,12 @@ Para que quede más especifico que se realizaron las matrices inversas a mano:
 0&1&0&0&0&1&0&0\\
 0&0&1&0&0&1&1&0\\
 0&0&0&1&0&0&0&1
-\end{array} \right)\Rightarrow  \\ \\
+\end{array} \right)\Rightarrow
+\end{array}
+\end{equation*}
+
+\begin{equation*}
+ \begin{array}{c}
 \left(\begin{array}{cccc}
 1&0&0&0\\
 0&1&0&0\\
