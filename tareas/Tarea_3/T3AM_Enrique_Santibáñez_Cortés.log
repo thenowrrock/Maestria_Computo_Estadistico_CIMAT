@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020) (preloaded format=pdflatex 2020.9.12)  14 SEP 2020 01:36
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020) (preloaded format=pdflatex 2020.9.12)  15 SEP 2020 17:36
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -558,45 +558,50 @@ LaTeX Font Info:    Trying to load font information for U+msb on input line 73.
 (/home/enrique/.TinyTeX/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-Overfull \hbox (6.13268pt too wide) detected at line 177
-[] [] [] [] [] [] []    \U/msa/m/n/10.95 ^^D\OML/lmm/m/it/10.95 :
+Overfull \hbox (56.3704pt too wide) detected at line 157
+[]
  []
 
 
-Overfull \hbox (57.59734pt too wide) detected at line 229
-[]
+Overfull \hbox (19.64093pt too wide) detected at line 196
+[] [] [] [] [] [] [] []
  []
 
 [1
 
 {/home/enrique/.TinyTeX/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
-Underfull \hbox (badness 10000) in paragraph at lines 229--231
-
- []
-
-[2]
-Overfull \hbox (42.12352pt too wide) detected at line 474
+Overfull \hbox (57.59734pt too wide) detected at line 257
 []
  []
 
-[3]
-Overfull \hbox (15.00119pt too wide) detected at line 557
-[] [] [] [] [] [] [] [] [] \OML/lmm/m/it/10.95 :
+
+Underfull \hbox (badness 10000) in paragraph at lines 257--259
+
+ []
+
+[2] [3]
+Overfull \hbox (42.12352pt too wide) detected at line 502
+[]
  []
 
 
-Overfull \hbox (20.61855pt too wide) detected at line 620
+Overfull \hbox (15.00119pt too wide) detected at line 585
+[] [] [] [] [] [] [] [] [] \OML/lmm/m/it/10.95 :
+ []
+
+[4]
+Overfull \hbox (20.61855pt too wide) detected at line 648
 \OML/lmm/m/it/10.95 A \OT1/lmr/m/n/10.95 = [][] [][] [][] [][] [][] [][] \OML/l
 mm/m/it/10.95 I \OMS/lmsy/m/n/10.95 )
  []
 
-[4] [5]
-Underfull \hbox (badness 10000) in paragraph at lines 822--824
+[5]
+Underfull \hbox (badness 10000) in paragraph at lines 850--852
 
  []
 
 
-Overfull \hbox (23.51865pt too wide) detected at line 862
+Overfull \hbox (23.51865pt too wide) detected at line 890
 \OML/lmm/m/it/10.95 A \OT1/lmr/m/n/10.95 + \OML/lmm/m/it/10.95 B \OT1/lmr/m/n/1
 0.95 = [] + [] = []  [] \OML/lmm/m/it/10.95 a[] \OMS/lmsy/m/n/10.95 6\OT1/lmr/m
 /n/10.95 = 0 []\OML/lmm/m/it/10.95 b[] \OMS/lmsy/m/n/10.95 6\OT1/lmr/m/n/10.95 
@@ -604,90 +609,91 @@ Overfull \hbox (23.51865pt too wide) detected at line 862
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 862--864
+Underfull \hbox (badness 10000) in paragraph at lines 890--892
 
  []
 
 [6]
-Underfull \hbox (badness 10000) in paragraph at lines 896--898
+Underfull \hbox (badness 10000) in paragraph at lines 924--926
 
  []
 
 
-Overfull \hbox (17.10782pt too wide) detected at line 942
+Overfull \hbox (17.10782pt too wide) detected at line 970
 []
  []
 
 
-Overfull \hbox (43.88646pt too wide) detected at line 983
+Overfull \hbox (43.88646pt too wide) detected at line 1011
 [] [] [] [] [] \OML/lmm/m/it/10.95 A \OT1/lmr/m/n/10.95 = \OML/lmm/m/it/10.95 U
  \OMS/lmsy/m/n/10.95 ) \OML/lmm/m/it/10.95 A \OT1/lmr/m/n/10.95 =
  []
 
 
-Overfull \hbox (42.9006pt too wide) detected at line 1010
+Overfull \hbox (42.9006pt too wide) detected at line 1038
 [][] [][] [][] [][] [][] \OML/lmm/m/it/10.95 U:
  []
 
 
-Overfull \hbox (52.6326pt too wide) detected at line 1037
+Overfull \hbox (52.6326pt too wide) detected at line 1065
 \OML/lmm/m/it/10.95 L \OT1/lmr/m/n/10.95 = [][] [][] [][] [][] [][]
  []
 
-
-Overfull \hbox (41.61615pt too wide) detected at line 1071
+[7]
+Overfull \hbox (41.61615pt too wide) detected at line 1099
 \OT1/lmr/m/n/10.95 = [] [] [] [] [] = [] \OML/lmm/m/it/10.95 :
  []
 
-[7] [8]
-Overfull \hbox (5.8637pt too wide) in paragraph at lines 1282--1289
+[8] [9]
+Overfull \hbox (5.8637pt too wide) in paragraph at lines 1316--1323
  [][] 
  []
 
-[9] [10] [11] [12]
-Underfull \hbox (badness 10000) in paragraph at lines 1580--1584
+[10] [11] [12]
+Underfull \hbox (badness 10000) in paragraph at lines 1614--1618
 
- []
-
-
-Overfull \hbox (69.33344pt too wide) in paragraph at lines 1615--1623
- [][] 
  []
 
 [13]
-Overfull \hbox (39.58096pt too wide) detected at line 1645
+Overfull \hbox (69.33344pt too wide) in paragraph at lines 1649--1657
+ [][] 
+ []
+
+
+Overfull \hbox (39.58096pt too wide) detected at line 1679
 [] []
  []
 
 
-Overfull \hbox (47.36943pt too wide) detected at line 1672
+Overfull \hbox (47.36943pt too wide) detected at line 1706
 \OML/lmm/m/it/10.95 A \OT1/lmr/m/n/10.95 = [] = [] [] = \OML/lmm/m/it/10.95 LU\
 U/msa/m/n/10.95 ^^D\OML/lmm/m/it/10.95 :
  []
 
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1676.
 [14]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 1676.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1710.
+ [15]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 1710.
  (./T3AM_Enrique_Santibáñez_Cortés.aux
 LaTeX Info: Redefining \. on input line 25.
 LaTeX Info: Redefining \% on input line 25.
 )
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1676.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1676.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1710.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1710.
 
 Package rerunfilecheck Info: File `T3AM_Enrique_Santibáñez_Cortés.out' has n
 ot changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 1676.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 1710.
  ) 
 Here is how much of TeX's memory you used:
- 8171 strings out of 482806
- 119958 string characters out of 5955025
- 440866 words of memory out of 5000000
+ 8172 strings out of 482806
+ 119965 string characters out of 5955025
+ 437866 words of memory out of 5000000
  23363 multiletter control sequences out of 15000+600000
  564641 words of font info for 52 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 43i,13n,37p,590b,444s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 43i,13n,37p,590b,447s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/home/enrique/.TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}{/home/en
 rique/.TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}{/home/enrique/.Tiny
 TeX/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}{/home/enrique/.TinyTeX/texmf-dist/
@@ -704,11 +710,11 @@ rique/.TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy10.pfb></home/enrique/.Tiny
 TeX/texmf-dist/fonts/type1/public/lm/lmsy6.pfb></home/enrique/.TinyTeX/texmf-di
 st/fonts/type1/public/lm/lmsy8.pfb></home/enrique/.TinyTeX/texmf-dist/fonts/typ
 e1/public/amsfonts/symbols/msam10.pfb>
-Output written on T3AM_Enrique_Santibáñez_Cortés.pdf (14 pages, 208795 bytes
+Output written on T3AM_Enrique_Santibáñez_Cortés.pdf (15 pages, 210031 bytes
 ).
 PDF statistics:
- 144 PDF objects out of 1000 (max. 8388607)
- 113 compressed objects within 2 object streams
- 25 named destinations out of 1000 (max. 500000)
+ 148 PDF objects out of 1000 (max. 8388607)
+ 116 compressed objects within 2 object streams
+ 26 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 
