@@ -2,7 +2,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage[spanish]{babel}
-\usepackage{amsmath}
+\usepackage{amsmath,amssymb}
 \usepackage{amsfonts}
 \usepackage{amssymb}
 \usepackage{graphicx}
@@ -13,20 +13,12 @@
 \usepackage{float}
 \usepackage{hyperref}
 \usepackage{color}
+\usepackage{framed}
 
-\newcommand{\azul}[1]{\textcolor{MaterialBlue900}{#1}}
-\usepackage{array}
 
-\hypersetup{colorlinks=true,   linkcolor=MaterialBlue900}
 %\usepackage[colorlinks=true, linkcolor=black, urlcolor=blue, pdfborder={0 0 0}]{hyperref}
 
 \usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
-\title{Modelos no paramétricos y de regresión 2018-1}
-\author{Tarea examen: pruebas binomiales y tablas de contingencia}
-\date{Fecha de entrega: 08/01/2017}
-\setlength{\parindent}{0in}
-\spanishdecimal{.}
-
 
 \newcommand{\X}{\mathbb{X}}
 \newcommand{\x}{\mathbf{x}}
@@ -39,13 +31,7 @@
 \newcommand{\barra}{\,\vert\,}
 \newcommand{\mP}{\mathbb{P}}
 \newcommand{\mE}{\mathbb{E}}
-\newcommand{\mI}{\mathbf{I}}
-\newcommand{\mJ}{\mathbf{J}}
-\newcommand{\mX}{\mathbf{X}}
-\newcommand{\mS}{\mathbf{S}}
-\newcommand{\mA}{\mathbf{A}}
-\newcommand{\unos}{\boldsymbol{1}}
-\newcommand{\xbarnv}{\bar{\mathbf{x}}_n}
+
 \newcommand{\abs}[1]{\left\vert #1 \right\vert}
 \newcommand{\muv}{\boldsymbol{\mu}}
 \newcommand{\mcov}{\boldsymbol{\Sigma}}
@@ -57,11 +43,12 @@
 \newcommand{\ve}{\mathbf{e}}
 \newcommand{\avec}{\mathbf{a}}
 \newcommand{\res}{\textbf{RESPUESTA}\\}
-\newcommand{\rojo}[1]{\textcolor{MaterialRed900}{#1}}
 
-\newcommand{\defi}[3]{\textbf{Definición:#3}}
 \newcommand{\fin}{$\blacksquare.$}
 \newcommand{\finf}{\blacksquare.}
+
+\newtheorem{thm}{Teorema:}
+
 
 \begin{document}
 \begin{table}[ht]
@@ -78,25 +65,166 @@ Repositorio de Git: \href{https://github.com/Enriquesec/Inferencia_Estad-stica/t
 Escriba de manera concisa y clara sus resultados, justificando los pasos necesarios. Serán descontados puntos de los ejercicios mal escritos y que contenga ecuaciones sin una estructura gramatical adecuada. Las conclusiones deben escribirse en el contexto del problema. Todos los programas y
 simulaciones tienen que realizarse en R.\\
 
+% Problema 1.
+%-------------------------------------------------------------------------------------
+%-------------------------------------------------------------------------------------
+%-------------------------------------------------------------------------------------
 1. Resuelva lo siguiente:
-
 \begin{itemize}
 \item[a)] Sea $X\sim Exponencial(\beta)$. Encuentre $\mP(|X-\mu_X |\geq k\sigma_X)$ para $k>1$. Compare esta probabilidad con la que obtiene de la desigualdad de Chebyshev. 
 
 \res 
 Cómo $X\sim Exponencial(\beta)$ entonces $\mu_X=\beta$ y $\sigma_X=\sqrt{\beta^2}=\beta.$ Por lo que:
-
-$$\mP(|X-\mu_X |\geq k\sigma_X)=\mP(|X-\mu_X |^2\geq k^2\sigma_X^2)$$
-
-\item[b)] Sean $X_1,\cdots,X_n\sim Bernoulli(p)$ y $\bar{X}=n^{-1}\sum_{i=1}^n X_i$. Usando las desigualdades de Chebyshev y Hoeffding, acote $\mP(|\bar{X}-p|>\epsilon)$. Demuestre que para $n$ grande la cota de Hoeffding es más pequeña que la cota de Chebyshev. ¿En qué beneficia esto?
+\begin{align*}
+\mP(|X-\mu_X |\geq k\sigma_X)&=\mP(|X-\beta|\geq k\beta)=\mP(X-\beta\leq -k\beta)+\mP(X-\beta\geq k\beta)\\ \\
+&=\mP(X\leq -k\beta+\beta)+\mP(X\geq k\beta+\beta),
+\end{align*}
+ahora como $k>1$ eso implica que $-k\beta +\beta<0$, como $X$ es una variable con distribución exponencial podemos concluir que $\mP(X\leq -k\beta+\beta)=0$. Continuando simplificando y sabiendo que $X$ se distribuye exponencial:
+\begin{align*}
+\mP(|X-\mu_X |\geq k\sigma_X)&=\mP(X\geq k\beta+\beta)\\ \\
+&=F(k\beta+\beta) \ \ \ \ \ \ \  \text{(fda exponencial)}\\ \\
+&=e^{-\frac{k\beta+\beta}{\beta}}\\ \\
+&=e^{-k-1}.
+\end{align*}
+Ahora, recordemos la desigualdad de Chebyshev.
+\begin{framed}
+    \begin{thm} \label{chebyshev}
+    (Desigualdad de Chebyshev) Sea $X$ una v.a.,$\mu=\mE(X)$ y $\sigma^2=V(X)$. Entonces, si $t>0$
+        \begin{align}
+            \mP(|X-\mu|\geq t) \leq \frac{\sigma^2}{t^2}
+        \end{align}
+    \end{thm}
+\end{framed} 
+Entonces, considerando el teorema anterior y haciendo a $t=k\sigma_X$ (note que se sigue cumpliendo que $t>0$) tenemos:
+$$\mP(|X-\mu_X|\geq k\sigma_X) \leq \frac{\sigma_X^2}{(k\sigma_X)^2}=\frac{1}{k^2}.$$
+Comparando la probabilidad obtenida con la cota de la desigualdad de Chebyshev:
+$$e^{-k-1}\leq \frac{1}{k^2}\ \ \ \finf$$
+\item[b)] Sean $X_1,\cdots,X_n\sim Bernoulli(p)$ independientes y $\bar{X}=n^{-1}\sum_{i=1}^n X_i$. Usando las desigualdades de Chebyshev y Hoeffding, acote $\mP(|\bar{X}-p|>\epsilon)$. Demuestre que para $n$ grande la cota de Hoeffding es más pequeña que la cota de Chebyshev. ¿En qué beneficia esto?
 \end{itemize}
 
+\res Para calcula la cota de Chebyshev, primero calculemos $E[\bar{X}]$ y $Var[\bar{X}]$. Como las $X_i$ son independientes y debido a que $X_i\sin Bernoulli(p)$:
+\begin{align*}
+E[\bar{X}]=\frac{1}{n}E[\sum_{i=1}^nX_i]=\frac{1}{n}\sum_{i=1}^nE[X]=\frac{np}{n}=p, \ \ \text{y}
+\end{align*}
+\begin{align*}
+Var[\bar{X}]=\frac{1}{n^2}Var[\sum_{i=1}^nX_i]=\frac{1}{n^2}\sum_{i=1}^nVar[X]=\frac{np(1-p)}{n^2}=\frac{p(1-p)}{n}.
+\end{align*}
+Utilizando (\ref{chebyshev}) y haciendo $\epsilon=t$ tenemos:
+\begin{align*}
+\mP(|\bar{X}-p|>\epsilon) \leq \mP(|\bar{X}-p|\geq \epsilon) \leq \frac{\frac{p(1-p)}{n}}{\epsilon^2}=\frac{p(1-p)}{n\epsilon^2 },
+\end{align*}
+es decir, la cota de Chebyshev es:
+\begin{align*}
+\mP(|\bar{X}-p|>\epsilon) \leq \frac{p(1-p)}{n\epsilon^2 }.
+\end{align*}
+Ahora, recordemos la desigualdad de Hoeffding.
+\begin{framed}
+    \begin{thm} (Desigualdad de Hoeffding) Sea $Y_1, \ Y_2\ ,\cdots,\Y_n$ v.a independientes tales que $E(Y_i)=0,$ $a_i\leq Y_i \leq b_i$. Sea $\epsilon>0$. Entonces, para cualquier $t>0$
+        \begin{align}
+            \mP\left(\sum_{i=1}^nY_i\geq \epsilon \right) \leq e^{-t\epsilon}\prod_{i=1}^ne^{t^2(b_i-a_i)^2/8}.
+        \end{align}
+    \end{thm}
+\end{framed} 
+Para determinar las cota de la probabilidad solicitada observemos que
+\begin{align}
+\label{valor_absoluto}
+|\bar{X}-p|>\epsilon=(\bar{X}-p>\epsilon)\cup(p-\bar{X}>\epsilon).
+\end{align}
+Además,
+\begin{equation}
+\label{igualdad}
+\bar{X}-p=\frac{1}{n}\sum_{i=1}^n X_i-\frac{1}{n}\sum_{i=1}^n p=\sum_{i=1}^n\frac{X_i-p}{n}.
+\end{equation}
+Entonces se reduce a encontrar la cota de Hoeffiding para:
+$$\mP\left( (\bar{X}-p>\epsilon)\cup(p-\bar{X}>\epsilon)\right)=\mP(\bar{X}-p>\epsilon)\cup\mP(p-\bar{X}>\epsilon).$$
+
+Primero encontremos la cota para  $\mP(\bar{X}-p>\epsilon)$. Para ello denotemos a $Y_i=\frac{X_i-p}{n}, \ i=1,2,\cdots,n.$ Ahora, como $X_i\sim Bernoulli(p)$ esto implica que
+$$\mE(Y_i)=\mE\left(\frac{X_i-p}{n} \right)=\frac{\mE(X_i)-p}{n}=\frac{p-p}{n}=0.$$
+Notemos que $Y_i$ tiene una cota inferior haciendo $X=0$ y una cota superior $X=1$ las cuales son:
+$$-\frac{p}{n}\leq Y_i \leq \frac{1-p}{n}.$$
+Cómo ya cumple todos los supuestos, podemos ocupar la desigualdad de Hoeffding en las $Y_i$. Sea $\epsilon>0$, y para cualquier $t>0$ 
+\begin{align*}
+\mP\left(\sum_{i=1}^nY_i>\epsilon\right)=\mP\left(\sum_{i=1}^n\frac{X_i-p}{n}>\epsilon\right)\leq \mP\left(\sum_{i=1}^n\frac{X_i-p}{n}\geq\epsilon\right) &\leq e^{-t\epsilon}\prod_{i=1}^n e^{t^2(\frac{1-p}{n}+\frac{p}{n})^2/8}\\
+&=e^{-t\epsilon}\prod_{i=1}^n e^{\frac{t^2}{8n^2}}\\
+&=e^{-t\epsilon} e^{\frac{nt^2}{8n^2}}\\
+&=e^{-t\epsilon+\frac{t^2}{8n}}.
+\end{align*}
+Ya encontramos una cota utilizando la desigualdad de Hoeffding, pero no es una cota mínima. Para encontrar la mínima encontremos el valor de $t$ que minimiza el exponente de $e$, es decir, encontremos un mínimo para $f(t)=-t\epsilon+\frac{t^2}{8n}.$ Para ello utilicemos el criterio de primera y segunda derivada, derivamos $f(t)$:
+$$f'(t)=-\epsilon +\frac{t}{4n}.$$
+Igualamos a cero y despejamos $t$:
+\begin{align*}
+-\epsilon +\frac{t}{4n} &= 0\\
+t&=4n\epsilon.
+\end{align*}
+Calculemos la segunda derivada de $f(t)$:
+$$f''(t)=\frac{1}{4n}.$$
+Como $f''(t)>0$ implica que $t=4n\epsilon$ sea un mínimo para $f(t)$, y la cota mínima de Hoeffding para este problema es cuanto $t=4n\epsilon$. Sustituyendo en la desigualdad calculada:
+\begin{align*}
+\mP\left(\sum_{i=1}^n\frac{X_i-p}{n}>\epsilon\right)&\leq e^{-(4n\epsilon)\epsilon+\frac{(4n\epsilon)^2}{8n}}\\
+&= e^{-4n\epsilon^2+\frac{16n^2\epsilon^2}{8n}}\\
+&= e^{-2n\epsilon^2}.
+\end{align*}
+Y por lo tanto (\ref{igualdad}) podemos concluir que: 
+\begin{align*}
+\mP\left(\bar{X}-p>\epsilon\right)&\leq e^{-2n\epsilon^2}.
+\end{align*}
+Realizando un razonamiento análogo determinemos la cota para $\mP\left(p-\bar{X}>\epsilon\right)$. Para ello denotemos $Z_i=\frac{p-X_i}{n}, \ i=1,2,\cdots,n.$ Ahora, como $X_i\sim Bernoulli(p)$ esto implica que
+$$\mE(Z_i)=\mE\left(\frac{p-X_i}{n} \right)=\frac{p-\mE(X_i)}{n}=\frac{p-p}{n}=0.$$
+Notemos que $Z_i$ tiene una cota inferior haciendo $X=1$ y una cota superior $X=0$ las cuales son:
+$$\frac{p-1}{n}\leq Z_i \leq \frac{p}{n}.$$
+Cómo ya cumple todos los supuestos, podemos ocupar la desigualdad de Hoeffding en las $Z_i$. Sea $\epsilon>0$, y para cualquier $t>0$ 
+\begin{align*}
+\mP\left(\sum_{i=1}^n Z_i>\epsilon\right)=\mP\left(\sum_{i=1}^n\frac{p-X_i}{n}>\epsilon\right)\leq \mP\left(\sum_{i=1}^n\frac{p-X_i}{n}\geq\epsilon\right) &\leq e^{-t\epsilon}\prod_{i=1}^n e^{t^2(\frac{p}{n}-\frac{p-1}{n})^2/8}\\
+&=e^{-t\epsilon}\prod_{i=1}^n e^{\frac{t^2}{8n^2}}\\
+&=e^{-t\epsilon} e^{\frac{nt^2}{8n^2}}\\
+&=e^{-t\epsilon+\frac{t^2}{8n}}.
+\end{align*}
+Ya encontramos una cota utilizando la desigualdad de Hoeffding, pero no es una cota mínima. Para encontrar la mínima encontremos el valor de $t$ que minimiza el exponente de $e$, es decir, encontremos un mínimo para $f(t)=-t\epsilon+\frac{t^2}{8n}.$ Para ello utilicemos el criterio de primera y segunda derivada, derivamos $f(t)$:
+$$f'(t)=-\epsilon +\frac{t}{4n}.$$
+Igualamos a cero y despejamos $t$:
+\begin{align*}
+-\epsilon +\frac{t}{4n} &= 0\\
+t&=4n\epsilon.
+\end{align*}
+Calculemos la segunda derivada de $f(t)$:
+$$f''(t)=\frac{1}{4n}.$$
+Como $f''(t)>0$ implica que $t=4n\epsilon$ sea un mínimo para $f(t)$, y la cota mínima de Hoeffding para este problema es cuanto $t=4n\epsilon$. Sustituyendo en la desigualdad calculada:
+\begin{align*}
+\mP\left(\sum_{i=1}^n\frac{p-X_i}{n}>\epsilon\right)&\leq e^{-(4n\epsilon)\epsilon+\frac{(4n\epsilon)^2}{8n}}\\
+&= e^{-4n\epsilon^2+\frac{16n^2\epsilon^2}{8n}}\\
+&= e^{-2n\epsilon^2}.
+\end{align*}
+Entonces: 
+\begin{align*}
+\mP\left(p-\bar{X}>\epsilon\right)&\leq e^{-2n\epsilon^2}.
+\end{align*}
+Por lo tanto, ocupando (\ref{valor_absoluto}) podemos concluir que la cota de Hoeffding es:
+\begin{align*}
+\mP\left(|\bar{X}-p|>\epsilon\right)\leq 2e^{-2n\epsilon^2}.
+\end{align*}
+
+% Problema 2.
+%-------------------------------------------------------------------------------------
+%-------------------------------------------------------------------------------------
+%-------------------------------------------------------------------------------------
 2. Sean  $X_1,\cdots,X_n\sim Bernoulli(p)$.
 \begin{itemize}
 \item[a)] Sea $\alpha >0 $ fijo y defina 
 $$\epsilon_n = \sqrt{\frac{1}{2n} \log\left(\frac{2}{\alpha}\right)}.$$
-Sea $\hat{p}=n^{-1}\sum_{i=1}^n X_i.$ Defina $C_n=(\hat{p}_n-\epsilon_n,\hat{p}_n+\epsilon_n)$. Use la desigualdad de Hoeffding para demostrar que $$\mP(C_n \text{contiene a } p)\neq 1-\alpha$$.
+Sea $\hat{p}=n^{-1}\sum_{i=1}^n X_i.$ Defina $C_n=(\hat{p}_n-\epsilon_n,\hat{p}_n+\epsilon_n)$. Use la desigualdad de Hoeffding para demostrar que $$\mP(C_n \text{contiene a } p)\geq 1-\alpha$$.
 Diremos que $C_n$ es un $(1-\alpha)-$intervalo de confianza para $p$. En la practica, se trunca el intervalo de tal manera de que no vaya debajo del 0 o arriba del 1.
+
+\res Observemos que el evento de que $C_n$ contiene a $p$ es igual al evento que:
+$$\{p \not \in C\}=|\hat{p}-p|>\epsilon_n.$$
+
+Entonces, como $X_i\sim Bernoulli(p)$ independientes y utilizando la desigualdad de Hoeffding encontrada en el ejercicio anterior tenemos que:
+\begin{align*}
+\mP(p\not \in C)=\mP(|\hat{p}-p|>\epsilon_n)\leq 2e^{-2n\epsilon_n^2},
+\end{align*}
+sustituyendo el valor de $\epsilon_n$:
+\begin{align*}
+\mP(p\not \in C)\leq 2e^{-2n(\sqrt{\frac{1}{2n} \log\left(\frac{2}{\alpha}\right)})_n^2},
+\end{align*}
 
 \item[b)] Sea $\alpha=0.05$ y $p=0.4$.Mediante simulaciones, realice un estudio para ver que tan a menudo el intervalo de confianza contiene a $p$ (la cobertura). Haga esto para $n=
 10, 50, 100, 250, 500, 1000, 2500, 5000, 10000$. Grafique la cobertura contra $n$.
@@ -104,21 +232,125 @@ Diremos que $C_n$ es un $(1-\alpha)-$intervalo de confianza para $p$. En la prac
 \item[c)] Grafique la longitud del intervalo contra $n$. Suponga que deseamos que la longitud del intervalo sea menor que 0.05. ¿Qué tan grande debe ser $n$?
 \end{itemize}
 
+% Problema 3.
+%-------------------------------------------------------------------------------------
+%-------------------------------------------------------------------------------------
+%-------------------------------------------------------------------------------------
 3. Una partícula se encuentra inicialmente en el origen de la recta real y se mueve en saltos de una unidad. Para cada salto, la probabilidad de que la partícula salte una unidad a la izquierda es $p$ y la probabilidad de que salte una unidad a la derecha es $1-p$. Denotemos por $X_n$ a la posición de la partícula después de n unidades. Encuentre $\mE(X_n)$ y Var$(X_n)$. Esto se conoce como una caminata aleatoria en una dimensión. \\
 
 
-
+% Problema 7.
+%-------------------------------------------------------------------------------------
+%-------------------------------------------------------------------------------------
+%-------------------------------------------------------------------------------------
 7. Demuestre que la fórmula de la densidad de la Beta integra 1.
 
+\res Sea $X\sim Beta(\alpha, \beta)$, entonces su función de densidad esta definida como:
+$$f(x)=\frac{\Gamma(\alpha+\beta)}{\Gamma(\alpha)\Gamma(\beta)}x^{\alpha-1}(1-x)^{\beta-1},\ \ \ \ \ \ 0<x<1.$$
+Entonces, la integral de la densidad sería:
 
+$$\int_{-\infty}^{\infty}f(x)dx=\int_{0}^{1}\frac{\Gamma(\alpha+\beta)}{\Gamma(\alpha)\Gamma(\beta)}x^{\alpha-1}(1-x)^{\beta-1}dx=\frac{\Gamma(\alpha+\beta)}{\Gamma(\alpha)\Gamma(\beta)} \int_{0}^{1}x^{\alpha-1}(1-x)^{\beta-1}dx.$$
+
+% Problema Honor 1.
+%-------------------------------------------------------------------------------------
+%-------------------------------------------------------------------------------------
+%-------------------------------------------------------------------------------------
 \textbf{Honors problems} \\
 1. \begin{itemize}
 \item[a)] Sea $X$ una v.a. discreta con media finita y que toma valores en el conjunto $0,1,2\cdots .$ Demuestre que 
-$$E(X)=\sum_{k=1}^\infty \mP(X\geq k).$$
+$$\mE(X)=\sum_{k=1}^\infty \mP(X\geq k).$$
+
+\res Definamos la siguiente notación para hacer más entendible la demostración: $$p_x=\mP(X=x), \ \ x=0,1,\cdots,$$ y $$q_x=\mP(X> x)=\sum_{k=x+1}^\infty p_k \ \ \ \ x=0,1,\cdots.$$
+Entonces debemos probar que:
+$$\mE(x)=\sum_{k=1}^\infty \mP(X\geq k)=\sum_{x=0}^\infty q_x.$$
+Como sabemos que se cumple que $\mP(X\leq x) +\mP(x>x)=1$, observemos que:
+\begin{align*}
+\sum_{x=1}^Nxp_x&=p_1+2p_2+3p_3+\cdots+Np_N\\
+&=(p_1+p_2+p_3+\cdots+p_N)+(p_2+p_3+\cdots+p_N)+\cdots+(p_{N-1}+p_N)+p_N\\
+&=\sum_{x=0}^{N-1} q_x-Nq_N.
+\end{align*}
+Utilizando que $X$ tiene media finita, es decir, como $E(X)=\sum_{x=0}^\infty xp_x$ podemos decir que la serie $\sum_{x=0}^\infty xp_x$ es convergente. Ahora observemos que se cumple la siguiente desigualdad:
+\begin{align}
+\label{cota_pn}
+0 \leq N\sum_{x=N+1}^\infty p_x \leq \sum_{x=N+1}^\infty x p_x.
+\end{align} 
+La justificación de la desigualdad, se debe a que $n>N$ por como se definieron los límites de la suma y de lado derecho a que $N$ y $p_x$ son positivos. 
+
+Ahora, ocupemos una propiedad conocida de series convergentes: 
+\begin{framed}
+    \begin{thm} (Condición necesaria de convergencia) Si la serie $\sum_{n=1}^\infty a_n$ es convergente, entoncess 
+        \begin{align*}
+        \lim_{n\rightarrow  \infty} a_n=0.
+        \end{align*}
+    \end{thm}
+\end{framed} 
+Ocupando la propiedad anterior en (\ref{cota_pn}):
+\begin{align*}
+\lim_{N\rightarrow\infty } 0 \leq \lim_{N\rightarrow\infty } N \sum_{x=N+1}^\infty p_x &\leq \lim_{N\rightarrow\infty } \sum_{x=N+1}^\infty x p_x.\\
+&=\sum_{x=N+1}^\infty \lim_{x\rightarrow\infty }x p_x\\
+&=0.
+\end{align*} 
+
+
+
+
 \item[b)] Sea $X$ una v.a. continua no-negativa con media finita, función de densidad $f$ y función de distribución $F$. Demuestre que 
-$$E(X)=\int_0^\infty (1-F(t))dt.$$
+$$\mE(X)=\int_0^\infty (1-F(t))dt.$$
+
+\res Utilizaremos algunas definiciones vistas en clase de confiabilidad y su relación con función de densidad. $R(x)$ se le conoce como la confiabilidad de X, la cual se define como:
+$$R(x)=1-F(x).$$
+Derivando de ambos lados observamos que:
+$$R'(x)=-F'(x)=-f(x).$$
+Ocupando lo anterior y la definición de esperanza de una variable continua tenemos que:
+\begin{flalign*}
+\mE(X)&=\int_{-\infty}^\infty xf(x)dx & \text{definición de esperanza}\\ \\
+&=\int_{0}^\infty -xR'(x)dx & \text{relación confiabilidad-densidad}\\ \\
+&=\int_{0}^\infty -xR'(x)-R(x)+R(x)dx&\text{sumamos un cero}\\ \\
+&=\int_{0}^\infty -(xR(x))'+R(x)dx &\text{definición de derivada}\\ \\
+&=\left. -xR(x) \right|_{x=0}^\infty+\int_{0}^\infty R(x)dx\\ \\
+&=\int_{0}^\infty R(x)dx\\ \\
+& =\int_{0}^\infty (1-Fx(x))dx \ \ \finf
+\end{flalign*}
+
+
 
 \item[c)] ¿Cómo cambia la fórmula del caso anterior cuando el soporte de $X$ es todo $\mathbb{R}?$
 \end{itemize}
+% Problema Honor 2.
+%-------------------------------------------------------------------------------------
+%-------------------------------------------------------------------------------------
+%-------------------------------------------------------------------------------------
 2. Sea $X$ una v.a. continua con primer momento finito. Demuestre que la función $G(c)=E(|X-c|). c\in \mathbb{R},$ se minimiza en $c=M(X)$ para $M(X)$ la mediana de $X$.
+
+\res Sea $f(x)$ la función de densidad de $X$. Por propiedades de la esperanza tenemos que:
+\begin{align*}
+G(c)&=E(|X-c|)=\int_{-\infty}^\infty|x-c|f(x)dx= \int_{-\infty}^c (c-x)f(x)dx+\int_{c}^\infty (x-c)f(x)dx\\
+\\
+&=c\int_{-\infty}^c f(x)dx-\int_{-\infty}^c xf(x)dx+\int_{c}^\infty xf(x)dx-c\int_{c}^\infty f(x)dx.
+\end{align*}
+Ahora diferenciamos con respecto a $c$ e igualamos a cero la expresión anterior:
+\begin{align*}
+G'(c)&=\frac{d}{dc}\left(c\int_{-\infty}^c f(x)dx-\int_{-\infty}^c xf(x)dx+\int_{c}^\infty xf(x)dx-c\int_{c}^\infty f(x)dx \right)\\ \\
+&=\int_{-\infty}^c f(x)dx+c\frac{d}{dc} \int_{-\infty}^c f(x)dx-\frac{d}{dc}\int_{-\infty}^c xf(x)dx+\frac{d}{dc}\int_{c}^\infty xf(x)dx-\int_{c}^\infty f(x)dx -c\frac{d}{dc}\int_{c}^\infty f(x)dx 
+\end{align*}
+Ahora por el Teorema Fundamental del Calculo. 
+\begin{align*}
+G'(c)&=\int_{-\infty}^c f(x)dx+cf(x)\vert_{x=c}-xf(x)\vert_{x=c}+xf(x)\vert_{x=c}-\int_{c}^\infty f(x)dx-cf(x)\vert_{x=c}\\
+&=\int_{-\infty}^c f(x)dx-\int_{c}^\infty f(x)dx.
+\end{align*}
+Ahora igualamos a cero:
+\begin{align*}
+G'(c)=\int_{-\infty}^c f(x)dx-\int_{c}^\infty f(x)dx&=0\\
+\int_{-\infty}^c f(x)dx&=\int_{c}^\infty f(x)dx.
+\end{align*}
+Es decir,
+\begin{align*}
+\mP(X\leq c)=\mP(X>c).
+\end{align*}
+Por definición de probabilidad sabemos que se cumple que $\mP(X\leq c)+\mP(X>c)=1$. Lo que implica que:
+\begin{align*}
+\mP(X\leq c)=\mP(X>c)=\frac{1}{2}.
+\end{align*}
+Y por lo tanto, cuando $c$ es la mediana (por definición) de $X$ minimiza la función $G(c) \ \ \ \finf$
+
 \end{document}
