@@ -1,1 +1,1 @@
-# Inferencia_Estad-stica
+# Inferencia_Estadistica
