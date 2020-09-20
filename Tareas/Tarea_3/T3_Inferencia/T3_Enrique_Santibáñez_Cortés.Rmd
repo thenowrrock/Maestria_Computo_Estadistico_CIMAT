@@ -6,6 +6,7 @@ output:
     pdf_document:
         includes:
             in_header: mystyles.sty
+bibliography: references.bib
 ---
 \begin{table}[ht]
 \centering
@@ -37,25 +38,111 @@ Utilizando la definición anterior construímos la función en R:
 ```{r}
 fde <- function(x, D){
   n <- length(D)
-  fde_x <- sum(D<x)/n
+  if(length(x)>1){
+    fde_x <- c()
+    for(i in 1:length(x)){
+      fde_x[i] <- sum(D<x[i])/n
+    }
+  }
+  else{fde_x <- sum(D<x)/n}
+  fde_x
 }
 ```
 Procedemos a calcular con la función anterior la fde en los puntos de discontinuidad, para ello primero ingresemos los datos:
-```{r}
-diametro_agave<-c(23.37, 21.87, 24.41, 21.27, 23.33, 15.20, 24.21, 27.52, 15.48, 27.19,
+```{r, message=FALSE, warning=FALSE,}
+library(tidyverse)
+df_agave <- data.frame(diametro=c(23.37, 21.87, 24.41, 21.27, 23.33, 15.20, 24.21, 27.52, 15.48, 27.19,
 25.05, 20.40, 21.05, 28.83, 22.90, 18.00, 17.55, 25.92, 23.64, 28.96, 23.02, 17.32, 
-30.74, 26.73, 17.22, 22.81, 20.78, 23.17, 21.60, 22.37)
+30.74, 26.73, 17.22, 22.81, 20.78, 23.17, 21.60, 22.37))
 
-
-sort(diametro_agave)
+df_agave <- df_agave %>% arrange(diametro)
 ```
-Los puntos de discontinuidad serían cuando cambia fde, es decir, cuando se evalua en un $x+\epsilon$ tal que $\hat{F}(x)\neq \hat{F}(x+\epsilon)$
+Los puntos de discontinuidad serían cuando cambia fde, es decir, cuando se evalua en un $x+\epsilon$ tal que $\hat{F}(x)\neq \hat{F}(x+\epsilon)$, con los datos podemos decir que los puntos de discontinuidad son los estadísticos de orden $x_{(i)}.$
+```{r, message=FALSE, warning=FALSE, fig.width = 5.2, fig.asp = 0.62, fig.align = "center"}
+df_agave_fde <- df_agave %>% 
+  mutate(F_x=fde(x=diametro, D=df_agave$diametro),
+         xend=lag(x=diametro, n = 1, default = 15))
+
+ggplot(df_agave_fde)+
+  geom_segment(aes(x=diametro, xend=xend, y=F_x, yend=F_x), col="blue")+
+  labs(title = "Función de distribución empírica.")
+```
+
 
 b) Usando la desigualdad de Dvoretzky-Kiefer-Wolfowitz, escriba una función en R que calcule y grafique una región de confianza para la función de distribución empírica. La función debe tomar como parámetros al conjunto de datos que se usan para contruir la función de distribución empírica.
 
-c) Escriba una función en R que determine la gráfica Q-Q normal de un conjunto de datos. La función debe tomar como parámetro al conjunto de datos y deberá graficar contra el percentil estandarizado de la normal. Para poder comparar el ajuste más claramente, la función además deberá ajustar en rojo a la recta $sx + \bar{x}$ $s(=$desviación estándar muestral y $x$=media muestral). Usando esta función, determine la gráfica Q-Q normal. ¿Qué observa? \textbf{Nota:} La misma del inciso a).
+\res Enunciemos la desigualdad de Dvoretzky-Kiefer-Wolfowitz:
+\begin{framed}
+    \begin{thm} (Desigualdad de Dvoretzky-Kiefer-Wolfowitz) Sean $X_1, \cdots , X_n\sim F$ independientes. Entonces, para todo $\epsilon>0$,
+        \begin{align*}
+        \mP\left( \sup_x |\hat{F}_n(x)-F(x)|>\epsilon \right) \leq 2e^{-2n\epsilon^2}.
+        \end{align*}
+    \end{thm}
+\end{framed} 
+A partir de lo anterior, podemos construir una región de confianza para la distribución empírica. Sea:
+\begin{align*}
+L(x) = \max\left\{ \hat{F}_n-\epsilon_n,0 \right\},\\
+U(x) = \max\left\{ \hat{F}_n+\epsilon_n,1 \right\}
+\end{align*}
+donde $$\epsilon_n=\sqrt{\frac{1}{2n}\log\left(\frac{2}{\alpha}\right)}.$$ Puede verse que $F(x)$
+$$\mP(L(x)\leq F(x) \leq U(x) \ \text{para todo } x)\geq 1-\alpha.$$
+Entonces, una región de confianza con $\alpha=0.05$ para la distribución empírica se puede programar de la siguiente forma:
+```{r, message=FALSE, warning=FALSE, fig.width = 5.2, fig.asp = 0.62, fig.align = "center"}
+graphisc_fde <- function(df){
+  alpha <- 0.05
+  df <- df %>% 
+  mutate(F_x=fde(x=diametro, D=df_agave$diametro),
+         xend=lag(x=diametro, n=1, default = 15),
+         L_x=F_x-sqrt((1/(2*30))*log(2/alpha)),
+         L_x=if_else(L_x<0,0, L_x),
+         U_x=F_x+sqrt((1/(2*30))*log(2/alpha)),
+         U_x=if_else(U_x>1,1, U_x))%>%
+    gather(key=".", value="y", c(4,5))
+  df
+}
+df_agave_fde_bandas <- graphisc_fde(df_agave)
+
+ggplot(df_agave_fde)+
+  geom_segment(aes(x=diametro, xend=xend, y=F_x, yend=F_x), col="blue")+
+  labs(title = "Región de confianza de FDE.")+
+  geom_line(data=df_agave_fde_bandas, aes(x=diametro, y=y,group=.), col="red")
+```
+
+c) Escriba una función en R que determine la gráfica Q-Q normal de un conjunto de datos. La función debe tomar como parámetro al conjunto de datos y deberá graficar contra el percentil estandarizado de la normal. Para poder comparar el ajuste más claramente, la función además deberá ajustar en rojo a la recta $sx + \bar{x}$ $(s=$desviación estándar muestral y $x$=media muestral). Usando esta función, determine la gráfica Q-Q normal. ¿Qué observa? \textbf{Nota:} La misma del inciso a).
+
+\res 
+```{r, message=FALSE, warning=FALSE, fig.width = 5.2, fig.asp = 0.62, fig.align = "center"}
+sd <- sqrt(var(df_agave$diametro))
+mu <- mean(df_agave$diametro)
+recta <- data.frame(x=c(-2,2), y=c(-sd*2+mu, sd*2+mu))
+
+df_agave$i <- 1:nrow(df_agave)
+
+df_agave <- df_agave %>%
+  mutate(pi= i/31,
+         z_pi=qnorm(pi))
+
+ggplot(df_agave, aes(x=z_pi, y=diametro))+
+  geom_point(shape=1)+
+  geom_line(size=0.2)+
+  geom_line(data=recta, aes(x=x, y=y), col="red")+
+  labs(title = "Q-Q Normal", x="Quantil teórico (z_pi)", y="Observaciones")
+```
+
 
 d) Escriba una función en R que determine el gráfico de probabilidad normal. La función debe tomar como parámetro al conjunto de datos. ¿Qué observa? Nota: La misma del inciso a).
+
+\res Utilizando:
+
+```{r, message=FALSE, warning=FALSE, fig.width = 5.2, fig.asp = 0.62, fig.align = "center"}
+df_agave <- df_agave %>%
+  mutate(z_pi_in = pnorm(pi))
+
+ggplot(df_agave, aes(y=z_pi_in, x=diametro))+
+  geom_point(shape=1)+
+  labs(title = "Grafico de probabilidad normal", y="probabilidad", x="estadístico de orden")
+```
+
 
 e) ¿Los datos anteriores se distribuyen normalmente? Argumente.
 
@@ -125,49 +212,93 @@ b) Cargue en R al archivo “Tratamiento.csv”, el cual contiene la duración d
 
 \res Cargamos los datos:
 ```{r, message=FALSE, warning=FALSE}
-library(tidyverse)
 tratamiento <- read.csv("Tratamiento.csv")
 ```
 
+Graficamos las densidad estimada con el método de Kernel, con diferentes anchos de bandas.
+```{r, message=FALSE, warning=FALSE,fig.width = 6.5, fig.asp = 0.62, fig.align = "center"}
+x <- seq(-50,800, 1)
+fd_tratamiento <-data.frame(x=rep(x,3), 
+                            fd=c(kde(x, 20, "gaussian", tratamiento$X1),
+                                 kde(x, 30, "gaussian", tratamiento$X1),
+                                 kde(x, 60, "gaussian", tratamiento$X1)),
+                            h=c(rep("h_20", 851), rep("h_30", 851), rep("h_60", 851)))
 
-```{r}
-fd_tratamiento <-data.frame(x=seq(0,1000, 10))
-
-fd_tratamiento$h_20<- kde(fd_tratamiento$x, 20, "gaussian", tratamiento$X1)
-
-fd_tratamiento$h_30 <- kde(fd_tratamiento$x, 30, "gaussian", tratamiento$X1)
-
-fd_tratamiento$h_60 <- kde(fd_tratamiento$x, 60, "gaussian", tratamiento$X1)
-
-ggplot(fd_tratamiento, aes(x, h_20))+
-  geom_line()
-
-ggplot(fd_tratamiento, aes(x, h_30))+
-  geom_line()
-
-ggplot(fd_tratamiento, aes(x, h_60))+
-  geom_line()
+ggplot(fd_tratamiento, aes(x=x, y=fd)) +
+  geom_line(aes(colour=h), linetype=2) +
+  labs(title = "Estimación de densidad usando un Kernel.")
 ```
-
+Desde mi perspectiva el mejor valor de ancho de banda $h$ es igual a 30, comparado con $h=20$ sobreestima a los datos eso se observa en las pequeñas montañas que se aprecian cuando $x\approx 230, 250;$ y comparandolo con $h=60$ observamos que se subestima a los datos.
 
 c) En el contexto de la estimación de densidades, escriba una función en R que determine el ancho de banda que optimiza al ISE. Grafique la densidad con ancho de banda óptimo para el conjunto de datos de “Tratamiento.csv”.
 
-6. Cargue en R al conjunto de datos “Maíz.csv”, el cual contiene el precio mensual de la tonelada de maíz y el precio de la tonelada de tortillas en USD. En este ejercicio tendrá que estimar los coeficientes de una regresión lineal simple.
+\res Ocuparemos el método de Least squares cross validation (LSCV). Tenemos que
+\begin{align*}
+ISE(h)&= \int_{-\infty}^\infty\left( \hat{f}(x)-f(x)\right)^2 dx \\
+&=\int_{-\infty}^\infty \hat{f}^2 (x)dx-2 \int_{-\infty}^\infty \hat{f} (x)f(x) dx+\int_{-\infty}^\infty f^2(x)dx
+\end{align*}
 
-a) Calcule de forma explícita la estimación de los coeficientes via mínimos cuadrados y ajuste la regresión correspondiente. Concluya.
+Si observamos, la última integral de la expresión no depende del estimador $\hat{f}(x)$ (es constante), por lo que la elección del ancho de banda (en el sentido de minimizar el ISE) corresponderá a la elección de $h$ que minimiza la función:
+\begin{align*}
+R(\hat{f})&=\int_{-\infty}^\infty \hat{f}^2 (x)dx-2 \int_{-\infty}^\infty \hat{f} (x)f(x) dx+\int_{-\infty}^\infty f^2(x)dx.
+\end{align*}
+La segunda parte usando un estimador de la densidad leave-one-out, $\hat{f}_{-i}(x)$ es:
+\begin{align*}
+\hat{f}_{-i}(x)&= \frac{1}{n-1}\sum_{j\neq j}K(x,x_j)
+\end{align*}
+el cual es un estimador de la función de densidad usando todas los datos exepto $x_i$. El resultado del criterio LSCV es:
+\begin{align*}
+LSCV(h)&=\int_{-\infty}^\infty \hat{f}^2(x) dx - \frac{2}{n}\sum_i \hat{f}_{-i}(x_i). 
+\end{align*}
+El parametro $h$ optimo es el valor que miniza la función $LSCV(h)$. [@kde_stanis] 
 
-\res Cargamos los datos:
-```{r}
-maiz <- read.csv("Maiz.csv", col.names = c("p_tonelada_maiz", "p_tonelada_tortilla"))
-head(maiz)
+Lo anterior igual puede ser visto como [@kde_Brilline]
+\begin{align*}
+LSCV(h)&=\frac{R(K)}{nh}+\frac{1}{n(n-1)h}\sum_{i=1}^n \sum_{\substack{j=1,\\j\neq i}}^n\left( K*K -2K\right)\left(\frac{X_j-X_i}{h} \right).
+\end{align*}
+donde para un kernel normal
+\begin{align*}
+R(K)=\frac{1}{2\sqrt{\pi}}\\ \\
+K*K(x)= \frac{1}{2\pi}e^{-\frac{1}{2}\left(\frac{x}{\sqrt{2}} \right)^2}.
+\end{align*}
+Utilizando lo anterior podemos buscar $h$ que hace optimo $LSCV(h).$ Para hacerlo eficiente creamos una matriz de $n\times n$ donde el elemento (i,j) es igual a $K\left(\frac{X_i-X_j}{h} \right)$ para $i\neq j$, y $0$ si $i=j$.
+```{r, message=FALSE, warning=FALSE,fig.width = 6.5, fig.asp = 0.62, fig.align = "center"}
+completa <- function(x, kernel="gaussian"){
+  n <- length(x)
+  upper=2*70
+  lower=0.1*70
+  tol=0.1 * lower
+  
+  LSCV_h <- function(h){
+  D <- dnorm(outer(x,x,"-")/h)
+  diag(D) <- 0
+  D <- (1 / ((n-1)*h))* colSums(D)
+  D1 <- mean(D)
+  D2 <- dnorm(outer(x,x,"-")/h,mean=0,sd=sqrt(2))
+  diag(D2) <- 0
+	D3 <- (1/((n-1)*h))* colSums(D2)
+	D4 <- mean(D3)
+	(1/(n*h))* (1/(2*sqrt(pi))) + D4 - 2*D1
+  }
+
+  obj <- optimize(LSCV_h , c(lower, upper), tol=tol)
+  obj
+}
+
+completa(tratamiento$X1)
 ```
+Es decir, con $h=15.40$ se minimiza el ISE. La gráfica de la densidad estimada con esa $h$ optima es: 
+```{r, message=FALSE, warning=FALSE,fig.width = 6.5, fig.asp = 0.62, fig.align = "center"}
+x <- seq(-50,800, 1)
+fd_optimo <-data.frame(x=x, 
+                            fd=kde(x, 15.40, "gaussian", tratamiento$X1),
+                            h=c(rep("h_optimo", 851)))
 
-
-b) Calcule de forma explícita la estimación de los coeficientes via regresión no-paramétrica tipo kernel (ver Nadaraya, E. A. (1964). “On Estimating Regression”. Theory of Probability and its Applications. 9 (1): 141–2. doi:10.1137/1109020) y ajuste la regresión correspondiente. Concluya.
-
-
-
-c) Compare ambos resultados. ¿Qué diferencias observa?
+ggplot(fd_tratamiento, aes(x=x, y=fd)) +
+  geom_line(aes(colour=h), linetype=2) +
+  geom_line(data=fd_optimo, aes(x=x,y=fd, colour=h),linetype=1, size=1.1)+
+  labs(title = "Estimación de densidad usando un Kernel.")
+```
 
 8. En este ejercicio se comprobará que tan buena es la aproximación dada por las reglas empíricas para algunas de las distribuciones estudiadas en la clase. Considerese las distribuciones $Unif(a =-3, b = 3)$, $Normal(0, 1)$, $Exponencial(2)$, $Gamma(\alpha= 2, \beta = 1)$, $Gamma(\alpha=3, \beta= 1)$, $Beta(\alpha= 2, \beta= 2)$, $Weibull(\alpha= 4, \beta= 1)$ y Lognormal$(\mu = 3, \sigma = 2)$.
 
@@ -305,4 +436,6 @@ resultados %>% mutate(
 ```{r}
 resultados_teoricos %>% select(distribucion, prob_between_x_s, prob_between_x_2s, prob_between_x_3s)
 ```
+
+# Bibliografía
 
