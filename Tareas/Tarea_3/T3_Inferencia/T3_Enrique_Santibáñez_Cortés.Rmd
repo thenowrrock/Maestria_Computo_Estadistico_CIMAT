@@ -13,7 +13,7 @@ bibliography: references.bib
 \begin{tabular}{c}
 \textbf{Maestría en Computo Estadístico}\\
 \textbf{Inferencia Estadística} \\
-\textbf{Tarea 2}\\
+\textbf{Tarea 3}\\
 \today \\
 \emph{Enrique Santibáñez Cortés}\\
 Repositorio de Git: \href{https://github.com/Enriquesec/Inferencia_Estad-stica/tree/master/Tareas/Tarea_3}{Tarea 3, IE}.
@@ -529,6 +529,22 @@ ggplot(fd_tratamiento, aes(x=x, y=fd)) +
   geom_line(data=fd_optimo, aes(x=x,y=fd, colour=h),linetype=1, size=1.1)+
   labs(title = "Estimación de densidad usando un Kernel.")
 ```
+7. Demuestre que la fórmula de la densidad de la Beta integra 1.
+
+\res Sea $X\sim Beta(\alpha, \beta)$, entonces su función de densidad esta definida como: $$f(x)=\frac{\Gamma(\alpha+\beta)}{\Gamma(\alpha)\Gamma(\beta)}x^{\alpha-1}(1-x)^{\beta-1},\ \ \ \ \ \ 0<x<1.$$
+Entonces, la integral de la densidad sería:
+\begin{align}\label{beta}
+\int_{-\infty}^{\infty}f(x)dx=\int_{0}^{1}\frac{\Gamma(\alpha+\beta)}{\Gamma(\alpha)\Gamma(\beta)}x^{\alpha-1}(1-x)^{\beta-1}dx=\frac{\Gamma(\alpha+\beta)}{\Gamma(\alpha)\Gamma(\beta)} \int_{0}^{1}x^{\alpha-1}(1-x)^{\beta-1}dx.
+\end{align}
+Ahora recordemos una identidad con la función Gamma, la cuál es:
+\begin{align*}
+\int_{0}^{1}x^{\alpha-1}(1-x)^{\beta-1}dx = \frac{\Gamma(\alpha) \Gamma(\beta)}{\Gamma(\alpha+\beta)}.
+\end{align*}
+Por lo anterior tenemos en (\ref{beta}):
+\begin{align*}
+\int_{-\infty}^{\infty}f(x)dx = \frac{\Gamma(\alpha+\beta)}{\Gamma(\alpha)\Gamma(\beta)}\cdot \frac{\Gamma(\alpha) \Gamma(\beta)}{\Gamma(\alpha+\beta)}=1.
+\end{align*}
+Por lo tanto, queda demostrado que la densidad de v.a con distribución Beta integra 1. \fin
 
 8. En este ejercicio se comprobará que tan buena es la aproximación dada por las reglas empíricas para algunas de las distribuciones estudiadas en la clase. Considerese las distribuciones $Unif(a =-3, b = 3)$, $Normal(0, 1)$, $Exponencial(2)$, $Gamma(\alpha= 2, \beta = 1)$, $Gamma(\alpha=3, \beta= 1)$, $Beta(\alpha= 2, \beta= 2)$, $Weibull(\alpha= 4, \beta= 1)$ y Lognormal$(\mu = 3, \sigma = 2)$.
 
@@ -666,24 +682,6 @@ resultados %>% mutate(
 ```{r}
 resultados_teoricos %>% select(distribucion, prob_between_x_s, prob_between_x_2s, prob_between_x_3s)
 ```
-
-7. Demuestre que la fórmula de la densidad de la Beta integra 1.
-
-\res Sea $X\sim Beta(\alpha, \beta)$, entonces su función de densidad esta definida como: $$f(x)=\frac{\Gamma(\alpha+\beta)}{\Gamma(\alpha)\Gamma(\beta)}x^{\alpha-1}(1-x)^{\beta-1},\ \ \ \ \ \ 0<x<1.$$
-Entonces, la integral de la densidad sería:
-\begin{align}\label{beta}
-\int_{-\infty}^{\infty}f(x)dx=\int_{0}^{1}\frac{\Gamma(\alpha+\beta)}{\Gamma(\alpha)\Gamma(\beta)}x^{\alpha-1}(1-x)^{\beta-1}dx=\frac{\Gamma(\alpha+\beta)}{\Gamma(\alpha)\Gamma(\beta)} \int_{0}^{1}x^{\alpha-1}(1-x)^{\beta-1}dx.
-\end{align}
-Ahora recordemos una identidad con la función Gamma, la cuál es:
-\begin{align*}
-\int_{0}^{1}x^{\alpha-1}(1-x)^{\beta-1}dx = \frac{\Gamma(\alpha) \Gamma(\beta)}{\Gamma(\alpha+\beta)}.
-\end{align*}
-Por lo anterior tenemos en (\ref{beta}):
-\begin{align*}
-\int_{-\infty}^{\infty}f(x)dx = \frac{\Gamma(\alpha+\beta)}{\Gamma(\alpha)\Gamma(\beta)}\cdot \frac{\Gamma(\alpha) \Gamma(\beta)}{\Gamma(\alpha+\beta)}=1.
-\end{align*}
-Por lo tanto, queda demostrado que la densidad de v.a con distribución Beta integra 1. \fin
-
 
 \textbf{Honors problems} 
 
