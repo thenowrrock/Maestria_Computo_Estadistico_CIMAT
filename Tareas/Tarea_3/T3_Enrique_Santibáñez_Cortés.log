@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020) (preloaded format=pdflatex 2020.9.12)  19 SEP 2020 19:09
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020) (preloaded format=pdflatex 2020.9.12)  20 SEP 2020 15:01
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -573,51 +573,34 @@ Underfull \hbox (badness 10000) in paragraph at lines 65--67
 [1
 
 {/home/enrique/.TinyTeX/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
-[2] [3] [4]
-Overfull \hbox (36.74889pt too wide) in paragraph at lines 229--231
-\T1/lmr/m/n/10.95 va-lo de con-fian-za con-tie-ne a $\OML/lmm/m/it/10.95 p$ \T1
-/lmr/m/n/10.95 (la co-ber-tu-ra). Ha-ga es-to pa-ra $\OML/lmm/m/it/10.95 n \OT1
-/lmr/m/n/10.95 = 10\OML/lmm/m/it/10.95 ; \OT1/lmr/m/n/10.95 50\OML/lmm/m/it/10.
-95 ; \OT1/lmr/m/n/10.95 100\OML/lmm/m/it/10.95 ; \OT1/lmr/m/n/10.95 250\OML/lmm
-/m/it/10.95 ; \OT1/lmr/m/n/10.95 500\OML/lmm/m/it/10.95 ; \OT1/lmr/m/n/10.95 10
-00\OML/lmm/m/it/10.95 ; \OT1/lmr/m/n/10.95 2500\OML/lmm/m/it/10.95 ; \OT1/lmr/m
-/n/10.95 5000\OML/lmm/m/it/10.95 ; \OT1/lmr/m/n/10.95 10000$\T1/lmr/m/n/10.95 .
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 239--240
-
- []
-
-[5] [6]
-Overfull \hbox (17.43376pt too wide) detected at line 335
+[2] [3] [4] [5] [6] [7] [8]
+Overfull \hbox (17.43376pt too wide) detected at line 397
 []
  []
 
-[7]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 356.
- [8]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 356.
+[9]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 418.
+ [10]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 418.
  (./T3_Enrique_Santibáñez_Cortés.aux
 LaTeX Info: Redefining \. on input line 25.
 LaTeX Info: Redefining \% on input line 25.
 )
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 356.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 356.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 418.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 418.
 Package rerunfilecheck Info: File `T3_Enrique_Santibáñez_Cortés.out' has not
  changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 356.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 418.
  ) 
 Here is how much of TeX's memory you used:
- 8207 strings out of 482806
- 120584 string characters out of 5955025
- 411132 words of memory out of 5000000
- 23400 multiletter control sequences out of 15000+600000
+ 8216 strings out of 482806
+ 120687 string characters out of 5955025
+ 412210 words of memory out of 5000000
+ 23404 multiletter control sequences out of 15000+600000
  573469 words of font info for 55 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 43i,12n,37p,490b,414s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 43i,16n,37p,487b,424s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/home/enrique/.TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}{/home/en
 rique/.TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}{/home/enrique/.TinyTeX/
 texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}{/home/enrique/.TinyTeX/texmf-dist/
@@ -635,10 +618,11 @@ TeX/texmf-dist/fonts/type1/public/lm/lmsy6.pfb></home/enrique/.TinyTeX/texmf-di
 st/fonts/type1/public/lm/lmsy8.pfb></home/enrique/.TinyTeX/texmf-dist/fonts/typ
 e1/public/amsfonts/symbols/msam10.pfb></home/enrique/.TinyTeX/texmf-dist/fonts/
 type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on T3_Enrique_Santibáñez_Cortés.pdf (8 pages, 200643 bytes).
+Output written on T3_Enrique_Santibáñez_Cortés.pdf (10 pages, 208211 bytes).
+
 PDF statistics:
- 124 PDF objects out of 1000 (max. 8388607)
- 99 compressed objects within 1 object stream
- 17 named destinations out of 1000 (max. 500000)
+ 140 PDF objects out of 1000 (max. 8388607)
+ 112 compressed objects within 2 object streams
+ 22 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 

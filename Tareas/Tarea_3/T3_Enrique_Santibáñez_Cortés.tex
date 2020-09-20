@@ -70,11 +70,10 @@ simulaciones tienen que realizarse en R.\\
 %-------------------------------------------------------------------------------------
 %-------------------------------------------------------------------------------------
 1. Resuelva lo siguiente:
-\begin{itemize}
-\item[a)] Sea $X\sim Exponencial(\beta)$. Encuentre $\mP(|X-\mu_X |\geq k\sigma_X)$ para $k>1$. Compare esta probabilidad con la que obtiene de la desigualdad de Chebyshev. 
 
-\res 
-Cómo $X\sim Exponencial(\beta)$ entonces $\mu_X=\beta$ y $\sigma_X=\sqrt{\beta^2}=\beta.$ Por lo que:
+a) Sea $X\sim Exponencial(\beta)$. Encuentre $\mP(|X-\mu_X |\geq k\sigma_X)$ para $k>1$. Compare esta probabilidad con la que obtiene de la desigualdad de Chebyshev. 
+
+\res  Cómo $X\sim Exponencial(\beta)$ entonces $\mu_X=\beta$ y $\sigma_X=\sqrt{\beta^2}=\beta.$ Por lo que:
 \begin{align*}
 \mP(|X-\mu_X |\geq k\sigma_X)&=\mP(|X-\beta|\geq k\beta)=\mP(X-\beta\leq -k\beta)+\mP(X-\beta\geq k\beta)\\ \\
 &=\mP(X\leq -k\beta+\beta)+\mP(X\geq k\beta+\beta),
@@ -99,8 +98,8 @@ Entonces, considerando el teorema anterior y haciendo a $t=k\sigma_X$ (note que 
 $$\mP(|X-\mu_X|\geq k\sigma_X) \leq \frac{\sigma_X^2}{(k\sigma_X)^2}=\frac{1}{k^2}.$$
 Comparando la probabilidad obtenida con la cota de la desigualdad de Chebyshev:
 $$e^{-k-1}\leq \frac{1}{k^2}\ \ \ \finf$$
-\item[b)] Sean $X_1,\cdots,X_n\sim Bernoulli(p)$ independientes y $\bar{X}=n^{-1}\sum_{i=1}^n X_i$. Usando las desigualdades de Chebyshev y Hoeffding, acote $\mP(|\bar{X}-p|>\epsilon)$. Demuestre que para $n$ grande la cota de Hoeffding es más pequeña que la cota de Chebyshev. ¿En qué beneficia esto?
-\end{itemize}
+
+b) Sean $X_1,\cdots,X_n\sim Bernoulli(p)$ independientes y $\bar{X}=n^{-1}\sum_{i=1}^n X_i$. Usando las desigualdades de Chebyshev y Hoeffding, acote $\mP(|\bar{X}-p|>\epsilon)$. Demuestre que para $n$ grande la cota de Hoeffding es más pequeña que la cota de Chebyshev. ¿En qué beneficia esto?
 
 \res Para calcula la cota de Chebyshev, primero calculemos $E[\bar{X}]$ y $Var[\bar{X}]$. Como las $X_i$ son independientes y debido a que $X_i\sin Bernoulli(p)$:
 \begin{align*}
@@ -113,10 +112,10 @@ Utilizando (\ref{chebyshev}) y haciendo $\epsilon=t$ tenemos:
 \begin{align*}
 \mP(|\bar{X}-p|>\epsilon) \leq \mP(|\bar{X}-p|\geq \epsilon) \leq \frac{\frac{p(1-p)}{n}}{\epsilon^2}=\frac{p(1-p)}{n\epsilon^2 },
 \end{align*}
-es decir, la cota de Chebyshev es:
-\begin{align*}
-\mP(|\bar{X}-p|>\epsilon) \leq \frac{p(1-p)}{n\epsilon^2 }.
-\end{align*}
+y como $0\leq p \leq 1$ podemos ver que $p(1-p)\leq \frac{1}{4}$ y por lo tanto la cota de Chebyshev es: 
+\begin{align}\label{cota_chebyschev}
+\mP(|\bar{X}-p|>\epsilon) \leq \frac{p(1-p)}{n\epsilon^2 } \leq \frac{1}{4n\epsilon^2 }.
+\end{align}
 Ahora, recordemos la desigualdad de Hoeffding.
 \begin{framed}
     \begin{thm} (Desigualdad de Hoeffding) Sea $Y_1, \ Y_2\ ,\cdots,\Y_n$ v.a independientes tales que $E(Y_i)=0,$ $a_i\leq Y_i \leq b_i$. Sea $\epsilon>0$. Entonces, para cualquier $t>0$
@@ -202,14 +201,23 @@ Por lo tanto, ocupando (\ref{valor_absoluto}) podemos concluir que la cota de Ho
 \begin{align*}
 \mP\left(|\bar{X}-p|>\epsilon\right)\leq 2e^{-2n\epsilon^2}.
 \end{align*}
+Entonces para mostrar que cuando $n$ es grande la cota de Hoeffing es más pequeña que la cota de Chebyshev (\ref{chebyshev}), veamos la primera derivada de cada cota con respecto a $n$. Sea $f(n)$ el denominador de la cota de Hoeffing y $g(n)$ el denominador la cota de Chebyshev:
+\begin{align*}
+f'(n)&=2\epsilon^2 e^{2n\epsilon^2}/2=\epsilon^2e^{2n\epsilon^2}.\\
+g'(n)&=4\epsilon^2
+\end{align*} 
+De aquí podemos observar que el crecimiento de la cota de Chebyshev es lineal no depende de $n$ y en la cota de Hoeffing depende de $n$. Entonces de lo anterior implica que para que 
+$$g'(n)<f'(n)$$
+se tiene que cumplir que $4<e^{2n\epsilon^2}$, entonces es sencillo ver que para cualquier $\epsilon>0$ se puede encontrar un $n$ lo suficientemente grande para que se cumpla la igualdad. Por lo tanto, para  algún $n$ grande cumple que el dominador del cota de Hoeffindg es más grande que la cota de Chebyshev y por lo tanto que la cota de Hoeffing es más pequeña que la cota de Chebyshev para algún $n$ grande. \ \ \ \fin 
 
 % Problema 2.
 %-------------------------------------------------------------------------------------
 %-------------------------------------------------------------------------------------
-%-------------------------------------------------------------------------------------
+%-------------------------------------------------------------------------------------%
+
 2. Sean  $X_1,\cdots,X_n\sim Bernoulli(p)$.
-\begin{itemize}
-\item[a)] Sea $\alpha >0 $ fijo y defina 
+
+a) Sea $\alpha >0 $ fijo y defina 
 $$\epsilon_n = \sqrt{\frac{1}{2n} \log\left(\frac{2}{\alpha}\right)}.$$
 Sea $\hat{p}=n^{-1}\sum_{i=1}^n X_i.$ Defina $C_n=(\hat{p}_n-\epsilon_n,\hat{p}_n+\epsilon_n)$. Use la desigualdad de Hoeffding para demostrar que $$\mP(C_n \text{contiene a } p)\geq 1-\alpha$$.
 Diremos que $C_n$ es un $(1-\alpha)-$intervalo de confianza para $p$. En la practica, se trunca el intervalo de tal manera de que no vaya debajo del 0 o arriba del 1.
@@ -223,22 +231,48 @@ Entonces, como $X_i\sim Bernoulli(p)$ independientes y utilizando la desigualdad
 \end{align*}
 sustituyendo el valor de $\epsilon_n$:
 \begin{align*}
-\mP(p\not \in C)\leq 2e^{-2n(\sqrt{\frac{1}{2n} \log\left(\frac{2}{\alpha}\right)})_n^2},
+\mP(p\not \in C)&\leq 2e^{-2n\left(\sqrt{\frac{1}{2n} \log\left(\frac{2}{\alpha}\right)}\right)^2}\\
+&= 2e^{-2n\left(\frac{1}{2n} \log\left(\frac{2}{\alpha}\right)\right)}\\
+&=2e^{-\log\left(\frac{2}{\alpha}\right)}\\
+&=\frac{2\alpha}{2}=\alpha.
 \end{align*}
-
-\item[b)] Sea $\alpha=0.05$ y $p=0.4$.Mediante simulaciones, realice un estudio para ver que tan a menudo el intervalo de confianza contiene a $p$ (la cobertura). Haga esto para $n=
-10, 50, 100, 250, 500, 1000, 2500, 5000, 10000$. Grafique la cobertura contra $n$.
-
-\item[c)] Grafique la longitud del intervalo contra $n$. Suponga que deseamos que la longitud del intervalo sea menor que 0.05. ¿Qué tan grande debe ser $n$?
-\end{itemize}
+Es decir, la probabilidad de que el intervalo $C_n$ no contenga a $p$ es menor que $\alpha$:
+$$\mP(p\not \in C)\leq \alpha.$$
+Recordando la propiedad de probabilidad $\mP(A)+\mP(A^c)=1.$ Entonces, podemos ver que
+\begin{align*}
+\mP(p\not \in C)\leq \alpha\\
+-\mP(p\not \in C)\geq -\alpha\\
+1-\mP(p\not \in C)\geq 1-\alpha\\
+\mP(p\in C)\geq 1-\alpha.
+\end{align*}
+Es decir, queda probado que
+$$\mP(C_n \text{contiene a } p)\geq 1-\alpha. \ \ \ \ \finf$$
 
 % Problema 3.
 %-------------------------------------------------------------------------------------
 %-------------------------------------------------------------------------------------
 %-------------------------------------------------------------------------------------
-3. Una partícula se encuentra inicialmente en el origen de la recta real y se mueve en saltos de una unidad. Para cada salto, la probabilidad de que la partícula salte una unidad a la izquierda es $p$ y la probabilidad de que salte una unidad a la derecha es $1-p$. Denotemos por $X_n$ a la posición de la partícula después de n unidades. Encuentre $\mE(X_n)$ y Var$(X_n)$. Esto se conoce como una caminata aleatoria en una dimensión. \\
+3. Una partícula se encuentra inicialmente en el origen de la recta real y se mueve en saltos de una unidad. Para cada salto, la probabilidad de que la partícula salte una unidad a la izquierda es $p$ y la probabilidad de que salte una unidad a la derecha es $1-p$. Denotemos por $X_n$ a la posición de la partícula después de n unidades. Encuentre $\mE(X_n)$ y Var$(X_n)$. Esto se conoce como una caminata aleatoria en una dimensión. 
 
+\res Este proceso cambia de un estado a otro en dos tiempos consecutivos de acuerdo con probabilidad de transición descritas en el problemas. Estas probabilidades se pueden escribir de la forma siguiente:
+\begin{align*}
+\mP(X_{n+1}=j|X_n=i)=\left\{\begin{array}{cc}
+p & \text{si } j=i+1,\\
+1-p & \text{si} j=i-1,\\
+0 & \text{otro caso.}
+\end{array} \right.
+\end{align*}
 
+Esa caminata aleatoria puede también definirse de la siguiente forma: $\xi_1, \ \xi_2,\cdots$ una sucesión de variables aleatorias independientes e idénticamente distribuidas. Por la idéntica distribución denotemos a cualquiera de ellas mediante la letra $\xi$ sin subíndice. Ahora, si suponemos que $\mP(\xi=+1)=p$ y $\mP(\xi=-1)=1-p$. Entonces para $n\geq 1$ se define 
+$$X_n:=X_0+\xi_1+\xi_2+\cdots+\xi_n.$$
+donde $X_0$ en este caso suponemos que empieza en 0, es decir, el estado inicial de la partícula es cero. Entonces, a partir de la expresión anterior implica que la esperanza es:
+\begin{align*}
+\mE(X_n)=\mE(X_0)+\sum_{i=1}^n \mE(\xi_i)=n\mE(\xi)=n(p-1+p)=n(2p-1).
+\end{align*}
+Ahora, como $\mE(\xi^2)=p(1)^2+(1-p)(-1)^2=1$ y $\mE(\xi)=2p-1$, se tiene que $Var(\xi)=1-(2p-1)^2=1-4p^2+4p-1=4p(1-p)$. Y por lo tanto la varianza de $X_n$ es:
+\begin{align*}
+Var(X_n)=\sum_{i=1}^n Var(\xi_i)=nVar(\xi)=4np(1-p). \ \ \ \finf
+\end{align*}
 % Problema 7.
 %-------------------------------------------------------------------------------------
 %-------------------------------------------------------------------------------------
@@ -248,8 +282,19 @@ sustituyendo el valor de $\epsilon_n$:
 \res Sea $X\sim Beta(\alpha, \beta)$, entonces su función de densidad esta definida como:
 $$f(x)=\frac{\Gamma(\alpha+\beta)}{\Gamma(\alpha)\Gamma(\beta)}x^{\alpha-1}(1-x)^{\beta-1},\ \ \ \ \ \ 0<x<1.$$
 Entonces, la integral de la densidad sería:
+\begin{align}\label{beta}
+\int_{-\infty}^{\infty}f(x)dx=\int_{0}^{1}\frac{\Gamma(\alpha+\beta)}{\Gamma(\alpha)\Gamma(\beta)}x^{\alpha-1}(1-x)^{\beta-1}dx=\frac{\Gamma(\alpha+\beta)}{\Gamma(\alpha)\Gamma(\beta)} \int_{0}^{1}x^{\alpha-1}(1-x)^{\beta-1}dx.
+\end{align}
 
-$$\int_{-\infty}^{\infty}f(x)dx=\int_{0}^{1}\frac{\Gamma(\alpha+\beta)}{\Gamma(\alpha)\Gamma(\beta)}x^{\alpha-1}(1-x)^{\beta-1}dx=\frac{\Gamma(\alpha+\beta)}{\Gamma(\alpha)\Gamma(\beta)} \int_{0}^{1}x^{\alpha-1}(1-x)^{\beta-1}dx.$$
+Ahora recordemos una identidad con la función Gamma, la cuál es:
+\begin{align*}
+\int_{0}^{1}x^{\alpha-1}(1-x)^{\beta-1}dx = \frac{\Gamma(\alpha) \Gamma(\beta)}{\Gamma(\alpha+\beta)}.
+\end{align*}
+Por lo anterior tenemos en (\ref{beta}):
+\begin{align*}
+\int_{-\infty}^{\infty}f(x)dx = \frac{\Gamma(\alpha+\beta)}{\Gamma(\alpha)\Gamma(\beta)}\cdot \frac{\Gamma(\alpha) \Gamma(\beta)}{\Gamma(\alpha+\beta)}=1.
+\end{align*}
+Por lo tanto, queda demostrado que la densidad de v.a con distribución Beta integra 1. \fin
 
 % Problema Honor 1.
 %-------------------------------------------------------------------------------------
@@ -269,6 +314,12 @@ Como sabemos que se cumple que $\mP(X\leq x) +\mP(x>x)=1$, observemos que:
 &=(p_1+p_2+p_3+\cdots+p_N)+(p_2+p_3+\cdots+p_N)+\cdots+(p_{N-1}+p_N)+p_N\\
 &=\sum_{x=0}^{N-1} q_x-Nq_N.
 \end{align*}
+Es decir,
+\begin{align}
+\label{esperanza_dis}
+\sum_{x=1}^Nxp_x= \sum_{x=0}^{N-1} q_x-Nq_N.
+\end{align}
+
 Utilizando que $X$ tiene media finita, es decir, como $E(X)=\sum_{x=0}^\infty xp_x$ podemos decir que la serie $\sum_{x=0}^\infty xp_x$ es convergente. Ahora observemos que se cumple la siguiente desigualdad:
 \begin{align}
 \label{cota_pn}
@@ -290,24 +341,33 @@ Ocupando la propiedad anterior en (\ref{cota_pn}):
 &=\sum_{x=N+1}^\infty \lim_{x\rightarrow\infty }x p_x\\
 &=0.
 \end{align*} 
+Es decir, podemos decir que
+$$\lim_{N\rightarrow\infty } N \sum_{x=N+1}^\infty p_x =0.$$
+Entonces haciendo un límite en (\ref{esperanza_dis}) tenemos que:
 
-
-
+\begin{align*}
+\lim_{N\rightarrow \infty}\sum_{x=1}^Nxp_x&=\lim_{N\rightarrow \infty}\left( \sum_{x=0}^{N-1} q_x-Nq_N\right)\\
+&= \lim_{N\rightarrow \infty}\left( \sum_{x=0}^{N-1} q_x\right)-\lim_{N\rightarrow \infty}\left(Nq_N\right)\\
+&= \lim_{N\rightarrow \infty}\left( \sum_{x=0}^{N-1} q_x\right)-\lim_{N\rightarrow \infty}\left(N\sum_{x=N+1}^\infty p_x \right)\\
+&= \sum_{x=0}^{\infty} q_x=\sum_{k=1}^\infty\mP(X\geq k).
+\end{align*}
+Es decir, queda demostrado que 
+\begin{align*}
+\mE(X)=\sum_{x=1}^\infty xp_x=\sum_{k=1}^\infty\mP(X\geq k).\ \ \ \ \finf
+\end{align*}
 
 \item[b)] Sea $X$ una v.a. continua no-negativa con media finita, función de densidad $f$ y función de distribución $F$. Demuestre que 
 $$\mE(X)=\int_0^\infty (1-F(t))dt.$$
 
-\res Utilizaremos algunas definiciones vistas en clase de confiabilidad y su relación con función de densidad. $R(x)$ se le conoce como la confiabilidad de X, la cual se define como:
-$$R(x)=1-F(x).$$
-Derivando de ambos lados observamos que:
-$$R'(x)=-F'(x)=-f(x).$$
+\res Utilizaremos algunas definiciones vistas en clase de confiabilidad y su relación con función de densidad. $R(x)$ se le conoce como la confiabilidad de X, la cual se define como: $$R(x)=1-F(x).$$ Es claro que se cumple que:
+$$R(0)=1 \ \ \text{y}\ \ \lim_{x\rightarrow \infty} R(x)=0.$$ Derivando de ambos lados observamos que: $$R'(x)=-F'(x)=-f(x).$$
 Ocupando lo anterior y la definición de esperanza de una variable continua tenemos que:
 \begin{flalign*}
 \mE(X)&=\int_{-\infty}^\infty xf(x)dx & \text{definición de esperanza}\\ \\
 &=\int_{0}^\infty -xR'(x)dx & \text{relación confiabilidad-densidad}\\ \\
 &=\int_{0}^\infty -xR'(x)-R(x)+R(x)dx&\text{sumamos un cero}\\ \\
 &=\int_{0}^\infty -(xR(x))'+R(x)dx &\text{definición de derivada}\\ \\
-&=\left. -xR(x) \right|_{x=0}^\infty+\int_{0}^\infty R(x)dx\\ \\
+&=-xR(x) \vert_{x=0}^\infty+\int_{0}^\infty R(x)dx\\ \\
 &=\int_{0}^\infty R(x)dx\\ \\
 & =\int_{0}^\infty (1-Fx(x))dx \ \ \finf
 \end{flalign*}
@@ -315,6 +375,8 @@ Ocupando lo anterior y la definición de esperanza de una variable continua tene
 
 
 \item[c)] ¿Cómo cambia la fórmula del caso anterior cuando el soporte de $X$ es todo $\mathbb{R}?$
+
+\res Cuando el soporte de $X$ es todo $\mathbb{R}$ no tiene sentido la función de confiabilidad. Por lo que 
 \end{itemize}
 % Problema Honor 2.
 %-------------------------------------------------------------------------------------
