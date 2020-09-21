@@ -1,0 +1,162 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish]{babel}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{lmodern}
+\usepackage{xspace}
+\usepackage{multicol}
+\usepackage{hyperref}
+\usepackage{float}
+\usepackage{hyperref}
+\usepackage{color}
+
+\newcommand{\azul}[1]{\textcolor{MaterialBlue900}{#1}}
+\usepackage{array}
+
+\hypersetup{colorlinks=true,   linkcolor=MaterialBlue900}
+%\usepackage[colorlinks=true, linkcolor=black, urlcolor=blue, pdfborder={0 0 0}]{hyperref}
+
+\usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
+\title{Modelos no paramétricos y de regresión 2018-1}
+\author{Tarea examen: pruebas binomiales y tablas de contingencia}
+\date{Fecha de entrega: 08/01/2017}
+\setlength{\parindent}{0in}
+\spanishdecimal{.}
+
+
+\newcommand{\X}{\mathbb{X}}
+\newcommand{\x}{\mathbf{x}}
+\newcommand{\Y}{\mathbf{Y}}
+\newcommand{\y}{\mathbf{y}}
+\newcommand{\xbarn}{\bar{x}_n}
+\newcommand{\ybarn}{\bar{y}_n}
+\newcommand{\paren}[1]{\left( #1 \right)}
+\newcommand{\llaves}[1]{\left\lbrace #1 \right\rbrace}
+\newcommand{\barra}{\,\vert\,}
+\newcommand{\mP}{\mathbb{P}}
+\newcommand{\mE}{\mathbb{E}}
+\newcommand{\mI}{\mathbf{I}}
+\newcommand{\mJ}{\mathbf{J}}
+\newcommand{\mX}{\mathbf{X}}
+\newcommand{\mS}{\mathbf{S}}
+\newcommand{\mA}{\mathbf{A}}
+\newcommand{\unos}{\boldsymbol{1}}
+\newcommand{\xbarnv}{\bar{\mathbf{x}}_n}
+\newcommand{\abs}[1]{\left\vert #1 \right\vert}
+\newcommand{\muv}{\boldsymbol{\mu}}
+\newcommand{\mcov}{\boldsymbol{\Sigma}}
+\newcommand{\vbet}{\boldsymbol{\beta}}
+\newcommand{\veps}{\boldsymbol{\epsilon}}
+\newcommand{\mC}{\mathbf{C}}
+\newcommand{\ceros}{\boldsymbol{0}}
+\newcommand{\mH}{\mathbf{H}}
+\newcommand{\ve}{\mathbf{e}}
+\newcommand{\avec}{\mathbf{a}}
+\newcommand{\res}{\textbf{RESPUESTA}\\}
+\newcommand{\rojo}[1]{\textcolor{MaterialRed900}{#1}}
+
+\newcommand{\defi}[3]{\textbf{Definición:#3}}
+\newcommand{\fin}{$\blacksquare.$}
+\newcommand{\finf}{\blacksquare.}
+\newcommand{\tr}{\text{tr}}
+\begin{document}
+\begin{table}[ht]
+\centering
+\begin{tabular}{c}
+\textbf{Maestría en Computo Estadístico}\\
+\textbf{Álgebra Matricial} \\
+\textbf{Tarea 4}\\
+\today \\
+\emph{Enrique Santibáñez Cortés}\\
+Repositorio de Git: \href{https://github.com/Enriquesec/Algebra_matricial/tree/master/tareas/Tarea_4/}{Tarea 4, AM}.
+\end{tabular}
+\end{table}
+Este documento tiene la finalidad de explicar el uso de las funciones de la tarea 4 de Algébra Matricial. 
+
+\begin{enumerate}
+\item La primera función cumple con las siguientes especificaciones.
+
+\textit{Programe una función en r que reciba de entrada una matriz cuadrada y regrese la descomposición LU de la matriz. Si esta no se puede obtener, debe regresar un mensaje que diga por qué y donde fue donde estuvo el problema.}
+
+La función que realiza lo anterior esta en el archivo en R:
+
+\textit{descomposicion\_LU\_T4\_Enrique\_Santibáñez\_Cortes.r}
+
+\begin{itemize}
+\item[Paso 1.] Correr todo el script completo.
+
+\item[Paso 2.] Se solicitará el número de renglones de la matriz a ingresar. Este paso tiene una validación para solo admitir número enteros positivos, por lo que no podrá pasar al siguiente si no cumple esa condición. Dar enter para continuar. Ejemplo: Se ingresa un 2.
+\begin{figure}[H]
+\centering
+\includegraphics[scale=.7]{paso_2.png}
+\end{figure}
+
+\item[Paso 3.] Solicitará los elementos de izquierda a derecha, y arriba a abajo de la matriz. Se valida que solo ingrese números, de caso contrario solicitará de nuevo la entrada. Ejemplo: se agrega la matriz con los elementos: $\begin{pmatrix}
+1&2\\
+3&3
+\end{pmatrix}$.
+\begin{figure}[H]
+\centering
+\includegraphics[scale=.7]{paso_3.png}
+\end{figure}
+
+\item[Resultados] Se imprimirá la descomposición $LU$ de la matriz (si es que existe), primero muestra la matriz $U$ y después la matriz $L$. Ejemplo:
+\begin{figure}[H]
+\centering
+\includegraphics[scale=.7]{LU_resultados.png}
+\end{figure}
+
+\item[Notas] Si la matriz ingresado no tiene descomposición muestra el error por la cual no tiene y imprime la última matriz modificada para llegar a $U$. Ejemplo:
+\begin{figure}[H]
+\centering
+\includegraphics[scale=.7]{LU_nota.png}
+\end{figure}
+\end{itemize}
+
+
+\item La segunda función cumple con las siguientes especificaciones:
+
+\textit{Programe una función en r que reciba de entrada una matriz cuadrada y regrese la descomposición PA=LU de la matriz. Debe usar el método de pivoteo parcial, por lo que parte de la tarea es investigar como funciona ese método.}
+
+La función que realiza lo anterior esta en el archivo en R:
+
+\textit{descomposicion\_PA\_LU\_T4\_Enrique\_Santibáñez\_Cortes.r}
+
+\begin{itemize}
+\item[Paso 1.] Correr todo el script completo.
+
+\item[Paso 2.] Se solicitará el número de renglones de la matriz a ingresar. Este paso tiene una validación para solo admitir número enteros positivos, por lo que no podrá pasar al siguiente si no cumple esa condición. Dar enter para continuar. Ejemplo: Se ingresa un 2.
+\begin{figure}[H]
+\centering
+\includegraphics[scale=.7]{paso_2.png}
+\end{figure}
+
+\item[Paso 3.] Solicitará los elementos de izquierda a derecha, y arriba a abajo de la matriz. Se valida que solo ingrese números, de caso contrario solicitará de nuevo la entrada. Ejemplo: se agrega la matriz con los elementos: $\begin{pmatrix}
+1&2\\
+3&3
+\end{pmatrix}$.
+\begin{figure}[H]
+\centering
+\includegraphics[scale=.7]{paso_3.png}
+\end{figure}
+
+\item[Resultados] Se imprimirá la descomposición $PA=LU$ de la matriz (si es que existe), primero muestra la matriz $U$, después la matriz $L$ y por último la matriz P. Ejemplo:
+\begin{figure}[H]
+\centering
+\includegraphics[scale=.7]{PA_LU_resultados.png}
+\end{figure}
+
+\item[Notas] Si la matriz ingresado no tiene descomposición muestra el error por la cual no tiene y imprime la última matriz modificada para llegar a $U$. Ejemplo:
+\begin{figure}[H]
+\centering
+\includegraphics[scale=.7]{PA_LU_nota.png}
+\end{figure}
+\end{itemize}
+
+\end{enumerate}
+
+\end{document}

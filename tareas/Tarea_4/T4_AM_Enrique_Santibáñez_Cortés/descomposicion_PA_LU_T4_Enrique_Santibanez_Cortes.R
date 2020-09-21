@@ -78,7 +78,7 @@ tipo_iii_automatica <- function(matriz, j, i, L){
 tipo_i_automatica <- function(matriz, i, P, L){
   n <- nrow(matriz)
   if(max(matriz[i:n,i])==0){
-    cat("La matriz no tiene descomposición LU.\n")
+    cat("La matriz no tiene descomposición PA=LU.\n")
     cat("Debido a que no existen n pivotes, y lo que implica que no exista U.\n")
     cat("La última modificación de la matriz en donde se observa que no hay un pivote es:\n")
     print(matriz)
@@ -144,18 +144,18 @@ eliminacion_gaussiana <- function(matriz){
   }
   else{
     if(matriz[n,n]==0){
-      cat("La matriz no tiene descomposición LU.\n")
+      cat("La matriz no tiene descomposición PA=LU.\n")
       cat("Debido a que no existen n pivotes, y lo que implica que no exista U.\n")
       cat("La última modificación de la matriz en donde se observa que no hay un pivote es:\n")
       print(matriz)
       stop()
     }
     else{
-    cat("La matriz ingresada tiene descomposición LU, donde la matriz U es:\n")
+    cat("La matriz ingresada tiene descomposición PA=LU, donde la matriz U es:\n")
     print(matriz)
-    cat("Y la matriz L, es:\n")
+    cat("La matriz L es:\n")
     print(L)
-    cat("La matriz P:\n")
+    cat("Y a matriz P:\n")
     return(P)
     }
   }
@@ -166,4 +166,4 @@ descomposicion_PA_LU <- function(){
   matriz <- datos_matrix(n) # Solicitamos la matriz.
   eliminacion_gaussiana(matriz) # Eliminación Gauss.
 }
-
+descomposicion_PA_LU()
