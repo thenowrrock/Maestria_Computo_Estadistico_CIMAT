@@ -182,72 +182,92 @@ Es decir, queda probado que
 $$\mP(C_n \text{contiene a } p)\geq 1-\alpha. \ \ \ \ \finf$$
 
 
-b) Sea $\alpha=0.05$ y $p=0.4$.Mediante simulaciones, realice un estudio para ver que tan a menudo el intervalo de confianza contiene a $p$ (la cobertura). Haga esto para $n=10, 50, 100, 250, 500, 1000, 2500, 5000, 10000$. Grafique la cobertura contra $n$.
+b) Sea $\alpha=0.05$ y $p=0.4$. Mediante simulaciones, realice un estudio para ver que tan a menudo el intervalo de confianza contiene a $p$ (la cobertura). Haga esto para $n=10,$ $50, 100, 250, 500, 1000, 2500, 5000, 10000$. Grafique la cobertura contra $n$.
 
-\res Tenemos que:
+\res Como sabemos que la suma de v.a Bernoulli independientes es Binomal, entonces podemos realizar las simulaciones utilizando la función $rbinom$ para hacer más eficiente el código.
 ```{r, message=FALSE, warning=FALSE, fig.width = 5.2, fig.asp = 0.62, fig.align = "center"}
-library(tidyverse)
-confianza <-function(p, alpha, n){
+library(tidyverse) # dplry, ggplot2.
+# Creamos la función que realiza las simulaciones.
+intervalo_confianza <-function(p, alpha, n){
   epsilon <- sqrt((1/(2*n))*log(2/alpha))
-  limite_inferior <- p-epsilon
-  limite_superior <- p+epsilon
-  
-  simulaciones_bernoulli <- data.frame(matrix(rbinom(size = 1, n = 1000*n,p),ncol=1000))%>% 
-    summarise_all(funs(sum)) %>% 
+
+  # Generamos 10000 simulaciones de las muestras de n Bernoulli.
+  simulaciones_bernoulli <- data.frame(matrix(rbinom(n = 10000, size=n, p),
+                                              ncol=10000)) %>% 
     gather(key = "num_sim", value="conteo") %>% 
-    mutate(conteo= conteo/n,
-      contenido=between(conteo, limite_inferior, limite_superior)) 
-  data.frame(tam=n,cobertura=sum(simulaciones_bernoulli$contenido)/1000,
+    mutate(conteo= conteo/n)
+  
+  # Calculamos phat y los limites.
+  hatp <- mean(simulaciones_bernoulli$conteo)
+  limite_inferior <- hatp-epsilon
+  limite_superior <- hatp+epsilon  
+  
+  # Generamos la variable dummie para ver si esta dentro del intervalo.
+  simulaciones_bernoulli <- simulaciones_bernoulli%>%
+     mutate(contenido=between(conteo, limite_inferior, limite_superior)) 
+   
+  # Retornamos un dataframe con un formato especifico.
+  data.frame(tam=factor(n),
+             cobertura=sum(simulaciones_bernoulli$contenido)/10000,
              lim_sup=limite_superior,
-             lim_inf=limite_inferior)
+             lim_inf=limite_inferior, 
+             hatp=hatp,
+             cobertura_zoom = sum(simulaciones_bernoulli$contenido)/10000 -0.945)
 }
+#Ingresamos los tamaños.
+n <- c(10, 50, 100, 250, 500, 1000, 2500, 5000, 10000) 
+resultados_simulacion <- c() # Creamos un objeto vacio.
 
-n <- c(10, 50, 100, 250, 500, 1000, 2500, 5000, 10000)
-resultados_simulacion <- c()
-
-for (i in 1:length(n)){
+# Corremos las simulaciones para los distintos tamaños.
+for (i in 1:length(n)){ 
   set.seed(08081997)
-  resultados_simulacion<- rbind(resultados_simulacion,confianza(0.4, 0.25, n=n[i]))
+  resultados_simulacion<- rbind(resultados_simulacion,
+                                intervalo_confianza(p=0.4, alpha=0.05, n=n[i]))
 } 
-
-resultados_simulacion <- resultados_simulacion %>% 
-  mutate(alpha=1-cobertura,
-         tam=factor(tam),
-         coberturaOffset = cobertura - 0.945)
-
-ggplot(resultados_simulacion, aes(x=tam, y=coberturaOffset))+
-  geom_col() +
-  scale_y_continuous(labels = function(x) x + 0.945)
+# Graficamos la cobertura calculada contra n.
+ggplot(resultados_simulacion, aes(x=tam, y=cobertura_zoom))+
+  geom_col(fill="blue") +
+  scale_y_continuous(labels = function(x) x + 0.945)+
+  labs(title="Grafica de la Cobertura vs n.", y="cobertura", x="n")
 ```
-
+Observamos que la cobertura es mayor o igual que $1-\alpha=0.95$ para todos los tamaños de la simulación, es decir, se cumple la cota calculada. 
 
 c) Grafique la longitud del intervalo contra $n$. Suponga que deseamos que la longitud del intervalo sea menor que 0.05. ¿Qué tan grande debe ser $n$?
 
-\res Lo que:
+\res Con los mismos resultados del inciso anterior podemos graficar la longitud del intervalo contra $n$.
 ```{r message=FALSE, warning=FALSE, fig.width = 5.2, fig.asp = 0.62, fig.align = "center"}
-ggplot(resultados_simulacion, aes(x=tam, y=0.4))+
-  geom_point(size=4)+
-  geom_errorbar(aes(ymax=lim_sup, ymin=lim_inf))
+ggplot(resultados_simulacion, aes(x=tam, y=hatp))+
+  geom_point(size=1,colour="red")+
+  geom_errorbar(aes(ymax=lim_sup, ymin=lim_inf))+
+  labs(title = "Longitud del intervalo para los n.")
 ```
+Para calcular el valor de $n$ de forma explicita, tenemos que:
+\begin{align*}
+2\sqrt{\left( \frac{1}{2n} \right) \log \left( \frac{2}{0.05}\right)}&<0.05\\
+\left( \frac{1}{2n} \right) \log \left( \frac{2}{0.05}\right)&<0.025^2\\
+\frac{log(2/0.05)}{2*(0.025^2)}<n
+2951.104<n.
+\end{align*}
+Por lo tanto, con $n>2951.104$ podemos tener una longitud del intervalo sea menor a 0.05. \ \ \ \fin
 
 3. Una partícula se encuentra inicialmente en el origen de la recta real y se mueve en saltos de una unidad. Para cada salto, la probabilidad de que la partícula salte una unidad a la izquierda es $p$ y la probabilidad de que salte una unidad a la derecha es $1-p$. Denotemos por $X_n$ a la posición de la partícula después de n unidades. Encuentre $\mE(X_n)$ y Var$(X_n)$. Esto se conoce como una caminata aleatoria en una dimensión. 
 
 \res Este proceso cambia de un estado a otro en dos tiempos consecutivos de acuerdo con probabilidad de transición descritas en el problemas. Estas probabilidades se pueden escribir de la forma siguiente:
 \begin{align*}
 \mP(X_{n+1}=j|X_n=i)=\left\{\begin{array}{cc}
-p & \text{si } j=i+1,\\
-1-p & \text{si} j=i-1,\\
+p & \text{si } j=i-1,\\
+1-p & \text{si} j=i+1,\\
 0 & \text{otro caso.}
 \end{array} \right.
 \end{align*}
 
-Esa caminata aleatoria puede también definirse de la siguiente forma: $\xi_1, \ \xi_2,\cdots$ una sucesión de variables aleatorias independientes e idénticamente distribuidas. Por la idéntica distribución denotemos a cualquiera de ellas mediante la letra $\xi$ sin subíndice. Ahora, si suponemos que $\mP(\xi=+1)=p$ y $\mP(\xi=-1)=1-p$. Entonces para $n\geq 1$ se define 
+Esa caminata aleatoria puede también definirse de la siguiente forma: $\xi_1, \ \xi_2,\cdots$ una sucesión de variables aleatorias independientes e idénticamente distribuidas. Por la idéntica distribución denotemos a cualquiera de ellas mediante la letra $\xi$ sin subíndice. Ahora, si suponemos que $\mP(\xi=-1)=p$ y $\mP(\xi=+1)=1-p$. Entonces para $n\geq 1$ se define 
 $$X_n:=X_0+\xi_1+\xi_2+\cdots+\xi_n.$$
 donde $X_0$ en este caso suponemos que empieza en 0, es decir, el estado inicial de la partícula es cero. Entonces, a partir de la expresión anterior implica que la esperanza es:
 \begin{align*}
-\mE(X_n)=\mE(X_0)+\sum_{i=1}^n \mE(\xi_i)=n\mE(\xi)=n(p-1+p)=n(2p-1).
+\mE(X_n)=\mE(X_0)+\sum_{i=1}^n \mE(\xi_i)=n\mE(\xi)=n(1-p-p)=n(1-2p).
 \end{align*}
-Ahora, como $\mE(\xi^2)=p(1)^2+(1-p)(-1)^2=1$ y $\mE(\xi)=2p-1$, se tiene que $Var(\xi)=1-(2p-1)^2=1-4p^2+4p-1=4p(1-p)$. Y por lo tanto la varianza de $X_n$ es:
+Ahora, como $\mE(\xi^2)=p(-1)^2+(1-p)(1)^2=1$ y $\mE(\xi)=1-2p$, se tiene que $Var(\xi)=1-(1-2p)^2=1-4p^2+4p-1=4p(1-p)$. Y por lo tanto la varianza de $X_n$ es:
 \begin{align*}
 Var(X_n)=\sum_{i=1}^n Var(\xi_i)=nVar(\xi)=4np(1-p). \ \ \ \finf
 \end{align*}
@@ -281,24 +301,29 @@ fde <- function(x, D){
 ```
 Procedemos a calcular con la función anterior la fde en los puntos de discontinuidad, para ello primero ingresemos los datos:
 ```{r, message=FALSE, warning=FALSE,}
-df_agave <- data.frame(diametro=c(23.37, 21.87, 24.41, 21.27, 23.33, 15.20, 24.21, 27.52, 15.48, 27.19,
+# Ingresamos los datos.
+df_agave <- data.frame(
+  diametro=c(23.37, 21.87, 24.41, 21.27, 23.33, 15.20, 24.21, 27.52, 15.48, 27.19,
 25.05, 20.40, 21.05, 28.83, 22.90, 18.00, 17.55, 25.92, 23.64, 28.96, 23.02, 17.32, 
 30.74, 26.73, 17.22, 22.81, 20.78, 23.17, 21.60, 22.37))
 
+# Ordenamos los datos.
 df_agave <- df_agave %>% arrange(diametro)
 ```
 Los puntos de discontinuidad serían cuando cambia fde, es decir, cuando se evalua en un $x+\epsilon$ tal que $\hat{F}(x)\neq \hat{F}(x+\epsilon)$, con los datos podemos decir que los puntos de discontinuidad son los estadísticos de orden $x_{(i)}.$
 
 ```{r, message=FALSE, warning=FALSE, fig.width = 5.2, fig.asp = 0.62, fig.align = "center"}
+# Aplicamos la función creada a los datos.
 df_agave_fde <- df_agave %>% 
   mutate(F_x=fde(x=diametro, D=df_agave$diametro),
          xend=lag(x=diametro, n = 1, default = 15))
 
+# Graficamos la Función de densidad empírica.
 ggplot(df_agave_fde)+
   geom_segment(aes(x=diametro, xend=xend, y=F_x, yend=F_x), col="blue")+
   labs(title = "Función de distribución empírica.")
 ```
-
+Podemos observar que la distribución es simetrica, eso se observa cuando se observa la $\hat{F}(0.25), \ \hat{F}(0.75)-\hat{F}(0.25)\ y \ \hat{F}(1)-\hat{F}(0.75),$ se aprecia que $\hat{F}(0.25)\approx \hat{F}(1)-\hat{F}(0.75)$.
 
 b) Usando la desigualdad de Dvoretzky-Kiefer-Wolfowitz, escriba una función en R que calcule y grafique una región de confianza para la función de distribución empírica. La función debe tomar como parámetros al conjunto de datos que se usan para contruir la función de distribución empírica.
 
@@ -319,62 +344,81 @@ donde $$\epsilon_n=\sqrt{\frac{1}{2n}\log\left(\frac{2}{\alpha}\right)}.$$ Puede
 $$\mP(L(x)\leq F(x) \leq U(x) \ \text{para todo } x)\geq 1-\alpha.$$
 Entonces, una región de confianza con $\alpha=0.05$ para la distribución empírica se puede programar de la siguiente forma:
 ```{r, message=FALSE, warning=FALSE, fig.width = 5.2, fig.asp = 0.62, fig.align = "center"}
+# Función para calcular la región de confianza.
 graphisc_fde <- function(df){
   alpha <- 0.05
   df <- df %>% 
   mutate(F_x=fde(x=diametro, D=df_agave$diametro),
          xend=lag(x=diametro, n=1, default = 15),
-         L_x=F_x-sqrt((1/(2*30))*log(2/alpha)),
-         L_x=if_else(L_x<0,0, L_x),
-         U_x=F_x+sqrt((1/(2*30))*log(2/alpha)),
-         U_x=if_else(U_x>1,1, U_x))%>%
-    gather(key=".", value="y", c(4,5))
-  df
-}
-df_agave_fde_bandas <- graphisc_fde(df_agave)
-
-ggplot(df_agave_fde)+
+         L_x=F_x-sqrt((1/(2*30))*log(2/alpha)), # Definimos L(x)
+         L_x=if_else(L_x<0,0, L_x), # Acatoamos a cero
+         U_x=F_x+sqrt((1/(2*30))*log(2/alpha)), # Definimos a U(x)
+         U_x=if_else(U_x>1,1, U_x))%>% # Acotamos a 1.
+    gather(key=".", value="y", c(4,5)) # Modificamos el formato de la tabla.
+  
+  ggplot(df_agave_fde)+
   geom_segment(aes(x=diametro, xend=xend, y=F_x, yend=F_x), col="blue")+
   labs(title = "Región de confianza de FDE.")+
-  geom_line(data=df_agave_fde_bandas, aes(x=diametro, y=y,group=.), col="red")
+  geom_line(data=df, aes(x=diametro, y=y,group=.), col="red")
+}
+
+# La utilizamos en los datos de Agave.
+graphisc_fde(df_agave)
 ```
 
 c) Escriba una función en R que determine la gráfica Q-Q normal de un conjunto de datos. La función debe tomar como parámetro al conjunto de datos y deberá graficar contra el percentil estandarizado de la normal. Para poder comparar el ajuste más claramente, la función además deberá ajustar en rojo a la recta $sx + \bar{x}$ $(s=$desviación estándar muestral y $x$=media muestral). Usando esta función, determine la gráfica Q-Q normal. ¿Qué observa? \textbf{Nota:} La misma del inciso a).
 
 \res 
 ```{r, message=FALSE, warning=FALSE, fig.width = 5.2, fig.asp = 0.62, fig.align = "center"}
-sd <- sqrt(var(df_agave$diametro))
-mu <- mean(df_agave$diametro)
-recta <- data.frame(x=c(-2,2), y=c(-sd*2+mu, sd*2+mu))
+qq_agave <- function(df){
+  sd <- sqrt(var(df$diametro))
+  mu <- mean(df$diametro)
+  recta <- data.frame(x=c(-2,2), y=c(-sd*2+mu, sd*2+mu))
 
-df_agave$i <- 1:nrow(df_agave)
+  df$i <- 1:nrow(df)
 
-df_agave <- df_agave %>%
-  mutate(pi= i/31,
+  df <- df %>%
+    mutate(pi= i/31,
          z_pi=qnorm(pi))
 
-ggplot(df_agave, aes(x=z_pi, y=diametro))+
-  geom_point(shape=1)+
-  geom_line(size=0.2)+
-  geom_line(data=recta, aes(x=x, y=y), col="red")+
-  labs(title = "Q-Q Normal", x="Quantil teórico (z_pi)", y="Observaciones")
-```
+  ggplot(df, aes(x=z_pi, y=diametro))+
+    geom_point(shape=1)+
+    geom_line(size=0.2)+
+    geom_line(data=recta, aes(x=x, y=y), col="red")+
+    labs(title = "Q-Q Normal", x="Quantil teórico (z_pi)", y="Observaciones")
+}
 
+# Aplicamos la nuestra función a los datos de agave.
+qq_agave(df_agave)
+```
+Observamos claramente que los los cuantiles teóricos normales corresponden a como se distribuye la muestra, es decir, la muestra al parecer si sigue un comportamiento normal. 
 
 d) Escriba una función en R que determine el gráfico de probabilidad normal. La función debe tomar como parámetro al conjunto de datos. ¿Qué observa? Nota: La misma del inciso a).
 
 \res Utilizando:
 ```{r, message=FALSE, warning=FALSE, fig.width = 5.2, fig.asp = 0.62, fig.align = "center"}
-df_agave <- df_agave %>%
-  mutate(z_pi_in = pnorm(pi))
+grafico_probabilidad_normal <- function(df){
+  n <- length(df$diametro)
+  df$i <- 1:n
 
-ggplot(df_agave, aes(y=z_pi_in, x=diametro))+
+  df <- df %>%
+    mutate(pi= i/(n+1),
+           z_pi_in = pnorm(pi))
+
+ggplot(df, aes(y=z_pi_in, x=diametro))+
   geom_point(shape=1)+
   labs(title = "Grafico de probabilidad normal", y="probabilidad", x="estadístico de orden")
-```
+}
 
+# Aplicamos la función anterior a nuestros datos.
+grafico_probabilidad_normal(df_agave)
+```
+Podemos observar que los estadísticos de orden corresponden a la probabilidad de una distribución normal. Si observamos, casi no hay diferencia entre el gráfico de probabilidad normal y Q-Q. 
 
 e) ¿Los datos anteriores se distribuyen normalmente? Argumente.
+
+\res Observando lo que se observa en el inciso c) y d) podemos concluir que los datos de agave \textbf{se distribuyen como una distribución normal.} En las colas es en donde parece tener un mal ajustes, pero es común que cuando se intenta ajustar algún conjunto de datos a una distribución normal se observe en la Q-Q y gráfico de probabilidad sea una linea recta en el centro de los datos y en las colas no presente este fenomeno. 
+
 
 5. En este ejercicio repasará la estimación de densidades.
 
@@ -408,14 +452,15 @@ kernel_cosine <- function(x, x_i, h){
   (1+cos(pi*u))/2*(abs(u) <= 1)
 }
 ```
-Una vez definido lo anterior procedemos a definir la función para estimar la densidad por el método de kerneles (https://github.com/JonasMoss/kdensity/blob/master/R/builtin_kernels.R):
+Una vez definido lo anterior procedemos a definir la función para estimar la densidad por el método de kerneles:
 ```{r fig.width = 5.2, fig.asp = 0.62, fig.align = "center"}
+# Función para estimar la densidad por el método de kerneles.
 kde <- function(x, h, kernel, D){
-  f_hat <- 0
-  n <- length(D)
-  for (i in 1:n){
+  f_hat <- 0 # Inicializmos un objeto.
+  n <- length(D) 
+  for (i in 1:n){ # Iteramos por todos los datos.
     if (kernel=="gaussian"){
-      f_hat <- f_hat + kernel_gaussian(x, D[i], h)
+      f_hat <- f_hat + kernel_gaussian(x, D[i], h) # Construimos la estimación.
     }
     else if(kernel=="epanechnikov"){
       f_hat <- f_hat + kernel_epanechnikov(x, D[i], h)
@@ -434,7 +479,7 @@ kde <- function(x, h, kernel, D){
       break()
     }
   }
-  f_hat/(n*h)
+  f_hat/(n*h) # Regresamos la estimación.
 }
 ```
 
@@ -442,18 +487,22 @@ b) Cargue en R al archivo “Tratamiento.csv”, el cual contiene la duración d
 
 \res Cargamos los datos:
 ```{r, message=FALSE, warning=FALSE}
+# Caragamos los datos. 
 tratamiento <- read.csv("Tratamiento.csv")
 ```
 
 Graficamos las densidad estimada con el método de Kernel, con diferentes anchos de bandas.
 ```{r, message=FALSE, warning=FALSE,fig.width = 6.5, fig.asp = 0.62, fig.align = "center"}
-x <- seq(-50,800, 1)
+x <- seq(-50,800, 1) # Creamos un conjunto de puntos.
+
+# Aplicamos nuestra función kde a lintervalo definido.
 fd_tratamiento <-data.frame(x=rep(x,3), 
                             fd=c(kde(x, 20, "gaussian", tratamiento$X1),
                                  kde(x, 30, "gaussian", tratamiento$X1),
                                  kde(x, 60, "gaussian", tratamiento$X1)),
                             h=c(rep("h_20", 851), rep("h_30", 851), rep("h_60", 851)))
 
+# Graficamos las estimaciónes con las diferentes h.
 ggplot(fd_tratamiento, aes(x=x, y=fd)) +
   geom_line(aes(colour=h), linetype=2) +
   labs(title = "Estimación de densidad usando un Kernel.")
@@ -493,29 +542,30 @@ K*K(x)= \frac{1}{2\pi}e^{-\frac{1}{2}\left(\frac{x}{\sqrt{2}} \right)^2}.
 \end{align*}
 Utilizando lo anterior podemos buscar $h$ que hace optimo $LSCV(h).$ Para hacerlo eficiente creamos una matriz de $n\times n$ donde el elemento (i,j) es igual a $K\left(\frac{X_i-X_j}{h} \right)$ para $i\neq j$, y $0$ si $i=j$.
 ```{r, message=FALSE, warning=FALSE,fig.width = 6.5, fig.asp = 0.62, fig.align = "center"}
-completa <- function(x, kernel="gaussian"){
-  n <- length(x)
-  upper=2*70
-  lower=0.1*70
-  tol=0.1 * lower
+lscv_h <- function(x, kernel="gaussian"){
+  n <- length(x) # Tamaño de la muestra.
+  upper = 2*70 # Intervalo en donde optimizar.
+  lower = 0.1*70
+  tol = 0.1 * lower # Tolerancia.
   
   LSCV_h <- function(h){
-  D <- dnorm(outer(x,x,"-")/h)
-  diag(D) <- 0
-  D <- (1 / ((n-1)*h))* colSums(D)
+  D <- dnorm(outer(x,x,"-")/h) # Creamos la matriz todos vs todos, kernel.
+  diag(D) <- 0 # Quitamos el elemento i,i.
+  D <- (1 / ((n-1)*h))* colSums(D) 
   D1 <- mean(D)
-  D2 <- dnorm(outer(x,x,"-")/h,mean=0,sd=sqrt(2))
+  D2 <- dnorm(outer(x,x,"-")/h,mean=0,sd=sqrt(2)) # Aplicamos la función kernel
   diag(D2) <- 0
 	D3 <- (1/((n-1)*h))* colSums(D2)
 	D4 <- mean(D3)
-	(1/(n*h))* (1/(2*sqrt(pi))) + D4 - 2*D1
+	(1/(n*h))* (1/(2*sqrt(pi))) + D4 - 2*D1 # Expresión de LSCV(h) descirta.
   }
 
   obj <- optimize(LSCV_h , c(lower, upper), tol=tol)
-  obj
+  list(h_optima=obj$minimum,LSCV_h=obj$objective)
 }
 
-completa(tratamiento$X1)
+# Aplicamos la función construida al conjunto de datos.
+lscv_h(tratamiento$X1)
 ```
 Es decir, con $h=15.40$ se minimiza el ISE. La gráfica de la densidad estimada con esa $h$ optima es: 
 ```{r, message=FALSE, warning=FALSE,fig.width = 6.5, fig.asp = 0.62, fig.align = "center"}
@@ -529,6 +579,10 @@ ggplot(fd_tratamiento, aes(x=x, y=fd)) +
   geom_line(data=fd_optimo, aes(x=x,y=fd, colour=h),linetype=1, size=1.1)+
   labs(title = "Estimación de densidad usando un Kernel.")
 ```
+Si observamos la gráfica de la densidad estimada podemos observar que esta sesgada a la izquierda y además es de tiene un cola pesada. Los datos del archivo "Tratamiento.csv" si se conociera de donde provienen o el contexto del problema, la distribución LogNormal sería una buena propuesta para poderlo estimar su distribución de densidad con una distribución paramétrica. 
+
+6. \textbf{El ejercicio 6 se acordo con los profesores que se entregarían en la próxima tarea.}
+
 7. Demuestre que la fórmula de la densidad de la Beta integra 1.
 
 \res Sea $X\sim Beta(\alpha, \beta)$, entonces su función de densidad esta definida como: $$f(x)=\frac{\Gamma(\alpha+\beta)}{\Gamma(\alpha)\Gamma(\beta)}x^{\alpha-1}(1-x)^{\beta-1},\ \ \ \ \ \ 0<x<1.$$
@@ -536,7 +590,7 @@ Entonces, la integral de la densidad sería:
 \begin{align}\label{beta}
 \int_{-\infty}^{\infty}f(x)dx=\int_{0}^{1}\frac{\Gamma(\alpha+\beta)}{\Gamma(\alpha)\Gamma(\beta)}x^{\alpha-1}(1-x)^{\beta-1}dx=\frac{\Gamma(\alpha+\beta)}{\Gamma(\alpha)\Gamma(\beta)} \int_{0}^{1}x^{\alpha-1}(1-x)^{\beta-1}dx.
 \end{align}
-Ahora recordemos una identidad con la función Gamma, la cuál es:
+Ahora recordemos una identidad con la función Gamma (vista en clase), la cuál es:
 \begin{align*}
 \int_{0}^{1}x^{\alpha-1}(1-x)^{\beta-1}dx = \frac{\Gamma(\alpha) \Gamma(\beta)}{\Gamma(\alpha+\beta)}.
 \end{align*}
@@ -560,13 +614,13 @@ $Unif(a,b)$& $\frac{b+a}{2}$ & $\frac{(a-b)^2}{12}$\\
 \\
 $Normal(\mu, \sigma)$ & $\mu$& $\sigma^2$\\
 \\
-$Exponencial(\theta)$ & $\theta$& $\theta^2$\\
+$Exponencial(\theta)$ & $\frac{1}{\theta}$& $\frac{1}{\theta^2}$\\
 \\
 $Gamma(\alpha, \beta)$ &$\alpha \beta$ & $\alpha\beta^2$\\
 \\
-$Beta(\alpha,\beta)$ &$\frac{\alpha}{\alpha+\beta}$&$\frac{\alpha \beta}{(\alpha+\beta^2)(\alpha +\beta+1)}$ \\
+$Beta(\alpha,\beta)$ &$\frac{\alpha}{\alpha+\beta}$&$\frac{\alpha \beta}{(\alpha+\beta)^2(\alpha +\beta+1)}$ \\
 \\
-$Weibull(\alpha,\beta)$ &$\alpha^{-\frac{1}{\beta}}\Gamma \left( \frac{1}{\beta}\right)$ & $\alpha^{-\frac{1}{\beta}} \left(\Gamma \left(\frac{2}{\beta}+1 \right)-\Gamma^2\left( \frac{1}{\beta}+1\right) \right)$ \\
+$Weibull(\alpha,\beta)$ &$\alpha^{-\frac{1}{\beta}}\Gamma \left( \frac{1}{\beta}\right)$ & $\alpha^{-\frac{2}{\beta}} \left(\Gamma \left(\frac{2}{\beta}+1 \right)-\Gamma^2\left( \frac{1}{\beta}+1\right) \right)$ \\
 \\
 $LogNormal(\mu,\sigma)$& $e^{\mu+\frac{\sigma^2}{2}}$& $e^{2\mu+\sigma^2}\left(e^{\sigma^2}-1 \right)$\\
 \hline \hline
@@ -582,15 +636,15 @@ $Unif(-3,3)$& $\frac{3-3}{2}=\textbf{0}$ & $\frac{(a-b)^2}{12}=\frac{(-3-3)^2}{1
 \\
 $Normal(0,1)$ & $\textbf{0}$& $\textbf{1}$ & 1\\
 \\
-$Exponencial(2)$ & $\textbf{2}$& $\textbf{4}$ & 2\\
+$Exponencial(2)$ & $\frac{1}{2}$& $\frac{1}{4}$ & $\frac{1}{2}$\\
 \\
 $Gamma(2, 1)$ &$\textbf{2}$ & $\textbf{2}$ & 1.41\\
 \\
 $Gamma(3, 1)$ &$\textbf{3}$ & $\textbf{3}$ &1.73\\
 \\
-$Beta(2,2)$ &$\frac{2}{2+2}=\frac{1}{2}$&$\frac{2 (2)}{(2+2^2)(2 +2+1)}=\frac{4}{30}$ & 3\\
+$Beta(2,2)$ &$\frac{2}{2+2}=\frac{1}{2}$&$\frac{2 (2)}{(2+2)^2(2 +2+1)}=\frac{4}{80}$ & 0.2236068\\
 \\
-$Weibull(\alpha,\beta)$ &$\alpha^{-\frac{1}{\beta}}\Gamma \left( \frac{1}{\beta}\right)$ & $\alpha^{-\frac{1}{\beta}} \left(\Gamma \left(\frac{2}{\beta}+1 \right)-\Gamma^2\left( \frac{1}{\beta}+1\right) \right)$ \\
+$Weibull(4,1)$ &$4^{-\frac{1}{1}}\Gamma \left( \frac{1}{1}\right)=\frac{1}{4}$ & $4^{-\frac{2}{1}} \left(\Gamma \left(\frac{2}{1}+1 \right)-\Gamma^2\left( \frac{1}{1}+1\right) \right)=\frac{1}{2}$ & $\frac{1}{4}$\\
 \\
 $LogNormal(3,2)$& $e^{3+\frac{2^2}{2}}=148.41$& $e^{2(3)+4}\left(e^{3} -1\right)$ & 1086.544\\
 \hline \hline
@@ -599,52 +653,61 @@ $LogNormal(3,2)$& $e^{3+\frac{2^2}{2}}=148.41$& $e^{2(3)+4}\left(e^{3} -1\right)
 
 Calculemos las probabilidades:
 ```{r}
-parametros_distribuciones <- data.frame(distribucion=c("Unif","Normal", "Exp", "Gamma","Gamma_2", "Beta", "Weibull", "LNormal"), mu = c(0, 0, 2, 2, 3, 0.5, 1, 148.41), std=c(1.73, 1, 2, 1.41, 1.73, 0.342,0.25, 10865))
-
+parametros_distribuciones <- data.frame(
+  distribucion=c("Unif","Normal", "Exp", "Gamma","Gamma_2", "Beta", "Weibull", "LNormal"), 
+  mu = c(0, 0, 1/2, 2, 3, 0.5, 0.25, 148.41), 
+  std=c(1.73, 1, 1/2, 1.41, sqrt(3), 0.2236068,0.25, 1086.544))
+# Probabilidades para la distribución Uniforme.
 resultados_uniforme <- parametros_distribuciones %>% filter(distribucion=="Unif")%>%
   mutate(prob_between_x_s=punif(mu+std, min=-3, max=3)-punif(mu-std, min=-3, max=3),
          prob_between_x_2s=punif(mu+2*std, min=-3, max=3)-punif(mu-2*std, min=-3, max=3),
          prob_between_x_3s=punif(mu+3*std, min=-3, max=3)-punif(mu-3*std, min=-3, max=3))
-
+# Probabilidades para la distribución Normal.
 resultados_normal <- parametros_distribuciones %>% filter(distribucion=="Normal")%>%
-  mutate(prob_between_x_s=pnorm(mu+std)-punif(mu-std),
+  mutate(prob_between_x_s=pnorm(mu+std)-pnorm(mu-std),
          prob_between_x_2s=pnorm(mu+2*std)-pnorm(mu-2*std),
          prob_between_x_3s=pnorm(mu+3*std)-pnorm(mu-3*std))
-
+# Probabilidades para la distribución Exponencial.
 resultados_exponencial <- parametros_distribuciones %>% filter(distribucion=="Exp")%>%
   mutate(prob_between_x_s=pexp(mu+std, 2)-pexp(mu-std,2),
          prob_between_x_2s=pexp(mu+2*std, 2)-pexp(mu-2*std, 2),
          prob_between_x_3s=pexp(mu+3*std, 2)-pexp(mu-3*std, 2))
-
+# Probabilidades para la distribución Gamma.
 resultados_gamma <- parametros_distribuciones %>% filter(distribucion=="Gamma")%>%
   mutate(prob_between_x_s=pgamma(mu+std, 2, 1)-pgamma(mu-std, 2, 1),
          prob_between_x_2s=pgamma(mu+2*std, 2, 1)-pgamma(mu-2*std, 2, 1),
          prob_between_x_3s=pgamma(mu+3*std, 2, 1)-pgamma(mu-3*std, 2, 1))
-
-resultados_gamma2 <- parametros_distribuciones %>% filter(distribucion=="Gamma")%>%
+# Probabilidades para la distribución Gamma_2.
+resultados_gamma2 <- parametros_distribuciones %>% filter(distribucion=="Gamma_2")%>%
   mutate(prob_between_x_s=pgamma(mu+std, 3, 1)-pgamma(mu-std, 3, 1),
          prob_between_x_2s=pgamma(mu+2*std, 3, 1)-pgamma(mu-2*std, 3, 1),
          prob_between_x_3s=pgamma(mu+3*std, 3, 1)-pgamma(mu-3*std, 3, 1))
-
+# Probabilidades para la distribución Beta.
 resultados_beta <- parametros_distribuciones %>% filter(distribucion=="Beta")%>%
-  mutate(prob_between_x_s=pgamma(mu+std, 2, 2)-pgamma(mu-std, 2, 2),
-         prob_between_x_2s=pgamma(mu+2*std, 2, 2)-pgamma(mu-2*std, 2, 2),
-         prob_between_x_3s=pgamma(mu+3*std, 2, 2)-pgamma(mu-3*std, 2, 2))
+  mutate(prob_between_x_s=pbeta(mu+std, 2, 2)-pbeta(mu-std, 2, 2),
+         prob_between_x_2s=pbeta(mu+2*std, 2, 2)-pbeta(mu-2*std, 2, 2),
+         prob_between_x_3s=pbeta(mu+3*std, 2, 2)-pbeta(mu-3*std, 2, 2))
 
+# Denimos la fdc descrita en las notas.
+pweibull_notas <- function(x, alpha, beta) {1-exp(-alpha*(x**beta))}
+# Probabilidades para la distribución Weibull
 resultados_weibull <- parametros_distribuciones %>% filter(distribucion=="Weibull")%>%
-  mutate(prob_between_x_s=pgamma(mu+std, 4, 1)-pgamma(mu-std, 3, 1),
-         prob_between_x_2s=pgamma(mu+2*std, 4, 1)-pgamma(mu-2*std, 4, 1),
-         prob_between_x_3s=pgamma(mu+3*std, 4, 1)-pgamma(mu-3*std, 4, 1))
-
+  mutate(prob_between_x_s=pweibull_notas(mu+std, 4, 1)-pweibull_notas(mu-std, 4, 1),
+         prob_between_x_2s=pweibull_notas(mu+2*std, 4, 1)-pweibull_notas(ifelse(mu-2*std>0,mu-2*std,0), 4, 1),
+         prob_between_x_3s=pweibull_notas(mu+3*std, 4, 1)-pweibull_notas(ifelse(mu-3*std>0,mu-3*std,0), 4, 1))
+# Probabilidades para la distribución Lnorm.
 resultados_lnorm <- parametros_distribuciones %>% filter(distribucion=="LNormal")%>%
-  mutate(prob_between_x_s=pgamma(mu+std, 3, 2)-pgamma(mu-std, 3, 2),
-         prob_between_x_2s=pgamma(mu+2*std, 3, 2)-pgamma(mu-2*std, 3, 2),
-         prob_between_x_3s=pgamma(mu+3*std, 3, 2)-pgamma(mu-3*std, 3, 2))
+  mutate(prob_between_x_s=plnorm(mu+std, 3, 2)-plnorm(mu-std, 3, 2),
+         prob_between_x_2s=plnorm(mu+2*std, 3, 2)-plnorm(mu-2*std, 3, 2),
+         prob_between_x_3s=plnorm(mu+3*std, 3, 2)-plnorm(mu-3*std, 3, 2))
 
-resultados_teoricos <- rbind(resultados_beta, resultados_exponencial, resultados_gamma, resultados_gamma2,
-                             resultados_lnorm, resultados_normal, resultados_uniforme, resultados_weibull)
+# Concatenamos todas las probabilidades.
+resultados_teoricos <- rbind(resultados_beta, resultados_exponencial, resultados_gamma, 
+                             resultados_gamma2, resultados_lnorm, resultados_normal, 
+                             resultados_uniforme, resultados_weibull)
 
-resultados_teoricos %>% select(distribucion, prob_between_x_s, prob_between_x_2s, prob_between_x_3s)
+resultados_teoricos %>% 
+  select(distribucion, prob_between_x_s, prob_between_x_2s, prob_between_x_3s)
  
 ```
 
@@ -652,36 +715,54 @@ resultados_teoricos %>% select(distribucion, prob_between_x_s, prob_between_x_2s
 
 b) En R, simule $n = 1000$ muestras de cada una de las distribuciones anteriores y calcule la media muestral $\bar{x}$ y la varianza muestral $s^2$ como se mencionó en la clase. En cada caso, calcule la proporción de observaciones que quedan en los intervalos $(\bar{x}- k, \bar{x} + ks)$), para k = 1, 2, 3. Reporte sus hallazgos en una tabla como la del inciso anterior. ¿Qué tanto se parecen la tabla de este inciso y la del anterior?
 
-\res Calculemos 
+\res Para este inciso podemos ocupar las funciones ya definidas que trae $R$, solamente que para el caso de simular números aleatorios de la distribución Weibull ocuparemos el teorema de transformacón lineal ya que la función predeterminada de R no coincide con las notas.
+```{r}
+rweibull_notas <- function(n, alpha, beta){
+  y=runif(n,0,1)
+  x<-(log(1-y)/-alpha)^{1/beta}
+  x
+}
+```
+Con esta consideración simulamos las muestras para cada una de las distribuciones anteriores:
 ```{r}
 set.seed(08081997)
+muestras_simuladas<- data.frame(
+  x=c(runif(1000, -3, 3), rnorm(1000), rexp(1000, 1/2), rgamma(1000, 2, 1), 
+      rgamma(1000, 3, 1), rbeta(1000, 2, 2), rweibull_notas(1000, 4, 1),
+      rlnorm(1000,meanlog= 3, sdlog = 2)),
+  distribucion=c(rep("Uniforme", 1000), rep("Normal", 1000), rep("Exp", 1000), 
+                 rep("Gamma_1", 1000), rep("Gamma_2", 1000), rep("Beta", 1000), 
+                 rep("Weib", 1000), rep("LNormal", 1000)))
+```
 
-muestras_simuladas<- data.frame(x=c(runif(1000, -3, 3), rnorm(1000), rexp(1000, 2),
-rgamma(1000, 2, 1), rgamma(1000, 3, 1), rbeta(1000, 2, 2), rweibull(1000, 4, 1), 
-rlnorm(1000,meanlog= 3, sdlog = 2)), distribucion=c(rep("Uniforme", 1000), rep("Normal", 1000), 
-rep("Exp", 1000), rep("Gamma_1", 1000), rep("Gamma_2", 1000), rep("Beta", 1000), 
-rep("Weib", 1000), rep("LNormal", 1000)))
-
+Ahora calculamos la media y la desviación muestral:
+```{r}
 estadisticos_muestrales <- muestras_simuladas %>% group_by(distribucion) %>% 
   summarise(mean_muestral = mean(x),
             std_muestral = sqrt(var(x)))
-
+# Medias y Varianzas de las simulaciones.
 head(estadisticos_muestrales,8)
-
+```
+Si comparamos las media muestral y la desviación estandar muestral con las calculadas teóricamente observamos que son muy cercanas, es decir, son muy buenas estimadores de la media poblacional y la varianza muestral. Ahora determinamos la proporción que se encuentra dentro o fuera del intervalo.
+```{r}
+# Concatenamos las muestras con los estadísticos:
 resultados <- merge(muestras_simuladas, estadisticos_muestrales)
-
+# Calculamos la proporción de las muestras.
 resultados %>% mutate( 
   x_s = ifelse(x>(mean_muestral-std_muestral) & x<(mean_muestral+std_muestral), 1, 0),
   x_2s = ifelse(x>(mean_muestral-2*std_muestral) & x<(mean_muestral+2*std_muestral), 1, 0),
   x_3s = ifelse(x>(mean_muestral-3*std_muestral) & x<(mean_muestral+3*std_muestral), 1, 0)) %>%
-  group_by(distribucion) %>% summarise(propor_x_s = sum(x_s)/1000,
-                                       propor_x_2s = sum(x_2s)/1000,
-                                       propor_x_3s = sum(x_3s)/1000)
+  group_by(distribucion) %>% 
+  summarise(propor_x_s = sum(x_s)/1000,
+            propor_x_2s = sum(x_2s)/1000,
+            propor_x_3s = sum(x_3s)/1000)
 ```
 
 ```{r}
-resultados_teoricos %>% select(distribucion, prob_between_x_s, prob_between_x_2s, prob_between_x_3s)
+resultados_teoricos %>% 
+  select(distribucion, prob_between_x_s, prob_between_x_2s, prob_between_x_3s)
 ```
+Se observa claramente que las probabilidades calculados utilizando las funciones de distribuciones acumuludas y las proporciones de las simulaciones observamos que son muy cercanas, es decir, la reglas empíricas para las distribuciones son buenas aproximaciones.
 
 \textbf{Honors problems} 
 
@@ -752,16 +833,33 @@ Ocupando lo anterior y la definición de esperanza de una variable continua tene
 &=\int_{0}^\infty R(x)dx\\ \\
 & =\int_{0}^\infty (1-Fx(x))dx \ \ \finf
 \end{align*}
-
+Observemos que cuando $X$ es no negativa, entonces hemos probado que la esperanza de $X$ es igual a la integral de la función de confiabilidad una muy importante. Es decir,
+$$\mE[X]=\int_{0}^\infty R(x)dx$$
 c) ¿Cómo cambia la fórmula del caso anterior cuando el soporte de $X$ es todo $\mathbb{R}$ ?
 
-\res Cuando el soporte de $X$ es todo $\mathbb{R}$ no tiene sentido la función de confiabilidad. Por lo que 
+\res Cuando el soporte de $X$ es todo $\mathbb{R}$ no tiene sentido la función de confiabilidad. Por lo que realiazomos algo parecido al inciso anterior 
+\begin{align*}
+\mE(X)&=\int_{-\infty}^\infty xf(x)dx & \text{definición de esperanza}\\ \\
+&=\int_{-\infty}^\infty xF'(x)dx & \text{por definición}\\ \\
+&=\int_{-\infty}^\infty xF'(x)+F(x)-F(x)dx&\text{sumamos un cero}\\ \\
+&=\int_{-\infty}^\infty (xF(x))'-F(x)dx &\text{definición de derivada}\\ \\
+&=\int_{0}^\infty (xF(x))'-F(x)dx +\int_{-\infty}^0 (xF(x))'-F(x)dx & \text{propiedad integral impropia}\\ \\
+\end{align*}
+
+\begin{align*}
+&=xF(x) \vert_{x=0}^\infty+\int_{0}^\infty F(x)dx+xF(x) \vert_{x=-\infty}^0-\int_{-\infty}^0 F(x)dx & \text{Teo. Funda. Calculo}\\ \\
+&=\lim_{x\rightarrow \infty} x + \int_{0}^\infty F(x)dx -\lim_{x\rightarrow -\infty}x*(0) -\int_{-\infty}^0 F(x)dx & \text{daso algebraico.}\\ \\
+&=\int_{0}^\infty 1 dx + \int_{0}^\infty F(x)dx -\lim_{x\rightarrow -\infty}x*(0) -\int_{-\infty}^0 F(x)dx & \text{definición de limite}\\ \\
+& =\int_{0}^\infty (1-Fx(x))dx -\int_{-\infty}^0 F(x)dx & \text{simplificación}\ \ \finf
+\end{align*}
 
 2. Sea $X$ una v.a. continua con primer momento finito. Demuestre que la función $G(c)=E(|X-c|). c\in \mathbb{R},$ se minimiza en $c=M(X)$ para $M(X)$ la mediana de $X$.
 
 \res Sea $f(x)$ la función de densidad de $X$. Por propiedades de la esperanza tenemos que:
 \begin{align*}
-G(c)&=E(|X-c|)=\int_{-\infty}^\infty|x-c|f(x)dx= \int_{-\infty}^c (c-x)f(x)dx+\int_{c}^\infty (x-c)f(x)dx\\
+G(c)&=E(|X-c|)\\ \\
+&=\int_{-\infty}^\infty|x-c|f(x)dx\\ \\
+&= \int_{-\infty}^c (c-x)f(x)dx+\int_{c}^\infty (x-c)f(x)dx\\
 \\
 &=c\int_{-\infty}^c f(x)dx-\int_{-\infty}^c xf(x)dx+\int_{c}^\infty xf(x)dx-c\int_{c}^\infty f(x)dx.
 \end{align*}
@@ -770,7 +868,7 @@ Ahora diferenciamos con respecto a $c$ e igualamos a cero la expresión anterior
 G'(c)&=\frac{d}{dc}\left(c\int_{-\infty}^c f(x)dx-\int_{-\infty}^c xf(x)dx+\int_{c}^\infty xf(x)dx-c\int_{c}^\infty f(x)dx \right)\\ \\
 &=\int_{-\infty}^c f(x)dx+c\frac{d}{dc} \int_{-\infty}^c f(x)dx-\frac{d}{dc}\int_{-\infty}^c xf(x)dx+\frac{d}{dc}\int_{c}^\infty xf(x)dx-\int_{c}^\infty f(x)dx -c\frac{d}{dc}\int_{c}^\infty f(x)dx 
 \end{align*}
-Ahora por el Teorema Fundamental del Calculo. 
+El paso anterior se realizo la regla de la cadena en las integrales $\frac{d}{dc}\left( c\int_{-\infty}^c f(x)dx \right)$ y en $\frac{d}{dc}\left( c\int_{c}^\infty f(x)dx \right)$ por lo que tenemos 4 integrales a 6. Ahora por el Teorema Fundamental del Calculo:
 \begin{align*}
 G'(c)&=\int_{-\infty}^c f(x)dx+cf(x)\vert_{x=c}-xf(x)\vert_{x=c}+xf(x)\vert_{x=c}-\int_{c}^\infty f(x)dx-cf(x)\vert_{x=c}\\
 &=\int_{-\infty}^c f(x)dx-\int_{c}^\infty f(x)dx.
