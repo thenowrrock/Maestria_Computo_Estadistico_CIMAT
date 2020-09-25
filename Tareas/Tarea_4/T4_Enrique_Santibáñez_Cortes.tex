@@ -1,0 +1,150 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish]{babel}
+\usepackage{amsmath,amssymb}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{lmodern}
+\usepackage{xspace}
+\usepackage{multicol}
+\usepackage{hyperref}
+\usepackage{float}
+\usepackage{hyperref}
+\usepackage{color}
+\usepackage{framed}
+
+
+%\usepackage[colorlinks=true, linkcolor=black, urlcolor=blue, pdfborder={0 0 0}]{hyperref}
+
+\usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
+
+\newcommand{\X}{\mathbb{X}}
+\newcommand{\x}{\mathbf{x}}
+\newcommand{\Y}{\mathbf{Y}}
+\newcommand{\y}{\mathbf{y}}
+\newcommand{\xbarn}{\bar{x}_n}
+\newcommand{\ybarn}{\bar{y}_n}
+\newcommand{\paren}[1]{\left( #1 \right)}
+\newcommand{\llaves}[1]{\left\lbrace #1 \right\rbrace}
+\newcommand{\barra}{\,\vert\,}
+\newcommand{\mP}{\mathbb{P}}
+\newcommand{\mE}{\mathbb{E}}
+
+\newcommand{\abs}[1]{\left\vert #1 \right\vert}
+\newcommand{\muv}{\boldsymbol{\mu}}
+\newcommand{\mcov}{\boldsymbol{\Sigma}}
+\newcommand{\vbet}{\boldsymbol{\beta}}
+\newcommand{\veps}{\boldsymbol{\epsilon}}
+\newcommand{\mC}{\mathbf{C}}
+\newcommand{\ceros}{\boldsymbol{0}}
+\newcommand{\mH}{\mathbf{H}}
+\newcommand{\ve}{\mathbf{e}}
+\newcommand{\avec}{\mathbf{a}}
+\newcommand{\res}{\textbf{RESPUESTA}\\}
+
+\newcommand{\fin}{$\blacksquare.$}
+\newcommand{\finf}{\blacksquare.}
+
+\newtheorem{thm}{Teorema:}
+
+
+\begin{document}
+\begin{table}[ht]
+\centering
+\begin{tabular}{c}
+\textbf{Maestría en Computo Estadístico}\\
+\textbf{Inferencia Estadística} \\
+\textbf{Tarea 3}\\
+\today \\
+\emph{Enrique Santibáñez Cortés}\\
+Repositorio de Git: \href{https://github.com/Enriquesec/Inferencia_Estad-stica/tree/master/Tareas/Tarea_4}{Tarea 4, IE}.
+\end{tabular}
+\end{table}
+Escriba de manera concisa y clara sus resultados, justificando los pasos necesarios. Serán descontados puntos de los ejercicios mal escritos y que contenga ecuaciones sin una estructura gramatical adecuada. Las conclusiones deben escribirse en el contexto del problema. Todos los programas y
+simulaciones tienen que realizarse en R.
+%Problema 1
+%------------------------------------------------------------------------------------------------------%
+%------------------------------------------------------------------------------------------------------%
+%------------------------------------------------------------------------------------------------------%
+1. Sea $X$ una v.a continua cuya función de distribución $F$ es estrictamente creciente. El Teorema
+de la Transformación Integral nos dice que $Y=F(X)$ tiene distribución Uniforme(0, 1).\\
+
+a) Sea $U\sim Uniforme(0, 1)$ y $X'=F ^{-1}(U)$. Muestre que $X' \sim F$.\\
+
+b) Escriba un programa que tome variables aleatorias Uniforme(0, 1) y que las utilice para generar variables aleatorias de una distribución Exp$(\beta)$. El problema debe recibir el
+tamaño de la muestra que se desea generar, denotado por $m$, y al parámetro $\beta$. Deberá regresar una muestra de tamaño $m$.\\
+
+c) Simule $m=100$ muestras Exp(1/2). Con esta muestra contruya un QQ plot exponencial y una gráfica que compare el histograma de la muestra con la función de densidad de
+Exp(1/2). Comente.\\
+
+%Problema 2
+%------------------------------------------------------------------------------------------------------%
+%------------------------------------------------------------------------------------------------------%
+%------------------------------------------------------------------------------------------------------%
+2. Sea A el triángulo de vértices (0, 0), (0, 1), (1, 0) y suponga que $X, Y$ tiene una densidad conjunta uniforme en el triángulo. (a) Halle las distribuciones marginales de $X, Y \ \text{y}\ Z =X + Y$ . (b) ¿Son $X$ y $Y$ independientes? ¿Por qué?\\
+
+%Problema 3
+%------------------------------------------------------------------------------------------------------%
+%------------------------------------------------------------------------------------------------------%
+%------------------------------------------------------------------------------------------------------%
+3. Halle la densidad condicional de $X|Y=y$ si $(X,Y)$ tiene densidad conjunta \begin{align*}
+f_{X,Y}(x,y)=\frac{1}{y}\exp \left(-\frac{x}{y}-y \right) \ \text{para} \ x,y>0.
+\end{align*} 
+También calcule $\mE(X|Y=y)$.\\
+
+%Problema 4
+%------------------------------------------------------------------------------------------------------%
+%------------------------------------------------------------------------------------------------------%
+%------------------------------------------------------------------------------------------------------%
+4. Sea $Y\sim \exp(\theta)$ y dado $Y=y$, X tiene distribución de Poisson de media $y$. Encuentre la ley de $X$.\\
+
+
+%Problema 5
+%------------------------------------------------------------------------------------------------------%
+%------------------------------------------------------------------------------------------------------%
+%------------------------------------------------------------------------------------------------------%
+5. Sea $(X, Y)$ un vector aleatorio con la siguiente densidad
+\begin{align*}
+f(x,y)=\left\{\begin{matrix}
+\pi^{-1} & x^2+y^2\leq 1\\
+0 & x^2+y^2>1
+\end{matrix} \right.
+\end{align*} 
+Demuestre $X$ y $Y$ no están correlacionadas, pero que no son independientes.\\
+
+%Problema 6
+%------------------------------------------------------------------------------------------------------%
+%------------------------------------------------------------------------------------------------------%
+%------------------------------------------------------------------------------------------------------%
+6.Sea $X_1\ \text{y} \ X_2$ v.a.i que tienen una distribución normal estándar. Obtenga la densidad conjunta de $(Y_1, Y_2)$, donde $Y_1=\sqrt{X_1^2+X_2^2}$ y $Y_2=X_1/X_2$. ¿Son $Y_1$ y $Y_2$ independientes? \\
+
+%Problema 7
+%------------------------------------------------------------------------------------------------------%
+%------------------------------------------------------------------------------------------------------%
+%------------------------------------------------------------------------------------------------------%
+7. Ejercicio 6 de la tarea anterior.\\
+
+%Problema 8
+%------------------------------------------------------------------------------------------------------%
+%------------------------------------------------------------------------------------------------------%
+%------------------------------------------------------------------------------------------------------%
+8. Ejercicio 3 del examen.\\
+
+
+\textbf{Honours problems}
+
+1. Sea $X$ una v.a continua con segundo momento finito. Demuestra que la mediana $M(X)$ de $X$ satisface
+
+\begin{align*}
+|M(X)-E(X)|\leq (Var(X))^{1/2}.
+\end{align*}
+
+Hint: Use los honour problems de la tarea anterior.
+
+
+
+
+
+\end{document}
