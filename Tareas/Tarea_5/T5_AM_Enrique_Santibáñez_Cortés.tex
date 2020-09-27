@@ -467,12 +467,44 @@ D & E
 \end{align*}
 y encuentre $Y$.
 
+\res
+Como ya demostramos que $A^{-1}$ es de la forma \begin{align*}
+\begin{pmatrix}
+B^{-1}& X \\
+0 & E^{-1}
+\end{pmatrix},
+\end{align*}
+entonces se tiene que cumplir que:
+\begin{align*}
+AA^{-1}:=\begin{pmatrix}
+B & C \\
+0 &E
+\end{pmatrix}\begin{pmatrix}
+B^{-1}& X \\
+0 & E^{-1}
+\end{pmatrix}=\begin{pmatrix}
+I & 0 \\
+0 & I
+\end{pmatrix}\\
+\end{align*}
 %Problema 5
 %------------------------------------------------------------------------------------------------------%
 %------------------------------------------------------------------------------------------------------%
 %------------------------------------------------------------------------------------------------------%
 \item Sea $F$ un matriz fija de $3\times 2$ y sea $$H=\{A\in M_{2\times 4}(\mathbb{R})|FA=0\}.$$
 Determine si $H$ es un subespacio de $M_{2\times 4}(\mathbb{R})$.
+
+\res
+Recordemos la definición de subespacio.
+\begin{framed}
+    \begin{thmd} \label{subespacio}
+    (Definición vista en clase) Sea $V$ un espacio vectorial sobre $K$. $W\subset V$, $W\neq 0.$ $W$ es un subespacio de $V$ si 
+    \begin{enumerate}
+    \item Si $w_1,w_2 \in W$ entonces $w_1+w_2\in W$.
+    \item Si $w\in W,\ \alpha\in K$ entonces $\alpha w\in W.$
+    \end{enumerate}
+    \end{thmd}
+\end{framed} 
 
 %Problema 6
 %------------------------------------------------------------------------------------------------------%
@@ -518,7 +550,108 @@ Para que el vector $\begin{pmatrix}
 -3\\
 1
 \end{pmatrix}$
- este en $\gen (S)$ se tiene que cumplir que 
+ este en $\gen (S)$ se debe encontrar una combinación lineal de los vectores 
+$\begin{pmatrix}
+2\\
+-1\\
+1
+\end{pmatrix}$ y $\begin{pmatrix}
+2\\
+-3\\
+2
+\end{pmatrix}$ tal que sea el vector $\begin{pmatrix}
+-2\\
+-3\\
+1
+\end{pmatrix}$, es decir, sea $\alpha, \beta$ escalares 
+\begin{align}\label{lineal}
+\alpha \begin{pmatrix}
+2\\
+-1\\
+1
+\end{pmatrix}+\beta \begin{pmatrix}
+2\\
+-3\\
+2
+\end{pmatrix}&=\begin{pmatrix}
+-2\\
+-3\\
+1
+\end{pmatrix}.
+\end{align}
+Encontremos los escalares $\alpha, \beta$ que cumple (\ref{lineal}).
+\begin{align*}
+\begin{pmatrix}
+2\alpha+2\beta\\
+-\alpha-3\beta\\
+\alpha+2\beta
+\end{pmatrix}&=\begin{pmatrix}
+-2\\
+-3\\
+1
+\end{pmatrix}\Rightarrow\text{sumando 2 y 3}\ \ 
+\beta=2 \Rightarrow \left\{\begin{matrix}
+2\alpha+4=-2\\
+-\alpha-6=-3\\
+\alpha+4=1
+\end{matrix}\right.\Rightarrow\alpha=-3.
+\end{align*}
+Por lo tanto, como encontramos una combinación lineal de los vectores del conjunto $S$ podemos concluir que $\begin{pmatrix}
+-2\\
+-3\\
+1
+\end{pmatrix}$ si esta en $\gen (S).$\\
+
+Realizamos un razonamiento análogo al anterior para ver si el vector $\begin{pmatrix}
+-8\\
+5\\
+4
+\end{pmatrix}$ esta en $\gen (S)$, busquemos los vectores $\alpha$ y $\beta$ tal que 
+\begin{align}\label{lineal_2}
+\alpha \begin{pmatrix}
+2\\
+-1\\
+1
+\end{pmatrix}+\beta \begin{pmatrix}
+2\\
+-3\\
+2
+\end{pmatrix}&=\begin{pmatrix}
+-8\\
+5\\
+4
+\end{pmatrix}
+\end{align}
+Para ello,
+\begin{align*}
+\begin{pmatrix}
+2\alpha+2\beta\\
+-\alpha-3\beta\\
+\alpha+2\beta
+\end{pmatrix}&=\begin{pmatrix}
+-8\\
+5\\
+4
+\end{pmatrix}\Rightarrow\text{sumando 2 y 3}\ \ 
+\beta=-9 \Rightarrow \left\{\begin{matrix}
+2\alpha-18=-8\\
+-\alpha+27=5\\
+\alpha-18=4
+\end{matrix}\right.\Rightarrow
+\begin{array}{cc}
+\alpha_1=5\\
+\alpha_2=22
+\end{array}\alpha_1=\alpha_2.
+\end{align*}
+Como no pudimos encontrar $\alpha$ y $\beta$ tal que se cumpliera (\ref{lineal_2}), es decir, no existe una combinación lineal de los vectores del conjunto $S$ que sea el vector $\begin{pmatrix}
+-8\\
+5\\
+4
+\end{pmatrix}$,  podemos concluir que $\begin{pmatrix}
+-8\\
+5\\
+4
+\end{pmatrix}$ no esta en $\gen (S).$ \ \ \ \ \fin
 
 %Problema 8
 %------------------------------------------------------------------------------------------------------%
@@ -526,6 +659,20 @@ Para que el vector $\begin{pmatrix}
 %------------------------------------------------------------------------------------------------------%
 \item Sea $V$ un espacio vectorial y $W, \ Z$ subespacios de $V$. Al definir el espacio $W+Z$ no se hizo distinción en el orden. ¿Por qué no?, es decir, ¿es cierto que
 $W + Z = Z + W$? Argumente su respuesta. Enuncie y demuestre un resultado similar para cualquier número finito de subespacios.
+
+\res 
+Recordemos la definición de la suma de dos subespacios.
+\begin{framed}
+    \begin{thmd} \label{suma_subespacios}
+    (Definición vista en clase) Sea $V$ un espacio vectorial, $W_1,W_2$ subespacios de $V$. La suma de $W_1$ y $W_2$ es:
+    \begin{align*}
+    W_1+W_2=\left\{v\in V|v=w_1+w_2, w_1\in W_1, w_2\in W_2 \right\}.
+    \end{align*}
+    \end{thmd}
+\end{framed} 
+Como $W, Z$ son subespacios de $V$ y ocupando la definición \ref{subespacio}, podemos decir $\forall w\in W\Rightarrow w\in V$ y $\forall z\in Z\Rightarrow z\in V$ debido a que una condición para ser subespacio es que sea un subconjunto. Ahora ocupando la definición \ref{suma_subespacios}, tenemos que la suma 
+
+
 
 %Problema 9
 %------------------------------------------------------------------------------------------------------%
