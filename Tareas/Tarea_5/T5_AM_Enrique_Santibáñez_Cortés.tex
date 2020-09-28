@@ -77,7 +77,7 @@
 \begin{tabular}{c}
 \textbf{Maestría en Computo Estadístico}\\
 \textbf{Álgebra Matricial} \\
-\textbf{Tarea 3}\\
+\textbf{Tarea 5}\\
 \today \\
 \emph{Enrique Santibáñez Cortés}\\
 Repositorio de Git: \href{https://github.com/Enriquesec/Algebra_matricial/tree/master/tareas/Tarea_5}{Tarea 5, AM}.
@@ -381,8 +381,8 @@ U = \begin{pmatrix}
  2 & 3 & 1
 \end{pmatrix}^{t} =
 \begin{pmatrix}
- 1 & 1 & 3 \\
- 0 & 1 & 2\\
+ 1 & 1 & 2 \\
+ 0 & 1 & 3\\
  0 & 0 & 1
 \end{pmatrix} 
 \end{align*}
@@ -397,8 +397,8 @@ A= \begin{pmatrix}
  0 & 2 & 0\\
  0 & 0 & 1
 \end{pmatrix}\begin{pmatrix}
- 1 & 1 & 3 \\
- 0 & 1 & 2\\
+ 1 & 1 & 2 \\
+ 0 & 1 & 3\\
  0 & 0 & 1
 \end{pmatrix}.
 \end{align*}
@@ -465,52 +465,226 @@ B & 0 \\
 D & E
 \end{pmatrix}
 \end{align*}
+con $B$ y $E$ no singulares, demuestre que $A_1^{-1}$ es de la forma 
+\begin{align*}
+A_1=\begin{pmatrix}
+B^{-1} & 0 \\
+Y & E^{-1}
+\end{pmatrix}
+\end{align*}
 y encuentre $Y$.
 
 \res
-Como ya demostramos que $A^{-1}$ es de la forma \begin{align*}
+Sea $W,X,Y,Z$ matrices tal que el producto de la matriz $A$ por la matriz por bloques $
 \begin{pmatrix}
-B^{-1}& X \\
-0 & E^{-1}
+W & X\\
+Y & Z
+\end{pmatrix}
+$ (llamemosla la matriz $A^*$) se pueda realizar. Entonces, para que $A^*$ sea la inversa de $A$ se debe cumplir que 
+\begin{align*}
+AA^{*}=\begin{pmatrix}
+B & C \\
+0 & E
+\end{pmatrix}\begin{pmatrix}
+W & X\\
+Y & Z
+\end{pmatrix}\Leftrightarrow \begin{pmatrix}
+BW+CY & BX+CZ\\
+0W+EY & 0X+EZ
+\end{pmatrix}\Leftrightarrow \begin{pmatrix}
+BW+CY & BX+CZ\\
+EY & EZ
+\end{pmatrix}=\begin{pmatrix}
+I&0\\
+0&I
+\end{pmatrix}.
+\end{align*}
+De lo anterior podemos ver que como $EY=0$ y como $E$ es no singular entonces implica que $Y=0$ (la demostración de lo anterior se anexa al final de este problema). Sustituyendo este resultado en la ecuación anterior y como que $B\ \text{y} \ E$ son no singulares
+\begin{align*}
+\Rightarrow \begin{pmatrix}
+BW & BX+CZ\\
+0 & EZ
+\end{pmatrix}=\begin{pmatrix}
+I&0\\
+0&I
+\end{pmatrix}\Rightarrow\left\{\begin{array}{c}
+BW=I\\
+EZ=I\\
+BX+CZ=0
+\end{array} \right. \Rightarrow 
+\left\{\begin{array}{c}
+W=B^{-1}\\
+Z=E^{-1}\\
+X=-B^{-1}CZ
+\end{array} \right.
+\end{align*}
+Por lo tanto, la inversa de $A$ es de la forma
+\begin{align*}
+\begin{pmatrix}
+B^{-1} & X\\
+0& E^{-1}
+\end{pmatrix}, \ \text{donde}\ \  X=-B^{-1}CE^{-1}.
+\end{align*}
+
+\textbf{Realizando un razonamiento análogo al anterior}, si 
+\begin{align*}
+A_1=\begin{pmatrix}
+B&0\\
+D&E
 \end{pmatrix},
 \end{align*}
-entonces se tiene que cumplir que:
+ y sea $W,X,Y,Z$ matrices tal que el producto de la matriz $A_1$ por la matriz por bloques $
+\begin{pmatrix}
+W & X\\
+Y & Z
+\end{pmatrix}
+$ (llamemosla la matriz $A_1^*$) se pueda realizar. Entonces, para que $A_1^*$ sea la inversa de $A_1$ se debe cumplir que 
 \begin{align*}
-AA^{-1}:=\begin{pmatrix}
-B & C \\
-0 &E
+AA^{*}=\begin{pmatrix}
+B & 0 \\
+D & E
 \end{pmatrix}\begin{pmatrix}
-B^{-1}& X \\
-0 & E^{-1}
+W & X\\
+Y & Z
+\end{pmatrix}\Leftrightarrow \begin{pmatrix}
+BW+0Y & BX+0Z\\
+DW+EY & DX+EZ
+\end{pmatrix}\Leftrightarrow \begin{pmatrix}
+BW & BX\\
+DW+EY & DX+EZ
 \end{pmatrix}=\begin{pmatrix}
-I & 0 \\
-0 & I
-\end{pmatrix}\\
+I&0\\
+0&I
+\end{pmatrix}.
+\end{align*}
+De lo anterior podemos ver que como $BX=0$ y como $B$ es no singular entonces implica que $X=0$ (la demostración de lo anterior se anexa al final de este problema). Sustituyendo este resultado en la ecuación anterior y como que $B\ \text{y} \ E$ son no singulares
+\begin{align*}
+\Rightarrow \begin{pmatrix}
+BW & 0\\
+DW+EY & EZ
+\end{pmatrix}=\begin{pmatrix}
+I&0\\
+0&I
+\end{pmatrix}\Rightarrow\left\{\begin{array}{c}
+BW=I\\
+EZ=I\\
+DW+EY=0
+\end{array} \right. \Rightarrow 
+\left\{\begin{array}{c}
+W=B^{-1}\\
+Z=E^{-1}\\
+Y=-E^{-1}DW
+\end{array} \right.
+\end{align*}
+Por lo tanto, la inversa de $A$ es de la forma
+\begin{align*}
+\begin{pmatrix}
+B^{-1} & 0\\
+Y& E^{-1}
+\end{pmatrix}, \ \text{donde}\ \  Y=-E^{-1}DB^{-1}.\ \ \ \finf
+\end{align*}
+
+\textbf{Demostración de una parte de la justificación}. \\
+Sea $A$ (no singular) y $B$ matrices, si $AB=0$ entonces $B=0$. Como $A$ es no singular entonces 
+\begin{align*}
+AB=0\Rightarrow A^{-1}AB=A^{-1}0\Rightarrow B=0.\ \ \finf
 \end{align*}
 %Problema 5
 %------------------------------------------------------------------------------------------------------%
 %------------------------------------------------------------------------------------------------------%
 %------------------------------------------------------------------------------------------------------%
-\item Sea $F$ un matriz fija de $3\times 2$ y sea $$H=\{A\in M_{2\times 4}(\mathbb{R})|FA=0\}.$$
+\item Sea $F$ un matriz fija de $3\times 2$ y sea $$H=\{A\in M_{2\times 4}(\mathbb{R})|FA=\bf0\}.$$
 Determine si $H$ es un subespacio de $M_{2\times 4}(\mathbb{R})$.
 
 \res
 Recordemos la definición de subespacio.
 \begin{framed}
     \begin{thmd} \label{subespacio}
-    (Definición vista en clase) Sea $V$ un espacio vectorial sobre $K$. $W\subset V$, $W\neq 0.$ $W$ es un subespacio de $V$ si 
+    (Definición vista en clase) Sea $V$ un espacio vectorial sobre $K$. $W\subset V$, $W\neq \emptyset.$ $W$ es un subespacio de $V$ si 
     \begin{enumerate}
     \item Si $w_1,w_2 \in W$ entonces $w_1+w_2\in W$.
     \item Si $w\in W,\ \alpha\in K$ entonces $\alpha w\in W.$
     \end{enumerate}
     \end{thmd}
 \end{framed} 
-
+Ahora, si $F$ es la matriz nula de tamaño $3\times 2$ es sencillo ver que $H\neq \emptyset.$ Si $F$ no es la matriz nula, sea $A$ la matriz nula $2\times 4$ entonces para cualquier $F$ fija se cumple que $FA=F\bf0=0$, y por lo tanto $H\neq \emptyset$. Además por definición del conjunto $H$, se cumple que $\forall A\in H \Rightarrow A\in M_{2\times 4}(R)$, es decir $H\subset M_{2\times 4}(R)$. Por último demostremos las condiciones de la definición \ref{subespacio}:
+\begin{itemize}
+\item Si $A_1,A_2 \in H$, es decir, se cumple que $FA_1=\bf0$ y $FA_2=\bf0$. Entonces (ocupando las propiedades básicas de las matrices vistas en clase) $F(A_1+A_2)=FA_1+FA_2=\bf0+0=0$. Y por lo tanto se cumple que $A_1+A_2\in H.$
+\item Si $A\in H,\alpha\in R$, es decir, se cumple que $FA=0$. Entonces (ocupando las propiedades básicas de las matrices vistas en clase) $F(\alpha A)=\alpha FA=\alpha(\bf0)=0.$ Y por lo tanto se cumple que $\alpha A\in H.$
+\end{itemize}
+Por lo tanto, como se cumplen todos los supuestos y condiciones podemos concluir que $H$ es un subespacio de $M_{2\times 4}(\mR).$\ \ \ \fin
 %Problema 6
 %------------------------------------------------------------------------------------------------------%
 %------------------------------------------------------------------------------------------------------%
 %------------------------------------------------------------------------------------------------------%
-\item Demuestre que en $\mR^2$ los únicos subespacioes posibles son $\{0\}$, las líneas que pasan por el origen y $\mR^2$. Enuncie y demuestre un resultado análogo para $\mR^3$.
+\item Demuestre que en $\mR^2$ los únicos subespacio es posibles son $\{\textbf{0}\}$, las líneas que pasan por el origen y $\mR^2$. Enuncie y demuestre un resultado análogo para $\mR^3$. 
+
+\res 
+En la demostración se utilizará la definición de espacio generado. 
+\begin{framed}
+    \begin{thmd} \label{espacio_generado}
+    (Definición vista en clase) Sea $V$ un espacio vectorial y $S\subset V$. El espacio generado por $S$ es el conjunto
+    \begin{align*}
+    \gen (S)=\{v\in V| v=\alpha_1 v_1+\cdots +\alpha_n v_n, v_i\in S, \alpha_1\in K \}. 
+    \end{align*}
+    \end{thmd}
+\end{framed} 
+\begin{framed}
+    \begin{thmt} \label{espacio_generado_sub}
+    (Teorema demostrado en clase) Sea $V$ un espacio vectorial y $S\subset V$, $S\neq \emptyset$. $\gen(S)$ es un subespacio de $V$. 
+    \end{thmt}
+\end{framed}
+Ahora, si $F$ 
+Primero demostremos que $\{\textbf{0}\}$, las líneas que pasan por el origen y $\mR^2$ son subespacios de $\mR^2$. Si $W_0=\{\textbf{0}\}$ es claro que $W_0\neq \emptyset$ (por tener un elemento) y que $W_0\subset \mR^2$ (por definición de $\mR^2$), y además por solo tener un elemento se cumple ambas condiciones de la definición \ref{subespacio} de subespacio (visto en clase). Ahora si, $W_1=\{\lambda\textbf{u}| \textbf{u}\in \mR^2, \textbf{u}\neq \textbf{0}, \lambda\in \mR\}$ (o equivalente a $\gen (\textbf{u})$), es decir, la líneas que pasan por el origen, demostremos que $W_1$ es subespacio de $\mR^2$, para ello veamos si $m,n\in W_1$, entonces por definición podemos decir que $m=\lambda_0\textbf{u}$ y $n=\lambda_1\textbf{u}$ con $\lambda_0, \lambda_1\in \mR$ y por lo tanto
+$$m+n=\lambda_0\textbf{u}+\lambda_1\textbf{u}=(\lambda_0+\lambda_1)\textbf{u}=\lambda\textbf{u} \ \text{donde }\lambda=\lambda_0+\lambda_1.$$
+Queda demostrado que $m+n\in W_1.$ Ahora sea $m\in W_1$ y $\alpha \in \mR$ entonces
+$$\alpha m=\alpha (\lambda_0\textbf{u})=(\alpha \lambda_0)\textbf{u}=\lambda \textbf{u} \ \text{donde} \lambda=\alpha \lambda_0,$$
+por lo que podemos decir que $\alpha m\in W_1$. Entonces como $W_1$ es cerrado bajo la suma y la multiplicación por un escalar podemos concluir que $W_1=\{\lambda\textbf{u}| \textbf{u}\in \mR^2, \textbf{u}\neq \textbf{0}, \lambda\in \mR\}$ es subespacio de $\mR^2$. Por último, como $\mR^2$ es un espacio vectorial por definición cumple la cerradura de la suma y la cerradura de la multiplicación escalar, por lo tanto $\mR^2$ es un subespacio de $\mR^2.$ \\
+
+Ya hemos demostrado que que $\{\textbf{0}\}$, las líneas que pasan por el origen y $\mR^2$ son subespacios de $\mR^2$. Ahora demostremos que son todos los subespacios posibles de $\mR^2$. Para ello supongamos que $\mathcal{W}$ es un subespacio de $\mR^2$ tal que $W_1\subset \mathcal{W}\subset \mR^2$ y $W_1\neq \mathcal{W}$, es decir, existe un vector $\textbf{v}$ tal que $\textbf{v}\neq \lambda\textbf{u}$. Ocupando la definición de espacio generado \ref{espacio_generado} tenemos que como $\textbf{u},\textbf{v}\in \mathcal{W}, \Rightarrow \gen (\textbf{u},\textbf{v})=\left\{z\in \mathcal{W}|z=\lambda \textbf{u}+\beta \textbf{v}, \ \lambda, \beta \in \mR\right\}.$ Con el teorema (\ref{espacio_generado_sub}) podemos decir que $\gen(\textbf{u},\textbf{v})$ es un subespacio de $\mathcal{W}$, y por definición de subespacio \ref{subespacio} y por como esta definido $\mathcal{W}$ podemos concluir que 
+\begin{align}\label{parte_1}
+\gen(\textbf{u},\textbf{v})\subset \mathcal{W}\subset \mR^2.
+\end{align}
+Ahora, sea $\textbf{x}=\begin{pmatrix}
+x_1\\
+x_2
+\end{pmatrix}\in \mR^2$ algún vector de $\mR^2$, y sea $\textbf{u}=\begin{pmatrix}
+u_1\\
+u_2
+\end{pmatrix}, u_i\neq 0$ y $\textbf{v}=\begin{pmatrix}
+v_1\\
+v_2
+\end{pmatrix}, v_i\neq 0.$ Entonces mostremos que existen $\lambda, \beta\in \mR$ tal que 
+\begin{align*}
+\alpha\begin{pmatrix}
+u_1\\
+u_2
+\end{pmatrix} +\beta \begin{pmatrix}
+v_1\\
+v_2
+\end{pmatrix}=\begin{pmatrix}
+x_1\\
+x_2
+\end{pmatrix} \Leftrightarrow \begin{pmatrix}
+u_1&v_1\\
+u_2&v_2
+\end{pmatrix}\begin{pmatrix}
+\alpha\\
+\beta
+\end{pmatrix}=\begin{pmatrix}
+x_1\\
+x_2
+\end{pmatrix}.
+\end{align*}
+Cómo sabemos que $\textbf{v}\neq\lambda\textbf{u}$ (por definición), es decir, los vectores no son múltiplos y además como $u_i, v_i\neq 0$, por demos decir que la matriz $\begin{pmatrix}
+u_1&v_1\\
+u_2&v_2
+\end{pmatrix}$ existe su forma escalonada reducida, y esto implica que existan $\alpha, \beta$ únicos (la justificación es debido a que como tiene su forma escalonada eso implica que el sistema tenga solución y sea único, visto en clase). Entonces, para todo vector $\textbf{x}\in \mR^2$ podemos encontrar $\alpha, \beta$ tal que $\textbf{x}=\alpha\textbf{u}+\beta\textbf{v},$ esto implica que $\textbf{x}\in \mR^2\Rightarrow x \in \gen(\textbf{u},\textbf{v}),$ es decir, $\mR^2\subset \gen(\textbf{u},\textbf{v}).$ Por lo tanto, si ocupamos el resultado obtenido y el resultado \ref{parte_1} tenemos que 
+$$\mR^2\subset \gen(\textbf{u},\textbf{v})\subset \mathcal{W} \subset\mR^2\Rightarrow \mathcal{W}=\mR^2.$$
+Por lo tanto, queda demostrado que los únicos subespacios de $\mR^2$ son $\{0\}$, la lineas que pasan por el origen y $\mR^2$.\\
+
+\textbf{Resultado análogo para $\mR^3$:}\\
+Los únicos subespacios posibles de $\mR^3$ son $\{0\}$, la lineas que pasan por el origen, los planos que pasan por el origen y $\mR^3$.  
 
 %Problema 7
 %------------------------------------------------------------------------------------------------------%
@@ -545,7 +719,7 @@ esta en $\text{gen}(S)$, y si \begin{align*}
 esta en $\text{gen}(S)$.
 
 \res 
-Para que el vector $\begin{pmatrix}
+Ocupando la definición de espacio generado \ref{espacio_generado}, para que el vector $\begin{pmatrix}
 -2\\
 -3\\
 1
@@ -579,7 +753,7 @@ $\begin{pmatrix}
 1
 \end{pmatrix}.
 \end{align}
-Encontremos los escalares $\alpha, \beta$ que cumple (\ref{lineal}).
+Encontremos los escalares $\alpha, \beta$ que cumple la ecuación (\ref{lineal}).
 \begin{align*}
 \begin{pmatrix}
 2\alpha+2\beta\\
@@ -641,9 +815,9 @@ Para ello,
 \begin{array}{cc}
 \alpha_1=5\\
 \alpha_2=22
-\end{array}\alpha_1=\alpha_2.
+\end{array}\alpha_1\neq \alpha_2.
 \end{align*}
-Como no pudimos encontrar $\alpha$ y $\beta$ tal que se cumpliera (\ref{lineal_2}), es decir, no existe una combinación lineal de los vectores del conjunto $S$ que sea el vector $\begin{pmatrix}
+Como no pudimos encontrar $\alpha$ y $\beta$ tal que se cumpliera la ecuación (\ref{lineal_2}), es decir, no existe una combinación lineal de los vectores del conjunto $S$ que sea el vector $\begin{pmatrix}
 -8\\
 5\\
 4
@@ -653,6 +827,7 @@ Como no pudimos encontrar $\alpha$ y $\beta$ tal que se cumpliera (\ref{lineal_2
 4
 \end{pmatrix}$ no esta en $\gen (S).$ \ \ \ \ \fin
 
+\textbf{Nota:} Lo anterior igual se puede probar utilizando la definición de dependencia/independecia entre vectores, es decir, si probamos que los vectores de $S$ y un vector $u$ son linealmente independientes podemos decir que $u$ no esta en el $\gen(S)$, y si son linealmente dependientes entonces $u$ si esta en $\gen(S)$. 
 %Problema 8
 %------------------------------------------------------------------------------------------------------%
 %------------------------------------------------------------------------------------------------------%
@@ -670,9 +845,19 @@ Recordemos la definición de la suma de dos subespacios.
     \end{align*}
     \end{thmd}
 \end{framed} 
-Como $W, Z$ son subespacios de $V$ y ocupando la definición \ref{subespacio}, podemos decir $\forall w\in W\Rightarrow w\in V$ y $\forall z\in Z\Rightarrow z\in V$ debido a que una condición para ser subespacio es que sea un subconjunto. Ahora ocupando la definición \ref{suma_subespacios}, tenemos que la suma 
+Como $W, Z$ son subespacios de $V$ y ocupando la definición \ref{subespacio}, podemos decir $\forall w\in W\Rightarrow w\in V$ y $\forall z\in Z\Rightarrow z\in V$ debido a que una condición para ser subespacio es que sea un subconjunto. Ahora ocupando lo anterior en la definición \ref{suma_subespacios}, tenemos que la suma de $W+Z$ esta definida como
+\begin{align*}
+    W+Z=&\left\{v\in V|v=w+z, w\in W, z\in Z \right\}\Leftrightarrow \ \text{*ocupando que }w,z\in V.\\
+    &\left\{v\in V|v=z+w, w\in W, z\in Z \right\}=Z+W,
+\end{align*}
+es decir,
+\begin{align*}
+W+Z=Z+W.
+\end{align*}
+La justificación del paso * es que como $w,z\in V$ y como $V$ es un espacio vectorial por definición se cumple que para $\forall v_1,v_1\in V \Rightarrow v_1+v_2=v_2+v_1$ (la cerradura de la suma).\\
 
-
+\textbf{Enunciado para un número finitos de supespacios:}\\
+Sea $W_1,W_2, \cdots , W_n$ subespacios de $V$. Entonces la suma de todos los subespacios $W_1+W_2+\cdots+W_n$
 
 %Problema 9
 %------------------------------------------------------------------------------------------------------%
@@ -752,8 +937,165 @@ A=\begin{pmatrix}
 \end{align*}.
 Encuentre un vector en $\mathcal{N}$ (A). Encuentre dos vectores distintos (que no sean múltiplos) en $\mathcal{C}(A)$. ¿Se pueden encontrar más vectores en $\mathcal{N}(A)$ y $\mathcal{C}(A)$, respectivamente, a los ya encontrados que no sean combinación lineal de los anteriores?
 
+\res 
+Recordemos la definición de espacio nulo.
+\begin{framed}
+    \begin{thmd} \label{espacio_nulo}
+    El \textbf{espacio nulo} de una matriz $A$ de $m\times n$, que se denota como $\mathcal{N}(A)$, es el conjunto de todas las soluciones de la ecuación homogénea $A\textbf{x}=\textbf{0},$ es decir,
+    $$\mathcal{N}(A)=\{\textbf{x}: \textbf{x}\in R^n y A\bf \textbf{x}=\textbf{0}.\}$$
+    \end{thmd}
+\end{framed} 
+Entonces, para determinar el $\mathcal{N}(A)$ primero encontremos la solución general $A\textbf{x}=\textbf{0}$ en términos de variables libres. Para ello reduzcamos la matriz a la forma escalonada reducida:
+\begin{align*}
+\begin{pmatrix}
+ 1 & -1 & 6 & 0\\
+10 & -8 &-2 &-2\\
+ 0 &  2 & 2 &-2\\
+ 1 &  1 & 0 &-2
+\end{pmatrix}&%
+\grstep[R4 \rightarrow R_4-R_1]{R_2 \rightarrow R_2-10R_1}
+%
+\begin{pmatrix}
+ 1 & -1 &  6 & 0\\
+ 0 &  2 &-62 &-2\\
+ 0 &  2 &  2 &-2\\
+ 0 &  2 & -6 &-2
+\end{pmatrix}%
+\grstep[R4 \rightarrow R_4-R_2]{R_3 \rightarrow R_3-R_2}
+%
+\begin{pmatrix}
+ 1 & -1 &  6 & 0\\
+ 0 &  2 &-62 &-2\\
+ 0 &  0 & 64 & 0\\
+ 0 &  0 & 56 & 0
+\end{pmatrix}%
+\grstep[R3 \rightarrow R_3/64]{R_2 \rightarrow R_2/2} \\ \\
+\begin{pmatrix}
+ 1 & -1 &  6 & 0\\
+ 0 &  1 &-31 &-1\\
+ 0 &  0 &  1 & 0\\
+ 0 &  0 & 56 & 0
+\end{pmatrix}&%
+\grstep[]{R_4 \rightarrow R_4-56R_3}
+%
+\begin{pmatrix}
+ 1 & -1 &  6 & 0\\
+ 0 &  1 &-31 &-1\\
+ 0 &  0 &  1 & 0\\
+ 0 &  0 &  0 & 0
+\end{pmatrix}%
+\grstep[R1 \rightarrow R_1-6R_3]{R_2 \rightarrow R_2+31R_1}
+%
+\begin{pmatrix}
+ 1 & -1 &  0 & 0\\
+ 0 &  1 &  0 &-1\\
+ 0 &  0 &  1 & 0\\
+ 0 &  0 &  0 & 0
+\end{pmatrix}%
+\grstep[]{R_1 \rightarrow R_1+R_2}\\ \\
+\begin{pmatrix}
+ 1 &  0 &  0 & -1\\
+ 0 &  1 &  0 &-1\\
+ 0 &  0 &  1 & 0\\
+ 0 &  0 &  0 & 0
+\end{pmatrix}&
+\end{align*}
+Entonces la solución general es $x_1-x_4=0, \ x_2-x_4=0, x_3=0,$ y $x_4$ libre, o es equivalente a 
+\begin{align*}
+\left\{x_4 \begin{pmatrix}
+1\\
+1\\
+0\\
+1
+\end{pmatrix} \right\}.
+\end{align*}
+Por lo tanto, un vector que se encuentre en $\mathcal{N}(A)$ es $\begin{pmatrix}
+8\\
+8\\
+0\\
+8
+\end{pmatrix}$. En $\mathcal{N}(A)$ no se pueden encontrar más vectores que no sean combinación lineal de este, debido a  como esta definido 
+\begin{align*}
+\mathcal{N}(A)=\left\{k \left. \begin{pmatrix}
+1\\
+1\\
+0\\
+1
+\end{pmatrix}\right| k\in \mR \right\}.
+\end{align*}
+Ahora encontramos el espacio columna ocupando la definición \ref{espacio_columna}. Tenemos que 
 
+\begin{align*}
+\mathcal{C}(A)=\gen \left\{\begin{pmatrix}
+1\\
+10\\
+0\\
+1
+\end{pmatrix}, \begin{pmatrix}
+-1\\
+-8\\
+2\\
+1
+\end{pmatrix},\begin{pmatrix}
+6\\
+-2\\
+2\\
+0
+\end{pmatrix},\begin{pmatrix}
+0\\
+-2\\
+-2\\
+-2
+\end{pmatrix}\right\}=\left\{  \left. r\begin{pmatrix}
+1\\
+10\\
+0\\
+1
+\end{pmatrix}+s\begin{pmatrix}
+-1\\
+-8\\
+2\\
+1
+\end{pmatrix}+t\begin{pmatrix}
+6\\
+-2\\
+2\\
+0
+\end{pmatrix}+p\begin{pmatrix}
+0\\
+-2\\
+-2\\
+-2
+\end{pmatrix} \right| r,s,t,p\in \mR \right\}.
+\end{align*}
+Recordemos la definición de linealmente independiente:
+\begin{framed}
+    \begin{thmd} \label{linealemente_ind}
+    Sea $V$ un espacio vectorial. Sea $S=\left\{v_1, v_2, \cdots , v_n \right\} \subset V$. S es linealmente independiente si $2$
+    \end{thmd}
+\end{framed} 
 
+Observemos que el vector $\begin{pmatrix}
+0\\
+-2\\
+-2\\
+-2
+\end{pmatrix}$ es linealmente dependiente a los vectores $\begin{pmatrix}
+1\\
+10\\
+0\\
+1
+\end{pmatrix}+\begin{pmatrix}
+-1\\
+-8\\
+2\\
+1
+\end{pmatrix}+\begin{pmatrix}
+6\\
+-2\\
+2\\
+0
+\end{pmatrix},$ debido a que s
 
 
 \end{enumerate}
