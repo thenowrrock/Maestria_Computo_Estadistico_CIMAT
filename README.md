@@ -6,6 +6,7 @@ En este repositorio se encuentra todos los recursos (nota, tareas, proyectos, ar
 2. [Tarea 2.](Tareas/Tarea_2)
 3. [Tarea 3.](Tareas/Tarea_3)
 4. [Tarea 4.](Tareas/Tarea_4)
+5. [Tarea 5.](Tareas/Tarea_5)
 
 
 # Examenes
