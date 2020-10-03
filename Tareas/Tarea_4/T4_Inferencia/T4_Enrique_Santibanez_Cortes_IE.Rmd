@@ -1,0 +1,458 @@
+---
+fontsize: 11pt
+geometry: "left=2cm,right=2cm,top=2cm,bottom=2cm"
+documentclass: article
+output:
+    pdf_document:
+        includes:
+            in_header: mystyles.sty
+---
+\begin{table}[ht]
+\centering
+\begin{tabular}{c}
+\textbf{Maestría en Computo Estadístico}\\
+\textbf{Inferencia Estadística} \\
+\textbf{Tarea 4}\\
+\today \\
+\emph{Enrique Santibáñez Cortés}\\
+Repositorio de Git: \href{https://github.com/Enriquesec/Inferencia_Estad-stica/tree/master/Tareas/Tarea_4}{Tarea 4, IE}.
+\end{tabular}
+\end{table}
+Escriba de manera concisa y clara sus resultados, justificando los pasos necesarios. Serán descontados puntos de los ejercicios mal escritos y que contenga ecuaciones sin una estructura gramatical adecuada. Las conclusiones deben escribirse en el contexto del problema. Todos los programas y
+simulaciones tienen que realizarse en R.
+
+1. Sea $X$ una v.a continua cuya función de distribución $F$ es estrictamente creciente. El Teorema
+de la Transformación Integral nos dice que $Y=F(X)$ tiene distribución Uniforme(0, 1).\\
+
+a) Sea $U\sim Uniforme(0, 1)$ y $X'=F ^{-1}(U)$. Muestre que $X' \sim F$.
+
+\res Como $U$ tiene una distribución $Unif(0,1)$, esto implica que $F_U(u)=u$ (por definición de la función acumulada de una distribución uniforme). Entonces tenemos que 
+\begin{align*}
+F_{X'}(x')=\mP(X'\leq x')=\mP(F^{-1}(U)\leq x')= \mP(U\leq F(x'))= F_U(F(x'))=F(x').
+\end{align*}
+Por lo tanto, $X'\sim F.$
+
+b) Escriba un programa que tome variables aleatorias Uniforme(0, 1) y que las utilice para generar variables aleatorias de una distribución Exp$(\beta)$. El problema debe recibir el tamaño de la muestra que se desea generar, denotado por $m$, y al parámetro $\beta$. Deberá regresar una muestra de tamaño $m$.
+
+\res Ocupando el teorema de la Tranformación Integral, podemos generar números aleatorios de "cualquier" distribución deseada a partir de una distribución Uniforme(0,1), utilizando lo demostrado en el inciso a). Para ello calculemos la inversa de un distribución exponencial:
+\begin{align*}
+F(x)=1-e^{-x\beta}\Rightarrow x&=1-e^{-y\beta}\\
+ x-1&=-e^{-y\beta}\\
+ -y\beta&=\log(1-x)\\
+ y&=-\frac{\log(1-x)}{\beta}
+\end{align*}
+Entonces con lo anterior tenemos que la generación de los números aleatorios es de la siguiente forma:
+```{r}
+random_exp <- function(m, beta){
+  return(-log(1-runif(m))/beta) 
+}
+```
+
+c) Simule $m=100$ muestras Exp(1/2). Con esta muestra contruya un QQ plot exponencial y una gráfica que compare el histograma de la muestra con la función de densidad de Exp(1/2). Comente.
+
+\res Usamos la función anterior para simulara las 100 muestras de Exp(1/2):
+```{r}
+set.seed(19970808)
+simulacion_exp_12 <- random_exp(100, 1/2) 
+head(simulacion_exp_12)
+```
+Contruimos un QQ plot con la muestra, para ello gráficamos
+$$X_{(i)} \ vs \ -2\log\left(1-\frac{i}{n+1} \right).$$
+```{r, message=FALSE, warning=FALSE, fig.width = 5.2, fig.asp = 0.62, fig.align = "center"}
+library(tidyverse)
+datos<-data.frame(x_i=sort(simulacion_exp_12), i=seq(1:100)) %>%
+  mutate(y=-2*log(1-i/(101)))
+head(datos,3)
+
+ggplot(data=datos, aes(x=x_i, y=y))+
+  geom_point(colour="blue")+
+  labs(x="X_(i)", title = "Q-Q Plot")
+```
+
+
+```{r message=FALSE, warning=FALSE, fig.width = 5.2, fig.asp = 0.62, fig.align = "center"}
+exp_teoric <- data.frame(y=dexp(x=seq(0,11),rate=1/2), x=seq(0,11))
+ggplot(data=datos, aes(x_i))+
+  geom_histogram(bins=11,fill="blue", aes(y=stat(count)/sum(count)))+
+  geom_point(data=exp_teoric, aes(x,y))+
+  geom_line(data=exp_teoric, aes(x,y))+
+  labs(y="Probabilidad y Frecuencias", x="x", title="CDF y histograma exponencial.")
+```
+Por lo tanto, con lo anterior validamos que efectivamente se generan números aleatorios de una exponencial (o cualquier otra) apartir de una Uniforme. \ \ \ \fin
+
+2. Sea A el triángulo de vértices (0, 0), (0, 1), (1, 0) y suponga que $X, Y$ tiene una densidad conjunta uniforme en el triángulo. (a) Halle las distribuciones marginales de $X, Y \ \text{y}\ Z =X + Y$ . (b) ¿Son $X$ y $Y$ independientes? ¿Por qué?
+
+\res Por como esta descrita la densidad conjunta de $X,Y$ podemos escribirla como 
+\begin{align*}
+f(x,y)=\left\{\begin{array}{cc}
+2,& 0\leq x\leq 1, x\leq y\leq 1\\
+0,& \text{otro caso}.
+\end{array} .\right.
+\end{align*}
+Validamos que efectivamente cumpla las condiciones de densidad conjunta, observemos que se cumple que $f(x,y)\geq 0, \ \forall (x,y).$ y además que integra 1:
+\begin{align*}
+\intim \intim f(x,y)dydx=\int_0^1 \int_x^1 2 dydx=\int_0^1 2(1-x) dx=\left.2x-\frac{2x^2}{2}\right|_0^1=1.
+\end{align*}
+La definición de distribuciones marginales:
+\begin{framed}
+    \begin{thmd} \label{marginales}
+	Las distribuciones marginales de v.a continuas $X$ y $Y$, denotadas por $f_X(x)$ y $f_Y(y),$ se definen como
+	\begin{align*}
+	f_X(x) = \intim f(x,y)dy,\\
+	\text{y}\\
+	f_Y(y)=\intim f(x,y)dx.
+	\end{align*}
+    \end{thmd}
+\end{framed}
+Entonces \textbf{a) las marginales son}:
+\begin{align*}
+f_X(x)=\intim f(x,y)dy =\int_x^1 2 dy=\left. y\right|_{0}^1=2(1-x).\\
+f_Y(y)=\intim f(x,y)dx=\int_y^1 2 dx=\left. x\right|_{0}^1=2(1-y),
+\end{align*} es decir,
+\begin{align*}
+f_X(x)=\left\{\begin{array}{cc}
+2(1-x) & 0\leq x\leq 1\\
+0 & \text{en otro caso.}
+\end{array} \right.\ \ \ \ \text{y} \ \ \ f_Y(y)=\left\{\begin{array}{cc}
+2(1-y) & 0\leq y\leq 1\\
+0 & \text{en otro caso.}
+\end{array} \right.
+\end{align*} 
+\textbf{La marginal de $Z=X+Y$ se entrega en la próxima tarea.}\\
+
+Ocupando la siguiente definición (vista en clase):
+\begin{framed}
+    \begin{thmd} \label{independencia}
+    Dos variables aleatorias continuas se dice que son \textbf{independientes} si su distribución conjunta se puede expresar como el producto de sus marginales.
+    $$f(x,y)=f_X(x)f_Y(y).$$
+    \end{thmd}
+\end{framed} 
+Lo anterior es equivalente a decir que si la distribución conjunta no se puede expresar como el producto de sus marginales entonces no es independientes (equivalencia lógica). Entonces observemos que:
+\begin{align*}
+f(x,y)=2\neq 2(1-x)\cdot 2(1-y)=\fx \fy .
+\end{align*}
+Por lo tanto, \textbf{b) podemos concluir que $X$ y $Y$ no son independientes por que el producto de sus marginales no es la conjunta.}\ \ \  \fin
+
+3. Halle la densidad condicional de $X|Y=y$ si $(X,Y)$ tiene densidad conjunta \begin{align*}
+f_{X,Y}(x,y)=\frac{1}{y}\exp \left(-\frac{x}{y}-y \right) \ \text{para} \ x,y>0.
+\end{align*} 
+También calcule $\mE(X|Y=y)$.
+
+\res Recordemos la definición de distribución condicional:
+\begin{framed}
+    \begin{thmd} \label{distribucion_condicional}
+    Las distribuciones condicionales de $X|Y=y$ y $Y|X=x$ denotadas por $f_{X|y}(x)$ y $f_{Y|x}(y)$ se definen de la siguiente forma. Para cada valor de $y$ 
+    \begin{align*}
+f_{X|y}(x)=\frac{f(x,y)}{f_Y(y)}.
+\end{align*}
+Es un función de densidad en $X$. Sus valores pueden depender (en el sentido de función matemática, de $y$, pero como este valor es dado, no representa un factor aleatorio). Análogamente, para cada valor $x$
+	   \begin{align*}
+	f_{Y|x}(y)=\frac{f(x,y)}{f_X(x)}.
+	\end{align*}
+    \end{thmd}
+\end{framed} 
+
+Entonces calculemos la función de densidad marginal de $Y$ en este problema es:
+\begin{align*}
+f_Y(y)=\int_{-\infty}^\infty f(x,y)dx=\int_{0}^\infty  \frac{1}{y}\exp \left(-\frac{x}{y}-y \right)dx=\frac{1}{y}\int_{0}^\infty \exp \left(-\frac{x}{y}-y \right)dx
+\end{align*}
+ocupando un cambio de variable $m=-\frac{x}{y}-y\Rightarrow dm=-\frac{1}{y}dx$, entonces
+\begin{align*}
+f_Y(y)&=\frac{1}{y}\int_{0}^\infty \exp \left(-\frac{x}{y}-y \right)dx=\frac{1}{y}\int_{0}^\infty \exp \left(m \right)(-y\ dm)=-\exp(m)=-\exp\left.\left(-\frac{x}{y}-y\right)\right|_{x=0}^\infty\\ \\ 
+&=\exp(-y).
+\end{align*}
+Es decir, la marginal de $Y$ es:
+$$f_Y(y)=\exp(-y), \ \ y>0.$$
+Entonces la distribución conjunta de $X|Y=y$ es:
+\begin{align*}
+f_{X|y}(x)=\frac{f(x,y)}{f_Y(y)}=\frac{\frac{1}{y}\exp\left(-\frac{x}{y}-y \right) }{\exp(-y)}=\frac{1}{y}\exp\left(\frac{x}{y}-y +y\right)=\frac{1}{y}\exp\left(\frac{x}{y}\right).
+\end{align*}
+Por lo tanto:
+\begin{align*}
+\mE(X|Y=y) =\int_{-\infty}^\infty x f_{X|y}(x)dx=\int_{0}^\infty \frac{x}{y}\exp\left(\frac{x}{y}\right). dx.
+\end{align*}
+Si observamos, es la esperanza de una variable que se distribuye como una exponencial con parámetro $\frac{1}{y}.$ Entonces, como sabemos que la esperanza de una variable poisson con parámetro $\lambda$ es $\frac{1}{\lambda}.$ Entonces \textbf{podemos concluir que esperanza condicional es}:
+\begin{align*}
+\mE(X|Y=y)= y.\ \ \ \finf
+\end{align*}
+
+
+4. Sea $Y\sim \exp(\theta)$ y dado $Y=y$, X tiene distribución de Poisson de media $y$. Encuentre la ley de $X$.
+
+\res Veamos que la densidad de $Y$ es 
+\begin{align*}
+\fy = \theta e^{-\theta y}. \ \ y>0.
+\end{align*}
+Y podemos ver que la densidad condicional de $X$ dado $Y=y$ es
+\begin{align*}
+f_{X|y}(x)= \frac{y^xe^{-y}}{x!}. \ x>0.
+\end{align*}
+Entonces usando la ley de probabilidad total tenemos que 
+\begin{align*}
+\fx&=\int_0^\infty f_{X|y}(x)f_Y(y)dy = \int_0^\infty \frac{y^xe^{-y}}{x!}  \theta e^{-\theta y} dy = \theta\int_0^\infty \frac{y^x e^{-(1+\theta)y}}{x!}dy
+\end{align*}
+haciendo un cambio de variable tenemos que $m=(1+\theta)y\Rightarrow dm=(1+\theta),$ entonces
+\begin{align*}
+\theta\int_0^\infty \frac{(m/(1+\theta))^x e^{-m}}{x!}dm= \frac{\theta}{(1+\theta)^{x+1}}\int_0^\infty \frac{m^x e^{-m}}{x!}dy=\frac{\theta}{(1+\theta)^{x+1}}.
+\end{align*}
+Por lo tanto, tenemos que
+\begin{align*}
+\fx = \frac{\theta}{(1+\theta)^{x+1}}, \ \ x=0,1\cdots
+\end{align*}
+Si hacemos un cambio de variable $p=\frac{1}{1+\theta}$, tenemos que lo anterior es igual a 
+\begin{align*}
+\fx = \frac{\theta}{(1+\theta)^{x+1}}=(1-p)p^n.
+\end{align*}
+Entonces podemos observar que $X\sim Geo(p).$ \ \ \ \ \fin
+
+5. Sea $(X, Y)$ un vector aleatorio con la siguiente densidad
+\begin{align*}
+f(x,y)=\left\{\begin{matrix}
+\pi^{-1} & x^2+y^2\leq 1\\
+0 & x^2+y^2>1
+\end{matrix} \right.
+\end{align*} 
+Demuestre $X$ y $Y$ no están correlacionadas, pero que no son independientes.
+
+\res Observemos que $X$ y $Y$ pueden tomar cualquier valor en el intervalo $[-1,1]$, por lo que podemos decir que son variables continuas. Entonces ocupando la definición de densidades marginales \ref{marginales}, las densidades marginales son:
+\begin{align*}
+\fy=\int_{-\sqrt{y^2-1}}^{\sqrt{y^2-1}}\pi^{-1} dx=\left.x\pi^{-1} \right|_{-\sqrt{y^2-1}}^{\sqrt{y^2-1}}=2\sqrt{y^2-1}\pi^{-1}, \ -1\leq y \leq 1.\\
+\fx=\int_{-\sqrt{x^2-1}}^{\sqrt{x^2-1}}\pi^{-1} dy=\left.y\pi^{-1} \right|_{-\sqrt{x^2-1}}^{\sqrt{x^2-1}}=2\sqrt{x^2-1}\pi^{-1}, \ -1\leq x \leq 1,
+\end{align*}
+es decir, 
+\begin{align*}
+\fx=\left\{ \begin{array}{cc}
+2\sqrt{x^2-1}\pi^{-1} & -1\leq x \leq 1.\\
+0 & \text{en otra caso.}
+\end{array} \right., \ \text{y}\ \fy=\left\{ \begin{array}{cc}
+2\sqrt{y^2-1}\pi^{-1} & -1\leq y \leq 1.\\
+0 & \text{en otra caso.}
+\end{array} \right.
+\end{align*}
+Ocupando el teorema \ref{independencia} podemos observar que
+\begin{align*}
+f(x,y)=\pi^{-1}\neq 2\sqrt{x^2-1}\pi^{-1} 2\sqrt{y^2-1}\pi^{-1} =\fx \fy.
+\end{align*}
+\textbf{Por lo que podemos concluir que $X$ y $Y$ no son independientes.}\\ 
+
+Ahora calculemos las siguientes esperanzas $\mE[X], \mE[Y], \mE[XY]:$
+\begin{align*}
+\mE[X]=\intim x \fx dx = \int_{-1}^1 2x\sqrt{x^2-1}\pi^{-1}dx
+\end{align*}
+ocupando un cambio de variable $m=x^2-1\Rightarrow dm =2xdx$, entonces 
+\begin{align*}
+\int 2x\sqrt{x^2-1}\pi^{-1}dx=\pi^{-1}\int \sqrt{m} dm=\pi^{-1}\frac{2m^{3/2}}{3} = \frac{2(x^2-1)^{3/2} \pi^{-1}}{3}.
+\end{align*}
+Por lo que 
+\begin{align*}
+E[X]=\left. \frac{2(x^2-1)^{3/2} \pi^{-1}}{3} \right|_{-1}^1=\frac{2(1^2-1)^{3/2} \pi^{-1}}{3}-\frac{2(1^2-1)^{3/2} \pi^{-1}}{3}=0.
+\end{align*}
+Ahora,
+\begin{align*}
+\mE[Y]=\intim y \fy dy = \int_{-1}^1 2y\sqrt{y^2-1}\pi^{-1}dy
+\end{align*}
+ocupando un cambio de variable $m=y^2-1\Rightarrow dm =2ydy$, entonces 
+\begin{align*}
+\int 2y\sqrt{y^2-1}\pi^{-1}dy=\pi^{-1}\int \sqrt{m} dm=\pi^{-1}\frac{2m^{3/2}}{3} = \frac{2(y^2-1)^{3/2} \pi^{-1}}{3}.
+\end{align*}
+Por lo que 
+\begin{align*}
+E[Y]=\left. \frac{2(y^2-1)^{3/2} \pi^{-1}}{3} \right|_{-1}^1=\frac{2(1^2-1)^{3/2} \pi^{-1}}{3}-\frac{2(1^2-1)^{3/2} \pi^{-1}}{3}=0.
+\end{align*}
+Y por último:
+\begin{align*}
+\mE[XY]=\intim\intim xy f(x,y) dx dy = \int_{-1}^1 \int_{-\sqrt{x^2-1}}^{\sqrt{x^2-1}} xy\pi^{-1}dydx=\int_{-1}^1 x\pi^{-1}\left( \int_{-\sqrt{x^2-1}}^{\sqrt{x^2-1}} y\right) dydx \\ \\
+=\int_{-1}^1 x\pi^{-1}\left(\left. \frac{y^2}{2}\right|_{-\sqrt{x^2-1}}^{\sqrt{x^2-1}} \right) dx =\int_{-1}^1 x\pi^{-1}\left( \frac{{\sqrt{x^2-1}}^2-\sqrt{x^2-1}^2}{2} \right) dx \int_{-1}^1 x\pi^{-1}\left(0 \right) dx =0.
+\end{align*}
+Entonces ocupando los resultados anteriores tenemos que 
+\begin{align*}
+Cov(X,Y)=\mE[(X-\mE(X))(Y-\mE(Y))]=\mE(XY)-\mE(X)\mE(Y)=0-0=0.
+\end{align*}
+Lo anterior implica que $\rho=0.$ \textbf{Y por lo tanto, podemos concluir que las $X$ y $Y$ no están correlacionadas.} \ \ \ \fin
+
+Este es un claro ejemplo de que si $Cov(X,Y)=0$, no necesariamente es cierto que las variables sean independientes, simplemente dice que no hay dependencia lineal, pero puede ser otro tipo de dependencia, que en el sentido contrario si es cierto. 
+
+6. \textbf{Se entrega en la próxima tarea.} 
+
+7. Cargue en R al conjunto de datos “Maíz.csv”, el cual contiene el precio mensual de la tonelada de maíz y el precio de la tonelada de tortillas en USD. En este ejercicio tendrá que estimar los coeficientes de una regresión lineal simple.
+
+a) Calcule de forma explícita la estimación de los coeficientes via mínimos cuadrados y ajuste la regresión correspondiente. Concluya.
+
+\res Para estimar los coeficientes de mínimos cuadrados tenemos que 
+$$Y=\beta_0+\beta_1X+\epsilon$$
+entonces, los estimadores de los coeficientes son de la forma:
+\begin{align*}
+\hat{\beta}_1 = \frac{N\sum x_i y_i-\sum x_i\sum y_i}{N\sum x_i^2-\left(\sum x_i \right)^2} \ \ \text{y} \ \ \hat{\beta}_0=\frac{N\sum x_i^2 \sum y_i -\sum x_i \sum x_i y_i}{N\sum x_i^2-\left(\sum x_i \right)^2}=\bar{y}-\hat{\beta}_0*\bar{x}
+\end{align*}
+
+Creemos una función para estimar los coeficientes por el método de mínimos cuadrados:
+```{r}
+min_cuadrados_reg <- function(x,y){
+  N<-length(x)
+  sum_xy <- sum(x*y)
+  sum_x <- sum(x)
+  sum_y <- sum(y)
+  sum_xx <-sum(x**2)
+  
+  hat_beta1 <- (N*sum_xy-sum_x*sum_y)/(N*sum_xx-(sum_x)**2)
+  hat_beta0 <- mean(y)-hat_beta1*mean(x)
+  list(beta0=hat_beta0, beta1=hat_beta1)
+}
+```
+
+
+Cargamos los datos de maíz, 
+
+```{r}
+maiz <- read.csv("Maiz.csv", col.names = c("p_tonelada_maiz", "p_tonelada_tortilla"))
+head(maiz, 3) # Mostamos los primeros registros.
+```
+Suponemos que podemos explicar el precio de la tonelada de tortilla apartir del precio de la tonelada de maíz, entonces ingresando nuestros datos a la función que escribimos tenemos que
+```{r}
+min_cuadrados_reg(maiz$p_tonelada_maiz, maiz$p_tonelada_tortilla)
+```
+Es decir, 
+$$\hat{Y}_{p\_tone\_tortilla}=684.9545+0.4600343X_{p\_tone\_maiz}.$$
+Graficamos los reales contra los estimados:
+```{r message=FALSE, warning=FALSE, fig.width = 5.2, fig.asp = 0.62, fig.align = "center"}
+maiz <- maiz %>%
+  mutate(y_hat_min = 684.9545+0.4600343*p_tonelada_maiz)
+ggplot(data=maiz, aes(x=p_tonelada_maiz, y=p_tonelada_tortilla))+
+  geom_point()+
+  geom_point(aes(y=y_hat_min), color="blue")
+```
+Para decir mas al respecto, realicemos un análisis de residuales con el objetivo de validar los supuestos que tenemos:
+
+- los errores tiene varianza constante.
+- se distribuyen como una normal.
+
+Para validar que tiene varianza constante grafiquemos los errores contra los predichos, si observamos un patrón de dispersión no aleatorio esto indicaría que la varianza de los residuos es mayor para ciertos valores predichos por el modelo, por lo que no cumpliría el supuesto de varianza constante.
+```{r message=FALSE, warning=FALSE, fig.width = 5.2, fig.asp = 0.62, fig.align = "center"}
+maiz <- maiz %>%
+  mutate(errores = p_tonelada_tortilla-y_hat_min)
+
+ggplot(data=maiz, aes(x=errores, y=y_hat_min))+
+  geom_point(color="blue")+
+  labs(title = "Errores vs Yhat")
+```
+Ahora validemos que los errores se distribuyen como una normal, para realizemos un gráfico QQ-plot.
+
+```{r message=FALSE, warning=FALSE, fig.width = 5.2, fig.asp = 0.62, fig.align = "center"}
+ggplot(data=maiz, aes(sample=errores))+
+  geom_qq(color="blue")+
+  labs(title = "Q-Q plot residual")
+```
+Por lo tanto, analizando los gráficos observamos que existe un patrón aleatorio de los errores vs predichos por que indica que la varianza es constante y además si observamos el gráfico QQ-plot podemos concluir que si se distribuye como una normal. Por lo que concluímos que es un buen ajuste este modelo. \\
+
+Entonces una conclusión de los datos que puede ser útil es decir que cada que suba una unidad el precio de la tonelada de maiz subirá 0.46 unidades la toneldad de tortilla.
+
+b) Calcule de forma explícita la estimación de los coeficientes via regresión no-paramétrica tipo kernel (ver Nadaraya, E. A. (1964). “On Estimating Regression”. Theory of Probability and its Applications. 9 (1): 141–2. doi:10.1137/1109020) y ajuste la regresión correspondiente. Concluya.
+
+\res Tenemos que aproximación de la curva de regresión de $Y:\ (\bar{y}(x))$ apartir de los datos, se tiene los estadísticos
+$$
+\bar{y}(x)=\frac{\sum_{i=1}^N y_i K\left(\frac{x-x_1}{h(n)} \right)}{\sum_{i=1}^NK\left(\frac{x-x_1}{h(n)} \right)}
+$$
+donde $K(X)$ es una función de densida que satisface las condiciones:
+\begin{itemize}
+\item $K(x)<C<\infty$
+\item $\lim_{x\Rightarrow \pm \infty}|xK(x)|=0.$
+\end{itemize}
+Entonces podemos usar un kernel gaussiano, ya que cumple con las dos condiciones. Ahora procedemos a realizar la función y a graficar los resultados
+
+```{r message=FALSE, warning=FALSE, fig.width = 5.2, fig.asp = 0.62, fig.align = "center"}
+kernel_gaussiano<-function(x, x_i, h, n){ # funcion del kernel gaussiano
+  dnorm((x-x_i)/(h*n))
+}
+
+y_stimate <- function(x, h, Dx, Dy){#funcion para estimar usando un kernel, 
+  # en este caso el gaussiano
+    n <- length(Dx) # tamaño de los datos
+    k <- kernel_gaussiano(x, Dx, h, n) #vector de kernels
+    k2 <- Dy*k
+    f <- sum(k2)/sum(k) 
+    f
+}
+maiz$y_hat <- sapply(maiz$p_tonelada_maiz, y_stimate, 0.015, maiz$p_tonelada_maiz, maiz$p_tonelada_tortilla)
+head(maiz)
+
+ggplot(data=maiz, aes(x=p_tonelada_maiz, y=p_tonelada_tortilla))+
+  geom_point()+
+  geom_point(aes(x=p_tonelada_maiz, y=y_hat), color="blue")
+```
+Observamos un "buen" ajuste. Debido a que desconozco que supuestos (a excepción de la función $K(x$)) tiene este modelo no puedo validar con más detalle los resultados. Algo que considero un poco complicado es determina $h$ para este modelo, no encontré literatura en donde lo implementen (si tienen alguna estaría chido leerla).
+
+c) Compare ambos resultados. ¿Qué diferencias observa?
+
+\res Veamos las dos estimaciones de ambos modelos.
+```{r message=FALSE, warning=FALSE, fig.width = 5.2, fig.asp = 0.62, fig.align = "center"}
+maiz <-maiz %>% 
+  select(p_tonelada_maiz, p_tonelada_tortilla, y_hat_min, y_hat) %>%
+  gather(key="modelo", value = "y", 3:4) %>%
+  mutate(modelo =ifelse(modelo=="y_hat_min","Mini-Cuadra","No-Parame") )
+
+ggplot(data=maiz, aes(x=p_tonelada_maiz, y=p_tonelada_tortilla))+
+  geom_point()+
+  geom_point(aes(x=p_tonelada_maiz, y=y, color=modelo))+
+  labs(title="Comparación de los estimaciones.")+
+  theme(legend.position = c(0.85, 0.25))
+```
+Comparando las estimaciones ambas a mi parecer son muy buenas, observamos mayor diferencias en los valores extremos de los datos pero no es demasiada. Desde mi pespectiva eligiría el modelo de regresión por su simplicidad y además tengo más herramientas para validar su rendimiento, en cambio con el modelo no-paremtrico desde que función kernel o la amplitud ($h$) a escoger no supe como validar que los que yo elegí son buenos o no. Pero igual considero que eso puede ser un ventaja sobre la regresión, ya que como puedes utilizar una gran variadad de funciones kernel (obviamente que cumplan con los supuestos) y $h's$ por lo que existirá una gran diversidad de ajustes distintos. \ \ \ \ \fin
+
+8. Supongamos que se desea estudiar un número, $n$, grande de muestras de sangre para tratar de detectar una enfermedad rara en cada una de las muestras. Si cada muestra es analizada individualmente, se requieren $n$ pruebas. Supongamos que cada muestra se divide a la mitad y que de cada muestra se selecciona una de las mitades, las que se usan para crear una mezcla de todas ellas (i.e. se juntan en una sola muestra). Si la prueba es suficientemente sensitiva, esta mezcla puede examinarse y, si tal prueba sale negativa, no se requieren hacer mías pruebas y solo se necesita una (no hay enfermos en la muestra). Si la prueba de la mezcla es positiva, cada una de las mitades reservadas de la muestras (las mitades no mezcladas) pueden ser analizadas individualmente. En dicho caso, se necesitan un total de $n+ 1$. Así, si la enfermedad es rara, es posible que se puedan lograr algunos ahorros a través de este método
+de analizar en grupo.
+Generalicemos el esquema anterior y supongamos que las $n$ muestras primero se agrupan en $m$ grupos de tamaño $k$ (muestras); es decir, $n = mk$. Cada grupo se prueba con el método de grupo que se explico en el párrafo anterior; si un grupo sale positivo, cada individuo en el grupo es analizado individualmente. Si $X_i$ es el número de pruebas que se hacen en el $i-$ésimo grupo, el número total de pruebas que se hacen es $N =\sum_{i=1}^m Xi$. Sea $p$ la probabilidad de
+que un individuo cualquiera salga negativo en la prueba. Calcule la esperanza de $N$. ¿Por qué es importante que la enfermedad sea rara? Hint: Lea cuidadosamente el ejercicio. Note que la prueba de una muestra resulta en una v.a. $Bernoulli(p)$.
+
+\res Veamos como se distribuye $X_i,$ solo puede tomar dos valores 1 o $k+1$. La probabilidad de que $X_i$ sea 1 es $p^k$, ya que es la probabilidad de la todos los $k$ individuos en el grupo $i$ salen negativos y sabiendo que $p$ es la probabilidad de que un individuo cualquiera salga negativo, y como la probabilidad de que un individuo salga negativo es independiente a que otro individuo salga negativo se concluye que es $p^k$. Ahora, La probabilidad de que $X_i$ sea $k+1$ es $1-p^k$, ya que es la probabilidad de que salgan algún positivo en el grupo $i$ pero es equivalente al complemento de que todos salgan negativos. Por lo tanto, tenemos que la función de densidad de $X_i$ es:
+\begin{align*}
+f(x_i)=\left\{\begin{array}{cc}
+p^k & x_i=1\\
+1-p^k & x_i=k+1. 
+\end{array} \right.
+\end{align*}
+Ahora, por como esta definidos los $X_i$ suponemos que son independientes. Entonces tenemos que
+\begin{align*}
+\mE[N]&=\mE\left[\sum_{i=1}^m Xi\right]= \sum_{i=1}^m \mE[X_i]=\sum_{i=1}^m 1\cdot p^k+(1-p^k)*(k+1)=\sum_{i=1}^m p^k+k+1-kp^k-p^k\\
+&=\sum_{i=1}^m (k+1-kp^k)=m(k+1-kp^k).
+\end{align*}
+Si la enfermedad es rara eso implica que $p^k$ sea pequeña, por lo que en teoría $p^k>1-p^k$, es decir, sería más probable hacer una prueba que $k+1$ pruebas. Entonces en términos económicos y de tiempos, la metodología expuesta es muy eficaz y más óptima que analizar siempre todas las muestras por separados.  \ \ \ \fin
+
+\textbf{Honours problems}
+
+1. Sea $X$ una v.a continua con segundo momento finito. Demuestra que la mediana $M(X)$ de $X$ satisface
+
+\begin{align*}
+|M(X)-E(X)|\leq (Var(X))^{1/2}.
+\end{align*}
+
+Hint: Use los honour problems de la tarea anterior.
+
+\res Recordemos el siguiente teorema (visto en clase). 
+\begin{framed}
+    \begin{thmt}(Desigualdad de Jensen) \label{desigualdad_de_Jensen}
+    Si $X$ es una v.a con primer momento finito y $g$ es convexa, entonces 
+    $$E(g(X))\geq g(E(X)).$$
+    \end{thmt}
+\end{framed} 
+
+Si definimos a $g(x)=(|x-c|)^2\Leftrightarrow g(x)=(x-c)^2,$  observemos que:
+\begin{align*}
+g'(x)=2x-2c \ \ \text{y} \ \ g''(x)=2.
+\end{align*}
+Entonces como $g''(x)>0$ podemos decir que $g(x)$ es convexa. Ocupando el teorema \ref{desigualdad_de_Jensen} tenemos que 
+\begin{align} \label{desigualdad}
+\mE(|X-c|^2)\geq |c-\mE(X)|^2.
+\end{align}
+Observemos que cuando $c=\mE(X)$
+\begin{align*}
+E(|x-\mE(X)|^2)=Var(X).
+\end{align*}
+Ocupando lo demostrado en la tarea 3, podemos decir que cuando $c=M(X)$ se minimiza $\mE(|X-c|^2),$ por lo que se cumple que
+\begin{align*}
+Var(X)=\mE(|x-\mE(X)|^2)\geq \mE(|X-M(X)|^2)
+\end{align*}
+Y por lo tanto, ocupando \ref{desigualdad}:
+\begin{align*}
+Var(X)=\mE(|x-\mE|^2)\geq \mE(|X-M(X)|^2) &\geq (|M(X)-\mE(X)|^2)\ \Rightarrow \\ \\
+(Var(X))^{1/2}&\geq |M(X)-\mE(X)|\ \ \ \finf
+\end{align*}
