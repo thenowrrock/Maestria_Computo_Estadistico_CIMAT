@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020) (preloaded format=pdflatex 2020.10.3)  3 OCT 2020 15:12
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020) (preloaded format=pdflatex 2020.10.3)  4 OCT 2020 16:02
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -596,7 +596,17 @@ File: semaforo.png Graphic file (type png)
 <use semaforo.png>
 Package pdftex.def Info: semaforo.png  used on input line 374.
 (pdftex.def)             Requested size: 215.80571pt x 168.62958pt.
- [7 <./semaforo.png>] [8] (./T4_Enrique_Santibáñez_Cortes.aux
+ [7 <./semaforo.png>] [8] [9]
+Overfull \hbox (17.90662pt too wide) detected at line 500
+[]
+ []
+
+[10] [11]
+Overfull \hbox (4.504pt too wide) detected at line 549
+[]
+ []
+
+[12] [13] (./T4_Enrique_Santibáñez_Cortes.aux
 LaTeX Info: Redefining \. on input line 25.
 LaTeX Info: Redefining \% on input line 25.
 )
@@ -605,22 +615,22 @@ changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
  ) 
 Here is how much of TeX's memory you used:
- 8194 strings out of 481868
- 120735 string characters out of 5931009
- 450942 words of memory out of 5000000
+ 8199 strings out of 481868
+ 120763 string characters out of 5931009
+ 451970 words of memory out of 5000000
  24314 multiletter control sequences out of 15000+600000
- 586272 words of font info for 58 fonts, out of 8000000 for 9000
+ 583430 words of font info for 57 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 60i,16n,66p,973b,364s stack positions out of 5000i,500n,10000p,200000b,80000s
-{/home/enrique/.TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}{/home/enriqu
-e/.TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}{/home/enrique/.TinyTeX/texm
-f-dist/fonts/enc/dvips/lm/lm-mathex.enc}{/home/enrique/.TinyTeX/texmf-dist/font
-s/enc/dvips/lm/lm-mathsy.enc}{/home/enrique/.TinyTeX/texmf-dist/fonts/enc/dvips
-/lm/lm-mathit.enc}</home/enrique/.TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx
-10.pfb></home/enrique/.TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx8.pfb></hom
-e/enrique/.TinyTeX/texmf-dist/fonts/type1/public/lm/lmbxi10.pfb></home/enrique/
-.TinyTeX/texmf-dist/fonts/type1/public/lm/lmex10.pfb></home/enrique/.TinyTeX/te
-xmf-dist/fonts/type1/public/lm/lmmi10.pfb></home/enrique/.TinyTeX/texmf-dist/fo
+ 60i,16n,66p,1065b,451s stack positions out of 5000i,500n,10000p,200000b,80000s
+{/home/enrique/.TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}{/home/en
+rique/.TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}{/home/enrique/.TinyTeX/
+texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}{/home/enrique/.TinyTeX/texmf-dist/font
+s/enc/dvips/lm/lm-mathex.enc}{/home/enrique/.TinyTeX/texmf-dist/fonts/enc/dvips
+/lm/lm-mathsy.enc}</home/enrique/.TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx
+10.pfb></home/enrique/.TinyTeX/texmf-dist/fonts/type1/public/lm/lmbxi10.pfb></h
+ome/enrique/.TinyTeX/texmf-dist/fonts/type1/public/lm/lmex10.pfb></home/enrique
+/.TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi10.pfb></home/enrique/.TinyTeX/t
+exmf-dist/fonts/type1/public/lm/lmmi6.pfb></home/enrique/.TinyTeX/texmf-dist/fo
 nts/type1/public/lm/lmmi8.pfb></home/enrique/.TinyTeX/texmf-dist/fonts/type1/pu
 blic/lm/lmr10.pfb></home/enrique/.TinyTeX/texmf-dist/fonts/type1/public/lm/lmr6
 .pfb></home/enrique/.TinyTeX/texmf-dist/fonts/type1/public/lm/lmr8.pfb></home/e
@@ -630,10 +640,10 @@ dist/fonts/type1/public/lm/lmsy6.pfb></home/enrique/.TinyTeX/texmf-dist/fonts/t
 ype1/public/lm/lmsy8.pfb></home/enrique/.TinyTeX/texmf-dist/fonts/type1/public/
 amsfonts/symbols/msam10.pfb></home/enrique/.TinyTeX/texmf-dist/fonts/type1/publ
 ic/amsfonts/symbols/msbm10.pfb>
-Output written on T4_Enrique_Santibáñez_Cortes.pdf (8 pages, 229122 bytes).
+Output written on T4_Enrique_Santibáñez_Cortes.pdf (13 pages, 233807 bytes).
 PDF statistics:
- 131 PDF objects out of 1000 (max. 8388607)
- 103 compressed objects within 2 object streams
- 19 named destinations out of 1000 (max. 500000)
+ 158 PDF objects out of 1000 (max. 8388607)
+ 125 compressed objects within 2 object streams
+ 25 named destinations out of 1000 (max. 500000)
  6 words of extra memory for PDF output out of 10000 (max. 10000000)
 
