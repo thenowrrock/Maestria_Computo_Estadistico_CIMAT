@@ -68,17 +68,17 @@ ggplot(data=datos, aes(x=x_i, y=y))+
   geom_point(colour="blue")+
   labs(x="X_(i)", title = "Q-Q Plot")
 ```
-
+El QQ-plot nos indica una clara relación entre los cuantiles de la muestra y los cuantiles teóricos, por lo que observamos un claro ajuste satisfactorio. Posiblemente en las colas es dónde no se ajusta bien, pero eso es debido al tamaño de muestra pequeño que simulamos.
 
 ```{r message=FALSE, warning=FALSE, fig.width = 5.2, fig.asp = 0.62, fig.align = "center"}
-exp_teoric <- data.frame(y=dexp(x=seq(0,11),rate=1/2), x=seq(0,11))
-ggplot(data=datos, aes(x_i))+
-  geom_histogram(bins=11,fill="blue", aes(y=stat(count)/sum(count)))+
+exp_teoric <- data.frame(y=dexp(x=seq(min(datos$x_i),max(datos$x_i),0.5),rate=1/2), x=seq(min(datos$x_i),max(datos$x_i),0.5)+0.25)
+ggplot(data=datos, aes(x_i, y=..density..))+
+  geom_histogram(fill="blue",,breaks=seq(0,11,0.6))+
   geom_point(data=exp_teoric, aes(x,y))+
   geom_line(data=exp_teoric, aes(x,y))+
   labs(y="Probabilidad y Frecuencias", x="x", title="CDF y histograma exponencial.")
 ```
-Por lo tanto, con lo anterior validamos que efectivamente se generan números aleatorios de una exponencial (o cualquier otra) apartir de una Uniforme. \ \ \ \fin
+Por lo tanto, con lo anterior validamos que efectivamente se generan números aleatorios de una exponencial (o cualquier otra) apartir de una Uniforme. Ya que podemos observar en el histograma y la CDF una gran similitud. \ \ \ \fin
 
 2. Sea A el triángulo de vértices (0, 0), (0, 1), (1, 0) y suponga que $X, Y$ tiene una densidad conjunta uniforme en el triángulo. (a) Halle las distribuciones marginales de $X, Y \ \text{y}\ Z =X + Y$ . (b) ¿Son $X$ y $Y$ independientes? ¿Por qué?
 
@@ -118,7 +118,7 @@ f_X(x)=\left\{\begin{array}{cc}
 0 & \text{en otro caso.}
 \end{array} \right.
 \end{align*} 
-\textbf{La marginal de $Z=X+Y$ se entrega en la próxima tarea.}\\
+\textbf{La marginal de $Z=X+Y$ se entrega en la próxima tarea.}
 
 Ocupando la siguiente definición (vista en clase):
 \begin{framed}
@@ -233,7 +233,7 @@ Ocupando el teorema \ref{independencia} podemos observar que
 \begin{align*}
 f(x,y)=\pi^{-1}\neq 2\sqrt{x^2-1}\pi^{-1} 2\sqrt{y^2-1}\pi^{-1} =\fx \fy.
 \end{align*}
-\textbf{Por lo que podemos concluir que $X$ y $Y$ no son independientes.}\\ 
+\textbf{Por lo que podemos concluir que $X$ y $Y$ no son independientes.}
 
 Ahora calculemos las siguientes esperanzas $\mE[X], \mE[Y], \mE[XY]:$
 \begin{align*}
@@ -456,3 +456,226 @@ Y por lo tanto, ocupando \ref{desigualdad}:
 Var(X)=\mE(|x-\mE|^2)\geq \mE(|X-M(X)|^2) &\geq (|M(X)-\mE(X)|^2)\ \Rightarrow \\ \\
 (Var(X))^{1/2}&\geq |M(X)-\mE(X)|\ \ \ \finf
 \end{align*}
+
+\textbf{Ejercicios de las notas:}
+
+1. Se quiere verificar la programación del tiempo que debe durar la luz verde en un semáforo que se encuentra en una cierta intersección, con vuelta a la izquierda. Como no se tiene información al respecto, se envía a un estudiante graduado a hacer observaciones sobre el número de carros $X$
+y el número de camiones $Y$ que llegan en un ciclo (entre verde y verde); y con esto se construye la tabla de distribuciones conjunta. Se plantean una serie de preguntas y con ello confirmas qué tan eficiente fue el ciclo planeado. Los resultados fueron los siguientes
+\begin{figure}[H]
+\centering
+\includegraphics{semaforo.png}
+\end{figure}
+
+1.1. Verifica que es una tabla válida de probabilidades conjuntas.
+
+\res Observemos que todas las probabilidades son menores a 1 y mayores a 0, por lo que si cumple que $p(x,y)>0.$ Ahora validemos que la suma de todas las probabilidades conjuntas sumas 1:
+\begin{align*}
+\sum_{i=0}^5 \sum_{j=0}^2 p(X=j,Y=i)&= 0.025+0.050+0.125+0.150+
+0.100+0.050+0.015+0.030+0.075+\\
+&\ \ \ \ 0.090+0.060+0.030+0.010+ 0.020+0.050+0.060+0.040+0.020\\
+&=1
+\end{align*}
+Por lo tanto si cumple los dos supuestos para ser una probabilidad conjunta. 
+
+1.2. Calcula las distribuciones marginales para carros y camiones.
+
+\res Por definición \ref{marginales} tenemos que:
+\begin{align*}
+p(x)&= \sum_{i=0}^5 p(x,Y=i) \Rightarrow \left\{\begin{array}{cc}
+0.025+0.050+0.125+0.150+
+0.100+0.050=\textbf{0.5} & \text{si} \ x=0\\
+0.015+0.030+0.075+0.090+0.060+0.030=\textbf{0.3} & \text{si} \ x=1\\
+0.010+ 0.020+0.050+0.060+0.040+0.020= \textbf{0.2} & \text{si} \ x=2
+\end{array} \right. \ \text{y} \\ \\
+p(y)&= \sum_{j=0}^2 p(X=j,y) \Rightarrow \left\{\begin{array}{cc}
+0.025+0.015+0.010=\textbf{0.05} & \text{si} \ y=0\\
+0.050+0.030+0.020=\textbf{0.10} & \text{si} \ y=1\\
+0.125+0.075+0.050= \textbf{0.25} & \text{si} \ y=2\\
+0.150+0.090+0.060=\textbf{0.30} & \text{si} \ y=3\\
+0.100+0.060+0.040=\textbf{0.20} & \text{si} \ y=4\\
+0.050+0.030+0.020=\textbf{0.10} & \text{si} \ y=5
+\end{array} \right.
+\end{align*}
+
+1.3. ¿Cuál es la probabilidad de que se tengan exactamente un carro y un camión en un ciclo dado?
+
+\res Utilizando la probabilidad conjunta sería:
+\begin{align*}
+p(X=1,Y=1)=0.030.
+\end{align*}
+Observemos que para este caso en especifico se cumple que 
+\begin{align*}
+p(X=1,Y=1)=0.030=(0.10)\cdot (0.30)=p(X=1)p(Y=1).
+\end{align*}
+
+1.4. Supongamos que la vuelta a la izquierda tiene una capacidad máxima de 5 carros y un camión es equivalente a 3 carros. ¿ Cuál es la probabilidad de que se sature la línea en un ciclo dado?
+
+\res Como la capacidad máxima es de 5 carros, la línea se satura cuando sobrepasan esta capacidad, entonces encontremos los valores para los cuales se cumple que:
+\begin{align*}
+p(X+3Y>5) \Leftrightarrow& 1-p(X+3Y\leq 5)\\
+&=1-\sum_{i=0}^1\sum_{j=0}^2p(X=j,Y=i)\\
+&=1-(0.05+0.10)\\
+&=1-(0.15)=0.85.
+\end{align*}
+Entonces, si observamos observamos una probabilidad muy alta de que se saturé la línea en un ciclo dado. Por lo que una buena  sugerencia es reducir el tiempo del semáforo.
+
+1.5. ¿Cuál es la probabilidad de que se tenga exactamente un carro, dado que ya se tiene un camión en un ciclo predeterminado y se sabe que no habrá ningún otro camión más? Contesta esta misma pregunta para $Y = 0, 1, 2, 3, 4, 5$.
+\end{enumerate}
+
+\res Ocupando la definición condicional \ref{distribucion_condicional} es sencillo calcular las probabilidades solicitadas:
+\begin{align*}
+p(x=1|y=0) = \frac{p(x=1,y=0)}{p(y=0)}=\frac{0.015}{0.05}=0.30 =p(x=1)\\ \\
+p(x=1|y=1) = \frac{p(x=1,y=1)}{p(y=1)}=\frac{0.030}{0.10}=0.30=p(x=1)\\ \\
+p(x=1|y=2) = \frac{p(x=1,y=2)}{p(y=2)}=\frac{0.075}{0.25}=0.30=p(x=1)\\ \\
+p(x=1|y=3) = \frac{p(x=1,y=3)}{p(y=3)}=\frac{0.090}{0.30}=0.30=p(x=1)\\ \\
+p(x=1|y=4) = \frac{p(x=1,y=4)}{p(y=4)}=\frac{0.060}{0.20}=0.30=p(x=1)\\ \\
+p(x=1|y=5) = \frac{p(x=1,y=5)}{p(y=5)}=\frac{0.030}{0.10}=0.30=p(x=1)
+\end{align*}
+Observamos que no para $X=1$ la probabilidad 
+$$p(X=1|Y=i)=p(X=1).$$
+Es decir, tal vez exista 'independencia' entre $X$ y $Y$. Falta validarlo para los demás valores de $X$ si se cumple lo mismo o también ocupar \ref{independencia} para comprobarlo. \ \ \ \fin 
+
+2. Calcula la regresión de $Y_1$ sobre $Y_2 = y_2 = 1$ en el ejemplo. Tendría ésta un significado valorable? explica tanto como puedas.
+
+\res Recordemos que $Y_1$ representa el tiempo que tarda un cliente desde que entra al local hasta que deja la ventanilla de servicio, y $Y_2$ el tiempo que dura en la fila hasta que llega a la ventanilla de servicio, y además que las funciones de probabilidades conjuntas y marginales son:
+
+\begin{align*}
+f_{Y_1,Y_2}(y_1,y_2)=\left\{\begin{array}{cc}
+e^{-y_1} & 0\leq y_2 \leq y_1 \leq \infty\\
+0& \text{en otra parte}
+\end{array} \right.&, \ f_{Y_1}(y_1)=\left\{\begin{array}{cc}
+y_1 e^{-y_1} & 0\leq y_1\leq \infty\\
+0& \text{en otra parte}
+\end{array} \right. \ \text{y} \ \\
+&f_{Y_2}(y_2)=\left\{\begin{array}{cc}
+e^{-y_2} & 0\leq y_2 \leq \infty\\
+0& \text{en otra parte}
+\end{array} \right. .
+\end{align*}
+Entonces ocupando lo anterior podemos calcular la función de probabilidad condicional $Y_1|Y_2=y_2$:
+\begin{align*}
+f_{Y_1|y_2}(y_1)=\frac{f_{Y_1,Y_2}(y_1,y_2)}{f_{Y_2}(y_2)} =\frac{e^{-y_1}}{e^{-y_2}}=e^{-y_1+y_2} \ \ 0\leq y_2\leq y_1\leq \infty
+\end{align*}
+Por lo que, la regresión de $Y_1$ sobre $Y_2 = y_2 = 1$ es
+\begin{align*} 
+\mE[Y_1|Y_2=y_2]=\intim f_{Y_1|y_2}(y_1) y_1 dy_1=\int_{y_2}^\infty e^{-y_1+y_2}y_1dy_1=e^{y_2}\int_{y_2}^\infty e^{-y_1}y_1dy_1,
+\end{align*}
+integrando por partes tenemos que $u=y_1\Rightarrow du = dy_1, \ v=\int e^{-y_1}\Rightarrow -e^{-y_1}$ entonces
+\begin{align*}
+\int e^{-y_1}y_1dy_1= -y_1e^{-y_1}+\int e^{-y_1}= -y_1e^{-y_1}-e^{-y_1}
+\end{align*}
+Por lo que podemos concluir que
+\begin{align} \label{regresion}
+\nonumber \mE[Y_1|Y_2=y_2]&=e^{y_2} \left[\left. \frac{-y_1}{e^{y_1}}-\frac{1}{e^{y_1}} \right|_{y_1=y_2}^\infty \right]=e^{y_2}\left[\lim_{y_1\rightarrow \infty}\left(  \frac{-y_1}{e^{y_1}}-\frac{1}{e^{y_1}} \right) +\frac{y_2}{e^{y_2}}+\frac{1}{e^{y_2}} \right]\\
+&=e^{y_2}\left[ \frac{y_2}{e^{y_2}}+\frac{1}{e^{y_2}} \right]=y_2+1
+\end{align}
+Por lo que,
+\begin{align*}
+\mE[Y_1|Y_2=1]=2.
+\end{align*}
+Si analizamos la regresión teórica encontrada \ref{regresion} observamos una función lineal en función de $y_2$ para explicar $y_1$, la interpretación de este hecho es que el tiempo total que tarda un cliente desde que entra al local hasta que deja la ventanilla de servicio se puede estimar con el tiempo que tardar en la fila hasta que llega a la ventanilla de servicio más un minuto. Recordando que el tiempo total es igual al tiempo que tarda en la fila más el tiempo que tarda en la ventanilla de servicio, por como esta definida la regresión \ref{regresion} podemos inferir que el tiempo de la ventanilla de servicio es constante (igual a 1) y esto nos dice demasiado, nos dice que por cada cliente te tardarás un minuto en atenderlo en la ventanilla de servicio.  \ \ \ \fin
+
+3. En un área determinada, cierto material es seleccionado al azar y pesado en dos tiempos distintos. Sea $W=$ peso del material (verdadero) y $X_1$ , $X_2$ las dos mediciones hechas. Uno puede pensar estas mediciones como
+$$X_1 =W + e_1$$
+$$X_2 =W + e_2$$,
+donde $e_1$ y $e_2$ son los errores de medición. Supongamos que $e_1$ y $e_2$ son independientes entre sí e independientes de $W$ y que $V(e_1)=V(e_2)=\sigma_e^2$. Expresar a $\rho$, el coeficiente de correlación entre $X_1$ y $X_2$ , en términos de $\sigma_W^2$ (la varianza del peso verdadero) y $\sigma_e^2$ ; interpreta el resultado.
+
+\res Recordemos que el coeficiente de correlación entre dos variables $X$ y $Y$ esta definido como
+\begin{align*}
+\rho=\frac{Cov(X,Y)}{\sigma_x\sigma_y},
+\end{align*}
+donde $$Cov(X,Y)=\mE[(X-\mE(X))(Y-\mE(Y))]=\mE[XY]-\mE[X]\mE[Y].$$
+Entonces procedemos a calcular las siguientes esperanzas para determinar el coeficiente de correlación entre $X_1$ y $X_2$:
+\begin{align*}
+\mE[X_1X_2]&=\mE[(W+\epsilon_1)(W+\epsilon_2)]=\mE[W^2+W\epsilon_1+W\epsilon_2+\epsilon_1\epsilon_2]\\
+&=\mE[W^2]+\mE[W\epsilon_1]+\mE[W\epsilon_2]+\mE[\epsilon_1\epsilon_2]\\
+&=\mE[W^2]+\mE[W]\mE[\epsilon_1]+\mE[W]\mE[\epsilon_2]+\mE[\epsilon_1]\mE[\epsilon_2]\\
+&=\sigma_W^2+\mu_W^2+\mu_W\mu_{\epsilon_1}+\mu_W\mu_{\epsilon_2}+\mu_{\epsilon_1}\mu_{\epsilon_2}.\\ \\
+\mE[X_1]\mE[X_2]&=\mE[W+\epsilon_1]\mE[W+\epsilon_2]=(\mE[W]+\mE[\epsilon_1])(\mE[W]+\mE[\epsilon_2])\\
+&=(\mu_W+\mu_{\epsilon_1})(\mu_W+\mu_{\epsilon_2}) = \mu_W^2+\mu_W\mu_{\epsilon_1}+\mu_W\mu_{\epsilon_2}+\mu_{\epsilon_1}\mu_{\epsilon_2}.
+\end{align*}
+Entonces tenemos que 
+\begin{align*}
+Cov(X,Y)&=\mE[XY]-\mE[X]\mE[Y]=\sigma_W^2+\mu_W^2+\mu_W\mu_{\epsilon_1}+\mu_W\mu_{\epsilon_2}+\mu_{\epsilon_1}\mu_{\epsilon_2}-(\mu_W^2+\mu_W\mu_{\epsilon_1}+\mu_W\mu_{\epsilon_2}+\mu_{\epsilon_1}\mu_{\epsilon_2})\\
+&=\sigma_W^2.
+\end{align*}
+Ahora calculemos la varianza de $X_1$ y $X_2$:
+\begin{align*}
+Var(X_1)=Var(W+\epsilon_1)=Var(W)+Var(\epsilon_1)=\sigma_W^2+\sigma_{\epsilon_1}^2\ \text{y} \\
+Var(X_2)=Var(W+\epsilon_2)=Var(W)+Var(\epsilon_2)=\sigma_W^2+\sigma_{\epsilon_2}^2.
+\end{align*}
+Y esto implica que el coeficiente de correlación se pueda expresar como:
+\begin{align*}
+\rho=\frac{Cov(X_1,X_2)}{\sigma_{X_1}\sigma_{X_2}}=\frac{\sigma_W^2}{\sqrt{\sigma_W^2+\sigma_{\epsilon_1}^2}\sqrt{\sigma_W^2+\sigma_{\epsilon_2}^2}}.
+\end{align*}
+La relación lineal entre estas dos variables depende de la varianza del peso verdadero y de la varianza de los errores de medición, es decir, la relación de las dos mediciones en dos tiempos distintos se puede explicar por la varianza que tengan los errores y la varianza del peso del material. \fin
+
+4. Para $t=(t_1, t_2)$, la función generatriz de momentos conjunta del vector $W=(X,Y)$ está dada por 
+\begin{align*}
+M_{X,Y}(t_1, t_2)= \mE(e^{t'W})&=\mE(e^{t_1x+t_2y})\\
+&=\exp\left\{t_1\mu_x+t_2\mu_y+\frac{1}{2}(\sigma_x^2t_1^2+2\rho \sigma_x\sigma_y t_1t_2+\sigma_y^2t_2^2)\right\}
+\end{align*}
+Demostrar la igualdad anterior.
+
+\res Tenemos que 
+\begin{align*}
+M_{X,Y}(t_1, t_2)= \mE(e^{t'W})&=\mE(e^{t_1x+t_2y})\\
+&=\intim \intim e^{t_1x+t_2y}f(x,y)dx dy \\ \\
+&=\intim \intim e^{t_1x+t_2y} f_{Y|x}(y)f(x)dx dy\ \ \ \ \ \ \textit{definición de dist. conjunta}\\ \\
+&=\intim \left\{ \intim f_{Y|x}(y) e^{t_2y} dy  \right\} e^{t_1x}\fx dx\ \ \ \textit{paso algebraico}
+\end{align*}
+Ahora como sabemos 
+$$(Y|X=x)\sim N\left(\mu_{Y|X}=\mu_y+\rho\frac{\sigma_y}{\sigma_x}(x-\mu_x),\sigma_{Y|X}^2=\sigma_y^2(1-\rho^2)\right)$$
+Entonces la integral es la generadora de momentos de normal normal y como sabemos que la generadora de momentos de una $Z\sim N(\mu_z, \sigma_z^2)$ es igual a 
+$$M_Z(t)=e^{\mu_zt+\frac{1}{2}\sigma_z^2t^2}.$$
+Sabiendo eso, tenemos entonces que
+\begin{align*}
+M_{X,Y}(t_1, t_2)&= \intim e^{t_1x}\fx \left\{ \exp\left[\frac{1}{2}\sigma_2^2t_2^2(1-\rho^2)+t_2\left(\mu_2+\rho\frac{\sigma_2}{\sigma_1} (x-\mu_1) \right) \right] \right\}\\ \\
+&=\exp\left[\frac{1}{2}\sigma_2^2t_2^2(1-\rho^2)+t_2\mu_2-t_2\rho\frac{\sigma_2}{\sigma_1} \mu_1 \right]\intim e^{((\rho\sigma_2/\sigma_1)t_2+t_1)x}\fx dx
+\end{align*}
+Observemos que la última integral se puede resolver facilmente utilizando la definición de generadora de momentos para una variable normal (como la última integral):
+\begin{align*}
+\intim e^{((\rho\sigma_2/\sigma_1)t_2+t_1)x}\fx dx &=\intim e^{tx}\fx dx, \text{donde } t=(\rho\sigma_2/\sigma_1)t_2+t_1.\\
+&=\mE[e^{tx}]=\exp\left[\mu_1t+\frac{1}{2}\sigma_1^2t^2\right]\\
+&=\exp\left[\mu_1((\rho\sigma_2/\sigma_1)t_2+t_1)+\frac{1}{2}\sigma_1^2((\rho\sigma_2/\sigma_1)t_2+t_1)^2\right]\\
+&=\exp\left[\mu_1((\rho\sigma_2/\sigma_1)t_2+t_1)+\frac{1}{2}\sigma_1^2((\rho\sigma_2/\sigma_1)^2t_2^2+2(\rho\sigma_2/\sigma_1)t_2t_1+t_1^2)\right]\\
+&=\exp\left[\mu_1((\rho\sigma_2/\sigma_1)t_2+t_1)+\frac{\sigma_1^2(\rho\sigma_2/\sigma_1)^2t_2^2}{2}+\sigma_1\rho\sigma_2t_2t_1+\frac{\sigma_1^2t_1^2}{2}\right]\\
+&=\exp\left[\frac{\mu_1\rho\sigma_2t_2}{\sigma_1}+\mu_1t_1+\frac{\rho^2\sigma_2^2t_2^2}{2}+\sigma_1\rho\sigma_2t_2t_1+\frac{\sigma_1^2t_1^2}{2}\right]
+\end{align*}
+Sustituyendo lo anterior podemos concluir que:
+\begin{align*}
+M_{X,Y}(t_1, t_2)&=\exp\left[\frac{1}{2}\sigma_2^2t_2^2(1-\rho^2)+t_2\mu_2-t_2\rho\frac{\sigma_2}{\sigma_1} \mu_1 \right]\cdot \exp\left[\frac{\mu_1\rho\sigma_2t_2}{\sigma_1}+\mu_1t_1+\frac{\rho^2\sigma_2^2t_2^2}{2}+\sigma_1\rho\sigma_2t_2t_1+\frac{\sigma_1^2t_1^2}{2}\right]\\
+&=\exp\left[ \frac{1}{2}\sigma_2^2t_2^2(1-\rho^2)+t_2\mu_2-t_2\rho\frac{\sigma_2}{\sigma_1} \mu_1 +\frac{\mu_1\rho\sigma_2t_2}{\sigma_1}+\mu_1t_1+\frac{\rho^2\sigma_2^2t_2^2}{2}+\sigma_1\rho\sigma_2t_2t_1+\frac{\sigma_1^2t_1^2}{2} \right]\\
+&=\exp\left[\mu_1t_1+\mu_2t_2+\frac{\sigma_1^2t_1^2+\sigma_2^2t_2^2+2\rho \sigma_1t_1t_2}{2} \right].\ \ \ \finf
+\end{align*}
+
+5. Sean $X$ y $Y$ v.a. Mostrar que $\mE(Y|X)$ es el mejor predictor de $Y$ entre todas las funciones de $X$.
+
+\res Para mostrar que es el mejor predictor de $Y$ probaremos que $\mE(Y|X)=f(X)$ cumple 
+$$\min_{f(X)}\mE[(Y-f(X))^2].$$
+Para mostrarlo veamos que:
+\begin{align*}
+\mE[(Y-f(X))^2]&=\mE[(Y-f(X)+\mE(Y|X)-\mE(Y|X))^2]\\
+&=\mE[((Y-\mE(Y|X))+(\mE(Y|X)-f(X)))^2]\\
+&=\mE[(Y-\mE(Y|X))^2+(\mE(Y|X)-f(X))^2+2(Y-\mE(Y|X))(\mE(Y|X)-f(X))]\\
+&=\mE[(Y-\mE(Y|X))^2]+\mE[(\mE(Y|X)-f(X))^2]+2\mE[(Y-\mE(Y|X))(\mE(Y|X)-f(X))],
+\end{align*}
+ahora ocupando que:
+$$\mE[\mE[Y|X]]=\mE[Y].$$
+Esto implica que 
+\begin{align*}
+2\mE[(Y-\mE(Y|X))(\mE(Y|X)-f(X))]&=2(\mE[(Y-\mE(Y|X))])\mE[(\mE(Y|X)-f(X))]\\
+&=2(\mE[Y]-\mE[\mE(Y|X))])\mE[(\mE(Y|X)-f(X))]\\
+&=2(\mE[Y]-\mE[Y)])\mE[(\mE(Y|X)-f(X))]=0.
+\end{align*}
+Por lo que implica que 
+\begin{align*}
+\mE[(Y-f(X))^2]=\mE[(Y-\mE(Y|X))^2]+\mE[(\mE(Y|X)-f(X))^2],
+\end{align*}
+ahora por como esta definido (la esperanza de algo elevado al cuadrado) $\mE[(\mE(Y|X)-f(X))^2]$ podemos decir que es mayor o igual a cero para cualquier $f(X)$. Por lo que,
+\begin{align*}
+\mE[(Y-f(X))^2]=\mE[(Y-\mE(Y|X))^2]+\mE[(\mE(Y|X)-f(X))^2]\geq  \mE[(Y-\mE(Y|X))^2].
+\end{align*}
+Es decir, tiene un mínimo en $\mE[(Y-\mE(Y|X))^2]$, el cual se alcanza cuando $f(X)=\mE(Y|X)$,  o visto de otra forma $f(X)=\mE(Y|X)$ minimiza 
+$$\min_{f(X)}\mE[(Y-f(X))^2].$$
+Y por lo tanto, podemos concluir que $\mE(Y|X)$ es el mejor predictor de $Y$ entre todas las funciones de $X$. \fin
