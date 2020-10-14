@@ -1,0 +1,1299 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish]{babel}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{lmodern}
+\usepackage{xspace}
+\usepackage{multicol}
+\usepackage{hyperref}
+\usepackage{float}
+\usepackage{hyperref}
+\usepackage{color}
+\usepackage{framed}
+
+
+
+\usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
+\title{Modelos no paramétricos y de regresión 2018-1}
+\author{Tarea examen: pruebas binomiales y tablas de contingencia}
+\date{Fecha de entrega: 08/01/2017}
+\setlength{\parindent}{0in}
+\spanishdecimal{.}
+
+\newcommand{\X}{\mathbb{X}}
+\newcommand{\x}{\mathbf{x}}
+\newcommand{\Y}{\mathbf{Y}}
+\newcommand{\y}{\mathbf{y}}
+\newcommand{\xbarn}{\bar{x}_n}
+\newcommand{\ybarn}{\bar{y}_n}
+\newcommand{\paren}[1]{\left( #1 \right)}
+\newcommand{\llaves}[1]{\left\lbrace #1 \right\rbrace}
+\newcommand{\barra}{\,\vert\,}
+\newcommand{\mP}{\mathbb{P}}
+\newcommand{\mE}{\mathbb{E}}
+\newcommand{\mR}{\mathbb{R}}
+\newcommand{\mJ}{\mathbf{J}}
+\newcommand{\mX}{\mathbf{X}}
+\newcommand{\mS}{\mathbf{S}}
+\newcommand{\mA}{\mathbf{A}}
+\newcommand{\unos}{\boldsymbol{1}}
+\newcommand{\xbarnv}{\bar{\mathbf{x}}_n}
+\newcommand{\abs}[1]{\left\vert #1 \right\vert}
+\newcommand{\muv}{\boldsymbol{\mu}}
+\newcommand{\mcov}{\boldsymbol{\Sigma}}
+\newcommand{\vbet}{\boldsymbol{\beta}}
+\newcommand{\veps}{\boldsymbol{\epsilon}}
+\newcommand{\mcC}{\mathcal{C}}
+\newcommand{\mcR}{\mathcal{R}}
+\newcommand{\mcN}{\mathcal{N}}
+
+\newcommand{\ceros}{\boldsymbol{0}}
+\newcommand{\mH}{\mathbf{H}}
+\newcommand{\ve}{\mathbf{e}}
+\newcommand{\avec}{\mathbf{a}}
+\newcommand{\res}{\textbf{RESPUESTA}\\}
+
+\newcommand{\defi}[3]{\textbf{Definición:#3}}
+\newcommand{\fin}{$\blacksquare.$}
+\newcommand{\finf}{\blacksquare.}
+\newcommand{\tr}{\text{tr}}
+\newcommand*{\temp}{\multicolumn{1}{r|}{}}
+
+\newcommand{\grstep}[2][\relax]{%
+   \ensuremath{\mathrel{
+       {\mathop{\longrightarrow}\limits^{#2\mathstrut}_{
+                                     \begin{subarray}{l} #1 \end{subarray}}}}}}
+\newcommand{\swap}{\leftrightarrow}
+
+\newcommand{\gen}{\text{gen}}
+\newtheorem{thmt}{Teorema:}
+\newtheorem{thmd}{Definición:}
+\newtheorem{thml}{Lema:}
+
+\begin{document}
+\begin{table}[ht]
+\centering
+\begin{tabular}{c}
+\textbf{Maestría en Computo Estadístico}\\
+\textbf{Álgebra Matricial} \\
+\textbf{Tarea 6}\\
+\today \\
+\emph{Enrique Santibáñez Cortés}\\
+Repositorio de Git: \href{https://github.com/Enriquesec/Algebra_matricial/tree/master/tareas/Tarea_6}{Tarea 6, AM}.
+\end{tabular}
+\end{table}
+Todos los cálculos deben ser a mano.
+\begin{enumerate}
+%Problema 1
+%------------------------------------------------------------------------------------------------------%
+%------------------------------------------------------------------------------------------------------%
+%------------------------------------------------------------------------------------------------------%
+\item Dados los vectores $(1, -1, -2), (-1, -5, -8), (2, 1, 1), (2, -8, -14)$, encuentre la dimensión y una base del espacio generado por ellos.
+
+\res Recordemos el siguiente lema y teorema.
+\begin{framed}
+    \begin{thml} \label{espacio_generado_igua}
+	(Visto en clase) Sea $A=\{a_1,\cdots,a_n\}$ un conjunto de vectores que formar algún subespacio $S\subset \mR^m$. Supongamos que podemos encontrar un vector $a_i$ en $A$ tal que se puede expresar como una combinación lineal de los otros vectores de $A$. Entonces $$\gen(A-\{a_i\})=\gen(A),$$ donde $A-\{a_i\}$ denota todos los elementos de $A$ a excepción de $a_i$.
+    \end{thml}
+\end{framed}
+\begin{framed}
+    \begin{thmt} \label{vectores_iid}
+	(Visto en clase) Sea $A=\{a_1,\cdots,a_n\}$ un conjunto de vectores que formar algún subespacio $S\subset \mR^m$. Sea $A=[a_1,a_2,\cdots, a_n]$ la matriz de tamaño $m\times n$ formada por los vectores $a_i$ como columnas. Entonces $A$ es linealmente independiente si solo si el sistema homogeno tiene solución única la solución trivial, es decir, si el sistema $Ax=0$ solo tiene la solución trivial $x=0$.
+    \end{thmt}
+\end{framed}
+
+Denotemos a los vectores como $v_1=(1, -1, -2), v_2=(-1, -5, -8), v_3=(2, 1, 1)$ y $v_4=(2, -8, -14)$. Veamos cual es el espacio generado por los vectores,
+\begin{align*}
+H=\gen(\{v_1,v_2,v_3,v_4\})=\{ x:x=\alpha_1(1, -1, -2)+\alpha_2(-1, -5, -8)+\alpha_3(2, 1, 1)+\alpha_4(2, -8, -14) \}.
+\end{align*}
+Considerando el lema \ref{espacio_generado_igua} podemos encontrar una igualdad considerando solo vectores linealmente independientes. Usando el teorema  \ref{vectores_iid} y eliminación gaussiana podemos determinar si son vectores linealmente independiente y de ser el caso encontrar solo los vectores que lo sean.
+\begin{align}\label{A_invertible}
+\begin{pmatrix}
+ 1 & -1 & 2 & 2 \\
+-1 & -5 & 1 & -8\\
+-2 & -8 & 1 & -14
+\end{pmatrix}%
+\grstep[R_3\rightarrow R_3+2R_1]{R_2 \rightarrow R_2+R_1}
+%
+\begin{pmatrix}
+ 1 & -1 & 2 & 2 \\
+ 0 & -6 & 3 & -6\\
+ 0 & -10& 5 & -10
+\end{pmatrix}%
+\grstep[]{R_3 \rightarrow R_3-5R_2/3}
+%
+\begin{pmatrix}
+ 1 & -1 & 2 & 2 \\
+ 0 & -6 & 3 & -6\\
+ 0 &  0 & 0 & 0
+\end{pmatrix}.
+\end{align}
+Por lo anterior, tenemos que los vectores $v_1$ y  $v_2$ son linealmente independientes, entonces por el lema \ref{espacio_generado_igua}
+\begin{align*}
+H=\gen(\{v_1,v_2,v_3,v_4\})=\gen(\{v_1,v_2\}).
+\end{align*}
+
+\textbf{Por lo que una base para $H$ (el espacio generado por los vectores $\{v_1,v_2,v_3,v_4\}$)  sería considerando los vectores} $v_1=(1, -1, -2), v_2=(-1, -5, -8)$ ya que estos vectores cumple la definición de base \ref{base}: linealmente independiente y cumplen que generan a $H$. Ahora como la definición de la dimensión de un espacio vectorial esta definido como
+\begin{framed}
+    \begin{thmd} \label{dimension}
+	Sea $V$ un espacio vectoria. La dimensión de $V$ es el número de vectores en cualquier base de $V$.
+    \end{thmd}
+\end{framed}
+Entonces ocupando la definición \ref{dimension}, la dimensión del espacio generado por los vectores $\{v_1,v_2,v_3,v_4\}$ es el número de vectores que tienen cualquier base, en este caso como ya encontramos que una base la cual tiene 2 vectores podemos \textbf{concluir que la dimensión es 2}. \  \ \fin
+%Problema 2
+%------------------------------------------------------------------------------------------------------%
+%------------------------------------------------------------------------------------------------------%
+%------------------------------------------------------------------------------------------------------%
+\item Determine sí los vectores $(3, -1, -1, 1), (1, -6, 3, 0), (0, 5, -1, 2), (1, 0, 1, 0)$ forman una base de $\mR^4$.
+
+\res Recordemos la definición de base.
+\begin{framed}
+    \begin{thmd} \label{base}
+	Sea $V$ un espacio vectorial, $W\subset V$ un subespacio. Una base de $W$ es un subconjunto de $W$ linealmente independiente que genera $W$.
+    \end{thmd}
+\end{framed}
+Veamos si los vectores del problema generan a $\mR^4$. Para ello sea $A$ la matriz generada que tienen como columnas los vectores del problema, es decir,
+\begin{align*}
+A=\begin{pmatrix}
+ 3 & 1 & 0 & 1\\
+-1 &-6 & 5 & 0\\
+-1 & 3 &-1 & 1\\
+ 1 & 0 & 2 & 0
+\end{pmatrix}.
+\end{align*}
+y sea $r=(r_1,r_2,r_3,r_4)\in \mR^4$. Entonces si el siguiente sistema $Ax=r$ tiene solución única, podemos decir que los vectores generan a $\mR^4.$ Para ver si tiene solución única procedemos a resolver el sistema con reduciendo la matriz aumentada a su forma escalonada.
+\begin{align*}
+&\left(\begin{array}{cccc|c}
+ 3 & 1 & 0 & 1&r_1\\
+-1 &-6 & 5 & 0&r_2\\
+-1 & 3 &-1 & 1&r_3\\
+ 1 & 0 & 2 & 0&r_4
+\end{array} \right)%
+\grstep[]{R_1 \leftrightarrow R_4}
+%
+\left(\begin{array}{cccc|c}
+ 1 & 0 & 2 & 0&r_4\\
+-1 &-6 & 5 & 0&r_2\\
+-1 & 3 &-1 & 1&r_3\\
+ 3 & 1 & 0 & 1&r_1
+\end{array} \right)%
+\grstep[R_3\rightarrow R_3+R_1]{R_2 \rightarrow R_2+R_1}
+%
+\left(\begin{array}{cccc|c}
+ 1 & 0 & 2 & 0&r_4\\
+ 0 &-6 & 7 & 0&r_2+r_4\\
+ 0 & 3 & 1 & 1&r_3+r_4\\
+ 3 & 1 & 0 & 1&r_1
+\end{array} \right)\grstep[R_3\rightarrow 2R_3+R_2]{R_4 \rightarrow R_4-3R_1}\\ \\ 
+&\left(\begin{array}{cccc|c}
+ 1 & 0 & 2 & 0&r_4\\
+ 0 &-6 & 7 & 0&r_2+r_4\\
+ 0 & 0 & 9 & 2&2(r_3+r_4)+r_2+r_4\\
+ 0 & 1 &-6 & 1&r_1-r_4
+\end{array} \right)%
+\grstep[]{R_4 \rightarrow 6R_4+R_2}
+%
+\left(\begin{array}{cccc|c}
+ 1 & 0 & 2 & 0&r_4\\
+ 0 &-6 & 7 & 0&r_2+r_4\\
+ 0 & 0 & 9 & 2&2r_3+3r_4+r_2\\
+ 0 & 0 &-29 & 6&6(r_1-r_4)+r_2+r_4
+\end{array} \right)%
+\grstep[]{R_4 \rightarrow 9R_4+29R_3}\\ \\
+&\left(\begin{array}{cccc|c}
+ 1 & 0 & 2 & 0&r_4\\
+ 0 &-6 & 7 & 0&r_2+r_4\\
+ 0 & 0 & 9 & 2&2r_3+3r_4+r_2\\
+ 0 & 0 & 0 &112&6r_1-5r_4+r_2+29(2r_3+3r_4+r_2).
+\end{array} \right)
+\end{align*}
+Como la forma escalonada de la matriz aumentada tiene $4$ pivotes podemos decir que el sistema tiene solución única, y por lo tanto, los vectores del problema generan a $\mR^4$. 
+\begin{framed}
+    \begin{thmt} \label{iid}
+	(Visto en clase) Sea $S=\{a_1,\cdots, a_n\}\subset\mR^n$. $S$ es linealmente independiente si y solo si la matriz formada con los $a_i$ como columnas es invertirle.
+    \end{thmt}
+\end{framed}
+Es sencillo ver en el procedimiento en dónde se encontro la forma escalonada reducida de la matriz aumentada observar que la forma escalonada de la matriz $A$ tiene $4$ pivotes, entonces que podemos decir que $A$ es invertible y por lo tanto decir que los vectores $(3, -1, -1, 1), (1, -6, 3, 0), (0, 5, -1, 2), (1, 0, 1, 0)$ son linealmente independientes. \\
+
+Y por lo tanto, \textbf{como los vectores $(3, -1, -1, 1), (1, -6, 3, 0), (0, 5, -1, 2), (1, 0, 1, 0)$ son linealmente independientes y además generan a $\mR^4$ podemos concluir (utilizando la definición de base \ref{base}) que los vectores forman una base para $\mR^4$}.\ \ \ \ \fin
+%Problema 3
+%------------------------------------------------------------------------------------------------------%
+%------------------------------------------------------------------------------------------------------%
+%------------------------------------------------------------------------------------------------------%
+\item Sean $x_1 , x_2 , . . ., x_r$ linealmente independientes en $\mR^n$. Si $A$ es una matriz $n\times n$ invertible, demuestre que $Ax_1 , Ax_2 , . . ., Ax_r$ son linealmente independientes.
+
+\res Para la demostración se ocupara el siguiente lema y la definición del rango.
+\begin{framed}
+    \begin{thml} \label{ab_nosingular}
+	Si $A_{m\times n}$ una matriz no singular y $B_{n\times n}$ una matriz entonces
+	$$\rho (AB)=\rho(B)\ \ \text{y}\ \ \mcC(AB)=\mcC(B).$$  
+    \end{thml}
+\end{framed}
+\begin{framed}
+    \begin{thmd} \label{rango}
+	Sea $A$ una matriz $m\times n$. El rango de $A$ es el número de renglones linealmente independientes de $A$. 
+    \end{thmd}
+\end{framed}
+Con los $x_i's$ podemos formar una matriz $B$ tal que las columnas sean los vectores $x_i$, es decir,
+$$B=\begin{pmatrix} x_1& x_2& \cdots & x_r \end{pmatrix}.$$
+Ahora, como los vectores $x_i's$ son linealmente independientes podemos decir $\rho(B)=r$ (definición del rango \ref{rango}). Ahora formemos una matriz $C$ tal que sus columnas sean los vectores $Ax_i's,$ es decir,
+$$C=\begin{pmatrix} Ax_1& Ax_2& \cdots & Ax_r \end{pmatrix}.$$
+Como $A$ es no singular y ocupando el lema \ref{ab_nosingular} tenemos que 
+\begin{align*}
+\rho(C)=\rho(AB)=\rho(B)=r.
+\end{align*}
+Como el $\rho(C)=r,$ podemos decir que la matriz $C$ tiene $r$ columnas independientes, pero como las columnas de $C$ son los $Ax_i's$ podemos concluir que $Ax_1 , Ax_2 , . . ., Ax_r$ son linealmente independientes. \fin
+%Problema 4
+%------------------------------------------------------------------------------------------------------%
+%------------------------------------------------------------------------------------------------------%
+%------------------------------------------------------------------------------------------------------%
+\item Dada la matriz 
+\begin{align*}
+\begin{pmatrix}
+2 & 9 & 4 & -3 & 10\\
+1 & 7 & 2 &  3 & -4\\
+1 & 6 & 2 &  0 &  2\\
+3 & 9 & 6 &  0 & 6
+\end{pmatrix}
+\end{align*}
+encuentre bases para $\mcN(A), \mcC(A)$ y $\mcR(A)$. Encuentra el rango de $A$, la nulidad de $A$ y la dimensión de $\mcR(A)$.
+
+\res Recordemos las definiciones de espacio columna, nulo y renglon.
+\begin{framed}
+    \begin{thmd} \label{espacio_columna}
+    Sea $A$ una matriz de tamaño $m\times n$. El espacio columna de $A$ es 
+    $$\mathcal{C}(A)=\{y\in \mR^m|y=Ax\ \ \textbf{para algún}\ x\in\mR^n \}$$
+    El rango de una matriz $A$ es la dimensión de $\mcC(A),$ y se denota como $\rho(A)$.
+    \end{thmd}
+\end{framed} 
+
+\begin{framed}
+    \begin{thmd} \label{espacio_renglon}
+    Sea $A$ una matriz de tamaño $m\times n$. El espacio renglón de $A$ es 
+    $$\mathcal{R}(A)=\{y\in \mR^n|y=A^tx\ \ \textbf{para algún}\ x\in\mR^m \}$$
+    \end{thmd}
+\end{framed} 
+
+\begin{framed}
+    \begin{thmd} \label{espacio_nulo}
+    Sea $A$ una matriz de tamaño $m\times n$. El espacio nulo de $A$ es
+    $$\mathcal{N}(A)=\{ \textbf{x}\in R^n | A\bf \textbf{x}=\textbf{0}.\}$$
+    La nulidad de $A$ es la dimensión de $\mcN(A)$, y se denota $v(A)$.
+    \end{thmd}
+\end{framed} 
+\textbf{El espacio columna de} $A$ por definición \ref{espacio_columna} se puede interpretar como
+\begin{align*}
+\mcC(A)&=\gen\{a_1, a_2,\cdots , a_n\}, \ \text{donde} \ a_i \text{ son las columas de }A.\\
+&=\gen\{\begin{pmatrix}2\\1\\1\\1\end{pmatrix},
+\begin{pmatrix} 9\\7\\6\\9\end{pmatrix},
+\begin{pmatrix}4\\2\\2\\6\end{pmatrix},
+\begin{pmatrix}-3\\3\\0\\0 \end{pmatrix},
+\begin{pmatrix}10\\-4\\2\\6 \end{pmatrix} \}.
+\end{align*}
+Ahora, ocupando el lema \ref{espacio_generado_igua} podemos encontrar vectores linealmente independientes tal que 
+$$\mcC(A)=\gen\left\{\begin{pmatrix}2\\1\\1\\1\end{pmatrix},
+\begin{pmatrix} 9\\7\\6\\9\end{pmatrix},
+\begin{pmatrix}4\\2\\2\\6\end{pmatrix},
+\begin{pmatrix}-3\\3\\0\\0 \end{pmatrix},
+\begin{pmatrix}10\\-4\\2\\6 \end{pmatrix} \right\}=\gen\{v_i,\cdots,v_j\}$$
+donde los $v_i,\cdots,v_j$ son vectores de las columnas de $A$. Entonces ocupando \ref{vectores_iid} y eliminación gaussiana determinaremos cuales columnas de $A$ son linealmente independientes.
+\begin{align}\label{matriz_escalonada}
+&\begin{pmatrix}
+2 & 9 & 4 & -3 & 10\\
+1 & 7 & 2 &  3 & -4\\
+1 & 6 & 2 &  0 &  2\\
+3 & 9 & 6 &  0 & 6
+\end{pmatrix}%
+\grstep[R_3\rightarrow 2R_3-R_1]{R_2 \rightarrow 2R_2-R_1}
+%
+\begin{pmatrix}
+2 & 9 & 4 & -3 & 10\\
+0 & 5 & 0 &  9 & -18\\
+0 & 3 & 0 &  3 &  -6\\
+3 & 9 & 6 &  0 & 6
+\end{pmatrix}%
+\grstep[R_4\rightarrow 2R_4/3]{R_3 \rightarrow 5R_3/3}
+%
+\begin{pmatrix}
+2 & 9 & 4 & -3 & 10\\
+0 & 5 & 0 &  9 & -18\\
+0 & 5 & 0 &  5 &  -10\\
+2 & 6 & 4 &  0 & 4
+\end{pmatrix}%
+\grstep[R_4\rightarrow R_4-R_1]{R_3 \rightarrow R_3-R_2} \nonumber\\ \nonumber\\ 
+& \begin{pmatrix}
+2 & 9 & 4 & -3 & 10\\
+0 & 5 & 0 &  9 & -18\\
+0 & 0 & 0 & -4 &  8\\
+0 &-3 & 0 &  3 & -6
+\end{pmatrix}%
+\grstep[]{R_4 \rightarrow 5R_4/3}
+%
+\begin{pmatrix}
+2 & 9 & 4 & -3 & 10\\
+0 & 5 & 0 &  9 & -18\\
+0 & 0 & 0 & -4 &  8\\
+0 &-5 & 0 &  5 & -10
+\end{pmatrix}%
+\grstep[]{R_4 \rightarrow R_4+R_2}
+%
+\begin{pmatrix}
+2 & 9 & 4 & -3 & 10\\
+0 & 5 & 0 &  9 & -18\\
+0 & 0 & 0 & -4 &  8\\
+0 & 0 & 0 & 14 & -28
+\end{pmatrix}%
+\grstep[]{R_4 \rightarrow R_4+14R_3/2}\nonumber \\ \nonumber\\
+&\begin{pmatrix}
+2 & 9 & 4 & -3 & 10\\
+0 & 5 & 0 &  9 & -18\\
+0 & 0 & 0 & -4 &  8\\
+0 & 0 & 0 &  0 & 0
+\end{pmatrix}. 
+\end{align}
+Por lo anterior podemos concluir que las columnas $a_1,a_2$ y $a_4$ son linealmente independientes y también que 
+$$\mcC(A)=\gen\left\{\begin{pmatrix}2\\1\\1\\1\end{pmatrix},
+\begin{pmatrix} 9\\7\\6\\9\end{pmatrix},
+\begin{pmatrix}4\\2\\2\\6\end{pmatrix},
+\begin{pmatrix}-3\\3\\0\\0 \end{pmatrix},
+\begin{pmatrix}10\\-4\\2\\6 \end{pmatrix} \right\}=\gen\left\{\begin{pmatrix}2\\1\\1\\1\end{pmatrix},
+\begin{pmatrix} 9\\7\\6\\9\end{pmatrix},
+\begin{pmatrix}-3\\3\\0\\0 \end{pmatrix}\right\}.$$
+Entonces como los vectores $\left\{\begin{pmatrix}2\\1\\1\\1\end{pmatrix},
+\begin{pmatrix} 9\\7\\6\\9\end{pmatrix},
+\begin{pmatrix}-3\\3\\0\\0 \end{pmatrix}\right\}$ son linealmente independiente y generan a $\mcC(A)$ podemos decir que son \textbf{una base para} $\mcC(A)$ (por la definición de base \ref{base}). Y entonces, como el rango de $A$ es la dimensión del espacio columna de $A$ podemos concluir por \ref{dimension} que el \textbf{rango de A es} 4, es decir, $\rho(A)=3.$\\
+
+Ahora, \textbf{el espacio nulo de una matriz} $A$ por definición \ref{espacio_nulo} podemos decir que todas las soluciones del sistema $Ax=0$ son el espació nulo. Entonces resolvemos el sistema utilizando eliminación guassiana y llevan a la $A$ a su forma escalonada reducida (retomamos la matriz en el paso
+
+\begin{align*}
+&\begin{pmatrix}
+2 & 9 & 4 & -3 & 10\\
+1 & 7 & 2 &  3 & -4\\
+1 & 6 & 2 &  0 &  2\\
+3 & 9 & 6 &  0 & 6
+\end{pmatrix}%
+\grstep[]{Pasos\ de \ \ref{matriz_escalonada}}
+%
+\begin{pmatrix}
+2 & 9 & 4 & -3 & 10\\
+0 & 5 & 0 &  9 & -18\\
+0 & 0 & 0 & -4 &  8\\
+0 & 0 & 0 &  0 & 0
+\end{pmatrix}%
+\grstep[]{R_3 \Rightarrow -R_3/4}
+%
+\begin{pmatrix}
+2 & 9 & 4 & -3 & 10\\
+0 & 5 & 0 &  9 & -18\\
+0 & 0 & 0 &  1 & -2\\
+0 & 0 & 0 &  0 & 0
+\end{pmatrix}%
+\grstep[R_2\Rightarrow R_2-9R_3]{R_1 \Rightarrow R_1+3R_3}\\ \\
+&\begin{pmatrix}
+2 & 9 & 4 &  0 & 4\\
+0 & 5 & 0 &  0 & 0\\
+0 & 0 & 0 &  1 &-2\\
+0 & 0 & 0 &  0 & 0
+\end{pmatrix}%
+\grstep[R_2\Rightarrow R_2/2]{R_1 \Rightarrow R_1/2}
+%
+\begin{pmatrix}
+1 & 9/2 & 2 &  0 & 2\\
+0 & 1 & 0 &  0 & 0\\
+0 & 0 & 0 &  1 &-2\\
+0 & 0 & 0 &  0 & 0
+\end{pmatrix}%
+\grstep[]{R_1 \Rightarrow R_1-9R_2/5}
+%
+\begin{pmatrix}
+1 & 0 & 2 &  0 & 2\\
+0 & 1 & 0 &  0 & 0\\
+0 & 0 & 0 &  1 &-2\\
+0 & 0 & 0 &  0 & 0
+\end{pmatrix}
+\end{align*}
+Por lo tanto, la solución general del sistema $Ax=0$ es $x_1+2x_3+2x_5=0, \ x_2=0, \ x_4-2x_5=0,$ y $x_3, x_5$ libres, esto implica (dando valores a $x_5=0,x_3=1$ y $x_5=1,x_3=0$ para encontrar la solución al sistema general) que 
+$$\mcN(A)=\gen\left\{\begin{pmatrix}
+-2\\
+0\\
+0\\
+2\\
+1
+\end{pmatrix},\begin{pmatrix}
+-2\\
+0\\
+1\\
+0\\
+0
+\end{pmatrix} \right\}.$$
+Y en conclusión una base para \textbf{el espacio nulo de $A$} es $\left\{\begin{pmatrix}
+-2\\
+0\\
+0\\
+2\\
+1
+\end{pmatrix},\begin{pmatrix}
+-2\\
+0\\
+1\\
+0\\
+0
+\end{pmatrix} \right\}$ y \textbf{la nulidad de $A$} sería la dimensión de $\mcN(A)$ que sería 2.\\
+
+Por último, es espacio renglón de por definición \ref{espacio_renglon} se puede interpretar como
+\begin{align*}
+\mcR(A)&=\gen(\{a_1^t, a_2^t,\cdots,a_n^t\}) \ \ \text{ donde } a_i^t \text{ son las columnas de} A.\\
+&=\gen(\left\{\begin{pmatrix}2\\9\\4\\-3\\10\end{pmatrix}, 
+\begin{pmatrix}1\\7\\2\\3\\-4\end{pmatrix},
+\begin{pmatrix}1\\6\\2\\0\\2\end{pmatrix},
+\begin{pmatrix}3\\9\\6\\0\\6\end{pmatrix}
+\right\}.
+\end{align*}
+Utilizando un razonamiento análogo al que se hizo para encontrar una base del espacio $\mcC(A)$, encontremos los vectores linealmente independientes.
+\begin{align*}
+\begin{pmatrix}
+ 2&1 &1&3\\
+ 9&7 &6&9\\
+ 4&2 &2&6\\
+-3&3 &0&0\\
+10&-4&2&6\\
+\end{pmatrix}%
+\grstep[R_5\Rightarrow R_5-5R_1]{R_3 \Rightarrow R_3-2R_1}
+%
+\begin{pmatrix}
+ 2&1 &1&3\\
+ 9&7 &6&9\\
+ 0&0 &0&0\\
+-3&3 &0&0\\
+0&-9&-3&-9\\
+\end{pmatrix}%
+\grstep[R_4\Rightarrow 2R_4+3R_1]{R_2 \Rightarrow 2R_2-9R_1}
+%
+\begin{pmatrix}
+ 2&1 &1&3\\
+ 0&5 &3&-9\\
+ 0&0 &0&0\\
+ 0&9 &3&9\\
+0&-9&-3&-9\\
+\end{pmatrix}%
+\grstep[]{R_2\leftrightarrow R_5}
+\end{align*}
+
+\begin{align*}
+\begin{pmatrix}
+ 2&1 &1&3\\
+ 0&5 &3&-9\\
+ 0&-9&-3&-9\\
+ 0&9 &3&9\\
+ 0&0 &0&0
+\end{pmatrix}%
+\grstep[R_4\Rightarrow R_4+R_3]{R_3 \Rightarrow 5R_3+9R_2}
+%
+\begin{pmatrix}
+ 2&1 &1&3\\
+ 0&5 &3&-9\\
+ 0&0&12&-126\\
+ 0&0 &0&0\\
+ 0&0 &0&0
+\end{pmatrix}.
+\end{align*}
+Por lo anterior podemos concluir que los vectores $a_1^t, a_2^t$ y $a_3^t$ son linealmente independientes y que 
+\begin{align*}
+\mcR(A)=\gen(\left\{\begin{pmatrix}2\\9\\4\\-3\\10\end{pmatrix}, 
+\begin{pmatrix}1\\7\\2\\3\\-4\end{pmatrix},
+\begin{pmatrix}1\\6\\2\\0\\2\end{pmatrix},
+\begin{pmatrix}3\\9\\6\\0\\6\end{pmatrix}
+\right\}=\gen(\left\{\begin{pmatrix}2\\9\\4\\-3\\10\end{pmatrix}, 
+\begin{pmatrix}1\\7\\2\\3\\-4\end{pmatrix},
+\begin{pmatrix}1\\6\\2\\0\\2\end{pmatrix}\right\}.
+\end{align*}
+Entonces como los vectores $\left\{\begin{pmatrix}2\\9\\4\\-3\\10\end{pmatrix}, 
+\begin{pmatrix}1\\7\\2\\3\\-4\end{pmatrix},
+\begin{pmatrix}1\\6\\2\\0\\2\end{pmatrix}\right\}$ son linealmente independiente y generan a $\mcR(A)$ podemos decir que \textbf{son una base para} $\mcR(A)$ (por la definición de base \ref{base}). Y entonces, la \textbf{dimensión del espacio renglon de $A$ es} 3.\ \ \ \fin
+
+Nota: Se muestra que $\mcC(A)=\mcR(A)$ y que $\mcC(A)+\mcN(A)=n.$
+%Problema 5
+%------------------------------------------------------------------------------------------------------%
+%------------------------------------------------------------------------------------------------------%
+%------------------------------------------------------------------------------------------------------%
+\item Dadas las bases $\mathcal{B}= \{(3, -1, -1), (1, -6, 3), (0, 5, -1)\}$ y $\mcC = \{(3, 0, 6), (2, 2, -4), (1, -2, 3)\}$ de $\mR^3$ , encuentre la matriz de cambio de base
+de $\mathcal{B}$ a $\mcC$ y la matriz de cambio de base de $\mcC$ a $\mathcal{B}$. Encuentre las coordenadas del vector $(-2, 7, 1)$ con respecto a cada una de las bases.
+
+\res Recordemos la definición de la matriz de cambio de base(\textit{vista en clase}).
+\begin{framed}
+    \begin{thmd} \label{matriz_base}
+	Si $(v_i)_{B_2}$ es el vector (en $\mR^n$) de coordenadas de $v_i$ con respecto a la base $B^2$, $v_{B_1}$ es el vector de coordenadas de v con respecto a la base $B_1$ y $v_{B_2}$ es el vector de coordenadas de v con respecto a la base $B_2$, entonces existe una matrix invertible $A$ dada por $A = ((v_1 )_{B_2} \cdots (v_2)_{B_2} )$ ( es decir, tiene los vectores de coordenadas como columnas) tal que $v_{B_2} = Av_{B_1}$.
+	$A$ es la matriz de cambio de coordenadas de la base $B_1$ a la base $B_2$.
+    \end{thmd}
+\end{framed}
+\begin{framed}
+    \begin{thmt} \label{matriz_base_inversa}
+	Si $A$ es la matriz de cambio de coordenadas de la base $\mathcal{B}_1$ a la base $\mathcal{B}_2$ entonces $A^{-1}$ es la matriz de cambio de coordenadas de la base $\mathcal{B}_2$ a la base $\mathcal{B}_1.$
+    \end{thmt}
+\end{framed}
+Con la definición \ref{matriz_base}, podemos encontrar la matriz de cambio de base de $\mathcal{B}$ a la base canónica de $\mR^3$ denotemosla como la matriz $P$ , y la matriz de cambio de la base $\mathcal{C}$ a la base canónica denotermosla como la matriz $Q$. Ocupando \ref{matriz_base_inversa} podemos demostrar sea $x\in\mR^3$, entonces
+\begin{align*}
+\left.\begin{array}{cc}
+x=Px'\\
+x=Qx''
+\end{array}\right\}\Rightarrow Px'=Qx''\Rightarrow x''=(Q^{-1}P)x'.
+\end{align*}
+Con lo anterior, ya podemos calcular fácilmente la matriz de cambio de bases:
+\begin{align*}
+P=\begin{pmatrix}
+ 3 & 1 & 0\\
+-1 &-6 & 5\\
+-1 & 3 & -1
+\end{pmatrix}, \ \ \ Q=\begin{pmatrix}
+ 3& 2 & 1\\
+ 0& 2 &-2\\
+ 6&-4 & 3
+\end{pmatrix}.
+\end{align*}
+Calculemos la matriz inversa de $Q$, utilizando la matriz aumentada.
+\begin{align*}
+&\left(\begin{array}{ccc|ccc}
+ 3& 2 & 1& 1 & 0 & 0\\
+ 0& 2 &-2& 0 & 1 & 0\\
+ 6&-4 & 3& 0 & 0 & 1
+\end{array}\right) %
+\grstep[R_3\Rightarrow R_3-2R_1]{R_1 \Rightarrow R_1-R_2}
+%
+\left(\begin{array}{ccc|ccc}
+ 3& 0 & 3& 1 & -1 & 0\\
+ 0& 2 &-2& 0 & 1 & 0\\
+ 0&-8 & 1&-2 & 0 & 1
+\end{array}\right) %
+\grstep[]{R_3 \Rightarrow R_3+3R_2}\\ \\
+&\left(\begin{array}{ccc|ccc}
+ 3& 0 & 3& 1 & -1 & 0\\
+ 0& 2 &-2& 0 & 1 & 0\\
+ 0& 0 &-7&-2 &4 & 1
+\end{array}\right)%
+\grstep[R_2\Rightarrow R_2/2]{R_3 \Rightarrow -R_3/7}
+%
+\left(\begin{array}{ccc|ccc}
+ 3& 0 & 3& 1 & -1 & 0\\
+ 0& 1 &-1& 0 & \frac{1}{2} & 0\\
+ 0& 0 & 1&\frac{2}{7} &-\frac{4}{7}& -\frac{1}{7}
+\end{array}\right)%
+\grstep[R_1\Rightarrow R_1/3-R_3]{R_2 \Rightarrow R_2+R_3}\\ \\
+&\left(\begin{array}{ccc|ccc}
+ 1& 0 & 0& \frac{-6+7}{21} & \frac{12-7}{21} &\frac{1}{7}\\
+ 0& 1 & 0& \frac{2}{7} & \frac{-8+7}{14} & -\frac{1}{7}\\
+ 0& 0 & 1&\frac{2}{7} &-\frac{4}{7}& -\frac{1}{7}
+\end{array}\right)=\left(\begin{array}{ccc|ccc}
+ 1& 0 & 0& \frac{1}{21} & \frac{5}{21} &\frac{1}{7}\\
+ 0& 1 & 0& \frac{2}{7} & -\frac{1}{14} & -\frac{1}{7}\\
+ 0& 0 & 1&\frac{2}{7} &-\frac{4}{7}& -\frac{1}{7}
+\end{array}\right)\Rightarrow Q^{-1}=\left(\begin{array}{ccc}
+ \frac{1}{21} & \frac{5}{21} &\frac{1}{7}\\
+ \frac{2}{7} & -\frac{1}{14} & -\frac{1}{7}\\
+ \frac{2}{7} &-\frac{4}{7}& -\frac{1}{7}
+\end{array}\right)
+\end{align*}.
+Por lo tanto, \textbf{la matriz de cambio de base de }$\mathcal{B}$ a $\mathcal{C}$ es 
+\begin{align*}
+Q^{-1}P=\left(\begin{array}{ccc}
+ \frac{1}{21} & \frac{5}{21} &\frac{1}{7}\\
+ \frac{2}{7} & -\frac{1}{14} & -\frac{1}{7}\\
+ \frac{2}{7} &-\frac{4}{7}& -\frac{1}{7}
+\end{array}\right)\begin{pmatrix}
+ 3 & 1 & 0\\
+-1 &-6 & 5\\
+-1 & 3 & -1
+\end{pmatrix}=\begin{pmatrix}
+\frac{3-5-3}{21} & \frac{1-30+9}{21} & \frac{25-3}{21}\\
+\frac{12+1+2}{14} & \frac{4+6-6}{14} & \frac{-5+2}{14}\\
+\frac{6+4+1}{7} & \frac{2+24-3}{7} & \frac{-20+1}{7}
+\end{pmatrix}=\begin{pmatrix}
+-\frac{5}{21} & -\frac{20}{21} & \frac{22}{21}\\
+\frac{15}{14} & \frac{2}{7} & -\frac{3}{14}\\
+\frac{11}{7} & \frac{23}{7} & -\frac{19}{7}
+\end{pmatrix}.
+\end{align*}
+Ahora, utilizando el teorema \ref{matriz_base_inversa} podemos calcular la matriz de cambio de base de $\mathcal{C}$ a $\mathcal{B}$ solamente calculando la inversad de la matriz de cambio de base de $\mathcal{B}$ a $\mathcal{C}$, es decir,
+\begin{align*}
+\left(\begin{array}{ccc|ccc}
+-\frac{5}{21} & -\frac{20}{21} & \frac{22}{21} & 1 & 0 &0\\
+\frac{15}{14} & \frac{2}{7} & -\frac{3}{14}&0&1&0 \\
+\frac{11}{7} & \frac{23}{7} & -\frac{19}{7}&0&0&1
+\end{array}\right)%
+\grstep[]{R_1 \Rightarrow -21R_1/5}
+%
+\left(\begin{array}{ccc|ccc}
+           1 & 4 & -\frac{22}{5} & -\frac{21}{5} & 0 &0\\
+\frac{15}{14} & \frac{2}{7} & -\frac{3}{14}&0&1&0 \\
+\frac{11}{7} & \frac{23}{7} & -\frac{19}{7}&0&0&1
+\end{array}\right)%
+\grstep[R_3\Rightarrow R_3-11R_1/7]{R_2 \Rightarrow R_2-15R_1/14}\\ \\
+\left(\begin{array}{ccc|ccc}
+   1 & 4 & -\frac{22}{5} & -\frac{21}{5} & 0 &0\\
+   0 &-4 & -\frac{9}{2}  &\frac{9}{2}&1&0 \\
+   0 &-3 &  \frac{21}{5} &\frac{33}{5}&0&1
+\end{array}\right)%
+\grstep[]{R_2 \Rightarrow -R_2/4}
+%
+\left(\begin{array}{ccc|ccc}
+   1 & 4 & -\frac{22}{5} & -\frac{21}{5} & 0 &0\\
+   0 & 1 & -\frac{9}{8}  & -\frac{9}{8} &-\frac{1}{4}&0 \\
+   0 &-3 &  \frac{21}{5} & \frac{33}{5} &0&1
+\end{array}\right)%
+\grstep[]{R_3 \Rightarrow R_3+3R_2}\\ \\ 
+\left(\begin{array}{ccc|ccc}
+   1 & 4 & -\frac{22}{5} & -\frac{21}{5} & 0 &0\\
+   0 & 1 & -\frac{9}{8}  & -\frac{9}{8} &-\frac{1}{4}&0 \\
+   0 & 0 &  \frac{33}{40} & \frac{129}{40} &-\frac{3}{4}&1
+\end{array}\right)%
+\grstep[]{R_3 \Rightarrow 40R_3/33}
+%
+\left(\begin{array}{ccc|ccc}
+   1 & 4 & -\frac{22}{5} & -\frac{21}{5} & 0 &0\\
+   0 & 1 & -\frac{9}{8}  & -\frac{9}{8} &-\frac{1}{4}&0 \\
+   0 & 0 &  1 & \frac{43}{11} &-\frac{10}{11}&\frac{40}{33}
+\end{array}\right)%
+\grstep[R_2 \Rightarrow R_2+8R_3/9]{R_1 \Rightarrow R_1+22R_3/5}\\ \\
+\left(\begin{array}{ccc|ccc}
+   1 & 4 &  0 & 13& -4 &\frac{16}{3}\\
+   0 & 1 &  0 &\frac{36}{11} &-\frac{14}{11}& \frac{15}{11} \\
+   0 & 0 &  1 & \frac{43}{11} &-\frac{10}{11}&\frac{40}{33}
+\end{array}\right)%
+\grstep[]{R_1 \Rightarrow R_1-4R_2}%
+\left(\begin{array}{ccc|ccc}
+   1 & 0 &  0 &-\frac{1}{11}&\frac{12}{11} &-\frac{4}{33}\\
+   0 & 1 &  0 &\frac{36}{11} &-\frac{14}{11}& \frac{15}{11} \\
+   0 & 0 &  1 & \frac{43}{11} &-\frac{10}{11}&\frac{40}{33}
+\end{array}\right).
+\end{align*}
+Es decir, \textbf{la matriz de cambio de base de } $\mathcal{C}$ a $\mathcal{B}$ es
+\begin{align*}
+\left(\begin{array}{ccc}
+-\frac{1}{11}&\frac{12}{11} &-\frac{4}{33}\\
+\frac{36}{11} &-\frac{14}{11}& \frac{15}{11} \\
+ \frac{43}{11} &-\frac{10}{11}&\frac{40}{33}
+\end{array}\right).
+\end{align*}
+\textbf{Ejemplo númerico.} Para determinar el vector $(-2,7,1)$ en la base $\mathcal{C}$, tenemos que 
+\begin{align*}
+x=Qx''\Rightarrow Q^{-1}x=x''.
+\end{align*}
+Entonces, el vector $(-2,7,1)$ en la base $\mathcal{C}$ se puede calcular como
+\begin{align*}
+(-2,7,1)_{\mathcal{C}}=\left(\begin{array}{ccc}
+ \frac{1}{21} & \frac{5}{21} &\frac{1}{7}\\
+ \frac{2}{7} & -\frac{1}{14} & -\frac{1}{7}\\
+ \frac{2}{7} &-\frac{4}{7}& -\frac{1}{7}
+\end{array}\right)\begin{pmatrix}
+-2\\
+7\\
+1
+\end{pmatrix}=\begin{pmatrix}
+\frac{-2+35+3}{21}\\ \\
+\frac{-28-7-2}{14}\\ \\
+\frac{-4-28-1}{7}
+\end{pmatrix}=\begin{pmatrix}
+\frac{12}{7}\\
+-\frac{17}{14}\\
+-\frac{33}{7}
+\end{pmatrix}.
+\end{align*}
+Por lo tanto, el vector en la base $\mathcal{B}$ es
+\begin{align*}
+(-2,7,1)_{\mathcal{B}}=\left(\begin{array}{ccc}
+-\frac{1}{11}&\frac{12}{11} &-\frac{4}{33}\\
+\frac{36}{11} &-\frac{14}{11}& \frac{15}{11} \\
+ \frac{43}{11} &-\frac{10}{11}&\frac{40}{33}
+\end{array}\right)
+\begin{pmatrix}
+\frac{12}{7}\\
+-\frac{17}{14}\\
+-\frac{33}{7}
+\end{pmatrix}=\begin{pmatrix}
+\frac{-12}{11(7)}+\frac{-12(17)}{11(14)}+\frac{4(33)}{33(7)}\\
+\frac{-12(36)}{11(7)}+\frac{-14(17)}{11(14)}+\frac{-15(33)}{11(7)}\\
+\frac{-12(43)}{11(7)}+\frac{-10(-17)}{11(14)}+\frac{-40(33)}{33(7)}\\
+\end{pmatrix}=\begin{pmatrix}
+-\frac{10}{11}\\
+\frac{8}{11}\\
+\frac{23}{11}
+\end{pmatrix}.\ \ \ \finf
+\end{align*}
+%Problema 6
+%------------------------------------------------------------------------------------------------------%
+%------------------------------------------------------------------------------------------------------%
+%------------------------------------------------------------------------------------------------------%
+\item Demuestre que dados cualquier conjunto finito $S$ de vectores en $\mR^n$, existe una matriz $A$ tal que $\mcN(A)=\gen (S)$. De un ejemplo de esto en $\mR^3$ y justifíquelo, es decir, encuentre un método para encontrar $A$.
+
+\res 
+\begin{framed}
+    \begin{thmt} \label{subespacio_dimension}
+	Si $V$ un espacio vectorial y $W\subset V$ un subespacio. Si $dim W=dim V$, entonces $V=W.$
+    \end{thmt}
+\end{framed}
+Sea $S$ el conjunto de vectores $\{s_1,s_2,\cdots ,s_r\},\  \ s_j\in \mR^n,$ y sea $\{v_{1}, v_{2}, \cdots v_k \}$ los vectores linealmente independiente del conjunto $S$, en donde  todos los $v_j's$ pertenecen al conjunto de los vectores $\{s_1,s_2,\cdots ,s_r\}$ y $k\leq r$ (por construcción). Entonces ocupando el teorema  \ref{espacio_generado_igua} tenemos que 
+\begin{align}\label{generado}
+\gen(S)=\gen(\{v_{1}, v_{2}, \cdots, v_k \}).
+\end{align}
+Ahora, sea $A$ una matriz de tamaño de $n\times k$ 
+$$A=\begin{pmatrix}
+(a_1)&(a_2)&\cdots&(a_n)
+\end{pmatrix}=\begin{pmatrix}
+a_{11}&a_{21}&\cdots&a_{n1}\\
+a_{12}&a_{22}&\cdots&a_{n2}\\
+\vdots&\vdots&\vdots&\vdots\\
+a_{1k}&a_{2k}&\cdots&a_{nk}\\
+\end{pmatrix}$$
+ tal que los vectores $\{v_{1}, v_{2}, \cdots, v_k \}$ son todas las posibles soluciones (independientes) de 
+$$Ax=0,$$
+es decir, para cada vector $v_i=\begin{pmatrix}
+v_{i1}\\
+v_{i2}\\
+\vdots\\
+v_{in}
+\end{pmatrix}$ se cumple que 
+\begin{align*}
+Av_i=\begin{pmatrix}
+a_{11}&a_{21}&\cdots&a_{n1}\\
+a_{12}&a_{22}&\cdots&a_{n2}\\
+\vdots&\vdots&\vdots&\vdots\\
+a_{1k}&a_{2k}&\cdots&a_{nk}\\
+\end{pmatrix}\begin{pmatrix}
+v_{i1}\\
+v_{i2}\\
+\vdots\\
+v_{in}
+\end{pmatrix}=\bf 0.
+\end{align*}
+Como se cumple para todos los vectores  $\{v_{1}, v_{2}, \cdots, v_k \}$ es equivalente a decir que 
+\begin{align*}
+&A((v_1)\ (v_2)\ \cdots\ (v_k))=0\Leftrightarrow\\ \\
+&(A((v_1)\ (v_2)\ \cdots\ (v_k))^{t}=0^{t}\Leftrightarrow\\ \\
+&((v_1)^t\ (v_2)^t\ \cdots\ (v_n)^t)A^{t}=0\Leftrightarrow\\ \\
+&\begin{pmatrix}
+v_{11}& v_{12}& \cdots&v_{1n}\\
+v_{21}&v_{22}& \cdots&v_{2k} \\
+\vdots&\vdots&\vdots&\vdots \\
+v_{k1}&v_{k2} & \cdots&v_{kn}& 
+\end{pmatrix}\begin{pmatrix}
+a_{11}&a_{12}& \cdots&a_{1k}\\
+a_{21}&a_{22}& \cdots&a_{2k} \\
+\vdots&\vdots&\vdots&\vdots \\
+a_{n1}&a_{n2} & \cdots&a_{nk}
+\end{pmatrix}
+=
+\begin{pmatrix}
+0&0& \cdots&0\\
+0&0& \cdots&0\\
+\vdots&\vdots&\vdots&\vdots \\
+0&0& \cdots&0\\
+\end{pmatrix}
+\end{align*}
+Por lo tanto, $A$ existe y se puede escribir como el conjunto solución del sistema homogéneo formado por los vectores independientes $\{v_{1}, v_{2}, \cdots, v_k \}$. Ahora demostremos que $\mcN(A)=\gen(S),$ para ello observemos que como $\{v_{1}, v_{2}, \cdots, v_k \}$ son soluciones del sistema homogéneo $Ax=0$ esto implica que para cualquier $w=\alpha_1v_{1}+\alpha_2v_2+\cdots \alpha_kv_{k}$ entonces  
+\begin{align*}
+Aw&=A(\alpha_1v_{1}+\alpha_2v_2+\cdots \alpha_kv_{k})=
+A(\alpha_1v_{1})+A(\alpha_2v_{2})+\cdots+A(\alpha_kv_{k})\\
+&=\alpha_1(Av_1)+\alpha_2(Av_2)+\cdots+\alpha_k(Av_k)=0.
+\end{align*}
+Entonces cualquier $w$ que se pueda expresar como combinación lineal de los vectores $\{v_{1}, v_{2}, \cdots, v_k \}$ este cumple que $w\in \mcN(A)$, entonces podemos decir que 
+$$\gen(\{v_{1}, v_{2}, \cdots, v_k \})\subset \mcN(A).$$
+Y por construcción como $dim(\gen(\{v_{1}, v_{2}, \cdots, v_k \})=k$ y $dim(\mcN(A))=k$, es decir, $dim(\gen(\{v_{1}, v_{2}, \cdots, v_k \})=dim(\mcN(A))$. Ocupando el teorema \ref{subespacio_dimension} podemos concluir que
+$$\gen(\{v_{1}, v_{2}, \cdots, v_k \})= \mcN(A).$$
+Y por lo tanto, ocupando el resultado anterior y \ref{generado}
+$$\mcN(A)=\gen(\{v_{1}, v_{2}, \cdots, v_k \})=\gen(S)\Leftrightarrow \mcN(A)=\gen(S).$$
+
+\textbf{Ejemplo númerico.} Sea $S=\left\{\begin{pmatrix}
+2\\
+-1\\
+1
+\end{pmatrix},\begin{pmatrix}
+2\\
+-3\\
+2
+\end{pmatrix}\right\}$. Veamos si los vectores son linealmente independiente, para eso ocuparemos el teorema \ref{vectores_iid}
+\begin{align*}
+\begin{pmatrix}
+ 2 & 2\\
+-1 & -3\\
+1 & 2
+\end{pmatrix}%
+\grstep[R_3 \rightarrow 2R_3-R_1]{R_2 \rightarrow 2R_2+R_1}
+%
+\begin{pmatrix}
+ 2 & 2\\
+ 0 &-4\\
+ 0 & 4
+\end{pmatrix}%
+\grstep[]{R_3 \rightarrow R_3+R_2}
+%
+\begin{pmatrix}
+ 2 & 2\\
+ 0 & 1\\
+ 0 & 0
+\end{pmatrix}
+\end{align*}
+Lo anterior implica que los vectores son linealmente independientes, y por lo tanto \\
+$dim\left(\gen\left\{\begin{pmatrix}
+2\\
+-1\\
+1
+\end{pmatrix},\begin{pmatrix}
+2\\
+-3\\
+2
+\end{pmatrix}\right\}\right)=2$. Ahora, encontremos la matriz $A$ tal que los vectores $\left\{\begin{pmatrix}
+2\\
+-1\\
+1
+\end{pmatrix},\begin{pmatrix}
+2\\
+-3\\
+2
+\end{pmatrix}\right\}$ son soluciones del sistema homogéneo 
+$Ax=0.$ Utilizando la metodología que se describió anteriormente para encontrar las columnas de $A$, tenemos que encontrar las soluciones del sistema
+\begin{align*}
+\begin{pmatrix}
+2 & -1 & 1\\
+2 & -3 & 2
+\end{pmatrix}\begin{pmatrix}
+a_{11}\\
+a_{12}\\
+a_{13}
+\end{pmatrix}=0.
+\end{align*}
+Ocupando reducción gaussiana resolvemos el sistema anterior
+\begin{align*}
+\begin{pmatrix}
+2 & -1 & 1\\
+2 & -3 & 2
+\end{pmatrix}%
+\grstep[]{R_2 \rightarrow R_2-R_1}
+%
+\begin{pmatrix}
+2 & -1 & 1\\
+0 & -2 & 1
+\end{pmatrix}%
+\grstep[R_1 \rightarrow R_1+R_2]{R_2 \rightarrow -R_2/2}
+%
+\begin{pmatrix}
+2 & 0 & \frac{1}{2}\\
+0 & 1 & -\frac{1}{2}
+\end{pmatrix}%
+\grstep[]{R_1 \rightarrow R_1/2}
+%
+\begin{pmatrix}
+1 & 0 & \frac{1}{4}\\
+0 & 1 & -\frac{1}{2}
+\end{pmatrix}.
+\end{align*}
+Por lo tanto, sistema tiene la solución general $a=a_{13}\begin{pmatrix}
+-\frac{1}{4}\\
+\frac{1}{2}\\
+1
+\end{pmatrix}$, si hacemos $a_{13}=1,$ entonces una solución es $a=\begin{pmatrix}
+-\frac{1}{4}\\
+\frac{1}{2}\\
+1
+\end{pmatrix}$.
+Por lo tanto, la matriz $A$ que tiene como solución los vectores $\left\{\begin{pmatrix}
+2\\
+-1\\
+1
+\end{pmatrix},\begin{pmatrix}
+2\\
+-3\\
+2
+\end{pmatrix}\right\}$ en el sistema homogéneo $Ax=0$  es 
+$$A=\begin{pmatrix}
+-\frac{1}{4}&\frac{1}{2}&1\\
+0&0&0\\
+0&0&0
+\end{pmatrix}.$$
+Observemos que $\dim \left(\mcN(A) \right)=2=dim\left(\gen\left\{\begin{pmatrix}
+2\\
+-1\\
+1
+\end{pmatrix},\begin{pmatrix}
+2\\
+-3\\
+2
+\end{pmatrix}\right\}\right)$. Ahora, como cualquier vector que sea combinación lineal de los conjunto S, es decir, $w=\alpha \begin{pmatrix}
+2\\
+-1\\
+1
+\end{pmatrix}+\beta\begin{pmatrix}
+2\\
+-3\\
+2
+\end{pmatrix}$ esto implica que 
+\begin{align*}
+&\begin{pmatrix}
+-\frac{1}{4}&\frac{1}{2}&1\\
+0&0&0\\
+0&0&0
+\end{pmatrix}w=\begin{pmatrix}
+-\frac{1}{4}&\frac{1}{2}&1\\
+0&0&0\\
+0&0&0
+\end{pmatrix}\left(\alpha \begin{pmatrix}
+2\\
+-1\\
+1
+\end{pmatrix}+\beta\begin{pmatrix}
+2\\
+-3\\
+2
+\end{pmatrix} \right)=\alpha\begin{pmatrix}
+-\frac{1}{4}&\frac{1}{2}&1\\
+0&0&0\\
+0&0&0
+\end{pmatrix}\begin{pmatrix}
+2\\
+-1\\
+1
+\end{pmatrix}+\beta\begin{pmatrix}
+-\frac{1}{4}&\frac{1}{2}&1\\
+0&0&0\\
+0&0&0
+\end{pmatrix}\begin{pmatrix}
+2\\
+-3\\
+2
+\end{pmatrix}\\ \\
+&=0.
+\end{align*}
+Entonces, cualquier $w\in\gen\left\{\begin{pmatrix}
+2\\
+-1\\
+1
+\end{pmatrix},\begin{pmatrix}
+2\\
+-3\\
+2
+\end{pmatrix}\right\}\Rightarrow w\in \mcN\left(\begin{pmatrix}
+-\frac{1}{4}&\frac{1}{2}&1\\
+0&0&0\\
+0&0&0
+\end{pmatrix}\right)$, y como $\dim \left(\mcN(A) \right)=dim\left(\gen\left\{\begin{pmatrix}
+2\\
+-1\\
+1
+\end{pmatrix},\begin{pmatrix}
+2\\
+-3\\
+2
+\end{pmatrix}\right\}\right)$ por el teorema \ref{subespacio_dimension} podemos concluir 
+$$\gen\left\{\begin{pmatrix}
+2\\
+-1\\
+1
+\end{pmatrix},\begin{pmatrix}
+2\\
+-3\\
+2
+\end{pmatrix}\right\} =\mcN\left(\begin{pmatrix}
+-\frac{1}{4}&\frac{1}{2}&1\\
+0&0&0\\
+0&0&0
+\end{pmatrix}\right).\ \ \ \finf$$
+%Problema 7
+%------------------------------------------------------------------------------------------------------%
+%------------------------------------------------------------------------------------------------------%
+%------------------------------------------------------------------------------------------------------%
+\item Sea $F$ la matriz por bloques
+\begin{align*}
+F=\begin{pmatrix}
+A & B\\
+0 & E
+\end{pmatrix}
+\end{align*}
+Demuestre que $\rho(F)\geq \rho(A)+\rho(E).$ De un ejemplo donde la desigualdad sea estricta.
+
+\res Recordemos los siguientes teoremas vistos en clase. 
+\begin{framed}
+    \begin{thmt} \label{submatriz}
+	Si $A$ es una matriz y $B$ es una submatriz de $A$ entonces$$\rho(B)\leq \rho(A).$$
+    \end{thmt}
+\end{framed}
+
+\begin{framed}
+    \begin{thmt} \label{dimension_2}
+	Sea $V$ un espacio vectorial y $U,W$ son subespacios de $V$ entonces 
+	$$\dim(U+W)=\dim(U)+\dim(W)-\dim(U\cap W)$$
+    \end{thmt}
+\end{framed}
+
+\begin{framed}
+    \begin{thmt} \label{matrices}
+	Sean $A, \ B$ matrices con el mismo número de renglones. Entonces
+	$$\mcC((A\ B))=\mcC(A)+\mcC(B).$$
+    \end{thmt}
+\end{framed}
+Ocupando el teorema \ref{matrices} tenemos que
+\begin{align*}
+\mcC\begin{pmatrix}
+A&B\\
+0&E
+\end{pmatrix}=\mcC\begin{pmatrix}
+A\\
+0
+\end{pmatrix}+\mcC\begin{pmatrix}
+B\\
+E
+\end{pmatrix}.
+\end{align*}
+Ahora, ocupando el teorema \ref{dimension_2} tenemos que el rango 
+\begin{align*}
+\dim\left(\mcC\begin{pmatrix}
+A&B\\
+0&E
+\end{pmatrix}\right)&=\dim\left(\mcC\begin{pmatrix}
+A\\
+0
+\end{pmatrix}\right)+\dim\left(\mcC\begin{pmatrix}
+B\\
+E
+\end{pmatrix}\right)-\dim\left(\mcC\begin{pmatrix}
+A\\
+0
+\end{pmatrix}\cap \begin{pmatrix}
+B\\
+E
+\end{pmatrix} \right)\\
+\end{align*}
+Por definición la dimensión de cualquier subespacio vectorial es mayor o igual a cero, entonces esto implica que lo anterior es
+\begin{align}\label{ejer7}
+\dim\left(\mcC\begin{pmatrix}
+A&B\\
+0&E
+\end{pmatrix}\right)\geq  \dim\left(\mcC\begin{pmatrix}
+A\\
+0
+\end{pmatrix}\right)+\dim\left(\mcC\begin{pmatrix}
+B\\
+E
+\end{pmatrix}\right)=\rho\left(\begin{pmatrix}
+A\\
+0
+\end{pmatrix}\right)+\rho\left(\begin{pmatrix}
+B\\
+E
+\end{pmatrix}\right)
+\end{align}
+Ahora, ocupando el teorema \ref{submatriz} y como $A$ es submatriz de $
+\begin{pmatrix}
+A\\
+0
+\end{pmatrix}
+$ y también como $E$ es submatriz de 
+$
+\begin{pmatrix}
+B\\
+E
+\end{pmatrix}
+$ podemos usar que 
+$$\rho\left(\begin{pmatrix}
+A\\
+0
+\end{pmatrix}\right)\geq \rho (A) \ \ \ \ \text{y}\ \ \ \ \rho\left(\begin{pmatrix}
+B\\
+E
+\end{pmatrix}\right)\geq \rho(E).$$
+Por lo tanto, sustituyendo en \ref{ejer7} podemos concluir que 
+\begin{align*}
+\rho(F)=\dim\left(\mcC\begin{pmatrix}
+A&B\\
+0&E
+\end{pmatrix}\right)\geq \rho\left(\begin{pmatrix}
+A\\
+0
+\end{pmatrix}\right)+\rho\left(\begin{pmatrix}
+B\\
+E
+\end{pmatrix}\right)\geq \rho(A)+\rho(E), \Rightarrow \rho(F)\geq \rho(A)+\rho(E).\ \ \ \finf
+\end{align*}
+\textbf{Ejemplo númerico} Un ejemplo en donde se cumple la desigualdad, sea $A=\begin{pmatrix}
+1& 0\\
+0&0
+\end{pmatrix}, \ B=\begin{pmatrix}
+0&0&0\\
+1&0&0
+\end{pmatrix}$ y $E=\begin{pmatrix}
+1&1&2\\
+0&1&1
+\end{pmatrix}$ entonces por definición del rango de una matriz podemos observar que 
+$$\rho(A)=1 \ \ \ \text{y}\ \ \ \rho(E)=2.$$
+Ahora calculemos el rango de la matriz $
+F=\begin{pmatrix}
+A & B\\
+0 & E
+\end{pmatrix}$, para eso calculemos la forma reducido la de matriz
+\begin{align*}
+\begin{pmatrix}
+A & B\\
+0 & E
+\end{pmatrix}=\begin{pmatrix}
+1&0&0&0&0\\
+0&0&1&0&0\\
+0&0&1&1&2\\
+0&0&0&1&1
+\end{pmatrix}%
+\grstep[R_4 \rightarrow R_4-R_3]{R_3 \rightarrow R_3-R_2}
+%
+\begin{pmatrix}
+1&0&0&0&0\\
+0&0&1&0&0\\
+0&0&0&1&2\\
+0&0&0&0&-1
+\end{pmatrix}.
+\end{align*}
+Esto implica que $\rho(F)=4$, y por lo que se muestra que $\rho(F)=4>3 =\rho(A)+\rho(E),$ es decir, $\rho(F)>\rho(A)+\rho(E).$
+%Problema 8
+%------------------------------------------------------------------------------------------------------%
+%------------------------------------------------------------------------------------------------------%
+%------------------------------------------------------------------------------------------------------%
+\item Sea $A$ una matriz cuadrada $n\times n$. Si $\rho(A^k)=\rho(A^{k+1})$ para algún $k\geq 1,$ demuestre que $\rho(A^{k+1})=\rho(A^{k+2})$.
+
+\res Se ocuparan los siguientes teoremas vistos en clase.
+\begin{framed}
+    \begin{thmt} \label{rho_multiplicacion}
+	Sea $A$ una matriz $m\times n$ y $B$ una matriz $n\times p$. Entonces $$\rho(AB)=\rho(B)-dim(\mcN(A)\cap\mcC(B)).$$
+    \end{thmt}
+\end{framed}
+\begin{framed}
+    \begin{thmt} \label{rho_columna}
+	Sean $A$ y $B$ matrices tales que $AB$ está bien definido. Entonces
+	\begin{itemize}
+	\item[i)] Si $\rho(AB)=\rho(A)$ entonces $\mcC(AB)=\mcC(A)$.
+	\end{itemize}
+    \end{thmt}
+\end{framed}
+Por definición del problema tenemos que $\rho(A^k)=\rho(A^{k+1})$ para algún $k\geq 1,$ por el teorema \ref{rho_columna} podemos decir que $\mcC(A^{k+1})=\mcC(A^k).$ Y ahora ocupando el teorema \ref{rho_multiplicacion} y como sabemos que $\rho(A^k)=\rho(A^{k+1})$ tenemos que
+\begin{align}\label{dim_cero}
+\rho(A^{k+1})=\rho(AA^{k})=\rho(A^k)-dim(\mcN(A)\cap \mcC(A^k)).\ \ \Rightarrow dim(\mcN(A)\cap \mcC(A^k))=0.
+\end{align}
+Ahora, ocupando nuevamente el teorema \ref{rho_multiplicacion}  y como sabemos que $\mcC(A^{k+1})=\mcC(A^k)$ tenemos que 
+\begin{align*}
+\rho(A^{k+2})&=\rho(AA^{k+1})=\rho(A^{k+1})-dim(\mcN(A)\cap \mcC(A^{k+1}))\\
+&=\rho(A^{k+1})-dim(\mcN(A)\cap \mcC(A^{k})).
+\end{align*}
+Por lo tanto, como $dim(\mcN(A)\cap \mcC(A^k))=0$ (por \ref{dim_cero}) podemos concluir que 
+$$\rho(A^{k+2})=\rho(A^{k+1}).\ \ \ \finf$$
+%Problema 9
+%------------------------------------------------------------------------------------------------------%
+%------------------------------------------------------------------------------------------------------%
+%------------------------------------------------------------------------------------------------------%
+\item Sea $A$ una matriz cuadrada $n\times n$. Demuestre que existe un $1\leq p\leq n$ tal que 
+\begin{align*}
+\rho(A)> \rho (A^2) >\cdots >\rho(A^p)=\rho(A^{p+1})=\cdots
+\end{align*}
+
+\res Recordemos el teorema visto en clase:
+\begin{framed}
+    \begin{thmt} \label{contigencia_nulo}
+	Sean $A$ y $B$ matrices tales que $AB$ está bien definido. Entonces $\rho(AB)\leq \rho(A)$.
+    \end{thmt}
+\end{framed}
+\begin{framed}
+    \begin{thmt} \label{nulo}
+	$\rho(A)=0$ si y solo si $A=0$.
+    \end{thmt}
+\end{framed}
+
+Ocupando el teorema \ref{contigencia_nulo}, tenemos que
+$$\rho(A)\geq \rho(A^2),\ \ \rho(A^2)\geq \rho(A^3), \cdots,\rho(A^p)\geq \rho(A^{p+1}),$$
+es decir,
+
+$$\rho(A)\geq \rho(A^2) \geq \rho(A^3)\geq \cdots\geq\rho(A^p)\geq \rho(A^{p+1})\geq \cdots.$$
+
+Entonces, ocupando lo demostrado en el ejercicio 8, podemos decir que cuando existe la igualdad para un $p$ se cumple para todos los siguientes, es decir, 
+$$\rho(A)> \rho(A^2) >\rho(A^3)>\cdots>\rho(A^{p})=\rho(A^{p+1})=\cdots.$$
+Ahora, demostramos que $p$ (en donde se cumple la primera igualdad) debe de estar en el intervalo $[1,n]$. Si $p=1$ solo se cumple solo cuando $A=0$ (por \ref{nulo}). Ahora, probemos cuando $p>1$. Lo demostraremos por contradicción, supongamos que $p>n$, es decir, la igualdad se cumple en la potencia $p=n+k, \ k\in \mathbb{N}$, es decir,
+$$\rho(A)> \rho(A^2) >\rho(A^3)>\cdots>\rho(A^{n})>\cdots=\rho(A^{n+k})=\cdots, \ \text{donde } k\in\mathbb{N}.$$
+Por la definición de rango \ref{rango} tenemos que el rango de cualquier matriz $B_{n\times n}$ es menor o igual al número de columnas y mayor o igual que cero, es decir, $n\geq\rho(B)\geq 0$. Ahora como la igualdad se dio en $p=n+k$ significa que ocurrieron estrictamente $n+k$ desigualdades, pero esto implicaría que $\rho(A^{n+k})<0$, ya que se como se cumple estrictamente las desigualdades tendríamos que en cada potencia el rango disminuirá respecto a la potencia anterior, y como el rango esta acotado a $n$ y como ocurren $n+k$ desigualdades estrictas el rango sería negativo, pero por definición esto no es posible (llegamos a una contradicción), por lo tanto, $p\leq n$. Es decir, podemos concluir que existe un $p$ tal que $1\leq p\leq n$ que satisface
+$$\rho(A)> \rho(A^2) >\rho(A^3)>\cdots>\rho(A^{p})=\rho(A^{p+1})=\cdots\ \ \finf$$
+%Problema 10
+%------------------------------------------------------------------------------------------------------%
+%------------------------------------------------------------------------------------------------------%
+%------------------------------------------------------------------------------------------------------%
+\item Dada
+\begin{align*}
+A=\begin{pmatrix}
+ 1 & 0 & 2 & 2\\
+ 2 & 4 &16 & 1\\
+-3 & 1 &-3 & 1
+\end{pmatrix}
+\end{align*}
+encuentre su factorización por rango.
+
+\res Recordemos que la factorización por rango.
+\begin{framed}
+    \begin{thmd} \label{factorizacion_rango}
+	El rango de una matriz $A,\ m\times n$, es el mínimo entero para el cual podemos encontrar una matriz $C$ de tamaño $m\times r$ y $R$ de tamaño $r\times n$ tal que $A=CR$. 
+    \end{thmd}
+\end{framed}
+Entonces tenemos que encontrar las matrices $C$ y $R$ de tamaños $3\times r$ y $r\times 4$ respectivamente. Para ello llevemos a la matriz $A$ a su forma escalonada reducida:
+\begin{align*}
+&\begin{pmatrix}
+ 1 & 0 & 2 & 2\\
+ 2 & 4 &16 & 1\\
+-3 & 1 &-3 & 1
+\end{pmatrix}%
+\grstep[R3 \rightarrow R_3+3R_1]{R_2 \rightarrow R_2-2R_1}
+%
+\begin{pmatrix}
+ 1 & 0 & 2 & 2\\
+ 0 & 4 &12 &-3\\
+ 0 & 1 & 3 & 7
+\end{pmatrix}%
+\grstep[]{R_2 \rightarrow R_2/4}
+%
+\begin{pmatrix}
+ 1 & 0 & 2 & 2\\
+ 0 & 1 & 3 &-3/4\\
+ 0 & 1 & 3 & 7
+\end{pmatrix}%
+\grstep[]{R_2 \rightarrow R_3-R_2}
+%
+\begin{pmatrix}
+ 1 & 0 & 2 & 2\\
+ 0 & 1 & 3 &-3/4\\
+ 0 & 0 & 0 & 31/4
+\end{pmatrix}\\
+&\grstep[]{R_3 \rightarrow 4R_3/31}
+%
+\begin{pmatrix}
+ 1 & 0 & 2 & 2\\
+ 0 & 1 & 3 &-3/4\\
+ 0 & 0 & 0 & 1
+\end{pmatrix}%
+\grstep[R_2\rightarrow R_2+3R_3/4]{R_1 \rightarrow R_1-2R_3}
+%
+\begin{pmatrix}
+ 1 & 0 & 2 & 0\\
+ 0 & 1 & 3 & 0\\
+ 0 & 0 & 0 & 1
+\end{pmatrix}.
+\end{align*}
+Por lo anterior tenemos que el rango de la matriz $A$ es $r=3$. Entonces observando la matriz escalonada reducida de $A$ y haciendo una matriz con las columnas de $A$ tal que las nuevas columnas de esta matriz sean linealmente independientes por lo que si consideramos la matriz escalonada reducida nos damos cuenta que las columnas 1,2 y 4 son linealmente independientes, por lo que podemos concluir que 
+\begin{align*}
+A=\begin{pmatrix}
+ 1 & 0 & 2 & 2\\
+ 2 & 4 &16 & 1\\
+-3 & 1 &-3 & 1
+\end{pmatrix}=\begin{pmatrix}
+ 1 & 0 & 2\\
+ 2 & 4 & 1\\
+-3 & 1 & 1
+\end{pmatrix}\begin{pmatrix}
+ 1 & 0 & 2 & 0\\
+ 0 & 1 & 3 & 0\\
+ 0 & 0 & 0 & 1
+\end{pmatrix}=CR.\ \ \ \finf
+\end{align*}
+
+\end{enumerate}
+\end{document}
