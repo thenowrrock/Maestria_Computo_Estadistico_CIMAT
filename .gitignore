@@ -1,3 +1,4 @@
+.html
 .Rproj.user
 .Rhistory
 .RData
@@ -6,4 +7,5 @@
 .log
 .out
 .gz
-
+.tar.gz
+.csv
