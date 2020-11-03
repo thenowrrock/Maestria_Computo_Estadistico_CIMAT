@@ -1,0 +1,25 @@
+citHeader("To cite the ConvergenceConcepts package in publications use:")
+
+citEntry(entry="Article",
+         title = "Understanding Convergence Concepts: a Visual-Minded and Graphical Simulation-Based Approach",
+         author = personList(as.person("P. Lafaye de Micheaux"), 
+                             as.person("B. Liquet")
+				),
+	 journal = "The American Statistician",
+         year         = "2009",
+	 volume = "63",
+	 number = "2",
+	 pages = "173-178",
+         note         = "Software: R Package, ConvergenceConcepts, version 1.1",
+         url          = "http://www.biostatisticien.eu/ConvergenceConcepts/",
+         
+         textVersion = 
+         paste("Lafaye De Micheaux, P. and Liquet, B. (2009)", 
+               "Understanding Convergence Concepts: a Visual-Minded and Graphical Simulation-Based Approach",
+               "The American Statistician",
+	       "Teacher\'s Corner",
+	       "Vol. 63, No. 2, 173--178",
+              "(Software: R Package, ConvergenceConcepts, version 1.1)"
+	      )
+)
+

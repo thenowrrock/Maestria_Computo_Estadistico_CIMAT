@@ -1,0 +1,685 @@
+---
+fontsize: 11pt
+geometry: "left=2cm,right=2cm,top=2cm,bottom=2cm"
+documentclass: article
+output:
+    pdf_document:
+        includes:
+            in_header: mystyles.sty
+---
+\begin{table}[ht]
+\centering
+\begin{tabular}{c}
+\textbf{Maestría en Computo Estadístico}\\
+\textbf{Inferencia Estadística} \\
+\textbf{Tarea 6}\\
+\today \\
+\emph{Enrique Santibáñez Cortés}\\
+Repositorio de Git: \href{https://github.com/Enriquesec/Inferencia_Estad-stica/tree/master/Tareas/Tarea_6}{Tarea 6, IE}.
+\end{tabular}
+\end{table}
+
+1. En este ejercicio, asistido por una computadora, visualizará los conceptos de convergencia estudiados en clase.
+
+a) Lea el artículo:
+Pierre Lafaye de Micheaux $\&$ Benoit Liquet (2009). \textit{ Understanding Convergence Concepts: A Visual-Minded and Graphical Simulation-Based Approach}, The American Statistician, 63:2, 173-178, DOI: 10.1198/tas.2009.0032. El paper está en la carpeta donde está la tarea. No hay que entregar nada para este inciso.
+
+b) Implemente el método para visualizar la convergencia en probabilidad descrito en la sección 2.1 del artículo. La función deberá recibir al número de realizaciones $M$, el número máximo de elementos de la sucesión que se considera $n_{\text{max}}$ , $M$ muestras de la sucesión trunca $X_1, X_2 , \cdots, X_{n_{\text{máx}}}$ y el error $\epsilon$; deberá reproducir la Figura 3 del paper, sin incluir $a_n$, y regresar al vector $(p^1 , \cdots , p^{n_{\text{máx}}})$.
+
+\res En el artículo describen la convergencia en probabilidad como: Sea $(X_n)_{n \in \mathcal{N}}$ entonnces converge en probabilidad $X_n \xrightarrow[]{P} X$ si
+\begin{align*}
+\forall \epsilon>0, \ p_n= \mP(\omega;|X_{n,\omega}-X_\omega|>\epsilon) \xrightarrow[n \rightarrow \infty ]{} 0.
+\end{align*}
+Utilizando el anterior enfoque frecuentista la probabilidad $p_n$ se puede aproximar por $\hat{p}_n=\frac{1}{m}\times \# \{|x_n^j-x^j|>\epsilon \}$. Visualmente se puede intrepretar, consideramos una realización de $M$ rutas muestrales del proceso estocástico $(X_n-X)_{1,2,\cdots, n_\text{max}}.$ Cada ruta se compone por una secuencia de puntos indexados por los números enteros, entonces para cada valor de $n$ podemos evaluar la proporción $\hat{p}_n$ de las rutas muestrales que están fuera de la banda $[-\epsilon, \epsilon]$. Entonces la evolución de $\hat{p}_n$ hacia 0 nos informa sobre la convergencia (o no ) en probabilidad de $X_n$ hacia $X$. Con lo anterior, procedemos a realizar la función para vizualizar la convergencia en probabilidad
+
+```{r, message=FALSE, warning=FALSE}
+library(tidyverse) # manipulación de dataframes
+library(gridExtra) # graficar
+# función para validar visualmente convergencia.
+# el parametros muestras, son las simulaciones ingresadas en una matriz.
+convergence_probability <- function(M, n_max, muestras, epsilon, X, lim){
+  muestras <- as.data.frame(muestras) # transformamos la matriz a dataframe.
+  names(muestras) <- paste("n",as.character(seq(1,n)), sep="_") # renombramos columnas.
+  muestras[is.na(muestras)] <- 0 # inputamos los infinitos por cero.
+  p_hat <- 1/M*colSums(abs(muestras-X)>epsilon) # calculamos p_hat
+  p_grafica <- data.frame(p_hat=p_hat, n=seq(1,n_max)) # creamos para graficas.
+  
+  grap_p <- ggplot(p_grafica, aes(n, p_hat))+
+    geom_line(color="blue") # graficamos los p_hat
+  
+  muestras <- muestras-X # restamos la convergencia
+  muestras$M <- paste("M",as.character(seq(1,M)), sep="_")   # indexamos las M muestras
+  muestras <- muestras %>% gather(key="n", value="X_n", 1:n_max) # modificamos el data.frame
+  muestras_graficar <- muestras %>% filter(n %in% c("n_1","n_2", "n_3", "n_4", "n_5", 
+            "n_1000", "n_2000", "n_10000")) # seleccionamos una muestra
+  muestras_graficar$n <- fct_relevel( as.factor(str_split_fixed(muestras_graficar$n, "_", 2)[,2]),
+  "1","2", "3","4", "5", "1000", "2000", "10000") # reordenamos los factores
+    
+  # este condición es debido a las funciones del inciso e y f.
+  if(lim==1){
+    y_lim_in = -1
+    y_lim_sup = 17
+  }
+  else{
+    y_lim_in = -2.7
+    y_lim_sup = 5
+  }
+  
+  grap_m <- ggplot(data=muestras_graficar, aes(n, X_n))+
+    geom_point()+
+    geom_jitter(alpha=0.3)+ # agreamos un jitter para que sea más notorio
+    xlab(" ")+
+    ylim(y_lim_in,y_lim_sup)+
+    labs(title = "Validación de convergencia en probabilidad.")
+    
+  print(grid.arrange(grap_m, grap_p, ncol=2))
+  p_hat # retornamos p_hat
+}
+```
+
+Nota: La función anterior ya genera una gráfica igual a la del paper mencionado en el inciso a), no entendí si tenía que generar las gráficas en este documento o solo una función que generará las gráficas, por lo que las gráficas del paper las subí al repositori de Github. Otra consideración a mencionar es respecto al parametro $X$  de la función, los ingrese para hacer más general las función y validar si una sucesión de v.a. converge a $X$ en lugar de 0, y el parametro $lim$ lo agregue debido a que en el inciso e) y f) de este problema tenemos funciónes con límites muy diferentes por lo que al intentar gráficarlos sin límites, ggplot me marca un error.
+
+c) Implemente el método para visualizar la convergencia casi segura descrito en la sección 2.2 del artículo. La función deberá recibir al número de realizaciones $M$ , el número máximo de elementos de la sucesión que se considera $n_{\text{máx}} , M$ muestras de la sucesión trunca $X_1 , X_2 ,\cdots , X_{n_{\text{máx}}}$, el error $\epsilon$ y al parámetro $K \in (0, 1)$ descrito en el ejemplo de la página 175; deberá reproducir la Figura 3 del paper y regresar al vector $(\hat{a}_1 , \cdots, \hat{a}_{K_{n_{\text{máx}}}})$.
+
+\res Tenemos que la convergencia $X_n\xrightarrow[]{c.s} X$ si solo si
+$$\forall\epsilon >0, \ a_n=\mP(\omega;k\geq n; |X_{k,\omega}-X_\omega|>\epsilon ) \xrightarrow[n\rightarrow \infty]{}0.$$
+Podemos usar una aproximación frecuencista para aproximar la probabilidad de $a_n$
+$$\hat{a}_n =\frac{1}{M}\times\# \{k\in \{n, \cdots, n_{max};|x_k^j-x^j|>\epsilon \} \}.$$
+Por lo anterior, podemos definir la siguiente función para aproximar la probabilidad $a_n$, esta función tendrá los parámetros descritos en el problema teniendo la consideración que las $M$ muestras deben de estar ingresadas en una matrix de $M\times n$.
+```{r}
+convergence_c_s <- function(M, n, muestras, epsilon, k, X){
+  n_k <- n*k
+  n_k <- round(n_k)
+  a_hat <- c()
+  muestras[is.na(muestras)] <- 0
+  for (i in 1:10){
+    a_hat[i] <- sum(rowSums(muestras[,i:n])>epsilon)
+  }
+  a_hat <- a_hat/M
+  a_hat_df <- data.frame(a_hat=a_hat, n=seq(1:n_k))
+  
+  a_hat_grap <- ggplot(a_hat_df, aes(x=n, y= a_hat))+
+    geom_line()+
+    geom_point()+
+    labs(title = "a_hat")+
+    labs(title = "Validación visual de convergencia casi segura")
+  print(a_hat_grap)
+  a_hat
+}
+```
+
+Nota: La misma que el inciso b).
+
+d) Escriba un pseudocódigo para visualizar la convergencia en $L_2$ usando lo descrito en la sección 2.3 del artículo, en particular a $e_{n,2}$. Implemente su pseudocódigo en una función de R que muestre gráficas. ¿Qué variables toma como argumento su función?
+
+\res Para un número real $r>0$, denotemos $X_n\xrightarrow[]{r} X$ a la convergencia de la rth media de la sucesión de v.a.i $(X_n)_{n\in \mathcal{N}}$ a $X$ como
+\begin{align*}
+e_{n,r}= \mE[(X_n-X)^r]\xrightarrow[n\rightarrow \infty]{} 0.
+\end{align*}
+Si queremos validar la convergencia de la rth media de ciertas variables aletorias $X_n$ a $X$ podemos usar la siguiente aprocimación Monte Carlo de $e_{n,r}$:
+\begin{align*}
+\hat{e}_{n,r}= \frac{1}{M} \sum_{j=1}^M|x_n^j-x^j|^r.
+\end{align*}
+Entonces si graficamos la secuencia de las $\hat{e}_{n,r}$ , podemos validar si converge a 0 o no. Entonces para validar la convergencia en $L_2$ tenemos que estimar $\hat{e}_{n,2}$. Para ello podemos crear una \textbf{función que reciba los parametros $M$ número de realizaciones, $n_\text{max}$ el número máximos de elementos, las M muestras de la sucesión trunca $X_1, X_2, \cdots, X_{n_\text{max}}$}. Creamos la función descrita anteriormente:
+
+```{r}
+convergence_L2 <- function(M, n_max, muestras, X, lim){
+  muestras <- muestras*muestras
+  muestras[is.na(muestras)] <- 2^120
+  muestras <- as.data.frame(muestras)
+  e_n_hat <- 1/M*colSums(muestras) # calculamos e_hat
+  e_n_hat <- abs(e_n_hat)
+  e_grafica <- data.frame(e_hat=e_n_hat, n=seq(1,n_max))
+  
+  if(lim==1){
+    y_lim_in = 0
+    y_lim_sup = 10000
+  }
+  else{
+    y_lim_in = 0
+    y_lim_sup = 1
+  }
+  
+  l2_grap<- ggplot(e_grafica )+
+    geom_point(aes(x=n, y=e_hat), size=0.3)+
+    geom_segment(aes(x=n, xend=n, y=0, yend=e_hat), col="blue")+
+    ylim(y_lim_in,y_lim_sup)+
+    labs(title = "Validación visual de convergencia en L_2")
+  print(l2_grap)
+  e_grafica
+}
+```
+Nota: La misma que el inciso b).
+
+e) Fije $n_{\text{máx}}=10000, \ M=1000, K=0.5$. Sea $Z\sim Unif(0,1)$ y $X_n=2^n1_{[0,1/n)}(Z)$. ¿Hay evidencia de que $X_n\xrightarrow[]{L_2} 0, X_n\xrightarrow[]{P} 0$ y $X_n\xrightarrow[]{a.s} 0$? Utilice las funciones de los incisos anteriores para responder la pregunta y comente. 
+
+\res Primero creamos una función para generar las $M$ simulación de tamaño $n$, para hacerlo más eficiente lo vectorizamos. 
+```{r, message=FALSE, warning=FALSE, fig.align = "center"}
+M_muestras <- function(M, n){
+  X_n <- matrix(rep(2^seq(1:n),M), M, n, byrow = TRUE)
+  U <- matrix(runif(n*M), M, n)
+  aux<- matrix(rep(1/seq(n), M), M, n, byrow = TRUE)
+  U <- U<aux
+  
+  X_n <- X_n*U
+  X_n
+}
+```
+Con la función anterior generamos 1000 muestras de tamaño 10000 y las guardamos en una matriz de tamaño $1000 \times 10000$
+```{r, message=FALSE, warning=FALSE, fig.align = "center"}
+M <- 100
+n <- 2000
+set.seed(19970808)
+m <- M_muestras(M, n)
+```
+Utilizando las funciónes de los incisos anteriores validamos si existen evidencias de convergencias de los distintos tipos.
+```{r, message=FALSE, warning=FALSE, fig.align = "center"}
+p_hat_unif_x <- convergence_probability(M, n, m, 0.01, 0, 1)
+
+a_hat_unif_x <- convergence_c_s(M, n, m, 0.05, 0.5, 0)
+
+pp <- convergence_L2(M, n, m, 0, 1)
+```
+
+Observando los gráficos podemos notar que existe evidencia de la existencia de convergencia en probabilidad y convergencia casi segura a 0, pero no hay evidencia en convergencia en $L_2$.
+
+
+f) Fije $n_{\text{máx}}=10000, \ M=1000, K=0.5$. Sea $Y_1, \cdots , Y_n \sim N(0,1)$ v.a.i. Defina $X_1=X_2=1$ y 
+
+\begin{align*}
+X_n=\frac{\s Y_i}{\left( 2n \log (\log n)\right)^{1/2}}, \ \ \ \ n\geq 3.
+\end{align*}
+
+¿Hay evidencia de que $X_n\xrightarrow[]{L_2} 0, X_n\xrightarrow[]{P} 0$ y $X_n\xrightarrow[]{a.s} 0$? Utilice las funciones de los incisos anteriores para responder la pregunta y comente. 
+
+\res Primero creamos una función para generar las $M$ simulación de tamaño $n$, para hacerlo más eficiente lo vectorizamos. 
+```{r, message=FALSE, warning=FALSE}
+M_muestras <- function(M, n){
+  X_n <- matrix(rep(sqrt(2*seq(1:n)*log(log(1:n))) ,M), M, n, byrow = TRUE)
+  X_n[is.na(X_n)] <- 1
+  Y <- matrix(rnorm(n*M), M, n)
+  
+  X_n <- Y/X_n
+  X_n
+}
+```
+Con la función anterior generamos 1000 muestras de tamaño 10000 y las guardamos en una matriz de tamaño $1000 \times 10000$
+```{r, message=FALSE, warning=FALSE, fig.align = "center"}
+M <- 100
+n <- 2000
+set.seed(19970808)
+m <- M_muestras(M, n)
+```
+Utilizando las funciónes de los incisos anteriores validamos si existen evidencias de convergencias de los distintos tipos.
+```{r, message=FALSE, warning=FALSE, fig.align = "center"}
+p_hat_log_n <- convergence_probability(M, n, m, 0.01, 0, 0)
+
+a_hat_unif_x <- convergence_c_s(M, n, m, 0.05, 0.7, 0)
+
+pp <- convergence_L2(M, n, m, 0, 0)
+```
+
+Observando los gráficos podemos notar que existe evidencia de la existencia de convergencia en probabilidad y convergencia en $L_2$ a 0, pero no hay evidencia en convergencia casi segura. \ \ \fin
+
+2. Demuestre que la sucesión del inciso e) del Ejercicio 1 converge en probabilidad y casi seguramente, pero que no converge en $L_2$. Demuestre que la sucesión del inciso f) del Ejercicio 1 converge en $L_2$.
+
+\res Recordemos la definición de las tres tipos de convergencia 
+\begin{framed}
+    \begin{thmt} \label{convergencias}
+	Sea $\{X_n,\ n\geq 1 \}$ una sucesión de v.a. y sea $X$ una v.a. Denotemos por $F_n$ a la función de distribución de $X_n$ y por $F$ a la función de distribución de $X$.
+\begin{enumerate}
+	\item $X_n$ converge a $X$ en probabilidad, denotado por $X_n\xrightarrow[]{P} X,$ si para cada $\epsilon>0,$ 
+	$$\lim_{x\rightarrow \infty} \mP(|X_n-X|>\epsilon)=0.$$
+		
+	\item $X_n$ converge a $X$ en media cuadrádtica (o en $L_2$), denotado por $X_n\xrightarrow[]{L_2} X$, si
+	$$\lim_{x\rightarrow \infty} \mE[(X_n-X)^2]=0.$$
+	
+	\item Diremos que $X_n$ converge casi seguramente a $X$, denotado por $X_n\xrightarrow[]{c.s} X$, si 
+	$$\mP(\{\omega: X_n(\omega) \rightarrow X(\omega)\})=1.$$
+	\end{enumerate}
+    \end{thmt}
+\end{framed}
+Primero demostremos que la sucesión del inciso e) no converge en $L_2$ a 0. Tenemos que $X_n=2^n 1_{[0,1/n]}(Z),\ Z\sim Unif(0,1),$ lo anterior se puede interpretar como
+\begin{align*}
+f_{X_n}(x_n)= \left\{\begin{array}{cc}
+\mP\left(0 \leq Z \leq \frac{1}{n}\right) & x_n=2^n\\
+1-\mP\left(0 \leq Z \leq \frac{1}{n}\right)& x_n=0
+\end{array} \right. \Leftrightarrow f_{X_n}(x_n)= \left\{\begin{array}{cc}
+\frac{1}{n} & x_n=2^n\\
+1-\frac{1}{n} & x_n=0
+\end{array} \right.,
+\end{align*}
+la anterior es cierto ya que como $Z \sim Unif(0,1)$ implica 
+$$\mP\left(0 \leq Z \leq \frac{1}{n}\right)=\int_0^\frac{1}{n} dz=\frac{1}{n}.$$
+Ahora calculamos la media cuadrática de $X_n-X\equiv 0$
+\begin{align*}
+\mE[\left(X_n-X \right)^2]=\mE[\left(X_n \right)^2]=\frac{1}{n}(2^n)^2+ \left(1-\frac{1}{n}\right)0=\frac{4^n}{n}
+\end{align*}
+Veamos que la función de arriba es exponencial y la de abajo es polinomial de grado 1, por lo que podemos afirmar que $4^n$ crece más rápido que $n$, por lo que podemos decir que el $\lim_{n\rightarrow \infty} \frac{4^n}{n}=\infty$, es decir diverge, y por lo tanto podemos concluir que 
+\begin{align*}
+\lim_{n\rightarrow \infty}\mE[\left(X_n-X \right)^2]=\lim_{n\rightarrow \infty}\frac{4^n}{n}\not\rightarrow 0,
+\end{align*}
+por lo cuál, \textbf{podemos decir que $X_n=2^n 1_{[0,1/n]}(Z),\ Z\sim Unif(0,1),$ no converge en $L_2$ a 0.}
+
+Ahora, para demostrar que $X_n=2^n 1_{[0,1/n]}(Z),\ Z\sim Unif(0,1)$ converge casi seguramente utilizando la distribución de probabilidad de $X_n$ tenemos que 
+\begin{align*}
+f_{X_n}(x_n)= \left\{\begin{array}{cc}
+\frac{1}{n} & x_n=2^n\\
+1-\frac{1}{n} & x_n=0
+\end{array} \right. \Rightarrow \lim_{n\rightarrow \infty}f_{X_n}(x_n)= \left\{\begin{array}{cc}
+0 & x_n=\infty \\
+1 & x_n=0
+\end{array} \right.
+\end{align*}
+Y por lo anterior, podemos concluir que 
+\begin{align*}
+\mP(\{\omega: X_n(\omega) \rightarrow 0 \}=1,
+\end{align*}
+es decir,\textbf{$X_n$ converge casi seguramente a 0. } Ahora, ocupando el teorema (\ref{relaciones}) y como sabes que converge casi seguramente a 0, \textbf{esto implica que $X_n$ también converge en probabilidad a 0.}
+
+Ahora, demostremos que la sucesión del incso f) ejercicio 1 converge en $L_2$. Tenemos que $Y_1,\cdots Y_n\sim N(0,1)$ v.a.i. y $X_1=X_2=1,$ y 
+$$X_n=\frac{\s Y_i}{\left(2n\log(\log (n)) \right)^{1/2}}, \ \ \ n\geq n.$$
+Para mostrar que $X_n$ converge en $L_2$ a 0 tenemos que 
+\begin{align*}
+\mE[(X_n-0)^2]= \mE[X_n^2]=\mE\left[\left( \frac{\s Y_i}{\left(2n\log(\log (n)) \right)^{1/2}}\right)^2 \right]=\frac{1}{2n\log(\log (n))}\mE\left[\left( \s Y_i\right)^2 \right],
+\end{align*}
+pero como las $Y_i's\sim N(0,1)$ entonces podemos decir que $\s Y_i\sim N(0,n)$ (propiedad de v.a's normales), y entonces
+\begin{align*}
+Var\left(\s Y_i\right) = \mE\left[ \left(\s Y_i \right)^2\right]-\left(\mE\left[ \s Y_i\right] \right)^2 = \mE\left[ \left(\s Y_i \right)^2\right] = n.
+\end{align*}
+Entonces
+\begin{align*}
+\mE[(X_n-0)^2]=\frac{1}{2n\log(\log (n))}\mE\left[\left( \s Y_i\right)^2 \right]=\frac{n}{2n\log(\log (n))}=\frac{1}{2\log(\log (n))}.
+\end{align*}
+y por lo tanto el límite de la 2da esperanza de $X_n$ es 
+\begin{align*}
+\lim_{x\rightarrow \infty} \mE[(X_n-0)^2]=\lim_{x\rightarrow \infty}\frac{1}{2\log(\log (n))}=0.
+\end{align*}
+Por lo tanto, \textbf{podemos concluir que $X_n$ converge en $L_2$ a 0.} \ \ \ \ \fin
+
+Con el ejercicio 1 y 2, observamos la demostración analítica de convergencia y observamos con las simulaciones la convergencias.
+
+3. Supongamos que $X_0 , X_1 , \cdots$ es una sucesión de experimentos Bernoulli independientes con probabilidad de éxito $p$. Supongamos también que $X_i$ es la indicadora del éxito de su equipo en el $i-$ésimo juego de un rally de fútbol. Su equipo anota un punto cada vez que tiene un éxito seguido de otro. Denotemos por $S_n =\s X_{i-1} X_i$ al número de puntos que su equipo
+anota al tiempo $n$.
+
+a) Encuentre la distribución asintótica de $S_n$.
+
+\res Calculemos la esperanza de $X_{i-1}X_i$ (recordemos que las $X_i's$ son independientes), para ello utilizaremos las propiedades de la esperanza
+\begin{align*}
+\mE\left(X_{i-1} X_i\right)= \mE(X_{i-1})\mE(X_i)-Cov(X_{i-1} X_i)=p^2-0 =p^2.
+\end{align*}
+Ahora calculemos la varianza de $S_n$, por como esta descrito el problema podemos asumir independencia entre cualquier pareja de $X_{i-1}X_i$ y $X_{j-1}X_j$, $j\neq i$, entonces ocupando lo anterior podemos calcular la varianza como
+\begin{align*}
+Var(X_{i-1}X_i)&=\mE(X_{i-1}^2)\mE(X_i^2)-\left(\mE(X_{i-1})\mE(X_i)\right)^2\\
+&= p*p-p^2p^2= p^2(1-p^2)=p^2(1-p^2).
+\end{align*}
+Por lo tanto, ocupando el teorema central de limite tenemos 
+\begin{align*}
+\frac{S_n-np^2}{\sqrt{np^2(1-p^2)}} \rightarrow Normal(0,1).
+\end{align*}
+
+Es decir, $\frac{S_n-np^2}{\sqrt{np^2(1-p^2)}}$ tiene una distribución asintótica $Normal(0,1)$. Igual podemos decir, que para un $n$ fínito, $S_n$ aproximadamente se distribuye como $Normal(np^2, \sqrt{np^2(1-p^2)})$.
+
+b) Simule una sucesión de $n = 1000$ variables aleatorias como arriba y calcule $S_{1000}$ para $p = 0.4$. Repita este proceso 100 veces y grafíque la distribución empírica de $S_{1000}$ que se obtiene de la simulación, y empálmela con la distribución asintótica teórica que obtuvo. Comente sus resultados.
+
+\res Procedemos a crear la función que genera las simulaciones:
+```{r, message=FALSE, warning=FALSE, fig.align = "center"}
+s_n <- function(p, n){
+
+  x_n <- rbinom(n=n, size=1, prob = p)
+  aux <- data.frame(x_n = x_n)
+  aux <- aux %>% mutate(x_n_1= lead(x_n, n = 1),
+                        s_n=ifelse((x_n+x_n_1)==2, 1, 0))
+  
+  aux <- aux[!is.na(aux$s_n),]
+  sum(aux$s_n)
+}
+```
+Ahora creamos las 100 simulaciones de $S_n$,
+```{r, message=FALSE, warning=FALSE, fig.align = "center"}
+s_n_simuladas <- c()
+n <- 1000
+p <- 0.4 
+M <- 100
+for (i in 1:M){
+  s_n_simuladas[i] <- s_n(p, n)
+}
+```
+Graficamos la distribución empírica y la función de distribución teórica de $S_n$
+```{r, message=FALSE, warning=FALSE, fig.align = "center"}
+ggplot(data=data.frame(x=s_n_simuladas), aes(x))+
+  geom_histogram(fill="blue", aes(y=stat(count)/sum(count)), bins = 60)+
+  geom_line(data=data.frame(x=seq(120,200,0.5), y=dnorm(seq(120,200,0.5),mean=n*p^2,sd = sqrt(n*p^2*(1-p^2)))) , aes(x,y))
+  labs(title = "Histograma y función de probabildiad de S_n")
+```
+Graficamos la distribución empirica y la función teórica de $\frac{S_n-np^2}{\sqrt{np^2(1-p^2)}}$
+```{r, message=FALSE, warning=FALSE, fig.align = "center"}
+s_n_simuladas_t <- (s_n_simuladas-n*p^2)/(sqrt(n*p^2*(1-p)^2))
+
+ggplot(data=data.frame(x=s_n_simuladas_t), aes(x))+
+  geom_histogram(fill="blue", aes(y=stat(count)/sum(count)), bins = 10)+
+  geom_line(data=data.frame(x=seq(-5,5,0.1), y=dnorm(seq(-5,5,0.1),mean=0,sd = 1)) , aes(x,y))+
+  labs(title = "Histograma y función de probabildiad de (S_n-np^2)/(np^2(1-p^2))^{1/2}")
+```
+
+Por lo tanto, se valida lo que se obtuvo analiticamente y con las simulaciones. Es decir, el teorema central del límite una vez más es valido para este experimento. \ \ \ \fin
+
+4. Sean $X_1, X_2, \cdots$ v.a.i tales que $X_i\sim Unif[-j, j],\ j=1,2,\cdots$ Muestre que la sucesión satisface la condición de Lindeberg. 
+
+\res Enunciemos la condición de Lindeberg
+\begin{framed}
+    \begin{thmt} \label{lindeberg}
+	Sea $\{X_n,\ n\geq 1 \}$ independientes (pero no necesariamente idénticamente distribuidas) y suponga que $X_k$ tiene distribución $F_k$ y que $\mE(X_k)=0$ y $Var(X_k)=\sigma_k^2$. Definamos 
+	\begin{align*}
+	s_n=\sum_{j=1}^n \sigma^2_j =Var(\sum_{j=1}^n X_j).
+	\end{align*}
+	Diremos que $\{ X_k\}$ satisface la condición de Lindeberg si, para todo $t>0$, cuando $n\rightarrow \infty$ entonces
+	\begin{align*}
+	\frac{1}{s_n^2} \sum_{j=1}^n\mE(X_j^2 1_{\{|X_j/s_n|>t \} }) \rightarrow 0.
+	\end{align*}
+    \end{thmt}
+\end{framed}
+y además ocupemos el siguiente teorema
+\begin{framed}
+    \begin{thmt} \label{lyapunov_lindeberg}
+	Sea $\{X_n,\ n\geq 1 \}$ independientes (pero no 
+    \end{thmt}
+\end{framed}
+Demostremos primero que se cumple la condición de Lyapunov (definición \ref{lyapunov}), como $X_j's\sim Unif(-j, j)$ entonces tenemos que la distribución de probabilidad es $$f_{X_j}=\left\{\begin{array}{cc}
+\frac{1}{2j} & -j<x<j\\
+0 & \text{en otro caso }
+\end{array} \right.$$  y ocupando lo anterior, tenemos que  
+\begin{align*}
+\mE\left(|X_j|^{\delta+2}\right)=\int_{-j}^j |x_j|^{\delta+2} \frac{1}{2j} dx_i= 2 \int_0^j x_k^{\delta +2} \frac{1}{2j} dx_j = \frac{1}{j}\left.\frac{x_j^{\delta+3}}{\delta+3} \right|_0^{j}=\frac{j^{\delta+2}}{\delta+3}.
+\end{align*}
+Ahora calculemos $s_n^2$, tenemos que $\sigma_i^2=\frac{j^2}{3}$ entonces
+\begin{align*}
+s_n^2=\s \sigma_i^2 = \sum_{j=1}^n  \frac{j^2}{3} \Rightarrow s_n^{2+\delta}=s_n^2\left(\sqrt{s_n^2}\right)^\delta=\left(\sum_{j=1}^n \frac{j^2}{3}\right)^{\frac{\delta}{2}+1}
+\end{align*}
+Entonces, sea $\delta = 2$ esto implica que 
+\begin{align}\label{ly}
+\frac{\sum_{j=1}^n\mE\left[|X_j|^{2+2} \right]}{s_n^{2+2}}=\frac{\sum_{j=1}^n \frac{j^{4}}{5}}{\left(\sum_{j=1}^n \frac{j^2}{3}\right)^2}=\frac{9}{5} \frac{\sum_{j=1}^n j^{4}}{\left(\sum_{j=1}^nj^2\right)^2},
+\end{align}
+observemos que 
+\begin{align*}
+\left(\sum_{j=1}^nj^2\right)^2=\sum_{j=1}^nj^4+2\sum_{j=1}^n\sum_{\substack{k=1 \\ k\neq j }} j^2k^2\Rightarrow \left(\sum_{k=1}^nj^2\right)^2>\sum_{k=1}^nj^4.
+\end{align*}
+Por lo tanto, como el denominador es más grade que el numerador en la expresión (\ref{ly}) podemos decir que el converge a 0 cuando $n\rightarrow \infty$, es decir,
+\begin{align}
+\lim_{n\rightarrow \infty} \frac{\sum_{j=1}^n\mE\left[|X_j|^{2+2} \right]}{s_n^{2+2}}=\frac{9}{5} \lim_{n\rightarrow \infty}\frac{\sum_{j=1}^n j^{4}}{\left(\sum_{j=1}^nj^2\right)^2}= 0
+\end{align}
+
+Cómo encontramos en $\delta=2$ tal que se cumpla (\ref{lyapunov}), podemos concluir que se cumple la condición de Lyapunov. Y por lo tanto, \textbf{ocupando el teorema (\ref{lyapunov_lindeberg}) podemos concluir que igual se cumple la condición de Lindeberg. }\ \ \ \ \fin
+
+5. Sean $X_1, X_2, \cdots$ v.a.i tales que $\mP(X_j=\mp j^a)=\mP(X_j=0)=1/3$, donde $a>0, \ j=1,2,\cdots$. Muestre que se cumple la condición de Lyapunov.
+
+\res La condición de Lyapunov nos dice que 
+\begin{framed}
+    \begin{thmt} \label{lyapunov}
+	Sea $\{X_k,\ k\geq 1 \}$ una sucesión de v.a.i. satisfaciendo $\mE[X_k]=0$, $Var(X_k)=\sigma_k^2 < \infty$ y $s_n^2=\sum_{j=1}^n\sigma_j^2.$ Si para algún $\delta >0$
+	\begin{align*}
+	\frac{\sum_{k=1}^n\mE\left[|X_k|^{\delta+2} \right]}{s_n^{\delta+2}}\rightarrow 0.
+	\end{align*}
+    \end{thmt}
+\end{framed}
+Calculemos la esperanza y la varianza de $X_k$, la cual es
+\begin{align*}
+\mE(X_k)=\frac{k^a-k^a}{3}=0 \ \ \ \text{y}\ \ \ Var(X_k)=\mE(X_k^2)-[E(X_k)]^2=\frac{(k^a)^2+(-k^a)^2}{3}=\frac{2}{3}k^{2a}.
+\end{align*}
+Ahora calculemos $\mE[|X_k|^{\delta+2}]$ y $s_n^{\delta+2}$,
+\begin{align*}
+&\mE(|X_k|^{\delta+2})=\frac{(|k^a|)^{\delta+2}+(|-k^a|)^{\delta+2}}{3}=\frac{2}{3}k^{a(\delta+2)}.\\
+&s_n^{\delta+2}=s_n^2\left(\sqrt{s_n^2}\right)^\delta=\left(\sum_{k=1}^n \frac{2}{3}k^{2a}\right)^{\frac{\delta}{2}+1}
+\end{align*}
+Entonces, sea $\delta=2$ esto implica que 
+\begin{align*}
+\frac{\sum_{k=1}^n\mE\left[|X_k|^{\delta+2} \right]}{s_n^{\delta+2}}=\frac{\left.\sum_{k=1}^n\frac{2}{3}k^{4a} \right.}{\left(\sum_{k=1}^n \frac{2}{3}k^{2a}\right)^2}=\frac{\frac{2}{3}\left.\sum_{k=1}^nk^{4a} \right.}{\frac{4}{9}\left(\sum_{k=1}^n k^{2a}\right)^2}= \frac{3}{2} \frac{\left.\sum_{k=1}^nk^{4a} \right.}{\left(\sum_{k=1}^n k^{2a}\right)^2},
+\end{align*}
+observemos que 
+\begin{align*}
+\left(\sum_{k=1}^nk^{2a}\right)^2=\sum_{k=1}^nk^{4a}+2\sum_{j=1}^n\sum_{\substack{k=1 \\ k\neq j }} j^{2a}k^{2a}\Rightarrow \left(\sum_{k=1}^nk^{2a}\right)^2>\sum_{k=1}^nk^{4a}.
+\end{align*}
+Si observamos la última igualdad anterior observamos que cuando $n\rightarrow \infty$ tanto el número y denominador divergente, pero observamos que el denominador crece más rápido que el denominador, es decir, es de un orden mayor. Por lo tanto, como el denominador tiende a $\infty$ más rápido que el denominador podemos concluir que la toda la expresión tiene a 0, es decir cuándo $n\rightarrow \infty$
+\begin{align*}
+\frac{\sum_{k=1}^n\mE\left[|X_k|^{\delta+2} \right]}{s_n^{\delta+2}} \rightarrow 0.
+\end{align*}
+Por lo tanto, como ya encontramos un $\delta=2$ tal que se cumple
+\begin{align*}
+\frac{\sum_{k=1}^n\mE\left[|X_k|^{\delta+2} \right]}{s_n^{\delta+2}} \rightarrow 0.
+\end{align*}
+podemos concluir que se cumple la condición de Lyapunov. \ \ \fin
+
+6. Justifique que $X_n\xrightarrow[]{P} 1$ en cada uno de los siguientes casos:
+
+a) $X_n=1+nY_n,$ con $Y_n\sim Bernoulli(1/n)$.
+
+b) $X_n=Y_n/\log n$, con $Y_n\sim Poisson\left(\sum_{i=1}^n 1/i \right).$
+
+c) $X_n=\frac{1}{n}\s Y_i^2,$ con las $Y_i's$ v.a.i.i.d. y $Y_i\sim N(0,1)$. 
+
+¿En qué casos $X_n\xrightarrow[]{L_2} 1$?
+
+\res Primero recordemos que
+\begin{framed}
+    \begin{thmt} \label{relaciones}
+	Sea $\{X_n\}$ una sucesión de v.a.i y $X$ una variable aleatoria $X$, entonces se tienen las siguientes relaciones:
+	\begin{enumerate}
+	\item[a)] $X_n\xrightarrow[]{L_2} X$ implica que  $X_n\xrightarrow[]{P} X.$
+	
+	\item[b)] $X_n\xrightarrow[]{P} X$ implica que  $X_n\xrightarrow[]{d} X.$
+	
+	\item[c)] $X_n\xrightarrow[]{c.s} X$ implica que  $X_n\xrightarrow[]{P} X.$
+	\end{enumerate}
+    \end{thmt}
+\end{framed}
+Entonces para este ejercicio primero procederemos a validar si convergen en $L_2$ y si lo satisfacen entonces ocupando el teorema (\ref{relaciones}) podríamos concluir que también convergen en probabilidad.
+
+a) $X_n=1+nY_n,$ con $Y_n\sim Bernoulli(1/n)$. Para probar que $X_n\xrightarrow[]{L_2} 1$ ocupemos la definición (\ref{convergencias}) de convergencia en $L_2$, tenemos que 
+\begin{align*}
+\mE[\left( X_n-1\right)^2]&=\mE[X_n^2-2X_n+1]=\mE[X_n^2]-2\mE[X_n]+1= \mE[\left(1+nY_n\right)^2]-2\mE[\left(1+nY_n\right)]+1\\
+&=\mE[1+2nY_n+4n^2Y_n^2]-2\left(1+n\frac{1}{n}\right)+1\\
+&=1+2n\mE[Y_n]+4n^2\mE[Y_n^2]-4+1\\
+&=1+2n\frac{1}{n}+4n^2\left(1^2\frac{1}{n}+0\right)-4+1\\
+&=1+2+4n-4+1=4n,
+\end{align*}  
+lo anterior implica que
+\begin{align*}
+\lim_{x\rightarrow \infty} \mE[\left( X_n-1\right)^2]=\lim_{x\rightarrow \infty} 4n = \infty,
+\end{align*}
+es decir, la serie diverge, \textbf{lo que podemos concluir que $X_n=1+nY_n,$ con $Y_n\sim Bernoulli(1/n)$ no converge en $L_2$ a 1, $X_n \not \xrightarrow[]{L_2} 1.$ } Ahora probemos que $X_n\xrightarrow[]{P} 1$, para ello ocuparemos la relación que existe de convergencia casi segura y probabilidad (teorema (\ref{relaciones})), primero probaremos que converge casi seguramente a 1, es decir, $X_n\xrightarrow[]{c.s} 1$, tenemos que la función de distribución de $X_n=1+nY_n, \ Y_n\sim Bernoulli(1/n)$ es
+\begin{align*}
+f_{X_n}(x_n)=\left\{ \begin{array}{cc}
+\frac{1}{n} & x_n=1+n \\
+1-\frac{1}{n}& x_n=1 
+\end{array} \right.
+\end{align*}
+entonces 
+\begin{align*}
+\text{ ya que }\lim_{n\rightarrow \infty}f_{X_n}(x_n)=\left\{ \begin{array}{cc}
+0& \lim_{n\rightarrow \infty}x_n = \lim_{n\rightarrow \infty}1+n \\
+1 & \lim_{n\rightarrow \infty}x_n =\lim_{n\rightarrow \infty}1 = 1 
+\end{array} \right. \text{ implica que }\mP(\{\omega: X_n(\omega) \rightarrow 1 \}=1.
+\end{align*}
+Es decir, lo anterior demuestra que $X_n\xrightarrow[]{c.s} 1$. Por lo tanto, \textbf{ocupando el teorema (\ref{relaciones}) podemos concluir que $X_n$ también converge en probabilidad a 1.}
+
+b) $X_n=Y_n/\log n$, con $Y_n\sim Poisson\left(\sum_{i=1}^n 1/i \right).$ Veamos si converge en $L_2$ a 1, para ello observemos que 
+\begin{align*}
+\mE[\left( X_n-1\right)^2]&=\mE[X_n^2-2X_n+1]=\mE[X_n^2]-2\mE[X_n]+1= \mE[\left(Y_n/\log n\right)^2]-2\mE[\left(Y_n/\log n\right)]+1\\
+&=\frac{1}{(\log n )^2}\mE(Y_n^2)-\frac{2}{\log n }\mE(Y_n)+1\\
+&=\frac{\s \frac{1}{i}+ \left(\s \frac{1}{i} \right)^2}{(\log n)^2}-\frac{2\s \frac{1}{i}}{\log n}+1\\
+&=\frac{\s \frac{1}{i}}{(\log n)^2}+ \left(\frac{\s \frac{1}{i}}{\log n}\right)^2-\frac{2\s \frac{1}{i}}{\log n}+1,
+\end{align*}
+Ocupemos la siguiente propiedad conocida de la serie armónica (la demostración es sencilla ocupando la definición de logaritmo como integral) 
+\begin{framed}
+    \begin{thmt} \label{limite}
+    Serie armónica 
+	\begin{align*}
+	\sum_{i=1}^n \frac{1}{i} \leq \log n+1
+	\end{align*}
+    \end{thmt}
+\end{framed}
+Entonces ocupando la propiedad anterior podemos demostrar que
+\begin{align*}
+\lim_{n\rightarrow \infty} \left(\frac{\s \frac{1}{i}}{\log n}\right) < \lim_{n\rightarrow \infty} \left(\frac{\log n+1}{\log n}\right)=1+\lim_{n\rightarrow \infty} \left(\frac{1}{\log n}\right)=1.
+\end{align*} 
+Entonces ocupando lo anterior podemos observar que 
+\begin{align*}
+\lim_{n\rightarrow \infty} \mE[\left( X_n-1\right)^2]&=\lim_{n\rightarrow \infty}\left( \frac{\s \frac{1}{i}}{(\log n)^2}+ \left(\frac{\s \frac{1}{i}}{\log n}\right)^2-\frac{2\s \frac{1}{i}}{\log n}+1\right)\\
+&=\lim_{n\rightarrow \infty} \left(\frac{\s \frac{1}{i}}{\log n} \frac{1}{\log n}\right)+\lim_{n\rightarrow \infty} \left(\frac{\s \frac{1}{i}}{\log n} \right)^2-2\lim_{n\rightarrow \infty} \frac{\s \frac{1}{i}}{\log n}+1\\
+&=\lim_{n\rightarrow \infty} \left(\frac{\s \frac{1}{i}}{\log n}\right) \lim_{n\rightarrow \infty} \left(\frac{1}{\log n}\right)+\left(\lim_{n\rightarrow \infty} \frac{\s \frac{1}{i}}{\log n} \right)^2-2\lim_{n\rightarrow \infty} \frac{\s \frac{1}{i}}{\log n}+1\\
+&=1(0)+1^2-2(1)+1=0.
+\end{align*}
+Por lo anterior, \textbf{queda demostrado que $X_n\xrightarrow[]{L_2} 1$.} Entonces, ocupando el teorema (\ref{relaciones}) \textbf{podemos concluir que como $X_n\xrightarrow[]{L_2} 1$ esto  implica que $X_n\xrightarrow[]{P} 1.$}
+
+c) $X_n=\frac{1}{n}\s Y_i^2,$ con las $Y_i's$ v.a.i.i.d. y $Y_i\sim N(0,1)$, recordemos lo siguiente
+\begin{framed}
+    \begin{thmt} \label{limite}
+    (Demostrado en clase) Sea $Y_1,Y_2, \cdots , Y_n$ v.a.i.i.d con distribución Normal(0,1), entonces $Y_i^2\sim Ji-cuadrada(1)$ y además $\s Y_i^2\sim Ji-cuadrada(n)$. 
+    \end{thmt}
+\end{framed}
+Sabiendo lo anterior denotemos a $\s Y_i^2 \equiv W_n\sim Ji-cuadrada(n)$ para facilitar la notación, procedemos a demostrar si $X_n=\frac{1}{n} W_n$ entonces converge en $L_2$ a 1 o no. Recordemos que si $X\sim Ji-cuadrada(n)\Rightarrow \mE[X]=n$ y $Var(X)=2n$. Entonces tenemos que 
+ \begin{align*}
+\mE[\left( X_n-1\right)^2]&=\mE[X_n^2-2X_n+1]=\mE[X_n^2]-2\mE[X_n]+1= \mE\left[\left(\frac{W_n}{n}\right)^2\right]-2\mE\left[\left(\frac{W_n}{n}\right)\right]+1\\
+&=\frac{1}{n ^2}\mE(W_n^2)-\frac{2}{ n }\mE(W_n)+1\\
+&=\frac{1}{n ^2}\left(Var(W_n)+\mE[W_n]^2\right)-\frac{2n}{ n }+1\\
+&=\frac{1}{n ^2}\left(2n+n^2\right)-2+1\\
+&=\frac{2}{n} + 1-2+1=\frac{2}{n}.\\
+\end{align*}
+Ocupando lo anterior podemos observar que 
+\begin{align*}
+\lim_{n\rightarrow \infty} \mE[\left( X_n-1\right)^2] = \lim_{n\rightarrow \infty} \frac{2}{n}=0.
+\end{align*}
+Por lo tanto, como $\mE[\left( X_n-1\right)^2]\rightarrow 0$, \textbf{podemos concluir que $X_n=\frac{1}{n} \s Y_i^2$ converge en $L_2$ a 1. } Entonces, ocupando el teorema (\ref{relaciones}) \textbf{podemos concluir que como $X_n\xrightarrow[]{L_2} 1$ esto  implica que $X_n\xrightarrow[]{P} 1.$} \ \ \ \ \fin
+
+\textbf{Ejericios de las Notas:}
+
+1. (Diapositiva 85) La proporción real de familias en cierta ciudad que viven en casa propia es 0.7. Si se escogen al azar 84 familias de esa ciudad y se les pregunta si viven o no en casa propia, ¿Con qué probabilidad podemos asegurar que el valor que se obtendrá de la proporción muestral caerá entre 0.64 y 0.76? Resolverlo usando la corrección por continuidad.
+ 
+\res Denotemos por $X_i$ a la variable de que la i-ésima familia viva en en casa propia (1 ó 0). En este caso tenemos que $X_i\sim Bernoulli(0.7)$. La proporción muestral está dada por 
+$$\hat{\theta}_{84}=\frac{1}{84}\sum_{i=1}^{84}X_i.$$
+La corrección por continuidad nos dice que si $X\sim Bin(n,p)$ y si $np$ y $np(1-p)$ son grandes, entonces 
+\begin{align*}
+\mP(X<x+1)\approx \mP(Y\leq x+1/2)
+\end{align*}
+donde $Y$ es una variable aleatoria que se distribuye como una normal con media $np$ y varianza $np(1-p)$ es decir, $Y\sim N(np, \sqrt{np(1-p)})$.
+
+Entonces podemos aproximar la probabilidad de que se la proporción muestral este entre 0.64 y 0.76 como
+\begin{align*}
+\mP(0.64 < \hat{\theta}_{84}<0.76)&=\mP(0.64 < \frac{1}{84}\sum_{i=1}^{84}X_i<0.76)=\mP((0.64)*84 <\sum_{i=1}^{84}X_i<(0.76)*84)\\
+&=\mP(53.76 <\sum_{i=1}^{84}X_i<63.84),
+\end{align*} 
+como $X_i\sim Bernoulli(0.7)\sim \sum_{i=1}^{84}X_i\sim Binomial(84,0.7)$, como $np=58.8$ y $np(1-p)=17.64$ son grandes podemos ocupar la corrección de continuidad utilizando $Z\sim Normal(58.8,4.2)$. Es decir, tenemos que 
+\begin{align*}
+\mP(0.64 < \hat{\theta}_{84}<0.76)&= \mP(54 <\sum_{i=1}^{84}X_i<64) \approx \mP(Z\leq 63.5)- \mP(Z\leq 53.5)=0.8684401-0.1034915\\
+&=0.7649486.
+\end{align*}
+Si comparamos la aproximación obtenida por la corrección de continuidad y la aproximación utilizando el TLC vista en clase, observamos que la que mejor aproxima a la teórica (0.7621075) es la obtenida por la por la corrección de continuidad. \ \ \ \ \fin 
+
+2. (Diapositiva 93) De hecho una suma de $l$ variables aleatorias Ji$-$cuadradas independientes con $n_i$ grados de libertad $(i = 1, . . . , l)$ es una variable aleatoria Ji$-$ cuadrada con $m = n_1 + n_2 + . . . + n_l$ grados de libertad. Verificar.
+
+\res Recordemos que la función generadora de momentos de una variable $X_1\sim Ji-cuadrada(n_1)$ es
+\begin{align*}
+M_{X_1}(t)= (1-2t)^{-\frac{n_1}{2}},
+\end{align*}
+entonces si tenemos $X_1, X_2, \cdots , X_l$  variables independientes que se distribuye como Ji$-$cuadrada $(n_1)$, Ji$-$cuadrada $(n_2), \cdots$, Ji$-$cuadrada $(n_l)$ respectivamente entonces la función generadora de momentos de la suma de estas variables independientes es
+\begin{align*}
+M_{\sum_{i=1}^l X_i} (t)&=\mE\left(e^{t\sum_{i=1}^l X_i} \right)=\mE\left(e^{tX_1} \right)\mE\left(e^{tX_2} \right)\cdots \mE\left(e^{tX_l} \right)=M_{X_1}(t)M_{X_2}(t)\cdots M_{X_l}(t)\\
+&=(1-2t)^{-\frac{n_1}{2}}(1-2t)^{-\frac{n_2}{2}}+(1-2t)^{-\frac{n_l}{2}}=(1-2t)^{-\frac{\sum_{i=1}^l n_i}{2}}\\ \\
+&=(1-2t)^{-\frac{m}{2}}, 
+\end{align*}
+donde $\ m =\sum_{i=1}^l n_i$. Por lo tanto, como la generadora de momentos es igual a la generadora de momentos de una Ji$-$cuadrada$(m)$, \textbf{podemos concluir que la suma de $l$ variables aleatorias Ji$-$cuadradas independientes con $n_i$ grados de libertad $(i = 1, . . . , l)$ es una variable aleatoria Ji$-$ cuadrada con $m = n_1 + n_2 + . . . + n_l$ grados de libertad.}\ \ \ \fin
+
+3. (Diapositiva 141, \textit{opcional}) Demostrar que 
+\begin{align*}
+n\mE\left[ \left(\frac{\partial}{\partial \theta} \log f(x)\right)^2 \right]= -n\mE\left[\frac{\partial^2}{\partial \theta^2} \log f(x) \right].
+\end{align*}
+
+4. (Diapositiva 110) Otro estimador para $\sigma^2$ en poblaciones normales es $S_n^2 = \frac{1}{n} \sum_{i=1}^n(X_i-\bar{X})^2.$ Calcular el sesgo de este estimador.
+
+\res Recordemos la siguiente definición de sesgo
+\begin{framed}
+    \begin{thmd} \label{sesgo}
+    Si un estimador $\hat{\theta}$ no es insesgado para $\theta$, se dice que es sesgado y se define el sesgo de $\hat{\theta}$ como
+    $$Sesgo(\hat{\theta})=\mE(\hat{\theta})-\theta.$$
+    \end{thmd}
+\end{framed}
+Tenemos que,
+\begin{align*}
+S_n^2 = \frac{1}{n} \sum_{i=1}^n(X_i-\bar{X})^2=\frac{1}{n}\frac{n-1}{n-1} \sum_{i=1}^n(X_i-\bar{X})^2=\frac{n-1}{n}S^2,
+\end{align*}
+donde $S^2$ es un estimador insesgado para $\sigma^2$ en poblaciones normales. Lo anterior implica que 
+\begin{align*}
+\mE(S_n^2)=\mE\left(\frac{n-1}{n}S^2 \right)=\frac{n-1}{n}\mE\left(S^2 \right)=\frac{n-1}{n}\sigma^2.
+\end{align*}
+Y por lo tanto el sesgo de $S_n^2$ es
+\begin{align*}
+Sesgo(S_n^2)=\frac{n-1}{n}\sigma^2-\sigma^2=-\frac{\sigma^2}{n}.\ \ \ \finf
+\end{align*}
+5. (Diapositiva 118) Se dejará como ejercicio demostrar que la función de densidad de $X_{(n)}$ y su varianza son
+\begin{align*}
+f_{X_{(n)}}(x)=n\frac{x^{n-1}}{\theta^n}, \ \ \ 0<x<\theta
+\end{align*}
+y 
+\begin{align*}
+Var(X_{(n)})=\frac{n}{(n+1)^2(n+2)}\theta^2,
+\end{align*}
+respectivamente.
+
+\res Tenemos que la función de distribución del estadístico de orden $n$ es
+\begin{align*}
+f_{X_{(n)}}(x) = n [F_X(x)]^{n-1}f_X(x).
+\end{align*}
+En este problema, tenemos que $X_i\sim Unif(0,\theta)$, entonces esto implica que la función de distribución de $X_{(n)}$ sea
+\begin{align*}
+f_{X_{(n)}}(x) = n [F_X(x)]^{n-1}f_X(x)=n\left[\frac{x}{\theta}\right]^{n-1} \frac{1}{\theta}=n\frac{x^{n-1}}{\theta^n} \ \  0<x<\theta. 
+\end{align*}
+
+Por lo que la varianza se puede calcular como:
+\begin{align*}
+Var(X_{(n)})&=\mE(X_{(n)}^2)-[\mE(X_{(n)})]^2\\
+&=\int_0^\theta x^2 n\frac{x^{n-1}}{\theta^n} dx-\left( \int_0^\theta x n\frac{x^{n-1}}{\theta^n} dx\right)^2\\
+&=\frac{n}{\theta^n}\int_0^\theta x^{n+1} dx-\left( \frac{n}{\theta^n}\int_0^\theta x^{n} dx\right)^2\\
+&=\frac{n}{\theta^n}\left.\frac{x^{n+2}}{n+2}\right|_{0}^\theta -\left( \frac{n}{\theta^n}\left.\frac{x^{n+1}}{n+1}\right|_{0}^\theta \right)^2\\
+&=\frac{n\theta^2}{n+2}-\frac{n^2\theta^2}{(n+1)^2}=\theta^2\frac{n(n+1)^2-n^2(n+2)}{(n+2)(n+1)^2}\\
+&=\theta^2\frac{n^3+2n^2+n-n^3-2n^2}{(n+2)(n+1)^2}= \theta^2\frac{n}{(n+2)(n+1)^2}. \ \ \ \ \finf
+\end{align*}
+
+6. (Diapositiva 131) Calcular el valor esperado de la variable aleatoria $T_r$ y a partir del resultado proponer un estimador insesgado para $\mu$, donde $T_r=$ \textbf{el tiempo de vidad total acumulado de las componentes a la terminación del experimento} es
+\begin{align*}
+T_r=\sum_{i=1}^rY_i+(n-r)Y_r.
+\end{align*}
+
+\res Notemos que los $Y_i$ son los estadísticos de orden $i$ de los tiempos de vida. Una forma de proceder puede ser obteniendo el valor esperado de la fórmula anterior, sin embargo necesitamos conocer las densidades de los estadísticos de orden, hasta el de orden r inclusive. Esto sería algo extenuante ya que la distribución estaría cambiando para cada valor de la variable $Y_i$, por ello se prefiere una forma alternativa de escribir el tiempo $T_r$. Es importante recalcar el hecho de que cuando falla una componente las restantes siguen teniendo una distribución exponencial con el mismo parámetro $\theta$, a pesar de saber que han vivido por lo menos el tiempo de las componentes que fallaron. Esta es la propiedad de pérdida de memoria.
+
+Con lo anterior en mente observemos que:
+\begin{itemize}
+\item las n componentes duran hasta lo que dura el estadístico de primer orden, $Y_1$ , de las $n$ componentes, cada una Exp($\theta$).
+
+\item las $(n - 1)$ componentes restantes duran un tiempo adicional de $Y_2 -Y_1$ , que representa el nuevo estadístico de orden uno de las $(n - 1)$ componentes restantes, cada una Exp($\theta$.
+
+\item las $(n - 2)$ componentes restantes duran un tiempo adicional de $Y_3 - Y_2$ que representa el nuevo estadístico de orden uno de las $(n - 2)$ componentes restantes, cada una Exp($\theta$).
+
+\item y así sucesivamente.
+\end{itemize}
+Por lo tanto, otra expresión para $T_r$ es
+\begin{align*}
+T_r=nY_1+(n-1)(Y_2-Y_1)+(n-2)(Y_3-Y_2)+\cdots+[n-(r-1)](Y_r-Y_{r-1})
+\end{align*}
+donde se están sumando los mínimos tiempos cada vez. Observemos que
+
+\begin{align*}
+\mE(Y_1)=\frac{\theta}{n},& \ \ Y_1=\text{est. de orden 1 de las} n \text{comp. cada una} exp(\theta)\\
+\mE(Y_2-Y_1)=\frac{\theta}{(n-1)},& \ \ Y_2-Y_1=\text{est. orden 1 de las} n-1 \text{comp. restantes}\\
+\mE(Y_3-Y_2)=\frac{\theta}{(n-2)},& \ \ Y_3-Y_2=\text{est. orden 1 de las} n-2 \text{comp. restantes}\\
+\vdots& \\
+\mE(Y_r-Y_{r-1})=\frac{\theta}{(n-(r-1))},&
+\end{align*}
+Con lo anterior, podemos calcular la esperanza de $T_r$ de manera más sencilla
+\begin{align*}
+\mE(T_r)&=\mE[nY_1+(n-1)(Y_2-Y_1)+(n-2)(Y_3-Y_2)+\cdots+[n-(r-1)](Y_r-Y_{r-1})]\\
+&=n\frac{\theta}{n}+(n-1)\frac{\theta}{(n-1)}+\cdots+[n-(r-1)]\frac{\theta}{[n-(r-1)]}\\
+&=\theta+\theta+\cdots+\theta=r\theta.
+\end{align*}
+Por lo tanto, 
+$$\mE(T_r)=r\theta,$$
+de donde un estimador insesgado utilizando este procedimiento sería $$\hat{\theta}=\frac{T_r}{r}. \ \ \finf$$
