@@ -1,9 +1,0 @@
-check.convergence	Check convergence
-criterion		Convergence criterion computation
-generate		Generation of sample paths
-investigate		Investigate examples and exercises from the paper
-law.plot2d		Interactive 2D convergence in law
-law.plot3d		Static 3D convergence in law
-p.as.plot		Interactive plot for convergence in probability and almost surely
-visualize.crit		Visualisation of convergence criterion curves
-visualize.sp		Visualisation of sample paths
