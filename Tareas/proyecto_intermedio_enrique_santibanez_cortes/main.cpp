@@ -66,11 +66,12 @@ int main(){
 int nA, mA; // inicializamos los tamaños de la matriz.
 char x, operacion, y, s; // inicializamos los parametros auxiliares.
 
-cout << "Bienvenido al programa para sumar matrices." << endl;
+cout << "Bienvenido al programa para operar matrices." << endl;
 cout << "Ingresa el tamano de la primera matriz (A), ejemplo, " << endl;
 cout << "para crear una matriz 5x7 ingresa 5 7 " << endl;
 cin >> nA >> mA;
 matriz* A = new matriz(nA, mA);
+srand(time(NULL));
 A->generar_matriz_aleatoria();
 
 cout << "\n ¿Ingresaras otra matriz? Si ingresa 's' o No ingresa 'n'." << endl;
@@ -81,6 +82,7 @@ if (s=='s'){
     cout << "para crear una matriz 5x7 ingresa 5 7 " << endl;
     cin >> nB >> mB; // generamos la matriz B.
     matriz*  B= new matriz(nB, mB);
+    srand(time(NULL));
     B->generar_matriz_aleatoria();
 
     cout << "\n Haz creado la matriz A y B. Ahora ingresa la operacion a realizar,ejemplos:" << endl;

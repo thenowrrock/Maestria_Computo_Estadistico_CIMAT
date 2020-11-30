@@ -1,8 +1,7 @@
 #include <iostream>
 #include <stdlib.h>
 #define N 5
-
-using namespace std;
+using namespace std; //* cout, endl  *//
 
 int* ApplyFunction(int *arr){
 	static int ArrOut[N]; // Memoria estatica.
