@@ -1,0 +1,2228 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish]{babel}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{lmodern}
+\usepackage{xspace}
+\usepackage{multicol}
+\usepackage{hyperref}
+\usepackage{float}
+\usepackage{hyperref}
+\usepackage{color}
+\usepackage{framed}
+\usepackage{pdfpages}
+
+
+
+\usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
+
+\newcommand{\X}{\mathbb{X}}
+\newcommand{\x}{\mathbf{x}}
+\newcommand{\Y}{\mathbf{Y}}
+\newcommand{\y}{\mathbf{y}}
+\newcommand{\xbarn}{\bar{x}_n}
+\newcommand{\ybarn}{\bar{y}_n}
+\newcommand{\paren}[1]{\left( #1 \right)}
+\newcommand{\llaves}[1]{\left\lbrace #1 \right\rbrace}
+\newcommand{\barra}{\,\vert\,}
+\newcommand{\mP}{\mathbb{P}}
+\newcommand{\mE}{\mathbb{E}}
+\newcommand{\mR}{\mathbb{R}}
+\newcommand{\mJ}{\mathbf{J}}
+\newcommand{\mX}{\mathbf{X}}
+\newcommand{\mS}{\mathbf{S}}
+\newcommand{\mA}{\mathbf{A}}
+\newcommand{\unos}{\boldsymbol{1}}
+\newcommand{\xbarnv}{\bar{\mathbf{x}}_n}
+\newcommand{\abs}[1]{\left\vert #1 \right\vert}
+\newcommand{\muv}{\boldsymbol{\mu}}
+\newcommand{\mcov}{\boldsymbol{\Sigma}}
+\newcommand{\vbet}{\boldsymbol{\beta}}
+\newcommand{\veps}{\boldsymbol{\epsilon}}
+\newcommand{\mcC}{\mathcal{C}}
+\newcommand{\mcR}{\mathcal{R}}
+\newcommand{\mcN}{\mathcal{N}}
+
+\newcommand{\ceros}{\boldsymbol{0}}
+\newcommand{\mH}{\mathbf{H}}
+\newcommand{\ve}{\mathbf{e}}
+\newcommand{\avec}{\mathbf{a}}
+\newcommand{\res}{\textbf{RESPUESTA}\\}
+
+\newcommand{\defi}[3]{\textbf{Definición:#3}}
+\newcommand{\fin}{$\blacksquare.$}
+\newcommand{\finf}{\blacksquare.}
+\newcommand{\tr}{\text{tr}}
+\newcommand*{\temp}{\multicolumn{1}{r|}{}}
+
+\newcommand{\grstep}[2][\relax]{%
+   \ensuremath{\mathrel{
+       {\mathop{\longrightarrow}\limits^{#2\mathstrut}_{
+                                     \begin{subarray}{l} #1 \end{subarray}}}}}}
+\newcommand{\swap}{\leftrightarrow}
+
+\newcommand{\gen}{\text{gen}}
+\newtheorem{thmt}{Teorema:}
+\newtheorem{thmd}{Definición:}
+\newtheorem{thml}{Lema:}
+
+\begin{document}
+\begin{table}[ht]
+\centering
+\begin{tabular}{c}
+\textbf{Maestría en Computo Estadístico}\\
+\textbf{Álgebra Matricial} \\
+\textbf{Tarea 8}\\
+\today \\
+\emph{Enrique Santibáñez Cortés}\\
+Repositorio de Git: \href{https://github.com/Enriquesec/Algebra_matricial/tree/master/tareas/Tarea_9}{Tarea 9, AM}.
+\end{tabular}
+\end{table}
+Todos los cálculos deben ser a mano.
+
+\begin{enumerate}
+\item Sea 
+\begin{align*}
+A=\begin{pmatrix}
+4 & 2 & 2\\
+2 & 4 & 2\\
+2 & 2 & 4
+\end{pmatrix}.
+\end{align*}
+Encuentre una matriz ortogonal $P$ y una diagonal $D$ tal que $A=PDP^t$. 
+
+\res \begin{framed}
+    \begin{thmt} \label{t_matriz_ortogonal}
+	(Diapositiva 153). Una matriz cuadrada es ortogonal si y solo si tiene columnas ortonormales.
+	    \end{thmt}
+\end{framed}
+ 
+\begin{framed}
+    \begin{thmt} \label{t_diagonalizable_ortogonalmente}
+	(Diapositiva 163). Si $A$ es diagonalizable, $A=PDP^{-1}$ con $P$ ortogonal, entonces $A=PDP^t.$ En tal caso diremos que $A$ es diagonalizable ortogonalmente. 
+    \end{thmt}
+\end{framed}
+
+\begin{framed}
+    \begin{thmt} \label{t_A_simetrica_diagonalizable}
+	(Diapositiva 163). Si $A$ es simétrica entonces existe una matriz ortogonal $P$ y una matriz diagonal $D$ tal que $A=PDP^t$.  
+	    \end{thmt}
+\end{framed}
+Ocupando el teorema (\ref{t_A_simetrica_diagonalizable}) podemos decir que $A$ es diagonalizable, para pasamos a encontras las matrices $P$ y $D$. Para ello, primero calculemos el polinomio característico de $A$,
+\begin{align*}
+p(\lambda) &= \det (A-\lambda I)=
+\left|\begin{array}{ccc}
+4-\lambda & 2 & 2 \\
+2& 4-\lambda & 2\\
+2 & 2 & 4-\lambda
+\end{array} \right|
+=(4-\lambda)[(4-\lambda)(4-\lambda)-4]-2[2(4-\lambda)-4]+2[4-2(4-\lambda)]\\
+&=(4-\lambda)[\lambda^2-8\lambda+12]-2[4-2\lambda]+2[-4+2\lambda]\\
+&=48-32\lambda+4\lambda-12\lambda+8\lambda^2-\lambda^3\\
+&=(\lambda-2)(-\lambda^2+10\lambda-16)=(\lambda-2)(\lambda-8)(-\lambda+2).
+\end{align*}
+Esto implica que los valores propios de $A$ sean
+\begin{align*}
+p(\lambda)&=0,\Leftrightarrow\\
+(5-\lambda)(\lambda-4)(\lambda-6)&=0\ \ \ \Rightarrow \lambda_1=8, \ \lambda_2=2.
+\end{align*}
+Ahora calculemos los vectores propios para cada uno de los valores propios. Para $\lambda_1=8$, tenemos 
+\begin{align*}
+A-\lambda_1I=\begin{pmatrix}
+4-8 & 2 & 2\\
+2 & 4-8 & 2\\
+2 & 2 & 4-8
+\end{pmatrix}=\begin{pmatrix}
+-4 & 2 & 2\\
+2 & -4 & 2\\
+2 & 2 & -4
+\end{pmatrix}%
+\grstep[R_3\Rightarrow 2R_3+R_1]{R_2 \Rightarrow 2R_2+R_1}
+%
+\begin{pmatrix}
+-4 & 2 & 2\\
+0 & -6 & 6\\
+0 & 6 & -6
+\end{pmatrix}
+%
+\grstep[R_1\Rightarrow -R_1/4-R_2/12]{R_3 \Rightarrow R_3-R_2}
+%
+\begin{pmatrix}
+1 & 0 & -1\\
+0 & 1 & -1\\
+0 & 0 & 0
+\end{pmatrix}.
+\end{align*}
+Por lo tanto, de la eliminación Guass-jordan tenemos que la solución del sistema es $x_1=x_3, x_2=x_3$ y $x_3$ es libre, es decir, el conjunto solución es
+\begin{align*}
+\left\{x_3\begin{pmatrix}
+ 1\\
+ 1\\
+ 1
+\end{pmatrix}: x_3 \ \in \mR \right\}.
+\end{align*}
+Lo anterior implica que un vector propio de $\lambda_1=8$ es 
+$\begin{pmatrix}
+1 & 1 & 1
+\end{pmatrix}^t$. Realizando un razonamiento análogo, calculemos el vector propio para $\lambda_2=2$, tenemos 
+\begin{align*}
+A-\lambda_1I=\begin{pmatrix}
+4-2 & 2 & 2\\
+2 & 4-2 & 2\\
+2 & 2 & 4-2
+\end{pmatrix}=\begin{pmatrix}
+2 & 2 & 2\\
+2 & 2 & 2\\
+2 & 2 & 2
+\end{pmatrix}%
+\grstep[R_3\Rightarrow R_3-R_1]{R_2 \Rightarrow R_2-R_1}
+%
+\begin{pmatrix}
+1 & 1 & 1\\
+0 & 0 & 0\\
+0 & 0 & 0
+\end{pmatrix}.
+\end{align*}
+Por lo tanto, tenemos que la solución del sistema es $x_1=-x_2-x_3,$ y haciendo $x_2=1$ y $x_3=0$ y $x_2=0,x_3=1$ tenemos el conjunto solución es
+\begin{align*}
+\left\{x_2\begin{pmatrix}
+-1\\
+1\\
+0
+\end{pmatrix}+x_3\begin{pmatrix}
+-1\\
+0\\
+1
+\end{pmatrix} , x_3,x_2 \ \in \mR \right\}.
+\end{align*}
+Lo anterior implica que un vector propio de $\lambda_2=5$ es 
+$\begin{pmatrix}
+-1 & 0 & 1
+\end{pmatrix}^t$ y otro $\begin{pmatrix}
+-1 & 1 & 0
+\end{pmatrix}^t$.  Por lo que ya tenemos 3 vectores propios $v_1=\begin{pmatrix}
+1 & 1 & 1
+\end{pmatrix}^t, v_2=\begin{pmatrix}
+-1 & 1 & 0
+\end{pmatrix}^t, v_3=\begin{pmatrix}
+-1 & 0 & 1
+\end{pmatrix}^t$. Veamos que estos vectores son ortogonales para ello calculemos el producto interno
+\begin{align*}
+\langle v_1, v_2 \rangle &= 1(-1)+1(0)+1(1)= 0,\\
+\langle v_1, v_3 \rangle &= 1(-1)+1(0)+1(1)=0, \\
+\langle v_2, v_3 \rangle &= -1(-1)+1(0)+0(1)=1\neq 0.
+\end{align*}
+Observemos que el vector $v_3$ no es ortogonal a $v_2$ entonces para hacerlo ortogonal encontremos la proteción de $v_3$ en $v_2$ y $v_1$ de la siguiente forma,
+\begin{align*}
+w=proj_{u_1}(u_3)+proj_{u_2}(u_3)=\frac{-1+1}{2}\begin{pmatrix}
+1 \\1 \\1
+\end{pmatrix}+\frac{1}{1+1}\begin{pmatrix}
+-1\\ 1\\ 0
+\end{pmatrix}=\begin{pmatrix}
+-1/2\\ 1/2\\ 0
+\end{pmatrix}.
+\end{align*}
+Cómo sabemos que un vector se puede escribir como suma de dos vectores ortogonales, sea $y$ ese vector entonces
+\begin{align*}
+u_3=w+y\Rightarrow y=u_3-w=\begin{pmatrix}
+-1\\ 0 \\ 1 
+\end{pmatrix}-\frac{1}{2}\begin{pmatrix}
+-1\\1 \\0
+\end{pmatrix}= \begin{pmatrix}
+-\frac{1}{2}\\ -\frac{1}{2}\\ 1
+\end{pmatrix}.
+\end{align*}
+Entonces ya tenemos tres vectores ortogonales, ahora normalicemos cada uno de los vectores, 
+\begin{align*}
+u_1&= \frac{v_1}{||v_1||} =\frac{1}{\sqrt{3}} \begin{pmatrix}
+1 & 1 & 1
+\end{pmatrix}^t = \begin{pmatrix}
+ \frac{1}{\sqrt{1}} & \frac{1}{\sqrt{3}} & \frac{1}{\sqrt{3}}
+\end{pmatrix}^t\\
+u_2&= \frac{v_2}{||v_2||} =\frac{1}{\sqrt{2}} \begin{pmatrix}
+-1 & 1 & 0
+\end{pmatrix}^t = \begin{pmatrix}
+-\frac{1}{\sqrt{2}} & \frac{1}{\sqrt{2}} & 0
+\end{pmatrix}^t\\
+u_3&= \frac{v_3}{||v_3||} =\frac{\sqrt{2}}{\sqrt{3}} \begin{pmatrix}
+-1/2 & -1/2 & 1
+\end{pmatrix}^t = \begin{pmatrix}
+-1/\sqrt{6} & -1/\sqrt{6} & \frac{\sqrt{2}}{\sqrt{3}}
+\end{pmatrix}^t.
+\end{align*}
+Por lo tanto, por el teorema  \textbf{podemos concluir que la $A$ se diagonaliza  como}
+\begin{align*}
+A=PDP^{t}&= \begin{pmatrix}
+1/\sqrt{3} & -1/\sqrt{3} & -1/\sqrt{6}\\
+1/\sqrt{3} & 1/\sqrt{2} & -1/\sqrt{6}\\
+1/\sqrt{3} & 0 & \sqrt{2}/ \sqrt{3}
+\end{pmatrix} \begin{pmatrix}
+8 & 0 & 0\\
+0 & 2 & 0\\
+0 & 0 & 2
+\end{pmatrix} \begin{pmatrix}
+1/\sqrt{3} & 1/\sqrt{3} & 1/\sqrt{3}\\
+-1/\sqrt{3} & 1/\sqrt{2} & 0\\
+-1/\sqrt{3} & -1/\sqrt{6} & \sqrt{2}/ \sqrt{3}
+\end{pmatrix} \ \finf
+\end{align*}
+
+\item Diagonalize ortogonalmente la matriz simétrica.
+\begin{align*}
+\begin{pmatrix}
+5 & 1 & 0 \\
+1 & 5 & 0 \\
+0 & 0 & 5
+\end{pmatrix}.
+\end{align*}
+
+\res Denotemos a la matriz del problema como la matriz $A$. Observemos que $A$ es simetrica, ocupando el teorema (\ref{t_A_simetrica_diagonalizable}) podemos decir que $A$ es diagonalizable. Encontramos los valores propios y vectores propios asociados a esos valores propios de A para determinar a las matrices $D$ y $P$. Para ello, primero calculemos el polinomio característico de $A$,
+\begin{align*}
+p(\lambda) &= \det (A-\lambda I)=
+\left|\begin{array}{ccc}
+5-\lambda & 1 & 0 \\
+1& 5-\lambda & 0\\
+0 & 0 & 5-\lambda
+\end{array} \right|
+=(5-\lambda)[(5-\lambda)^2-1]=
+(5-\lambda)[\lambda^2-10\lambda+25-1]= \\
+&=(5-\lambda)[\lambda^2-10\lambda+24]\\
+&=(5-\lambda)(\lambda-4)(\lambda-6).
+\end{align*}
+Esto implica que los valores propios de $A$ sean
+\begin{align*}
+p(\lambda)&=0,\Leftrightarrow\\
+(5-\lambda)(\lambda-4)(\lambda-6)&=0\ \ \ \Rightarrow \lambda_1=4, \ \lambda_2=5 \ \ y \ \ \lambda_3=6.
+\end{align*}
+Ahora calculemos los vectores propios para cada uno de los valores propios. Para $\lambda_1=4$, tenemos 
+\begin{align*}
+A-\lambda_1I=\begin{pmatrix}
+5-4 & 1 & 0\\
+1 & 5-4 & 0\\
+0 & 0 & 5-4
+\end{pmatrix}=\begin{pmatrix}
+1 & 1 & 0\\
+1 & 1 & 0\\
+0 & 0 & 1
+\end{pmatrix}%
+\grstep[]{R_2 \Rightarrow R_2-R_1}
+%
+\begin{pmatrix}
+1 & 1 & 0\\
+0 & 0 & 0\\
+0 & 0 & 1
+\end{pmatrix}
+%
+\grstep[]{R_2 \leftrightarrow R_2-R_1}
+%
+\begin{pmatrix}
+1 & 1 & 0\\
+0 & 0 & 1\\
+0 & 0 & 0
+\end{pmatrix}.
+\end{align*}
+Por lo tanto, de la eliminación Guass-jordan tenemos que la solución del sistema es $x_1=-x_2$ y $x_3=0$, es decir, el conjunto solución es
+\begin{align*}
+\left\{x_1\begin{pmatrix}
+ 1\\
+-1\\
+ 0
+\end{pmatrix}: x_1 \ \in \mR \right\}.
+\end{align*}
+Lo anterior implica que un vector propio de $\lambda_1=1$ es 
+$\begin{pmatrix}
+1 & -1 & 0
+\end{pmatrix}^t$. Realizando un razonamiento análogo, calculemos el vector propio para $\lambda_2=5$, tenemos 
+\begin{align*}
+A-\lambda_2I=\begin{pmatrix}
+5-5 & 1 & 0\\
+1 & 5-5 & 0\\
+0 & 0 & 5-5
+\end{pmatrix}=\begin{pmatrix}
+0 & 1 & 0\\
+1 & 0 & 0\\
+0 & 0 & 0
+\end{pmatrix}.
+\end{align*}
+Por lo tanto, tenemos que la solución del sistema es $x_1=0,\ x_2=0$ y $x_3$ es libre, es decir, el conjunto solución es
+\begin{align*}
+\left\{x_3\begin{pmatrix}
+0\\
+0\\
+1
+\end{pmatrix}: x_3 \ \in \mR \right\}.
+\end{align*}
+Lo anterior implica que un vector propio de $\lambda_2=5$ es 
+$\begin{pmatrix}
+0 & 0 & 1
+\end{pmatrix}^t$. Realizando un razonamiento análogo, calculemos el vector propio para $\lambda_3=6$, tenemos 
+\begin{align*}
+A-\lambda_3I=\begin{pmatrix}
+5-6 & 1 & 0\\
+1 & 5-6 & 0\\
+0 & 0 & 5-6
+\end{pmatrix}=\begin{pmatrix}
+-1 & 1 & 0\\
+1 & -1 & 0\\
+0 & 0 & -1
+\end{pmatrix}%
+\grstep[]{R_2 \Rightarrow R_2+R_1}
+%
+\begin{pmatrix}
+-1 & 1 & 0\\
+0 & 0 & 0\\
+0 & 0 & -1
+\end{pmatrix}
+%
+\grstep[]{R_2 \leftrightarrow R_1}
+%
+\begin{pmatrix}
+-1 & 1 & 0\\
+0 & 0 & 1\\
+0 & 0 & 0
+\end{pmatrix}.
+\end{align*}
+Por lo tanto, de la eliminación Guass-jordan tenemos que la solución del sistema es $x_1=x_2$ y $x_3=0$, es decir, el conjunto solución es
+\begin{align*}
+\left\{x_1\begin{pmatrix}
+1\\
+1\\
+0
+\end{pmatrix}: x_1 \ \in \mR \right\}.
+\end{align*}
+Lo anterior implica que un vector propio de $\lambda_3=6$ es 
+$\begin{pmatrix}
+1 & 1 & 0 
+\end{pmatrix}^t$. Por lo que ya tenemos 3 vectores propios $v_1=\begin{pmatrix}
+1 & -1 & 0
+\end{pmatrix}^t, v_2=\begin{pmatrix}
+0 & 0 & 1
+\end{pmatrix}^t, v_3=\begin{pmatrix}
+1 & 1 & 0 
+\end{pmatrix}^t$. Veamos que estos vectores son ortogonales para ello calculemos el producto interno
+\begin{align*}
+\langle v_1, v_2 \rangle &= 1(0) -1(0)+0(1) = 0,\\
+\langle v_1, v_3 \rangle &= 1(1)-1(1)+0(0)=0, \\
+\langle v_2, v_3 \rangle &= 1(0)+1(0)+0(1)=0.
+\end{align*}
+Ahora normalicemos cada uno de los vectores, 
+\begin{align*}
+u_1&= \frac{v_1}{||v_1||} =\frac{1}{\sqrt{2}} \begin{pmatrix}
+1 & -1 & 0
+\end{pmatrix}^t = \begin{pmatrix}
+ \frac{1}{\sqrt{2}} & -\frac{1}{\sqrt{2}} & 0
+\end{pmatrix}^t\\
+u_2&= \frac{v_2}{||v_2||} =\frac{1}{\sqrt{1}} \begin{pmatrix}
+0 & 0 & 1
+\end{pmatrix}^t = \begin{pmatrix}
+ 0 & 0 & 1
+\end{pmatrix}^t\\
+u_3&= \frac{v_3}{||v_3||} =\frac{1}{\sqrt{2}} \begin{pmatrix}
+1 & 1 & 0
+\end{pmatrix}^t = \begin{pmatrix}
+ \frac{1}{\sqrt{2}} & \frac{1}{\sqrt{2}} & 0
+\end{pmatrix}^t
+\end{align*}
+Por lo tanto, con el conjunto de los vectores propios unitarios podemos genera la matriz $P$ tal que $P$ es una matriz ortogonal (por el teorema \ref{t_matriz_ortogonal}),
+\begin{align*}
+\begin{pmatrix}
+\frac{1}{\sqrt{2}} & 0 & \frac{1}{\sqrt{2}} \\
+-\frac{1}{\sqrt{2}} & 0 & \frac{1}{\sqrt{2}}\\
+0 & 1 & 0
+\end{pmatrix}
+\end{align*}
+
+Por lo tanto, por el teorema \ref{t_diagonalizable_ortogonalmente} \textbf{podemos concluir que la $A$ se diagonaliza ortogonalmente como}
+\begin{align*}
+A=PDP^{t}&= \begin{pmatrix}
+\frac{1}{\sqrt{2}} & 0 & \frac{1}{\sqrt{2}} \\
+-\frac{1}{\sqrt{2}} & 0 & \frac{1}{\sqrt{2}}\\
+0 & 1 & 0
+\end{pmatrix} \left(\begin{matrix}
+4 & 0 & 0 \\
+0 & 5 & 0 \\
+0 & 0 & 6
+\end{matrix}\right)\begin{pmatrix}
+\frac{1}{\sqrt{2}} & 0 & \frac{1}{\sqrt{2}} \\
+-\frac{1}{\sqrt{2}} & 0 & \frac{1}{\sqrt{2}}\\
+0 & 1 & 0
+\end{pmatrix}^t\\
+&=\begin{pmatrix}
+\frac{1}{\sqrt{2}} & 0 & \frac{1}{\sqrt{2}} \\
+-\frac{1}{\sqrt{2}} & 0 & \frac{1}{\sqrt{2}}\\
+0 & 1 & 0
+\end{pmatrix} \left(\begin{matrix}
+4 & 0 & 0 \\
+0 & 5 & 0 \\
+0 & 0 & 6
+\end{matrix}\right)\begin{pmatrix}
+\frac{1}{\sqrt{2}} & - \frac{1}{\sqrt{2}} & 0\\
+0 & 0 & 1\\
+\frac{1}{\sqrt{2}} & \frac{1}{\sqrt{2}} & 0
+\end{pmatrix}\ \ \ \ \finf
+\end{align*}
+
+\item Encuentre la descomposición espectral de la matriz simétrica
+\begin{align*}
+\begin{pmatrix}
+3 & 4\\
+4 & -3
+\end{pmatrix}.
+\end{align*}
+
+\res \begin{framed}
+    \begin{thmd} \label{d_espectral}
+	(Diapositiva 164). En el caso de una matriz simétrica, la descomposición espectral toma la forma
+	$$A=\lambda_1u_1u_1^t+\lambda_2u_2u_2^t+\cdots+\lambda_nu_nu_n^t$$
+	donde los $u_i$ son los vectores de $P$ en la descomposición $A=PDP^t$ de $A$. 
+	    \end{thmd}
+\end{framed}
+Ocupando la definición (\ref{d_espectral}), primero encontremos la diagonalización $A$, para ello primero calculemos el polinomio característico de $A$,
+\begin{align*}
+p(\lambda) &= \det (A-\lambda I)=
+\left|\begin{array}{ccc}
+3-\lambda& 4\\
+4 & -3-\lambda
+\end{array} \right|
+=(3-\lambda)(-3-\lambda)-16\\
+&=\lambda^2-9-16=\lambda^2-25=(\lambda-5)(\lambda+5).
+\end{align*}
+Esto implica que los valores propios de $A$ sean
+\begin{align*}
+p(\lambda)&=0,\Leftrightarrow\\
+(\lambda-5)(\lambda+5)&=0\ \ \ \Rightarrow \lambda_1=5, \ \ \ \ y \ \ \lambda_2=-5.
+\end{align*}
+Ahora calculemos los vectores propios para cada uno de los valores propios. Para $\lambda_1=5$, tenemos 
+\begin{align*}
+A-\lambda_1I=\begin{pmatrix}
+3-5& 4\\
+4 & -3-5
+\end{pmatrix}=\begin{pmatrix}
+-2& 4\\
+4 & -8
+\end{pmatrix}%
+\grstep[]{R_2 \Rightarrow R_2+2R_1}
+%
+\begin{pmatrix}
+-2& 4\\
+ 0 & 0
+\end{pmatrix}
+%
+\grstep[]{R_1 \leftrightarrow -R_1/2}
+%
+\begin{pmatrix}
+1& -2\\
+ 0 & 0
+\end{pmatrix}.
+\end{align*}
+Por lo tanto, de la eliminación Guass-jordan tenemos que la solución del sistema es $x_1=2x_2$ y $x_2$ libre, es decir, el conjunto solución es
+\begin{align*}
+\left\{x_2\begin{pmatrix}
+ 1\\
+ 2
+\end{pmatrix}: x_2 \ \in \mR \right\}.
+\end{align*}
+Lo anterior implica que un vector propio de $\lambda_1=5$ es 
+$\begin{pmatrix}
+1 & 2 & 0
+\end{pmatrix}^t$. Realizando un razonamiento análogo, calculemos el vector propio para $\lambda_2=-5$, tenemos 
+\begin{align*}
+A-\lambda_2I=\begin{pmatrix}
+3+5& 4\\
+4 & -3+5
+\end{pmatrix}=\begin{pmatrix}
+8& 4\\
+4 & 2
+\end{pmatrix}%
+\grstep[]{R_2 \Rightarrow 2R_2-R_1}
+%
+\begin{pmatrix}
+8& 4\\
+ 0 & 0
+\end{pmatrix}
+%
+\grstep[]{R_1 \leftrightarrow R_1/8}
+%
+\begin{pmatrix}
+1& 1/2\\
+ 0 & 0
+\end{pmatrix}.
+\end{align*}
+Por lo tanto, tenemos que la solución del sistema es $x_1=-1/2x_2,$ y $x_2$ libre, es decir, el conjunto solución es
+\begin{align*}
+\left\{x_2\begin{pmatrix}
+1 \\ -2
+\end{pmatrix}: x_2 \ \in \mR \right\}.
+\end{align*}
+Lo anterior implica que un vector propio de $\lambda_2=-5$ es 
+$\begin{pmatrix}
+1 \\ -2
+\end{pmatrix}^t$.  Por lo que ya tenemos 2 vectores propios $v_1=\begin{pmatrix}
+2 & 1 
+\end{pmatrix}^t, v_2=\begin{pmatrix}
+1 \\ -2
+\end{pmatrix}^t$. Ahora normalicemos cada uno de los vectores
+\begin{align*}
+u_1&= \frac{v_1}{||v_1||} =\frac{1}{\sqrt{5}} \begin{pmatrix}
+2 & 1 
+\end{pmatrix}^t = \begin{pmatrix}
+ \frac{2}{\sqrt{5}} & \frac{1}{\sqrt{5}} 
+\end{pmatrix}^t\\
+u_2&= \frac{v_2}{||v_2||} =\frac{1}{\sqrt{5}}\begin{pmatrix}
+1& -2
+\end{pmatrix}^t= \begin{pmatrix}
+\frac{1}{\sqrt{5}} & -\frac{2}{\sqrt{5}}
+\end{pmatrix}^t.
+\end{align*}
+Por lo tanto, la $A$ se diagonaliza  como
+\begin{align*}
+A=PDP^{t}&= \begin{pmatrix}
+2/\sqrt{5} & 1/\sqrt{5} \\
+1/\sqrt{5} & -2/\sqrt{5} \\
+\end{pmatrix} \begin{pmatrix}
+5 & 0 \\
+0 & -5 
+\end{pmatrix} \begin{pmatrix}
+2/\sqrt{5} & 1/\sqrt{5} \\
+1/\sqrt{5} & -2/\sqrt{5} \\
+\end{pmatrix}.
+\end{align*}
+Por lo tanto, \textbf{ocupando el teorema (\ref{d_espectral}) podemos concluir que la descomposición espectral de $A$ es}
+\begin{align*}
+A&=\lambda_1u_1u_1^t+\lambda_2u_2u_2^t\\
+&=5 \begin{pmatrix}
+2/\sqrt{5}\\
+1/\sqrt{5}
+\end{pmatrix}\begin{pmatrix}
+2/\sqrt{5}&
+1/\sqrt{5}
+\end{pmatrix}-5\begin{pmatrix}
+1/\sqrt{5}\\
+-2/\sqrt{5}
+\end{pmatrix}\begin{pmatrix}
+1/\sqrt{5}&
+-2/\sqrt{5}
+\end{pmatrix}\\
+&=\begin{pmatrix}
+2\\1
+\end{pmatrix}\begin{pmatrix}
+2 & 1
+\end{pmatrix}-\begin{pmatrix}
+1\\-2
+\end{pmatrix}\begin{pmatrix}
+1&-2
+\end{pmatrix}.\ \ \finf
+\end{align*}
+
+\item Diga quién es la matriz de la forma cuadrática 
+$$x_1^2+3x_2^2+x_3^2+2x_1x_2+6x_1x_3+2x_2x_3$$
+y encuentre un cambio de variable para que se transforme en una sin productos cruzados.
+
+\res \begin{framed}
+    \begin{thmt} \label{t_cambio_variable}
+	(Diapositiva 166). Si $Q(x)=x^tAx$ es una forma cuadrática, con $A$ simétrica, entonces existe una matriz ortogonal $P$ tal que $A=PDP^t$, haciendo el cambio de variable $y=P^{-1}x$, $y^tDy$ toma los mismos valores que $Q$ sin tener productos cruzados.
+	    \end{thmt}
+\end{framed}
+\begin{framed}
+    \begin{thmt} \label{t_igualdad_cuadratica}
+	(Libro 403, ). Considere el polinomio homogéneo general de grado dos en $n$ variables $x = (x_1, x_2,\cdots, X_n )^t$ 
+\begin{align*}
+f(x_1,x_2,\cdots , x_n)=\sum_{i=1}^n \alpha_ix_i^2+\sum_{i\leq i < j\leq n} \beta_{ij}x_i x_j.
+\end{align*}	
+	Entonces el polinomio anterior se puede expresar como $x^tAx$ donde $A=\{a_{ij}\}$ es una matriz simétrica de tamaño $n \times n$ con 
+	\begin{align*}
+	a_{ij} =\left\{\begin{array}{cc}
+	\alpha_1 & \text{ si } i=j,\\
+	\frac{\beta_{ij}}{2} & \text{ si } i<j,\\
+	\frac{\beta_{ij}}{2} & \text{ si } i>j,\\
+\end{array}	 \right.
+	\end{align*}
+	    \end{thmt}
+\end{framed}
+Ocupando el teorema (\ref{t_cambio_variable}) y  considerando a $x=\begin{pmatrix}
+x_1 & x_2 & x_3
+\end{pmatrix}^t$ tenemos que 
+\begin{align*}
+x_1^2+3x_2^2+x_3^2+2x_1x_2+6x_1x_3+2x_2x_3 = \begin{pmatrix}
+x_1 & x_2 & x_3
+\end{pmatrix} \begin{pmatrix}
+1 & 1 & 3\\
+1 & 3 & 1\\
+3 & 1 & 1 
+\end{pmatrix}\begin{pmatrix}
+x_1 \\ x_2 \\ x_3
+\end{pmatrix}.
+\end{align*}
+Es decir, la matriz $A=\begin{pmatrix}
+1 & 1 & 3\\
+1 & 3 & 1\\
+3 & 1 & 1 
+\end{pmatrix}$ es de la forma cuadrática $Q(x)=x_1^2+3x_2^2+x_3^2+2x_1x_2+6x_1x_3+2x_2x_3$. Ocupando el teorema (\ref{t_igualdad_cuadratica}) podemos encontrar un cambio de variable para no tener productos cruzados. Para ello primero encontremos los valores propios y vectores propios asociados a esos valores propios de A para determinar a las matrices $D$ y $P$. Para ello, primero calculemos el polinomio característico de $A$,
+\begin{align*}
+p(\lambda) &= \det (A-\lambda I)=
+\left|\begin{array}{ccc}
+1-\lambda & 1 & 3 \\
+1& 3-\lambda & 1\\
+3 & 1 & 1-\lambda
+\end{array} \right|\\
+&=(1-\lambda)[(3-\lambda)(1-\lambda)-1]-[1-\lambda-3]+3[1-3(3-\lambda)]= \\
+&=(1-\lambda)[\lambda^2-4\lambda+2]-[-\lambda-2]+3[-8+3\lambda]\\
+&=\lambda^2-4\lambda+2-\lambda^3+4\lambda^2-2\lambda+\lambda+2-24+9\lambda\\
+&=-\lambda^3+5\lambda^2+4\lambda-20\\
+&=(\lambda+2)(-\lambda^2+7\lambda-10)\\
+&=(\lambda+2)(\lambda-2)(-\lambda+5).
+\end{align*}
+Esto implica que los valores propios de $A$ sean
+\begin{align*}
+p(\lambda)&=0,\Leftrightarrow\\
+(\lambda+2)(\lambda-2)(-\lambda+5)&=0\ \ \ \Rightarrow \lambda_1=-2, \ \lambda_2=2 \ \ y \ \ \lambda_3=5.
+\end{align*}
+Ahora calculemos los vectores propios para cada uno de los valores propios. Para $\lambda_1=-2$, tenemos 
+\begin{align*}
+A-\lambda_1I=\begin{pmatrix}
+1+2 & 1 & 3\\
+1 & 3+2 & 1\\
+3 & 1 & 1+2 
+\end{pmatrix}=\begin{pmatrix}
+3 & 1 & 3\\
+1 & 5 & 1\\
+3 & 1 & 3
+\end{pmatrix}%
+\grstep[R_3 \Rightarrow R_3-R_1]{R_2 \Rightarrow 3R_2-R_1}
+%
+\begin{pmatrix}
+3 & 1 & 3\\
+0 &14 & 0\\
+0 & 0 & 0
+\end{pmatrix}
+%
+\grstep[R_1 \Rightarrow R_1/3]{R_2 \Rightarrow R_2/14}
+%
+\begin{pmatrix}
+1 & 0 & 1\\
+0 & 1 & 0\\
+0 & 0 & 0
+\end{pmatrix}.
+\end{align*}
+Por lo tanto, de la eliminación Guass-jordan tenemos que la solución del sistema es $x_1=-x_3, \ x_2=0$ y $x_3$ es libre, es decir, el conjunto solución es
+\begin{align*}
+\left\{x_3\begin{pmatrix}
+-1\\
+ 0\\
+ 1
+\end{pmatrix}: x_3 \ \in \mR \right\}.
+\end{align*}
+Lo anterior implica que un vector propio de $\lambda_1=-2$ es 
+$\begin{pmatrix}
+-1 & 0 & 1
+\end{pmatrix}^t$. Realizando un razonamiento análogo, calculemos el vector propio para $\lambda_2=2$, tenemos 
+\begin{align*}
+A-\lambda_1I=\begin{pmatrix}
+1-2 & 1 & 3\\
+1 & 3-2 & 1\\
+3 & 1 & 1-2 
+\end{pmatrix}=\begin{pmatrix}
+-1 & 1 & 3\\
+1 & 1 & 1\\
+3 & 1 & -1
+\end{pmatrix}%
+\grstep[R_3 \Rightarrow R_3+3R_1]{R_2 \Rightarrow R_2+R_1}
+%
+\begin{pmatrix}
+-1 & 1 & 3\\
+0 & 2 & 4\\
+0 & 4 & 8
+\end{pmatrix}
+%
+\grstep[R_1 \Rightarrow -R_1+R_2/2]{R_3 \Rightarrow R_3-2R_2}
+%
+\begin{pmatrix}
+1 & 0 & -1\\
+0 & 1 & 2\\
+0 & 0 & 0
+\end{pmatrix}.
+\end{align*}
+Por lo tanto, tenemos que la solución del sistema es $x_1=x_3,\ x_2=-2x_3$ y $x_3$ es libre, es decir, el conjunto solución es
+\begin{align*}
+\left\{x_3\begin{pmatrix}
+1\\
+-2\\
+1
+\end{pmatrix}: x_3 \ \in \mR \right\}.
+\end{align*}
+Lo anterior implica que un vector propio de $\lambda_2=2$ es 
+$\begin{pmatrix}
+1&-2 & 1
+\end{pmatrix}^t$. Realizando un razonamiento análogo, calculemos el vector propio para $\lambda_3=5$, tenemos 
+\begin{align*}
+A-\lambda_1I=\begin{pmatrix}
+1-5 & 1 & 3\\
+1 & 3-5 & 1\\
+3 & 1 & 1-5 
+\end{pmatrix}=\begin{pmatrix}
+-4 & 1 & 3\\
+1 & -2 & 1\\
+3 & 1 & -4
+\end{pmatrix}%
+\grstep[R_3 \Rightarrow 4R_3+3R_1]{R_2 \Rightarrow 4R_2+R_1}
+%
+\begin{pmatrix}
+-4 & 1 & 3\\
+ 0 &-7 & 7\\
+ 0 & 7 & -7
+\end{pmatrix}
+%
+\grstep[R_1 \Rightarrow -R_1-R_2/7]{R_3 \Rightarrow R_3+R_2}
+%
+\begin{pmatrix}
+1 & 0 & -1\\
+0 & 1 & -1\\
+0 & 0 & 0
+\end{pmatrix}.
+\end{align*}
+Por lo tanto, de la eliminación Guass-jordan tenemos que la solución del sistema es $x_1=x_3, \ x_2=x_3$ y $x_3$ es libre, es decir, el conjunto solución es
+\begin{align*}
+\left\{x_3\begin{pmatrix}
+1\\
+1\\
+1
+\end{pmatrix}: x_3 \ \in \mR \right\}.
+\end{align*}
+Lo anterior implica que un vector propio de $\lambda_3=5$ es 
+$\begin{pmatrix}
+1 & 1 & 1
+\end{pmatrix}^t$. Por lo que ya tenemos 3 vectores propios $v_1=\begin{pmatrix}
+-1 & 0 & 1
+\end{pmatrix}^t, v_2=\begin{pmatrix}
+1 & -2 & 1
+\end{pmatrix}^t, v_3=\begin{pmatrix}
+1 & 1 & 1 
+\end{pmatrix}^t$. Veamos que estos vectores son ortogonales para ello calculemos el producto interno
+\begin{align*}
+\langle v_1, v_2 \rangle &= -1(1)+0(-2)+1(1)=0,\\
+\langle v_1, v_3 \rangle &= -1(1)+0(1)+1(1)=0, \\
+\langle v_2, v_3 \rangle &= 1(1)-2(1)+1(1)=0.
+\end{align*}
+Ahora normalicemos cada uno de los vectores, 
+\begin{align*}
+u_1&= \frac{v_1}{||v_1||} =\frac{1}{\sqrt{2}} \begin{pmatrix}
+-1 & 0 & 1
+\end{pmatrix}^t = \begin{pmatrix}
+ -\frac{1}{\sqrt{2}} & 0 & \frac{1}{\sqrt{2}} 
+\end{pmatrix}^t\\
+u_2&= \frac{v_2}{||v_2||} =\frac{1}{\sqrt{6}} \begin{pmatrix}
+1 & -2 & 1
+\end{pmatrix}^t = \begin{pmatrix}
+\frac{1}{\sqrt{6}} &-\frac{2}{\sqrt{6}} & \frac{1}{\sqrt{6}}
+\end{pmatrix}^t = \begin{pmatrix}
+\frac{1}{\sqrt{6}} &-\frac{\sqrt{2}}{\sqrt{3}} & \frac{1}{\sqrt{6}}
+\end{pmatrix}^t\\
+u_3&= \frac{v_3}{||v_3||} =\frac{1}{\sqrt{2}} \begin{pmatrix}
+1 & 1 & 1 
+\end{pmatrix}^t = \begin{pmatrix}
+ \frac{1}{\sqrt{2}} & \frac{1}{\sqrt{2}} & \frac{1}{\sqrt{2}}
+\end{pmatrix}^t
+\end{align*}
+Por lo tanto, con el conjunto de los vectores propios unitarios podemos genera la matriz $P$ tal que $P$ es una matriz ortogonal (por el teorema \ref{t_matriz_ortogonal}),
+\begin{align*}
+\begin{pmatrix}
+-\frac{1}{\sqrt{2}}&\frac{1}{\sqrt{6}}&\frac{1}{\sqrt{2}} \\
+0 & -\frac{\sqrt{2}}{\sqrt{3}} & \frac{1}{\sqrt{2}}\\
+\frac{1}{\sqrt{2}} & \frac{1}{\sqrt{6}} & \frac{1}{\sqrt{2}}
+\end{pmatrix}
+\end{align*}
+
+Por lo tanto, por el teorema \ref{t_diagonalizable_ortogonalmente} tenemos que $A$ se diagonaliza ortogonalmente como
+\begin{align*}
+A=PDP^{t}&= \begin{pmatrix}
+-\frac{1}{\sqrt{2}}&\frac{1}{\sqrt{6}}&\frac{1}{\sqrt{2}} \\
+0 & -\frac{\sqrt{2}}{\sqrt{3}} & \frac{1}{\sqrt{2}}\\
+\frac{1}{\sqrt{2}} & \frac{1}{\sqrt{6}} & \frac{1}{\sqrt{2}}
+\end{pmatrix} \left(\begin{matrix}
+-2 & 0 & 0 \\
+0 & 2 & 0 \\
+0 & 0 & 5
+\end{matrix}\right)\begin{pmatrix}
+-\frac{1}{\sqrt{2}}&\frac{1}{\sqrt{6}}&\frac{1}{\sqrt{2}} \\
+0 & -\frac{\sqrt{2}}{\sqrt{3}} & \frac{1}{\sqrt{2}}\\
+\frac{1}{\sqrt{2}} & \frac{1}{\sqrt{6}} & \frac{1}{\sqrt{2}}
+\end{pmatrix}^t\\
+&=\begin{pmatrix}
+-\frac{1}{\sqrt{2}}&\frac{1}{\sqrt{6}}&\frac{1}{\sqrt{2}} \\
+0 & -\frac{\sqrt{2}}{\sqrt{3}} & \frac{1}{\sqrt{2}}\\
+\frac{1}{\sqrt{2}} & \frac{1}{\sqrt{6}} & \frac{1}{\sqrt{2}}
+\end{pmatrix}\left(\begin{matrix}
+-2 & 0 & 0 \\
+0 & 2 & 0 \\
+0 & 0 & 5
+\end{matrix}\right)
+\begin{pmatrix}
+\frac{1}{\sqrt{2}} & 0 & \frac{1}{\sqrt{2}}\\
+\frac{1}{\sqrt{6}} & -\frac{\sqrt{2}}{\sqrt{3}} & \frac{1}{\sqrt{6}}\\
+\frac{1}{\sqrt{2}} & \frac{1}{\sqrt{2}} & \frac{1}{\sqrt{2}}
+\end{pmatrix}.
+\end{align*}
+Entonces ocupando el teorema (\ref{t_cambio_variable}), tenemos el cambio de variable
+\begin{align*}
+y =\begin{pmatrix}
+\frac{1}{\sqrt{2}} & 0 & \frac{1}{\sqrt{2}}\\
+\frac{1}{\sqrt{6}} & -\frac{\sqrt{2}}{\sqrt{3}} & \frac{1}{\sqrt{6}}\\
+\frac{1}{\sqrt{2}} & \frac{1}{\sqrt{2}} & \frac{1}{\sqrt{2}}
+\end{pmatrix} x
+\end{align*}
+hace que 
+\begin{align*}
+y^t\left(\begin{matrix}
+-2 & 0 & 0 \\
+0 & 2 & 0 \\
+0 & 0 & 5
+\end{matrix}\right) y 
+\end{align*}
+tome los mismos valores que $Q(x)=x_1^2+3x_2^2+x_3^2$, es decir, sin los productos cruzados. \ \ \fin
+
+\item Encuentre los valores singulares de 
+\begin{align*}
+A=\begin{pmatrix}
+\sqrt{3} & 2\\
+0 & \sqrt{3}
+\end{pmatrix}.
+\end{align*}
+
+\res \begin{framed}
+    \begin{thmd} \label{d_valores_singulares}
+	(Diapositiva 173). Sea $A$ una matriz $m\times n$. Observemos que:
+	\begin{enumerate}
+	\item $A^tA$ es simétrica.
+	\item Los valores propios de $A^tA$ son no negativos.
+	$$\lambda_1\geq \lambda_2 \geq \cdots \geq \lambda_n 0.$$
+\end{enumerate}	 Los valores singulares de $A$ son $\sigma_i=\sqrt{\lambda_i}, \ i=1,\cdots, n$.
+	    \end{thmd}
+\end{framed}
+Entonces para encontrar los valores singulares, primero busquemos los valores propios de $A^tA$. 
+\begin{align*}
+A^tA =\begin{pmatrix}
+\sqrt{3} & 0\\
+2 & \sqrt{3}
+\end{pmatrix} \begin{pmatrix}
+\sqrt{3} & 2\\
+0 & \sqrt{3}
+\end{pmatrix}= \begin{pmatrix}
+3 & 2\sqrt{3}\\
+2\sqrt{3} & 7
+\end{pmatrix}.
+\end{align*}
+Ahora encontremos los valores propios de $A^tA$, para ello, primero calculemos el polinomio característico de $A$,
+\begin{align*}
+p(\lambda) &= \det (A^tA-\lambda I)=
+\left|\begin{array}{ccc}
+3-\lambda & 2\sqrt{3}\\
+2\sqrt{3} & 7-\lambda
+\end{array} \right|=(3-\lambda)(7-\lambda)-12\\
+&=\lambda^2-10\lambda+21-12= \lambda^2-10\lambda-9=(\lambda-9)(\lambda-1).
+\end{align*}
+Esto implica que los valores propios de $AA^t$ sean
+\begin{align*}
+p(\lambda)&=0,\Leftrightarrow\\
+(\lambda-9)(\lambda-1)&=0\ \ \ \Rightarrow \lambda_1=9\ >\ \lambda_2=1.
+\end{align*}
+Por lo que podemos concluir que \textbf{los valores singulares son}
+\begin{align*}
+\sigma_1=\sqrt{9}=3 \ \ \text{y} \ \ \sigma_2=\sqrt{1}=1.\ \finf  
+\end{align*}
+\item Encuentre una desmposición en valores singulares de 
+\begin{align*}
+A=\begin{pmatrix}
+1 & 0 & 1\\
+2 & \sqrt{2} & 0\\
+1 & 0 & 1
+\end{pmatrix}.
+\end{align*}
+
+
+\res \begin{framed}
+    \begin{thmt} \label{t_descompo_valores_singulares}
+	(Diapositiva 173). Sea $A$ una matriz de $m\times n$ de rango $r$. Entonces existe una matriz $\Sigma$ de tamaño $m \times n$ de la forma 
+	\begin{align*}
+	\begin{pmatrix}
+	D & 0\\
+	0 & 0
+	\end{pmatrix}
+	\end{align*}
+
+donde $D$ es una matriz diagonal $r \times r$ que tiene como entradas los primeros $r$ valores singulares de A,  $\sigma_1 \geq \sigma_ \geq \cdots \geq  \sigma_r > 0$  (en ese orden), y existen una matriz ortogonal $U$, $m \times m$ y una matriz ortogonal $V$ , $n \times n$ tal que
+	\begin{align*}
+	A=U\Sigma V^t.
+	\end{align*}
+	    \end{thmt}
+\end{framed}
+Considerando la metodología para encontrar la descomposición en valores singulares (\ref{t_descompo_valores_singulares}) vista en clase, primero encontremos el producto de $A^tA$ y $AA^t$
+\begin{align*}
+A^tA& =\begin{pmatrix}
+1 & 0 & 1\\
+2 & \sqrt{2} & 0\\
+1 & 0 & 1
+\end{pmatrix}^t \begin{pmatrix}
+1 & 0 & 1\\
+2 & \sqrt{2} & 0\\
+1 & 0 & 1
+\end{pmatrix}=\begin{pmatrix}
+1 & 2 & 1\\
+0 & \sqrt{2} & 0\\
+1 & 0 & 1
+\end{pmatrix} \begin{pmatrix}
+1 & 0 & 1\\
+2 & \sqrt{2} & 0\\
+1 & 0 & 1
+\end{pmatrix} = \begin{pmatrix}
+6 & 2\sqrt{2} & 2\\
+2\sqrt{2} & 2 & 0\\
+2 & 0 & 0
+\end{pmatrix}\\
+AA^t& =\begin{pmatrix}
+1 & 0 & 1\\
+2 & \sqrt{2} & 0\\
+1 & 0 & 1
+\end{pmatrix}\begin{pmatrix}
+1 & 0 & 1\\
+2 & \sqrt{2} & 0\\
+1 & 0 & 1
+\end{pmatrix}^t =\begin{pmatrix}
+1 & 0 & 1\\
+2 & \sqrt{2} & 0\\
+1 & 0 & 1
+\end{pmatrix}\begin{pmatrix}
+1 & 2 & 1\\
+0 & \sqrt{2} & 0\\
+1 & 0 & 1
+\end{pmatrix} = \begin{pmatrix}
+2 & 2 & 2\\
+2 & 6 & 2\\
+2 & 2 & 2
+\end{pmatrix}.
+\end{align*}
+Comparando las matrices resultados, observamos que trabajar con $AA^t$ es más sencillo que $A^tA$. Por lo que en lugar de encontrar la descomposición en valores singulares de $A$, encontremos la descomposición en valores singulares de $A^t$ y será más sencillo la de $A$.  
+Ahora encontremos los valores propios de $AA^t$, para ello, primero calculemos el polinomio característico de $AA^t$,
+\begin{align*}
+p(\lambda) &= \det (AA^t-\lambda I)=
+\left|\begin{array}{ccc}
+2-\lambda & 2 & 2 \\
+2& 6-\lambda & 2\\
+2 & 2 & 2-\lambda
+\end{array} \right|=
+\left|\begin{array}{ccc}
+-\lambda & 0 & 2-(2-\lambda) \\
+2& 6-\lambda & 2\\
+2 & 2 & 2-\lambda
+\end{array} \right|=\\
+&=\left|\begin{array}{ccc}
+-\lambda & 0 & \lambda \\
+2& 6-\lambda & 2\\
+2 & 2 & 4-\lambda
+\end{array} \right|=\left|\begin{array}{ccc}
+-\lambda & 0 & 0 \\
+2& 6-\lambda & 4\\
+2 & 2 & 2-\lambda
+\end{array} \right| = -\lambda[(6-\lambda)(4-\lambda)-4(2)]\\
+&=-\lambda[\lambda^2-10\lambda+24-8]=-\lambda(\lambda^2-10\lambda+16)=-\lambda(\lambda-2)(\lambda-8).
+\end{align*}
+Esto implica que los valores propios de $AA^t$ sean
+\begin{align*}
+p(\lambda)&=0,\Leftrightarrow\\
+-\lambda(\lambda-2)(\lambda-8)&=0\ \ \ \Rightarrow \lambda_1=8\ >\ \lambda_2=2 \ \ >  \ \lambda_3=0.
+\end{align*}
+Por lo que, los valores singulares son
+\begin{align*}
+\sigma_1=\sqrt{8}=2\sqrt{2} \ \ \text{y} \ \ \sigma_2=\sqrt{2}=\sqrt{2}.  
+\end{align*}
+Y esto implica que 
+\begin{align*}
+\Sigma = \begin{pmatrix}
+2\sqrt{2} & 0 & 0\\
+0 & \sqrt{2} & 0\\
+0 & 0 & 0
+\end{pmatrix}.
+\end{align*}
+Ahora calculemos los vectores propios para cada uno de los valores propios. Para $\lambda_1=8$, tenemos 
+\begin{align*}
+AA^t-\lambda_1I&=\begin{pmatrix}
+2-8 & 2 & 2 \\
+2& 6-8 & 2\\
+2 & 2 & 2-8
+\end{pmatrix}=\begin{pmatrix}
+-6 & 2 & 2 \\
+2& -2 & 2\\
+2 & 2 & -6
+\end{pmatrix}%
+\grstep[R_3 \Rightarrow 3R_3+R_1]{R_2 \Rightarrow 3R_2+R_1}
+%
+\begin{pmatrix}
+-6 & 2 & 2 \\
+ 0 &-4 & 8\\
+ 0 & 8 & -16
+\end{pmatrix}
+%
+\grstep[R_1\Rightarrow R_1+R_2/2]{R_3 \Rightarrow R_3+2R_2}
+\\
+&\begin{pmatrix}
+-6 & 0 & 6 \\
+ 0 &-4 & 8\\
+ 0 & 0 & 0
+\end{pmatrix}%
+\grstep[R_2\Rightarrow -R_2/4]{R_1 \Rightarrow -R_1/6}
+%
+\begin{pmatrix}
+ 1 & 0 &-1 \\
+ 0 & 1 &-2\\
+ 0 & 0 & 0
+\end{pmatrix}
+\end{align*}
+Por lo tanto, de la eliminación Guass-jordan tenemos que la solución del sistema es $x_1=x_3, x_2=2x_3$ y $x_3$ es libre, es decir, el conjunto solución es
+\begin{align*}
+\left\{x_x\begin{pmatrix}
+ 1\\
+ 2\\
+ 1
+\end{pmatrix}: x_3 \ \in \mR \right\}.
+\end{align*}
+Lo anterior implica que un vector propio de $\lambda_1=8$ es 
+$v_1=\begin{pmatrix}
+1 & 2 & 1
+\end{pmatrix}^t$. Realizando un razonamiento análogo, calculemos el vector propio para $\lambda_2=2$, tenemos 
+\begin{align*}
+AA^t-\lambda_1I&=\begin{pmatrix}
+2-2 & 2 & 2 \\
+2& 6-2 & 2\\
+2 & 2 & 2-2
+\end{pmatrix}=\begin{pmatrix}
+0 & 2 & 2 \\
+2&  4 & 2\\
+2 & 2 & 0
+\end{pmatrix}%
+\grstep[R_2 \Rightarrow R_2-R_1]{R_1 \Leftrightarrow R_3}
+%
+\begin{pmatrix}
+ 2 & 2 & 0 \\
+ 0 & 2 & 2\\
+ 0 & 2 & 2
+\end{pmatrix}
+%
+\grstep[R_1\Rightarrow R_1-R_2]{R_3 \Rightarrow R_3-R_2}
+\\
+&\begin{pmatrix}
+ 2 & 0 &-2 \\
+ 0 & 2 & 2\\
+ 0 & 0 & 0
+\end{pmatrix}%
+\grstep[R_2\Rightarrow R_2/2]{R_1 \Rightarrow R_1/2}
+%
+\begin{pmatrix}
+ 1 & 0 &-1 \\
+ 0 & 1 &1\\
+ 0 & 0 & 0
+\end{pmatrix}.
+\end{align*}
+Por lo tanto, tenemos que la solución del sistema es $x_1=x_3,\ x_2=-x_3$ y $x_3$ es libre, es decir, el conjunto solución es
+\begin{align*}
+\left\{x_3\begin{pmatrix}
+1\\
+-1\\
+1
+\end{pmatrix}: x_3 \ \in \mR \right\}.
+\end{align*}
+Lo anterior implica que un vector propio de $\lambda_2=5$ es 
+$v_2=\begin{pmatrix}
+1 & -1 & 1
+\end{pmatrix}^t$.
+Realizando un razonamiento análogo, calculemos el vector propio para $\lambda_3=0$, tenemos 
+\begin{align*}
+AA^t-\lambda_1I&=\begin{pmatrix}
+2 & 2 & 2 \\
+2& 6 & 2\\
+2 & 2 & 2
+\end{pmatrix}%
+\grstep[R_3 \Rightarrow R_3-R_1]{R_2 \Leftrightarrow R_2-R_1}
+%
+\begin{pmatrix}
+2 & 2 & 2 \\
+0 & 4 & 0\\
+0 & 0 &0
+\end{pmatrix}
+%
+\grstep[R_2\Rightarrow R_2/4]{R_1 \Rightarrow R_1/2-R_2/4}
+%
+\begin{pmatrix}
+1 & 0 & 1 \\
+0 & 1 & 0\\
+0 & 0 &0
+\end{pmatrix}.
+\end{align*}
+Por lo tanto, tenemos que la solución del sistema es $x_1=-x_3,\ x_2=0$ y $x_3$ es libre, es decir, el conjunto solución es
+\begin{align*}
+\left\{x_3\begin{pmatrix}
+-1\\
+0\\
+1
+\end{pmatrix}: x_3 \ \in \mR \right\}.
+\end{align*}
+Lo anterior implica que un vector propio de $\lambda_3=0$ es 
+$v_3=\begin{pmatrix}
+-1 & 0 & 1
+\end{pmatrix}^t$. Entonces tenemos que los vectores propios $v_1=\begin{pmatrix}
+ 1 & 2 & 1
+\end{pmatrix}^t, v_2=\begin{pmatrix}
+ 1 & -1 & 1
+\end{pmatrix}^t$ y $v_3=\begin{pmatrix}
+-1 & 0 & 1
+\end{pmatrix}^t$. Ahora normalizamos los vectores anteriores,
+\begin{align*}
+v_1&= \frac{v_1}{||v_1||} =\frac{1}{\sqrt{6}} \begin{pmatrix}
+1 & 2 & 1
+\end{pmatrix}^t = \begin{pmatrix}
+\frac{1}{\sqrt{6}} & \frac{\sqrt{2}}{\sqrt{3}} & \frac{1}{\sqrt{6}}
+\end{pmatrix}^t,\\
+v_2&= \frac{v_2}{||v_2||} =\frac{1}{\sqrt{3}} \begin{pmatrix}
+1 & -1 & 1
+\end{pmatrix}^t = \begin{pmatrix}
+\frac{1}{\sqrt{3}} & -\frac{1}{\sqrt{3}} & \frac{1}{\sqrt{3}}
+\end{pmatrix}^t,\\
+u_3&= \frac{v_3}{||v_3||} =\frac{1}{\sqrt{2}} \begin{pmatrix}
+-1 & 0 & 1
+\end{pmatrix}^t = \begin{pmatrix}
+ -\frac{1}{\sqrt{2}} & 0 & \frac{1}{\sqrt{2}}
+\end{pmatrix}^t.
+\end{align*}
+Entonces lo anterior implica que,
+\begin{align*}
+V= \begin{pmatrix}
+\frac{1}{\sqrt{6}} & \frac{\sqrt{3}}{\sqrt{2}} & \frac{1}{\sqrt{6}}\\
+\frac{1}{\sqrt{3}} & -\frac{1}{\sqrt{3}} & \frac{1}{\sqrt{3}}\\
+-\frac{1}{\sqrt{2}} & 0 & \frac{1}{\sqrt{2}}
+\end{pmatrix}.
+\end{align*}
+Y por, último calculemos $u_1$ y $u_2$ de la siguiente forma
+$u_i= \frac{1}{\sigma_i} A v_1.$
+\begin{align*}
+u_1&=\frac{1}{2\sqrt{2}} \begin{pmatrix}
+1 & 2 & 1\\
+0 & \sqrt{2} & 0\\
+1 & 0 & 1
+\end{pmatrix}\begin{pmatrix}
+\frac{1}{\sqrt{6}} \\ \frac{\sqrt{2}}{\sqrt{3}} \\ \frac{1}{\sqrt{6}}
+\end{pmatrix}= \frac{1}{2\sqrt{2}} \begin{pmatrix}
+\frac{1}{\sqrt{6}}  + \frac{2\sqrt{2}}{\sqrt{3}}+\frac{1}{\sqrt{6}} \\
+0+\frac{2}{\sqrt{3}} +0\\
+\frac{1}{\sqrt{6}} +0 +\frac{1}{\sqrt{6}} 
+\end{pmatrix}= \frac{1}{2\sqrt{2}} \begin{pmatrix}
+\frac{6}{\sqrt{6}}\\
+\frac{2}{\sqrt{3}}\\
+\frac{2}{\sqrt{6}}
+\end{pmatrix}=\begin{pmatrix}
+\frac{\sqrt{3}}{2}\\
+\frac{1}{\sqrt{6}}\\
+\frac{1}{2\sqrt{3}}
+\end{pmatrix},\\
+u_2&=\frac{1}{\sqrt{2}} \begin{pmatrix}
+1 & 2 & 1\\
+0 & \sqrt{2} & 0\\
+1 & 0 & 1
+\end{pmatrix}\begin{pmatrix}
+\frac{1}{\sqrt{3}} \\ -\frac{1}{\sqrt{3}} \\ \frac{1}{\sqrt{3}}
+\end{pmatrix}= \frac{1}{\sqrt{2}} \begin{pmatrix}
+\frac{1}{\sqrt{3}} - \frac{2}{\sqrt{3}}+\frac{1}{\sqrt{3}} \\
+0-\frac{\sqrt{2}}{\sqrt{3}} +0\\
+\frac{1}{\sqrt{3}} +0 +\frac{1}{\sqrt{3}} 
+\end{pmatrix}= \frac{1}{\sqrt{2}} \begin{pmatrix}
+0\\
+-\frac{\sqrt{2}}{\sqrt{3}}\\
+\frac{\sqrt{2}}{\sqrt{3}}
+\end{pmatrix}=\begin{pmatrix}
+0\\
+-\frac{1}{\sqrt{3}}\\
+\frac{1}{\sqrt{3}}
+\end{pmatrix}.
+\end{align*}
+Ahora encontremos un vector que sea independiente a $u_1$ y $u_2$, para ello denotemoslo de la forma $u_3=\begin{pmatrix}
+1 & 0 & a 
+\end{pmatrix}$ tal que $\frac{\alpha}{2\sqrt{3}}+\frac{\beta}{3} \neq a $ donde 
+\begin{align*}
+\alpha \begin{pmatrix}
+\frac{\sqrt{3}}{2} \\
+\frac{1}{\sqrt{6}}
+\end{pmatrix}+\beta \begin{pmatrix}
+0\\
+-\frac{1}{3}
+\end{pmatrix} =  \begin{pmatrix}
+1\\ 0
+\end{pmatrix}\ \ \Rightarrow \alpha=\frac{2}{\sqrt{3}}\  \& \  \beta = \frac{3\alpha}{\sqrt{6}} = \frac{3 (2/\sqrt{3})}{\sqrt{6}}= \sqrt{2}.
+\end{align*}
+Es decir, $a\neq \frac{2}{\sqrt{3}} \frac{1}{2\sqrt{3}}+\frac{\sqrt{2}}{3}= \frac{1+\sqrt{2}}{\sqrt{3}}$. Entonces por convicción escogemos $a=0$ por lo que el otro vector elegido independiente de $u_1$ y $u_2$ es $u_3=\begin{pmatrix}
+1&0 & 0
+\end{pmatrix}$. Entonces como tenemos tres vectores en $\mR^3$ podemos concluir que son una  base para $\mR^3$ ya que $\dim(\mR^3)=\# \{ \text{vectores independientes} \}=3$. Con la base anterior utilicemos la  metodología Gram Schimidt para encontrar ahora una base ortogonal de $\mR^3$, para facilitar los cálculos renombremos los vectores de la siguiente forma $u_1=\begin{pmatrix}
+1&0 & 0
+\end{pmatrix}^t, u_2=\begin{pmatrix}
+\sqrt{3}/2& 1/\sqrt{6} & 1/2\sqrt{3}
+\end{pmatrix}^t$ y $u_3=\begin{pmatrix}
+0 & -1/\sqrt{3} & 1/\sqrt{3}
+\end{pmatrix}^t$. Con lo anterior, tenemos ahora
+\begin{align*}
+w_1& = u_1,\\
+w_2 &= u_2-\frac{\langle u_2, w_1 \rangle}{\langle w_1,w_1 \rangle}w_1,
+\end{align*}
+calculemos lo anterior 
+\begin{align*}
+\langle w_1, w_1 \rangle &=& 1(1)+0(0)+0(0)&=&1,\ \ \ & \langle u_2, w_1 \rangle &=& \sqrt{3}/2(1)+1/\sqrt{6}(0)+1/2\sqrt{3}(0)&=&\sqrt{3}/2 \Rightarrow
+\end{align*}
+\begin{align*}
+w_2= \begin{pmatrix}
+\sqrt{3}/2 \\ 1/\sqrt{6} \\ 1/2\sqrt{3}
+\end{pmatrix}-\frac{\sqrt{3}}{2}\begin{pmatrix}
+1 \\ 0 \\ 0 
+\end{pmatrix}=\begin{pmatrix}
+0\\ 1/\sqrt{6} \\ 1/2\sqrt{3}
+\end{pmatrix}.
+\end{align*}
+Ahora,
+\begin{align*}
+w_3 &= u_3-\frac{\langle u_3, w_1 \rangle}{\langle w_1,w_1 \rangle}w_1-\frac{\langle u_3, w_2 \rangle}{\langle w_2,w_2 \rangle}w_2,
+\end{align*}
+calculemos lo anterior
+\begin{align*}
+\langle w_2, w_2 \rangle &= 0(0)+1/\sqrt{6}(1/\sqrt{6})+1/2\sqrt{3}(1/2\sqrt{3})=1/6+1/12=3/12=1/4,\\ 
+\langle u_3, w_2 \rangle &= 0(0)-1/\sqrt{3}(1/\sqrt{6})+1/\sqrt{3}(1/2\sqrt{3}) =-1/3\sqrt{2}+1/6=(1-\sqrt{2})/6,\\
+\langle u_3, w_1 \rangle &= 0(1)-1/\sqrt{3}(0)+1/\sqrt{3}(0) =0
+\end{align*}
+\begin{align*}
+w_3= \begin{pmatrix}
+0 \\ -1/\sqrt{3} \\ 1/\sqrt{3}
+\end{pmatrix}-\frac{0}{1}\begin{pmatrix}
+1\\ 0 \\0 
+\end{pmatrix}-\frac{4(1-\sqrt{2})}{6}\begin{pmatrix}
+0\\ 1/\sqrt{6} \\ 1/2\sqrt{3}
+\end{pmatrix}=\begin{pmatrix}
+0 \\ -1/\sqrt{3} \\ 1/\sqrt{3}
+\end{pmatrix}+\begin{pmatrix}
+0\\ 2(1-\sqrt{2})/3\sqrt{6} \\ (1-\sqrt{2})/3\sqrt{3}
+\end{pmatrix}=\begin{pmatrix}
+0\\ (2-5\sqrt{2})/3\sqrt{6}\\ (4-\sqrt{2})/3\sqrt{3}
+\end{pmatrix}.
+\end{align*}
+Por lo tanto, una base ortogonal sería 
+\begin{align*}
+\left\{\begin{pmatrix}
+1 \\ 0 \\ 0 
+\end{pmatrix} ,\begin{pmatrix}
+0\\ 1/\sqrt{6} \\ 1/2\sqrt{3}
+\end{pmatrix},\begin{pmatrix}
+0\\ (2-5\sqrt{2})/3\sqrt{6}\\  (4-\sqrt{2})/3\sqrt{3}
+\end{pmatrix}\right\}.
+\end{align*}
+Por lo que esto implica que 
+\begin{align*}
+U = \begin{pmatrix}
+1 & 0 & 0\\ 
+0 & 1/\sqrt{6} &  1/2\sqrt{3}\\ 
+0& (2-5\sqrt{2})/3\sqrt{6} & (4-\sqrt{2})/3\sqrt{3}
+\end{pmatrix}.
+\end{align*}
+Es decir,
+\begin{align*}
+A^t = \begin{pmatrix}
+1 & 0 & 0\\ 
+0 & 1/\sqrt{6} &  1/2\sqrt{3}\\ 
+0& (2-5\sqrt{2})/3\sqrt{6} & (4-\sqrt{2})/3\sqrt{3}
+\end{pmatrix}
+\begin{pmatrix}
+2\sqrt{2} & 0 & 0\\
+0 & \sqrt{2} & 0\\
+0 & 0 & 0
+\end{pmatrix}
+ \begin{pmatrix}
+\frac{1}{\sqrt{6}} & \frac{\sqrt{3}}{\sqrt{2}} & \frac{1}{\sqrt{6}}\\
+\frac{1}{\sqrt{3}} & -\frac{1}{\sqrt{3}} & \frac{1}{\sqrt{3}}\\
+-\frac{1}{\sqrt{2}} & 0 & \frac{1}{\sqrt{2}}
+\end{pmatrix}^t.
+\end{align*}
+Por lo tanto, \textbf{esto implica que la descomposición de valores singulares de $A$ es}
+\begin{align*}
+A =V\Sigma U^t&= \begin{pmatrix}
+\frac{1}{\sqrt{6}} & \frac{\sqrt{3}}{\sqrt{2}} & \frac{1}{\sqrt{6}}\\
+\frac{1}{\sqrt{3}} & -\frac{1}{\sqrt{3}} & \frac{1}{\sqrt{3}}\\
+-\frac{1}{\sqrt{2}} & 0 & \frac{1}{\sqrt{2}}
+\end{pmatrix}
+\begin{pmatrix}
+2\sqrt{2} & 0 & 0\\
+0 & \sqrt{2} & 0\\
+0 & 0 & 0
+\end{pmatrix}\begin{pmatrix}
+1 & 0 & 0\\ 
+0 & 1/\sqrt{6} &  1/2\sqrt{3}\\ 
+0& (2-5\sqrt{2})/3\sqrt{6} & (4-\sqrt{2})/3\sqrt{3}
+\end{pmatrix}^t\\
+&= \begin{pmatrix}
+\frac{1}{\sqrt{6}} & \frac{\sqrt{3}}{\sqrt{2}} & \frac{1}{\sqrt{6}}\\
+\frac{1}{\sqrt{3}} & -\frac{1}{\sqrt{3}} & \frac{1}{\sqrt{3}}\\
+-\frac{1}{\sqrt{2}} & 0 & \frac{1}{\sqrt{2}}
+\end{pmatrix}
+\begin{pmatrix}
+2\sqrt{2} & 0 & 0\\
+0 & \sqrt{2} & 0\\
+0 & 0 & 0
+\end{pmatrix}
+\begin{pmatrix}
+1 & 0 & 0\\ 
+0 &  1/\sqrt{6} & (2-5\sqrt{2})/3\sqrt{6} \\
+0 & 1/2\sqrt{3} & (4-\sqrt{2})/3\sqrt{3}
+\end{pmatrix}. \ \ \ \finf
+\end{align*}
+
+\item  Encuentre una descomposición en valores singulares de 
+\begin{align*}
+A=\begin{pmatrix}
+1 & 2 & 1 \\
+-2 & 1 -2 
+\end{pmatrix}.
+\end{align*}
+
+\res Considerando la metodología para encontrar la descomposición en valores singulares (\ref{t_descompo_valores_singulares}) vista en clase, primero encontremos el producto de $A^tA$
+\begin{align*}
+A^tA& =\begin{pmatrix}
+1 & 2 & 1 \\
+-2 & 1 -2 
+\end{pmatrix}^t \begin{pmatrix}
+1 & 2 & 1 \\
+-2 & 1 -2 
+\end{pmatrix}=\begin{pmatrix}
+1 & -2\\
+2 & 1 \\
+1 & -2
+\end{pmatrix} \begin{pmatrix}
+1 & 2 & 1 \\
+-2 & 1 -2 
+\end{pmatrix} = \begin{pmatrix}
+6 & -2 \\
+-2 & 9
+\end{pmatrix}\\
+AA^t& =\begin{pmatrix}
+1 & 2 & 1 \\
+-2 & 1 -2 
+\end{pmatrix} \begin{pmatrix}
+1 & 2 & 1 \\
+-2 & 1 -2 
+\end{pmatrix}^t=\begin{pmatrix}
+1 & 2 & 1 \\
+-2 & 1 -2 
+\end{pmatrix}\begin{pmatrix}
+1 & -2\\
+2 & 1 \\
+1 & -2
+\end{pmatrix}  = \begin{pmatrix}
+5 & 0 & 5\\
+0& 5 & 0\\
+5 & 0 & 5
+\end{pmatrix}.
+\end{align*}
+Ahora encontremos los valores propios de $A^tA$, para ello, primero calculemos el polinomio característico de $A^tA$,
+\begin{align*}
+p(\lambda) &= \det (A^tA-\lambda I)=
+\left|\begin{array}{ccc}
+6-\lambda& -2 \\
+-2 & 9-\lambda
+\end{array} \right| =(6-\lambda)(9-\lambda)-4=\lambda^2-15\lambda+54-4\\
+&= \lambda^2-15\lambda+50=(\lambda-10)(\lambda-5).
+\end{align*}
+Esto implica que los valores propios de $A^tA$ sean
+\begin{align*}
+p(\lambda)&=0,\Leftrightarrow\\
+(\lambda-10)(\lambda-5)&=0\ \ \ \Rightarrow \lambda_1=10\ >\  \ \lambda_2=5.
+\end{align*}
+Por lo que, los valores singulares son
+\begin{align*}
+\sigma_1=\sqrt{10}=\sqrt{10} \ \ \text{y} \ \ \sigma_2=\sqrt{5}.  
+\end{align*}
+Y esto implica que 
+\begin{align*}
+\Sigma = \begin{pmatrix}
+\sqrt{10} & 0 \\
+0 & \sqrt{5} 
+\end{pmatrix}.
+\end{align*}
+Ahora calculemos los vectores propios para cada uno de los valores propios. Para $\lambda_1=10$, tenemos 
+\begin{align*}
+A^tA-\lambda_1I&=\begin{pmatrix}
+5-10 & 0 & 5\\
+0& 5-10 & 0\\
+5 & 0 & 5-10
+\end{pmatrix}=\begin{pmatrix}
+-5 & 0 & 5\\
+0& -5 & 0\\
+5 & 0 & -5
+\end{pmatrix}%
+\grstep[R_1 \Rightarrow -R_1/5]{R_3 \Rightarrow R_3+R_1}
+%
+\begin{pmatrix}
+1 & 0 & -1\\
+0& -5 & 0\\
+0 & 0 & 0
+\end{pmatrix}
+%
+\grstep[]{R_2 \Rightarrow -R_2/5}
+\\
+&\begin{pmatrix}
+1 & 0 & -1\\
+0& 1 & 0\\
+0 & 0 & 0
+\end{pmatrix}.
+\end{align*}
+Por lo tanto, de la eliminación Guass-jordan tenemos que la solución del sistema es $x_1=x_3, x_2=0$ y $x_3$ es libre, es decir, el conjunto solución es
+\begin{align*}
+\left\{x_3\begin{pmatrix}
+1\\
+ 0\\
+ 1
+\end{pmatrix}: x_3 \ \in \mR \right\}.
+\end{align*}
+Lo anterior implica que un vector propio de $\lambda_1=10$ es 
+$v_1=\begin{pmatrix}
+1 & 0 & 1
+\end{pmatrix}^t$. Realizando un razonamiento análogo, calculemos el vector propio para $\lambda_2=5$, tenemos 
+\begin{align*}
+AA^t-\lambda_1I&=\begin{pmatrix}
+5-5 & 0 & 5\\
+0& 5-5 & 0\\
+5 & 0 & 5-5
+\end{pmatrix}=\begin{pmatrix}
+0 & 0 & 5\\
+0& 0 & 0\\
+5 & 0 & 0
+\end{pmatrix}%
+\grstep[R_2 \Leftrightarrow R_3/5]{R_1 \Leftrightarrow R_3/5}
+%
+\begin{pmatrix}
+ 1 & 0 & 0 \\
+ 0 & 0 & 1\\
+ 0 & 0 & 0
+\end{pmatrix}.
+\end{align*}
+Por lo tanto, tenemos que la solución del sistema es $x_1=x_3=0,$ y $x_2$ es libre, es decir, el conjunto solución es
+\begin{align*}
+\left\{x_2\begin{pmatrix}
+0\\
+1\\
+0
+\end{pmatrix}: x_2 \ \in \mR \right\}.
+\end{align*}
+Lo anterior implica que un vector propio de $\lambda_2=5$ es 
+$v_2=\begin{pmatrix}
+0 & 1 & 0
+\end{pmatrix}^t$.
+Realizando un razonamiento análogo, calculemos el vector propio para $\lambda_3=0$, tenemos 
+\begin{align*}
+AA^t-\lambda_1I&=\begin{pmatrix}
+5 & 0 & 5\\
+0& 5 & 0\\
+5 & 0 & 5
+\end{pmatrix}%
+\grstep[R_3 \Rightarrow R_3-R_1]{R_2 \Leftrightarrow R_2/5}
+%
+\begin{pmatrix}
+5 & 0 & 5\\
+0& 1 & 0\\
+0 & 0 & 0
+\end{pmatrix}
+%
+\grstep[]{R_1 \Rightarrow R_1/5}
+%
+\begin{pmatrix}
+1 & 0 & 1 \\
+0 & 1 & 0\\
+0 & 0 & 0
+\end{pmatrix}.
+\end{align*}
+Por lo tanto, tenemos que la solución del sistema es $x_1=-x_3,\ x_2=0$ y $x_3$ es libre, es decir, el conjunto solución es
+\begin{align*}
+\left\{x_3\begin{pmatrix}
+-1\\
+0\\
+1
+\end{pmatrix}: x_3 \ \in \mR \right\}.
+\end{align*}
+Lo anterior implica que un vector propio de $\lambda_3=0$ es 
+$v_3=\begin{pmatrix}
+1 & 0 & -1
+\end{pmatrix}^t$. Entonces tenemos que los vectores propios $v_1=\begin{pmatrix}
+1 & 0 &1 
+\end{pmatrix}^t, v_2=\begin{pmatrix}
+ 0 & 1 & 0
+\end{pmatrix}^t$ y $v_3=\begin{pmatrix}
+1 & 0 & -1
+\end{pmatrix}^t$. Ahora normalizamos los vectores anteriores,
+\begin{align*}
+v_1&= \frac{v_1}{||v_1||} =\frac{1}{\sqrt{2}} \begin{pmatrix}
+1 & 0 &1 
+\end{pmatrix}^t = \begin{pmatrix}
+\frac{1}{\sqrt{2}}& 0 & \frac{1}{\sqrt{2}}
+\end{pmatrix}^t,\\
+v_2&= \frac{v_2}{||v_2||} =\frac{1}{\sqrt{1}} \begin{pmatrix}
+ 0 & 1 & 0
+\end{pmatrix}^t = \begin{pmatrix}
+ 0 & 1 & 0
+\end{pmatrix}^t,\\
+u_3&= \frac{v_3}{||v_3||} =\frac{1}{\sqrt{2}} \begin{pmatrix}
+1 & 0 & -1
+\end{pmatrix}^t = \begin{pmatrix}
+ \frac{1}{\sqrt{2}} & 0 & -\frac{1}{\sqrt{2}}
+\end{pmatrix}^t.
+\end{align*}
+Entonces lo anterior implica que,
+\begin{align*}
+V= \begin{pmatrix}
+\frac{1}{\sqrt{2}} & 0 & \frac{1}{\sqrt{2}}\\
+0  & 1& 0\\
+\frac{1}{\sqrt{2}} & 0 & -\frac{1}{\sqrt{2}}
+\end{pmatrix}.
+\end{align*}
+Y por, último calculemos $u_1$ y $u_2$ de la siguiente forma
+$u_i= \frac{1}{\sigma_i} A v_1.$
+\begin{align*}
+u_1&=\frac{1}{\sqrt{10}} \begin{pmatrix}
+1 & 2 & 1\\
+-2 & 1 & -2
+\end{pmatrix}\begin{pmatrix}
+\frac{1}{\sqrt{2}} \\ 0\\ \frac{1}{\sqrt{2}}
+\end{pmatrix}= \begin{pmatrix}
+1/\sqrt{5}\\
+-2/\sqrt{5}
+\end{pmatrix}\\
+u_2&=\frac{1}{\sqrt{5}} \begin{pmatrix}
+1 & 2 & 1\\
+-2 & 1 & -2
+\end{pmatrix}\begin{pmatrix}
+0\\ 1 \\0 
+\end{pmatrix}= \frac{1}{\sqrt{5}} \begin{pmatrix}
+2\\1
+\end{pmatrix}=  \begin{pmatrix}
+\frac{2}{\sqrt{5}}\\
+\frac{1}{\sqrt{5}}
+\end{pmatrix}.
+\end{align*}
+Por lo que esto implica que 
+\begin{align*}
+U = \begin{pmatrix}
+1/\sqrt{5} & 2/\sqrt{5}\\
+-2/\sqrt{5} & 1/\sqrt{5}
+\end{pmatrix}.
+\end{align*}
+Por lo tanto, \textbf{la descomposición de valores singulares de $A$ es}
+\begin{align*}
+A =U\Sigma V^t&= \begin{pmatrix}
+1/\sqrt{5} & 2/\sqrt{5}\\
+-2/\sqrt{5} & 1/\sqrt{5}
+\end{pmatrix}
+\begin{pmatrix}
+\sqrt{10} & 0 \\
+0 & \sqrt{5} 
+\end{pmatrix}\begin{pmatrix}
+\frac{1}{\sqrt{2}} & 0 & \frac{1}{\sqrt{2}}\\
+0  & 1& 0\\
+\frac{1}{\sqrt{2}} & 0 & -\frac{1}{\sqrt{2}}
+\end{pmatrix}^t\\
+&=\begin{pmatrix}
+1/\sqrt{5} & 2/\sqrt{5}\\
+-2/\sqrt{5} & 1/\sqrt{5}
+\end{pmatrix}
+\begin{pmatrix}
+\sqrt{10} & 0 \\
+0 & \sqrt{5} 
+\end{pmatrix}\begin{pmatrix}
+\frac{1}{\sqrt{2}} & 0 & \frac{1}{\sqrt{2}}\\
+0  & 1& 0\\
+\frac{1}{\sqrt{2}} & 0 & -\frac{1}{\sqrt{2}}
+\end{pmatrix}. \ \ \ \finf
+\end{align*}
+
+\item Encuentre la seudoinversa de las matrices de los ejercicios 5, 6 y 7.
+
+\res \begin{framed}
+    \begin{thmd} \label{d_seudoinversa}
+	(Diapositiva 175). Sea $A$ una matriz $m\times n$. La seudoinversa, o inversa de (Moore-Penrose) de $A$ está dada por 
+	\begin{align*}
+	A^\dagger = V_rD^{-1} U_r^t
+	\end{align*}
+	donde $A=U_r D V_r^t$ es una descomposición en valores singulares reducida de $A$. 
+	    \end{thmd}
+\end{framed}
+Empecemos por el ejercicio 5, tenemos 
+\begin{align*}
+A=\begin{pmatrix}
+\sqrt{3} & 2\\
+0 & \sqrt{3}
+\end{pmatrix}, A^tA=\begin{pmatrix}
+3 & 2 \sqrt{3} \\
+2\sqrt{3} &7
+\end{pmatrix}, \lambda_1=9, \lambda_2=1, \sigma_1 =3, \sigma=1.
+\end{align*}
+Entonces primero encontremos una descomposición en valores singulares, lo anterior implica que 
+\begin{align*}
+\Sigma = \begin{pmatrix}
+3 & 0 \\
+0 & 1
+\end{pmatrix}
+\end{align*}.
+Ahora calculemos los vectores propios para cada uno de los valores propios. Para $\lambda_1=9$, tenemos 
+\begin{align*}
+A^tA-\lambda_1I=\begin{pmatrix}
+3-9 & 2 \sqrt{3} \\
+2\sqrt{3} &7-9
+\end{pmatrix}=\begin{pmatrix}
+-6 & 2 \sqrt{3} \\
+2\sqrt{3} &-2
+\end{pmatrix}
+\grstep[]{R_1 \Rightarrow R_21-R_1}
+%
+\begin{pmatrix}
+1 & -1/\sqrt{3} \\
+2\sqrt{3} &-2
+\end{pmatrix}
+%
+\grstep[]{R_2 \leftrightarrow R_2-2\sqrt{3}R_1}
+%
+\begin{pmatrix}
+1 & -1/\sqrt{3} \\
+0 &0
+\end{pmatrix}.
+\end{align*}
+Por lo tanto, de la eliminación Guass-jordan tenemos que la solución del sistema es $x_1=x_2/\sqrt{3}$, es decir, el conjunto solución es
+\begin{align*}
+\left\{x_2\begin{pmatrix}
+ 1\\
+ \sqrt{3}\\
+\end{pmatrix}: x_2 \ \in \mR \right\}.
+\end{align*}
+Lo anterior implica que un vector propio de $\lambda_1=9$ es 
+$\begin{pmatrix}
+1 & \sqrt{3} 
+\end{pmatrix}^t$. Realizando un razonamiento análogo, calculemos el vector propio para $\lambda_2=1$, tenemos 
+\begin{align*}
+A^tA-\lambda_1I=\begin{pmatrix}
+3-1 & 2 \sqrt{3} \\
+2\sqrt{3} &7-1
+\end{pmatrix}=\begin{pmatrix}
+2 & 2 \sqrt{3} \\
+2\sqrt{3} &6
+\end{pmatrix}
+\grstep[]{R_1 \Rightarrow R_1/1}
+%
+\begin{pmatrix}
+1 & \sqrt{3} \\
+2\sqrt{3} &6
+\end{pmatrix}
+%
+\grstep[]{R_2 \leftrightarrow R_2-2\sqrt{3}R_1}
+%
+\begin{pmatrix}
+1 & \sqrt{3} \\
+0 &0
+\end{pmatrix}.
+\end{align*}
+Por lo tanto, tenemos que la solución del sistema es $x_1=-\sqrt{3}x_2$, es decir, el conjunto solución es
+\begin{align*}
+\left\{x_2\begin{pmatrix}
+-\sqrt{3}\\
+1
+\end{pmatrix}: x_2 \ \in \mR \right\}.
+\end{align*}
+Lo anterior implica que un vector propio de $\lambda_2=1$ es 
+$\begin{pmatrix}
+-\sqrt{3}& 1
+\end{pmatrix}^t$. 
+Por lo que ya tenemos 2 vectores propios $v_1=\begin{pmatrix}
+1 & \sqrt{3} 
+\end{pmatrix}^t, v_2=\begin{pmatrix}
+-\sqrt{3}& 1
+\end{pmatrix}^t$.Ahora normalizamos los vectores anteriores,
+\begin{align*}
+v_1&= \frac{v_1}{||v_1||} =\frac{1}{\sqrt{4}} \begin{pmatrix}
+1 & \sqrt{3} 
+\end{pmatrix}^t = \begin{pmatrix}
+1/2 & \sqrt{3}/2 
+\end{pmatrix}^t,\\
+v_2&= \frac{v_1}{||v_1||} =\frac{1}{\sqrt{4}} \begin{pmatrix}
+-\sqrt{3}& 1
+\end{pmatrix}^t = \begin{pmatrix}
+-\sqrt{3}/2 & 1/2
+\end{pmatrix}^t,\\
+\end{align*}
+Entonces lo anterior implica que,
+\begin{align*}
+V= \begin{pmatrix}
+1/2 & \sqrt{3}/ 2\\
+-\sqrt{3}/2 & 1/2
+\end{pmatrix}.
+\end{align*}
+Y por, último calculemos $u_1$ y $u_2$ de la siguiente forma
+$u_i= \frac{1}{\sigma_i} A v_1.$
+\begin{align*}
+u_1&=\frac{1}{3} \begin{pmatrix}
+\sqrt{3} & 2\\
+0 & \sqrt{3}
+\end{pmatrix}\begin{pmatrix}
+1/2\\
+\sqrt{3}/2
+\end{pmatrix}= \frac{1}{3}\begin{pmatrix}
+3\sqrt{3}/2\\
+\frac{3}{2}
+\end{pmatrix}=\begin{pmatrix}
+\sqrt{3}/2\\
+1/2
+\end{pmatrix},\\
+u_2&=\frac{1}{1} \begin{pmatrix}
+\sqrt{3} & 2\\
+0 & \sqrt{3}
+\end{pmatrix}\begin{pmatrix}
+-\sqrt{3}/2\\
+1/2
+\end{pmatrix}=\begin{pmatrix}
+-1/2\\
+\sqrt{3}/2
+\end{pmatrix}.
+\end{align*}
+Por lo tanto, una base ortogonal sería 
+\begin{align*}
+\left\{\begin{pmatrix}
+\sqrt{3}/2\\
+1/2
+\end{pmatrix} ,\begin{pmatrix}
+-1/2\\
+\sqrt{3}/2
+\end{pmatrix}\right\}.
+\end{align*}
+Por lo que esto implica que 
+\begin{align*}
+U = \begin{pmatrix}
+\sqrt{3}/2& -1/2\\
+1/2& \sqrt{3}/2
+\end{pmatrix}.
+\end{align*}
+Y por lo tanto la descomposición en valores singulares de $A$ es 
+\begin{align*}
+A =U\Sigma V^t&= \begin{pmatrix}
+\sqrt{3}/2& -1/2\\
+1/2& \sqrt{3}/2
+\end{pmatrix} \begin{pmatrix}
+3 & 0 \\
+0 & 1
+\end{pmatrix} \begin{pmatrix}
+1/2 & \sqrt{3}/ 2\\
+-\sqrt{3}/2 & 1/2
+\end{pmatrix}^t.
+\end{align*}
+Observemos entonces que la descomposición anterior también es la descomposición en valores singulares reducida de $A$, por lo podemos concluir que \textbf{la seudoinversa de $A$ es}
+\begin{align*}
+A^\dagger &= V_r\Sigma^{-1} U_r^t= \begin{pmatrix}
+1/2 & \sqrt{3}/ 2\\
+-\sqrt{3}/2 & 1/2
+\end{pmatrix}\begin{pmatrix}
+3 & 0 \\
+0 & 1
+\end{pmatrix}^{-1}\begin{pmatrix}
+\sqrt{3}/2& -1/2\\
+1/2& \sqrt{3}/2
+\end{pmatrix}^t \\
+&= \begin{pmatrix}
+1/2 & \sqrt{3}/ 2\\
+-\sqrt{3}/2 & 1/2
+\end{pmatrix}\begin{pmatrix}
+1/3 & 0 \\
+0 & 1
+\end{pmatrix}^{-1}\begin{pmatrix}
+\sqrt{3}/2& 1/2\\
+-1/2& \sqrt{3}/2
+\end{pmatrix}^t.
+\end{align*}
+
+\textbf{Para el ejercicio 6}, tenemos que la descomposición es 
+\begin{align*}
+A=UD V^t=\begin{pmatrix}
+\frac{1}{\sqrt{6}} & \frac{\sqrt{3}}{\sqrt{2}} & \frac{1}{\sqrt{6}}\\
+\frac{1}{\sqrt{3}} & -\frac{1}{\sqrt{3}} & \frac{1}{\sqrt{3}}\\
+-\frac{1}{\sqrt{2}} & 0 & \frac{1}{\sqrt{2}}
+\end{pmatrix}
+\begin{pmatrix}
+2\sqrt{2} & 0 & 0\\
+0 & \sqrt{2} & 0\\
+0 & 0 & 0
+\end{pmatrix}
+\begin{pmatrix}
+1 & 0 & 0\\ 
+0 &  1/\sqrt{6} & (2-5\sqrt{2})/3\sqrt{6} \\
+0 & 1/2\sqrt{3} & (4-\sqrt{2})/3\sqrt{3}
+\end{pmatrix}.
+\end{align*}
+Ahora ocupando la definición (\ref{d_seudoinversa}) y como el $\rho(A)=2$, podemos observar que la descomposición de valores singulares reducida de $A$ es 
+\begin{align*}
+A=U_rD_r V_r^t&=\begin{pmatrix}
+\frac{1}{\sqrt{6}} & \frac{\sqrt{3}}{\sqrt{2}} \\
+\frac{1}{\sqrt{3}} & -\frac{1}{\sqrt{3}} \\
+-\frac{1}{\sqrt{2}} & 0 
+\end{pmatrix}
+\begin{pmatrix}
+2\sqrt{2} & 0\\
+0 & \sqrt{2} \\
+\end{pmatrix}
+\begin{pmatrix}
+1 & 0 & 0\\ 
+0 &  1/\sqrt{6} & (2-5\sqrt{2})/3\sqrt{6}
+\end{pmatrix}
+\end{align*}
+
+
+
+Por lo que la seudoinversa de $A$ sería  
+\begin{align*}
+A^\dagger &= V_r\Sigma^{-1} U_r^t=\begin{pmatrix}
+1 & 0 & 0\\ 
+0 &  1/\sqrt{6} & (2-5\sqrt{2})/3\sqrt{6}
+\end{pmatrix}^t \begin{pmatrix}
+2\sqrt{2} & 0\\
+0 & \sqrt{2} \\
+\end{pmatrix}^{-1}\begin{pmatrix}
+\frac{1}{\sqrt{6}} & \frac{\sqrt{3}}{\sqrt{2}} \\
+\frac{1}{\sqrt{3}} & -\frac{1}{\sqrt{3}} \\
+-\frac{1}{\sqrt{2}} & 0 
+\end{pmatrix}^t\\
+&= \begin{pmatrix}
+1 &0\\
+0 & 1/\sqrt{6}\\
+0 & (2-5\sqrt{2})/3\sqrt{6}
+\end{pmatrix} \begin{pmatrix}
+1/2\sqrt{2} & 0\\
+0 & 1\sqrt{2}
+\end{pmatrix} \begin{pmatrix}
+1/\sqrt{6} & 1/\sqrt{3} & -1/\sqrt{2}\\
+\sqrt{3} /\sqrt{2} & -1/\sqrt{3} & 0
+\end{pmatrix}.
+\end{align*}
+
+\textbf{Para el ejercicio 7}, tenemos que la descomposición es 
+\begin{align*}
+A=U\Sigma V^t=\begin{pmatrix}
+\sqrt{2} / \sqrt{10} & 2/\sqrt{5}\\
+-2\sqrt{2}/\sqrt{10} & 1/\sqrt{5}
+\end{pmatrix}\begin{pmatrix}
+\sqrt{10} & 0 & 0\\
+0 & \sqrt{5} & 0
+\end{pmatrix}\begin{pmatrix}
+1/\sqrt{2} & 0 & 1/\sqrt{2}\\
+0 & 1 & 0\\
+1/\sqrt{2} & 0 & -1/\sqrt{2}
+\end{pmatrix}^t,
+\end{align*}
+Ahora ocupando la definición (\ref{d_seudoinversa}) y como el $\rho(A)=2$, podemos observar que la descomposición de valores singulares reducida de $A$ es 
+\begin{align*}
+A = U_rD V_r^t=\begin{pmatrix}
+\sqrt{2} / \sqrt{10} & 2/\sqrt{5}\\
+-2\sqrt{2}/\sqrt{10} & 1/\sqrt{5}
+\end{pmatrix}\begin{pmatrix}
+\sqrt{10} & 0\\
+0 & \sqrt{5} 
+\end{pmatrix}\begin{pmatrix}
+1/\sqrt{2} & 0 & 1/\sqrt{2}\\
+0 & 1 & 0
+\end{pmatrix}^t
+\end{align*}
+
+Por lo que la seudoinversa de $A$ sería  
+\begin{align*}
+A^\dagger &= V_r\Sigma^{-1} U_r^t=\begin{pmatrix}
+1/\sqrt{2} & 0 & 1/\sqrt{2}\\
+0 & 1 & 0
+\end{pmatrix}
+\begin{pmatrix}
+1/\sqrt{10} & 0\\
+0 & 1/\sqrt{5} 
+\end{pmatrix}\begin{pmatrix}
+\sqrt{2} / \sqrt{10} & -2\sqrt{2}/\sqrt{10} \\
+2/\sqrt{5}  & 1/\sqrt{5}
+\end{pmatrix}. \ \ \finf
+\end{align*}
+
+\item Dado el sistema 
+\begin{align*}
+\begin{array}{cc}
+x_1+x_2&=1\\
+x_1+x_2&=2\\
+-x_1+2x_2&=0,
+\end{array}
+\end{align*}
+si es consistente, encuentre la única solución que tiene norma mínima; si es inconsistente, encuentre la mejor aproximación a una solución que tenga norma mínima.
+
+\res Observando que $x_1+x_2=1\neq 2 =x_1+x_2$ podemos concluir que el sistema es inconsistente ya que no puede tomar dos valores distintos. Ahora ocupemos mínimos cuadrados para encontrar la mejor aproximación de norma mínima. Tenemos,
+\begin{align*}
+A=\begin{pmatrix}
+1 & 1\\
+1 & 1\\
+-1 & 2
+\end{pmatrix}, \ x=\begin{pmatrix}
+x_1\\ x_2
+\end{pmatrix} \ \ \text{y} \ \ b=\begin{pmatrix}
+1 \\ 2 \\ 0
+\end{pmatrix}.
+\end{align*}
+Ahora calculemos $A^tA$,
+\begin{align*}
+A^tA=\begin{pmatrix}
+1 & 1 &-1\\
+1 & 1 & 2
+\end{pmatrix}\begin{pmatrix}
+1 & 1\\
+1 & 1\\
+-1 & 2
+\end{pmatrix}=\begin{pmatrix}
+3 & 0 \\
+0 & 6
+\end{pmatrix}.
+\end{align*}
+Entonces como es una matriz diagonal, podemos concluir que $A^tA$ es invertible por lo que la solución de mínimos cuadrados es única de la forma 
+\begin{align*}
+\hat{x}=(A^tA)^{-1}b=\begin{pmatrix}
+3 & 0 \\
+0 & 6
+\end{pmatrix}^{-1}\begin{pmatrix}
+1 & 1 &-1\\
+1 & 1 & 2
+\end{pmatrix}\begin{pmatrix}
+1 \\ 2 \\ 0
+\end{pmatrix}=\begin{pmatrix}
+1/3 & 0\\
+0 & 1/6
+\end{pmatrix}\begin{pmatrix}
+3\\ 3
+\end{pmatrix}=\bf \begin{pmatrix}
+1\\ 1/2.
+\end{pmatrix}. \ \ \ \finf
+\end{align*}
+
+
+\item Sea $A,B$ matrices $n\times n$ semi positivas definidas tales que $A+B=0.$ Demuestre que $A=B=0$.
+
+\res \begin{framed}
+    \begin{thmd} \label{d_fomma_cuadratica}
+	(Diapositiva 165). Una forma cuadrática es una función $Q:\mR^n \rightarrow \mR$ de la forma 
+	$$Q(x)=x^tBx$$
+	donde $B$ es una matriz $n\times n$ y $x$ es el vector correspondiente al valor de $\mR^n$.\\
+	Entonces, se dice que es semi positiva definida si $Q(x)\geq 0, \forall \ x\neq 0$.
+	    \end{thmd}
+\end{framed}
+\begin{framed}
+    \begin{thmt} \label{t_ejercicio5}
+	(Ejercicio 5, Tarea 1). Sea $A$ una matriz cuadrada, esta se puede escribir como la suma de una matriz simétrica y una matriz antisimétrica de la forma 
+	\begin{align*}
+	A= \frac{A+A^t}{2}+\frac{A-A^t}{2},
+	\end{align*}
+	donde $\frac{A+A^t}{2}$ es la matriz simétrica y $\frac{A-A^t}{2}$ es la matriz antisimetrica. 
+	    \end{thmt}
+\end{framed}
+\begin{framed}
+    \begin{thmt} \label{t_simetrica_nula}
+	(Diapositiva 166). Si $A$ es simétrica, entonces $x^tAx=0,\ \forall x\in \mR^n$ si y solo si $A=0$. 
+	    \end{thmt}
+\end{framed}
+
+Ocupando la definición de matriz semi positiva definida (\ref{d_fomma_cuadratica}), entonces para cualquier $x\neq 0$ tenemos que $x^tAx\geq 0 $ y para cualquier $y\neq 0$ tenemos que $y^tBt\geq 0$. Entonces, haciendo $x=y\neq 0$ y como $A+B=0$ entonces 
+$$0=x^t(A+B)x=(x^tA+x^tB)x=x^tAx+x^tBx,$$
+pero como sabemos que $x^tAx\geq 0$ y $x^tBx\geq 0$, esto implica que 
+\begin{align}\label{e_transpuesta}
+x^tAx= 0\ \ \text{y} \ \ x^tBx= 0
+\end{align}
+Entonces dado que $x^tAx$  y $x^tBx$ son números números reales, su transposición es igual a sí mismo por lo que tenemos que 
+\begin{align*}
+x^tAx=(x^tAx)^t=x^tA^tx\Rightarrow x^tAx=\frac{x^tAx+x^tA^tx}{2} = x^t\left( \frac{A+A^t}{2}\right) x, \ \ \text{y}\\
+x^tBx=(x^tBx)^t=x^tB^tx\Rightarrow x^tBx=\frac{x^tBx+x^tB^tx}{2} = x^t\left( \frac{B+B^t}{2}\right) x.
+\end{align*}
+Entonces regresando al resultado obtenido en (\ref{e_transpuesta}) tenemos que 
+\begin{align*}
+x^tAx = x^t\left( \frac{A+A^t}{2}\right) x = 0 \ \ \text{y} \ \ x^tBx=x^t\left( \frac{B+B^t}{2}\right) x = 0.
+\end{align*}
+Ahora ocupemos el resultado obtenido de la tarea 1 ejercicio 5 (\ref{t_ejercicio5}), tenemos que $(A+A^t)/2$ es una matriz simétrica y $(B+B^t)/2$ es una matriz simétrica. Y ocupando el teorema (\ref{t_simetrica_nula}) tenemos que 
+\begin{align*}
+ x^t\left( \frac{A+A^t}{2}\right) x = 0 \Leftrightarrow \frac{A+A^t}{2}=0 \ \ \text{y} \ \ x^t\left( \frac{B+B^t}{2}\right) x = 0 \Leftrightarrow \frac{B+B^t}{2} =0.\Rightarrow\\
+A+A^t=0\Rightarrow A=-A^t \ \ \text{y} \ \ B+B^t=0\Rightarrow B=-B^t.
+\end{align*}
+Entonces, \textbf{como $A$ y $B$ son simétricas (por definición de semi positivas definidas) esto implica que $A=-A^t=A^t$ y $B=-B^t=B^t$ y por lo tanto $A=B=0$.} \ \ \fin
+
+Todo lo anterior se pudo omitir para hacerlo de una manera más sencilla, pero me dí cuenta tarde de este teorema. XD
+\begin{framed}
+\begin{thmt} \label{t_inversa}
+	(Diapositiva 166). Si $A$ es simétrica, entonces $x^tAx=0,\ \forall \ x\in \mR^n$ si y solo si $A=0$. 
+	    \end{thmt}
+\end{framed}
+
+
+\item Sea $A$ una matriz simétrica $n\times n$ y $Q(x)$ la forma cuadrática asociada. Si $Q$ es positiva definida, demuestre que las entradas diagonales de $A$ son positivas. 
+
+\res Tenemos que $Q(x)$ es positiva definida, esto implica que $Q(x)>0 \Leftrightarrow x^t Ax>0, \ \ \forall x\neq 0$. Ahora definamos a $x_i$ el vector elemental $n\times 1$ tal que el elemento $i$ es igual 1 y 0 todos los demás, es decir, el vectore $e_i$. Entonces 
+\begin{align*}
+x^tAx>0 \Rightarrow e_i^tAe_i>0 \Rightarrow a_{ii}>0.
+\end{align*} 
+Por lo tanto, \textbf{si hacemos lo anterior para $i=1,\cdots, n$ entonces tendremos que $a_{11}, a_{22}, \cdots, a_{nn}>0$. Por lo que podemos concluir que la diagonal de $A$ son positivas.} \ \ \fin.
+
+
+\item Sea $A$ una matriz $m \times n$. Al aplicar una sucesión de operaciones elementales obtenemos que 
+\begin{align*}
+EAP=\begin{pmatrix}
+T & B \\
+0 & 0
+\end{pmatrix},
+\end{align*}
+donde $T$ es una matriz triangular superior con elementos diagonales no cero, $P$ es una matriz de permutación y $B$ y los bloques de cero tienen los tamaños apropiados (otra forma de ver esto, es recordando la descomposición normal de una matiz). Demuestre que 
+\begin{align*}
+G=P\begin{pmatrix}
+T^{-1} & 0\\
+0 & 0
+\end{pmatrix}E,
+\end{align*}
+es una inversa generalizada de $A$. ¿Cumple $G$ con las propiedades de Moore$-$Penrose? Si es cierto, demuéstrelo y si no escriba un ejemplo que muestre una de las propiedades que no cumple para serlo. Si $A$ es diagonalizable, ¿puede pensar en una forma para $G$ en este caso y demostrar que es una inversa generalizada?
+
+\res \begin{framed}
+\begin{thmt} \label{t_inversa}
+	(Diapositiva 182). $A$ tiene inversa generalizada $G$ si y solo si $AGA=A.$
+	    \end{thmt}
+\end{framed}
+\begin{framed}
+\begin{thmd} \label{t_inversa_propiedades}
+	(Diapositiva 184). Sea $A$  una matriz $m\times n$. Una matriz $G, \ n\times m$, es una inversa de Moore$-$Penrose de $A$ si satisface:
+	\begin{enumerate}
+	\item $AGA=A$
+	\item $GAG=G$
+	\item $(AG)^t=AG$
+	\item $(GA)^t=GA$.
+	\end{enumerate}
+	    \end{thmd}
+\end{framed}
+Como $E$ es de operaciones elementales entonces podemos decir que $E^{-1}$ existe, entonces tenemos que 
+\begin{align*}
+E^{-1}(EAP)= E^{-1}\begin{pmatrix}
+T & B\\
+0 & 0
+\end{pmatrix} \ \Rightarrow AP=E^{-1}\begin{pmatrix}
+T & B\\
+0 & 0
+\end{pmatrix} \ \& \ EA = \begin{pmatrix}
+T & B\\
+0 & 0
+\end{pmatrix}P^{-1}
+\end{align*}
+Utilizando lo anterior y por el teorema (\ref{t_inversa}) tenemos que
+\begin{align*}
+AGA&= AP\begin{pmatrix}
+T^{-1} & 0\\
+0 & 0
+\end{pmatrix}EA  = E^{-1}\begin{pmatrix}
+T & B\\
+0 & 0
+\end{pmatrix}\begin{pmatrix}
+T^{-1} & 0\\
+0 & 0
+\end{pmatrix}EA = E^{-1}\begin{pmatrix}
+I & 0\\
+0 & 0\\
+\end{pmatrix}EA=\begin{pmatrix}
+E^{-1} & 0\\
+0 & 0\\
+\end{pmatrix}EA\\
+&=\begin{pmatrix}
+E^{-1}EA & 0\\
+0 & 0\\
+\end{pmatrix}= \begin{pmatrix}
+A& 0\\
+0 & 0\\
+\end{pmatrix} \neq A.
+\end{align*}
+Por lo anterior, \textbf{podemos decir que $G$ no es su inversa generalizada.} 
+
+Ahora veamos que propiedades de Moore$-$Penrose cumple $G$, la primera ya vimos que no la cumple, es decir $\bf AGA\neq A$. Veamos la segunda 
+\begin{align*}
+GAG&= P\begin{pmatrix}
+T^{-1} & 0\\
+0 & 0
+\end{pmatrix}E A P\begin{pmatrix}
+T^{-1} & 0\\
+0 & 0
+\end{pmatrix}E=P\begin{pmatrix}
+T^{-1} & 0\\
+0 & 0
+\end{pmatrix}\begin{pmatrix}
+T & B\\
+0 & 0
+\end{pmatrix} \begin{pmatrix}
+T^{-1} & 0\\
+0 & 0
+\end{pmatrix}E\\
+&=P\begin{pmatrix}
+I & 0\\
+0 & 0 
+\end{pmatrix}\begin{pmatrix}
+T^{-1} & 0\\
+0 & 0
+\end{pmatrix}E=P\begin{pmatrix}
+T^{-1}& 0\\
+0& 0
+\end{pmatrix} E = G.
+\end{align*}
+Es decir, \textbf{la segunda propiedad si se cumple.} Sigamos con la tercera, 
+\begin{align*}
+(AG)^t = \left(A P \begin{pmatrix}
+T^{-1} & 0 \\
+0 & 0
+\end{pmatrix}E \right)^t =  \left(E^{-1}\begin{pmatrix}
+T & B \\
+0 & 0
+\end{pmatrix} \begin{pmatrix}
+T^{-1} & 0 \\
+0 & 0
+\end{pmatrix}E \right)^t= \left( E^{-1} \begin{pmatrix}
+I & 0 \\
+0 & 0
+\end{pmatrix}E\right)^t= \begin{pmatrix}
+I & 0 \\
+0 & 0
+\end{pmatrix}.
+\end{align*}
+Por lo tanto, \textbf{se cumple la propiedad tres} $\bf (AG)^t = AG$. Por último, tenemos que 
+\begin{align*}
+(GA)^t = \left(P \begin{pmatrix}
+T^{-1} & 0 \\
+0 & 0
+\end{pmatrix}EA \right)^t= \left(P \begin{pmatrix}
+T^{-1} & 0 \\
+0 & 0
+\end{pmatrix}\begin{pmatrix}
+T & B\\
+0 & 0
+\end{pmatrix}P^{-1} \right)^t = \left( P\begin{pmatrix}
+I & 0\\
+0 & 0
+\end{pmatrix}P^{-1} \right)^t=\begin{pmatrix}
+I & 0\\
+0&0
+\end{pmatrix}.
+\end{align*}
+Por lo tanto, \textbf{se cumple la propiedad cuarta} $\bf (GA)^t = GA$.\\
+
+Si $A$ es diagonalizable, es decir, $A=PDP^{-1}\Leftrightarrow AP=PD$, entonces podemos reescribir a $G$ como
+\begin{align*}
+G=PD^{-1}P^{-1}.
+\end{align*}
+Esto implica que 
+\begin{align*}
+AGA=A(PD^{-1}P^{-1})A = (AP)(D^{-1}P^{-1})A)=PDD^{-1}P^{-1}A=PIP^{-1}A=PP^{-1}A=A.
+\end{align*}
+Por lo tanto, por el teorema (\ref{t_inversa}) podemos concluir que $G$ es la inversa generalizdad de $A$. \ \ \fin
+
+
+\end{enumerate}
+\end{document}
