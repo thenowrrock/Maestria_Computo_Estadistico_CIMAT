@@ -9,12 +9,12 @@
 
 using namespace std; //rand
 #define HAVE_STRUCT_TIMESPEC
-#define NTHREADS 4// numeros de hilos
+// #define NTHREADS 4// numeros de hilos
 
 struct  matriz {
     int m_filas;
     int m_columnas;
-    double **df;
+    float **df;
 };
 
 typedef struct { // definimos la estructura
@@ -31,9 +31,9 @@ matriz A, B, C;
 
 //----------------------------------Funciones generales---------------------------------------------
 matriz iniciar_matriz(matriz mat){ // construimos la matriz utilizando la memoria dinamica.
-    mat.df = new double *[mat.m_filas];
+    mat.df = new float *[mat.m_filas];
     for(int i=0; i<mat.m_filas; i++){
-        mat.df[i]=new double[mat.m_columnas];
+        mat.df[i]=new float[mat.m_columnas];
         }
     return mat;
 }
@@ -113,6 +113,14 @@ void* multiplicacion_matriz_hilo(void *args) {
 
 //------------------------------Inversa----------------//
 
+typedef struct {
+    matriz mat; //исходная матрица
+    matriz aux_identidad; //матрица, в которой будет обратная
+    int rank; //номер потока
+    int NTHREADS; //общее число потоков
+} argumentos_inversa;
+
+
 matriz generar_matriz_identidad(int n){   // asignamos valores aleatorias (0,99) a la matriz.
     matriz aux_identidad;
     aux_identidad.m_columnas = n;
@@ -140,70 +148,62 @@ int existencia_pivote(matriz mat, int pivote){
     return -1; // retornamos -1 si no hay pivotes.
 }
 
-// Intercambiamos pivotes.
-int intercambia_pivote(matriz mat, int m, int k){
+// Intercambiamos pivotes el renglon m y k. 
+void intercambia_pivote(matriz mat, int m, int k){
     matriz aux_intercambio;
     aux_intercambio.m_columnas = mat.m_columnas;
     aux_intercambio.m_filas = 1;
-    aux_intercambio = iniciar_matriz(aux_intercambio);
-    if (m==k){ // si coinciden el número de columnas y el pivote terminamos.
-    return 0; // retornamos 0.
-    }
-    else{
-        for(int i=0; i<mat.m_columnas; ++i){ // copiamos los elementos de la fila k
-            aux_intercambio.df[1][i]=mat.df[k][i];
-        }
-        for(int i=0; i<mat.m_columnas; ++i){ // asignamos los elementos de la fila k a la fila m
-            mat.df[k][i]=mat.df[m][i];
-            mat.df[m][i]=aux_intercambio.df[1][i]; // asignamos los elemenos de la fila m a la fila k
-        }
-        return 0; // retornemos 0
+    aux_intercambio = generar_matriz_aleatoria(aux_intercambio);
+    for(int i=0; i<mat.m_columnas; ++i){ // copiamos los elementos de la fila k
+        aux_intercambio.df[0][i]=mat.df[k][i];
+        mat.df[k][i]=mat.df[m][i];
+
+        mat.df[m][i]=aux_intercambio.df[0][i]; // asignamos los elemenos de la fila m a la fila k
     }
 }
 
-
-int dividir_matriz(matriz mat, matriz aux_identidad, int i){
-    for (int j=(i+1); j<mat.m_columnas; ++j){ // normalizamos la matriz
-        mat.df[i][j]=mat.df[i][j]/mat.df[i][i];
+void dividir_matriz_pivote(matriz mat, matriz aux_identidad, int i, float tmp){
+    for (int j=i; j<mat.m_columnas; ++j){ // normalizamos la matriz
+        mat.df[i][j]*=tmp;
     }
     for (int j=0; j<mat.m_columnas; ++j){ // normalizamos la matriz identidad.
-        aux_identidad.df[i][j]=aux_identidad.df[i][j]/mat.df[i][i];
+        aux_identidad.df[i][j]*=tmp;
     }
-    mat.df[i][i]=1; // asignamos 1 al pivote
-    return 0;
 }
 
-int reduccion_hacia_atras(matriz mat, matriz aux_identidad){
+
+void reduccion_hacia_atras(matriz mat, matriz aux_identidad, int first_row, int last_row){
     // reducción hacia atras.
-    for(int k=(mat.m_columnas-1); k>-1; --k){
-        for (int j=0; j<k; ++j){
-            for (int h=0; h<mat.m_columnas; ++h){ // realizamos la reducción hacia atras a la matriz U.
-                aux_identidad.df[j][h]=aux_identidad.df[j][h]-aux_identidad.df[k][h]*mat.df[j][k];
+    double tmp;
+    for (int k=first_row; k<last_row; k++){
+        for(int i=(mat.m_columnas-1); i>=0; i--){
+            tmp= aux_identidad.df[i][k];
+            for (int j=i+1; j<mat.m_columnas; j++){ // realizamos la reducción hacia atras a la matriz U.
+                tmp-=mat.df[i][j]*aux_identidad.df[j][k];
             }
-            mat.df[j][k]=0; // actualizamos los elementos.
+            aux_identidad.df[i][k]=tmp; // actualizamos los elementos.
         }
-    }
-    return 0;
-}
-
-int eleminacion_parcial(matriz mat, matriz aux_identidad, int i){
-    for (int k=(i+1); k<mat.m_filas; ++k){
-        for(int j=0; j<mat.m_filas; ++j){ // aplicamos eliminación gauss-jordan a la matriz identidad.
-            aux_identidad.df[k][j] += -aux_identidad.df[i][j]*mat.df[k][i];
-        }
-        for(int j=(i+1); j<mat.m_columnas; ++j){ // aplicamos eliminación gauss-jordan a la matriz original.
-            mat.df[k][j] += -mat.df[i][j]*mat.df[k][i];
-        }
-        mat.df[k][i]=0; // actualizamos el pivote.
     }
 }
 
+void eleminacion_parcial(matriz mat, matriz aux_identidad, int i, int first_row, int last_row){
+    double tmp;
+    for (int j=first_row; j<last_row; j++){
+        tmp = mat.df[j][i];
+        for(int k=0; k<mat.m_filas; k++){ // aplicamos eliminación gauss-jordan a la matriz identidad.
+            aux_identidad.df[j][k] -= aux_identidad.df[i][k]*tmp;
+        }
+        for(int k=i; k<mat.m_columnas; k++){ // aplicamos eliminación gauss-jordan a la matriz original.
+            mat.df[j][k] -= mat.df[i][k]*tmp;
+        }
+    }
+}
 
-void synchronize(int total_threads) 
+void synchronize(int total_threads) //дождаться в текущем потоке остальных потоков (из общего числа total_threads)
 {
-    static pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER; 
-    static pthread_cond_t condvar_in = PTHREAD_COND_INITIALIZER; 
-    static pthread_cond_t condvar_out = PTHREAD_COND_INITIALIZER; 
+    static pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER; //объект синхронизации типа mutex
+    static pthread_cond_t condvar_in = PTHREAD_COND_INITIALIZER; //объект синхронизации типа condvar
+    static pthread_cond_t condvar_out = PTHREAD_COND_INITIALIZER; //объект синхронизации типа condvar
     static int threads_in = 0; //число пришедших в функцию задач
     static int threads_out = 0; //число ожидающих выхода из функции задач
     
@@ -237,35 +237,55 @@ void synchronize(int total_threads)
     pthread_mutex_unlock(&mutex); //"освободить" mutex
 }
 
+
 // Eliminación Gauss-Jordan.
-matriz eliminacion_gauss_jordan(matriz mat){
-    matriz aux_identidad = generar_matriz_identidad(mat.m_filas);
-    int pivotet;
-    if (mat.m_filas!= mat.m_columnas) {  // validamos si la matriz es cuadrada.
-        cout << "La matriz no es cuadrada, por lo que no se puede calcular la inversa." << endl;
-        return aux_identidad;  // retornamos la matriz aumentada 
-    }
-
+int eliminacion_gauss_jordan(matriz mat, matriz aux_identidad, int NTHREADS, int rank){
+    static pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER; //объект синхронизации типа mutex
+    float tmp;
+    int k;
+    int first_row;
+    int last_row;
     for (int i = 0; i < mat.m_filas; ++i) {
-        pivotet = existencia_pivote(mat, i);
-        if (pivotet==-1){   // validamos la existencia del pivote.
-            cout << "La matriz no tiene inversa."<< endl;
-            return aux_identidad;
+        if (rank==0){   // validamos la existencia del pivote.
+            // cout<< "entro rank =0" << endl;
+            k=i;
+            for(int j=i+1; j < mat.m_filas; j++){
+                if(abs(mat.df[k][i]<abs(mat.df[j][i]))){
+                    k=j;
+                }
+            }
+            intercambia_pivote(mat , i, k);
+            intercambia_pivote(aux_identidad, i, k);
+
+            tmp = 1.0/mat.df[i][i];
+            dividir_matriz_pivote(mat, aux_identidad, i, tmp);
+            // cout<< "salio rank =0" << endl;
+
         }
-        else{      // intercambiamos el pivote de la matriz original y la matriz identidad.
-            
-            intercambia_pivote(mat , i, pivotet);
-            intercambia_pivote(aux_identidad, i, existencia_pivote(mat, i));
-        }
+        
+        synchronize(NTHREADS);
 
-        dividir_matriz(mat, aux_identidad, i);
-        eleminacion_parcial(mat, aux_identidad, i);
-    }
+        first_row = (mat.m_filas- i - 1) * rank;
+        first_row = first_row/NTHREADS + i + 1;
+        last_row = (mat.m_filas - i - 1) * (rank + 1);
+        last_row = last_row/NTHREADS + i + 1;
+        cout << first_row << last_row << endl;
+        eleminacion_parcial(mat, aux_identidad, i, first_row, last_row);
+        synchronize(NTHREADS);
+   }
+    // cout << "avion" << endl;
+    // cout<< "entro reduccion =0" << endl;
 
-    reduccion_hacia_atras(mat, aux_identidad);
+    first_row = mat.m_filas * rank;
+    first_row = first_row/NTHREADS;
+    last_row = mat.m_filas * (rank + 1);
+    last_row = last_row/NTHREADS;
 
-    imprimir_matriz(aux_identidad); // imprimimos la inversa.
-    return aux_identidad; // retornamos la inversa.
+    reduccion_hacia_atras(mat, aux_identidad, first_row, last_row);
+    // cout<< "entro reduccion =0" << endl;
+    cout << "fin" << endl;
+    // imprimir_matriz(aux_identidad); // imprimimos la inversa.
+    return 0; // retornamos la inversa.
 }
 
 void liberarmemoria(matriz mat){
@@ -278,91 +298,72 @@ for (int w = 0;  w< mat.m_filas; w++){
 
 struct timespec begin, end;
 
+double thread_time = 0, thread_time_1 = 0;
+pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
+
+void *inversa_p(void* i_arg) {
+argumentos_inversa *arg = (argumentos_inversa*)i_arg;
+
+eliminacion_gauss_jordan(arg->mat, arg->aux_identidad, arg->NTHREADS, arg->rank);
+
+return NULL;
+}
+
+
+
 int main(){
+int NTHREADS =3;
 double elapsed;
 
 A.m_columnas = nA;
 A.m_filas = nA;
-B.m_columnas = nA;
-B.m_filas = nA;
-
-C.m_columnas = nA;
-C.m_filas = nA;
-C = generar_matriz_aleatoria(C);
-
 
 A = generar_matriz_aleatoria(A);
-B = generar_matriz_aleatoria(B);
-
-clock_gettime(CLOCK_MONOTONIC, &begin);
-A=eliminacion_gauss_jordan(A);
-//multiplicacion_matriz(A, B, C, 0, nA);
-clock_gettime(CLOCK_MONOTONIC, &end);
-elapsed = end.tv_sec - begin.tv_sec;
-elapsed += (end.tv_nsec - begin.tv_nsec) / 1000000000.0;
-cout << "Execution Time Serie: " << elapsed << endl;
-
-cout << "B "  << endl;
-// imprimir_matriz(B);
-
+matriz aux_identidad = generar_matriz_identidad(nA);
+imprimir_matriz(A);
 clock_gettime(CLOCK_MONOTONIC, &begin);
 
-pthread_t *thr = new pthread_t[NTHREADS];  // inicializamsos los hilos
-Argumentos *args = new Argumentos[NTHREADS];
+
+pthread_t *threads = NULL;
+threads = (pthread_t*)malloc(NTHREADS * sizeof(pthread_t));
+
+argumentos_inversa *args = NULL;
+args = (argumentos_inversa*)malloc(NTHREADS * sizeof(argumentos_inversa));
+
 int subint = floor(nA/NTHREADS);  // limites para cada hilo
 
 	for(int i=0; i<NTHREADS; i++){
-		if(i==NTHREADS-1){       // limites para cada hilo
-			args[i].sup = nA;
-            args[i].inf = subint*i;
-            args[i].mat_1 = A;
-            args[i].mat_2 = B;
-            args[i].resultado = C;
-		} else{
-			args[i].inf = subint*i;
-			args[i].sup = subint*(i+1);
-            args[i].mat_1 = A;
-            args[i].mat_2 = B;
-            args[i].resultado = C;
-        }
-        pthread_attr_t attr;     // asignamos las tareas a los hilos.
-		pthread_attr_init(&attr);
+            args[i].mat = A;
+            args[i].aux_identidad = aux_identidad;
+            args[i].rank = i;
+            args[i].NTHREADS = NTHREADS;
+        // pthread_attr_t attr;     // asignamos las tareas a los hilos.
+		// pthread_attr_init(&attr);
 		//pthread_create(&thr[i], &attr, suma_matriz_hilo, &args[i]);
-        pthread_create(&thr[i], &attr, multiplicacion_matriz_hilo, &args[i]);
+        pthread_create(threads+1, 0, inversa_p , args+i);
 
     }
 
 
-
     // medimos el tiempo de ejecución de la suma paralela
 for(int i=0;i<NTHREADS;i++){ // espera de cada hilo.
-    pthread_join(thr[i], NULL);
+    pthread_join(threads[i], 0);
+    // cout << "join_pth" <<endl;
 }
+
 clock_gettime(CLOCK_MONOTONIC, &end);
 elapsed = end.tv_sec - begin.tv_sec;
 elapsed += (end.tv_nsec - begin.tv_nsec) / 1000000000.0;
 cout << "Execution Time Paralela: " << elapsed << endl;
-// imprimir_matriz(C);
+imprimir_matriz(aux_identidad);
 
 // cout << "Suma" << endl;
 
-
-
-clock_gettime(CLOCK_MONOTONIC, &begin);
-// suma_matriz(A, B, C, 0, nA);
-multiplicacion_matriz(A, B, C, 0, nA);
-clock_gettime(CLOCK_MONOTONIC, &end);
-elapsed = end.tv_sec - begin.tv_sec;
-elapsed += (end.tv_nsec - begin.tv_nsec) / 1000000000.0;
-cout << "Execution Time Serie: " << elapsed << endl;
-cout << "La suma secuencia genera es:" << endl; // imprimimos la elementos de la matriz.
-
-
-delete thr;  // limpiamos memoria.
+delete threads;  // limpiamos memoria.
 delete args;
 liberarmemoria( A);
-liberarmemoria( B);
-liberarmemoria( C);
+liberarmemoria(aux_identidad);
+
 
 cout << "-----------------------------------------------------------" << endl;
 cout << "Saliendo del programa..." << endl;
