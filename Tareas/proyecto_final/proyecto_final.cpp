@@ -14,7 +14,7 @@ using namespace std; //rand
 struct  matriz {
     int m_filas;
     int m_columnas;
-    long int **df;
+    double **df;
 };
 
 typedef struct { // definimos la estructura
@@ -26,14 +26,14 @@ typedef struct { // definimos la estructura
 } Argumentos;
 
 
-int nA=2000; // inicializamos los tamaños de la matriz.
+int nA=4; // inicializamos los tamaños de la matriz.
 matriz A, B, C;
 
 //----------------------------------Funciones generales---------------------------------------------
 matriz iniciar_matriz(matriz mat){ // construimos la matriz utilizando la memoria dinamica.
-    mat.df = new long int *[mat.m_filas];
+    mat.df = new double *[mat.m_filas];
     for(int i=0; i<mat.m_filas; i++){
-        mat.df[i]=new long int[mat.m_columnas];
+        mat.df[i]=new double[mat.m_columnas];
         }
     return mat;
 }
@@ -110,6 +110,164 @@ void* multiplicacion_matriz_hilo(void *args) {
 }
 
 
+
+//------------------------------Inversa----------------//
+
+matriz generar_matriz_identidad(int n){   // asignamos valores aleatorias (0,99) a la matriz.
+    matriz aux_identidad;
+    aux_identidad.m_columnas = n;
+    aux_identidad.m_filas = n;
+    aux_identidad = iniciar_matriz(aux_identidad);
+    for (int i = 0; i < n; ++i) { // creamos una matriz con unos en la diagonal y ceros en los demas.
+        for (int j = 0; j < n; ++j) {
+            if (i == j) {
+                aux_identidad.df[i][j] = 1;
+            }
+            else {
+                aux_identidad.df[i][j] = 0;
+            }
+        }
+    }
+    return aux_identidad;
+}
+
+int existencia_pivote(matriz mat, int pivote){
+    for (int h=pivote; h<mat.m_filas; ++h){
+        if (mat.df[h][pivote]!=0){ // comparamos todos los elementos de la columna para ver si todos son ceros.
+            return h; // retornamos el pivote
+        }
+    }
+    return -1; // retornamos -1 si no hay pivotes.
+}
+
+// Intercambiamos pivotes.
+int intercambia_pivote(matriz mat, int m, int k){
+    matriz aux_intercambio;
+    aux_intercambio.m_columnas = mat.m_columnas;
+    aux_intercambio.m_filas = 1;
+    aux_intercambio = iniciar_matriz(aux_intercambio);
+    if (m==k){ // si coinciden el número de columnas y el pivote terminamos.
+    return 0; // retornamos 0.
+    }
+    else{
+        for(int i=0; i<mat.m_columnas; ++i){ // copiamos los elementos de la fila k
+            aux_intercambio.df[1][i]=mat.df[k][i];
+        }
+        for(int i=0; i<mat.m_columnas; ++i){ // asignamos los elementos de la fila k a la fila m
+            mat.df[k][i]=mat.df[m][i];
+            mat.df[m][i]=aux_intercambio.df[1][i]; // asignamos los elemenos de la fila m a la fila k
+        }
+        return 0; // retornemos 0
+    }
+}
+
+
+int dividir_matriz(matriz mat, matriz aux_identidad, int i){
+    for (int j=(i+1); j<mat.m_columnas; ++j){ // normalizamos la matriz
+        mat.df[i][j]=mat.df[i][j]/mat.df[i][i];
+    }
+    for (int j=0; j<mat.m_columnas; ++j){ // normalizamos la matriz identidad.
+        aux_identidad.df[i][j]=aux_identidad.df[i][j]/mat.df[i][i];
+    }
+    mat.df[i][i]=1; // asignamos 1 al pivote
+    return 0;
+}
+
+int reduccion_hacia_atras(matriz mat, matriz aux_identidad){
+    // reducción hacia atras.
+    for(int k=(mat.m_columnas-1); k>-1; --k){
+        for (int j=0; j<k; ++j){
+            for (int h=0; h<mat.m_columnas; ++h){ // realizamos la reducción hacia atras a la matriz U.
+                aux_identidad.df[j][h]=aux_identidad.df[j][h]-aux_identidad.df[k][h]*mat.df[j][k];
+            }
+            mat.df[j][k]=0; // actualizamos los elementos.
+        }
+    }
+    return 0;
+}
+
+int eleminacion_parcial(matriz mat, matriz aux_identidad, int i){
+    for (int k=(i+1); k<mat.m_filas; ++k){
+        for(int j=0; j<mat.m_filas; ++j){ // aplicamos eliminación gauss-jordan a la matriz identidad.
+            aux_identidad.df[k][j] += -aux_identidad.df[i][j]*mat.df[k][i];
+        }
+        for(int j=(i+1); j<mat.m_columnas; ++j){ // aplicamos eliminación gauss-jordan a la matriz original.
+            mat.df[k][j] += -mat.df[i][j]*mat.df[k][i];
+        }
+        mat.df[k][i]=0; // actualizamos el pivote.
+    }
+}
+
+
+void synchronize(int total_threads) 
+{
+    static pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER; 
+    static pthread_cond_t condvar_in = PTHREAD_COND_INITIALIZER; 
+    static pthread_cond_t condvar_out = PTHREAD_COND_INITIALIZER; 
+    static int threads_in = 0; //число пришедших в функцию задач
+    static int threads_out = 0; //число ожидающих выхода из функции задач
+    
+    pthread_mutex_lock(&mutex); //"захватить" mutex для работы с переменными threads_in и threads_out
+    
+    threads_in++; //увеличить на 1 количество прибывших в эту функцию задач
+    //проверяем количество прибывших задач
+    if (threads_in >= total_threads) //если текущий поток пришёл последним
+    {
+        threads_out = 0; //устанавливаем начальное значение для threads_out
+        pthread_cond_broadcast (&condvar_in); //разрешаем остальным продолжать работу
+    } else //если есть ещё не пришедшие потоки
+    //ожидаем, пока в эту функцию не придут все потоки
+        while (threads_in < total_threads)
+        //ожидаем разрешения продолжить работу: освободить mutex и ждать сигнала от condvar, затем "захватить" mutex опять
+            pthread_cond_wait(&condvar_in, &mutex);
+    
+    threads_out++; //увеличить на 1 количество ожидающих выхода задач
+    //проверяем количество прибывших задач
+    if (threads_out >= total_threads)
+    {
+    //текущий поток пришёл в очередь последним
+        threads_in = 0; //устанавливаем начальное значение для threads_in 
+        pthread_cond_broadcast(&condvar_out); //разрешаем остальным продолжать работу
+    } else //если в очереди ожидания ещё есть потоки
+    //ожидаем, пока в очередь ожидания не придёт последний поток
+        while (threads_out < total_threads) 
+        //ожидаем разрешения продолжить работу: освободить mutex и ждать сигнала от condvar, затем "захватить" mutex опять
+            pthread_cond_wait(&condvar_out, &mutex);
+    
+    pthread_mutex_unlock(&mutex); //"освободить" mutex
+}
+
+// Eliminación Gauss-Jordan.
+matriz eliminacion_gauss_jordan(matriz mat){
+    matriz aux_identidad = generar_matriz_identidad(mat.m_filas);
+    int pivotet;
+    if (mat.m_filas!= mat.m_columnas) {  // validamos si la matriz es cuadrada.
+        cout << "La matriz no es cuadrada, por lo que no se puede calcular la inversa." << endl;
+        return aux_identidad;  // retornamos la matriz aumentada 
+    }
+
+    for (int i = 0; i < mat.m_filas; ++i) {
+        pivotet = existencia_pivote(mat, i);
+        if (pivotet==-1){   // validamos la existencia del pivote.
+            cout << "La matriz no tiene inversa."<< endl;
+            return aux_identidad;
+        }
+        else{      // intercambiamos el pivote de la matriz original y la matriz identidad.
+            
+            intercambia_pivote(mat , i, pivotet);
+            intercambia_pivote(aux_identidad, i, existencia_pivote(mat, i));
+        }
+
+        dividir_matriz(mat, aux_identidad, i);
+        eleminacion_parcial(mat, aux_identidad, i);
+    }
+
+    reduccion_hacia_atras(mat, aux_identidad);
+
+    imprimir_matriz(aux_identidad); // imprimimos la inversa.
+    return aux_identidad; // retornamos la inversa.
+}
+
 void liberarmemoria(matriz mat){
 for (int w = 0;  w< mat.m_filas; w++){
     delete [] mat.df[w] ;
@@ -136,7 +294,14 @@ C = generar_matriz_aleatoria(C);
 A = generar_matriz_aleatoria(A);
 B = generar_matriz_aleatoria(B);
 
-// imprimir_matriz(A);
+clock_gettime(CLOCK_MONOTONIC, &begin);
+A=eliminacion_gauss_jordan(A);
+//multiplicacion_matriz(A, B, C, 0, nA);
+clock_gettime(CLOCK_MONOTONIC, &end);
+elapsed = end.tv_sec - begin.tv_sec;
+elapsed += (end.tv_nsec - begin.tv_nsec) / 1000000000.0;
+cout << "Execution Time Serie: " << elapsed << endl;
+
 cout << "B "  << endl;
 // imprimir_matriz(B);
 
@@ -185,13 +350,12 @@ cout << "Execution Time Paralela: " << elapsed << endl;
 
 clock_gettime(CLOCK_MONOTONIC, &begin);
 // suma_matriz(A, B, C, 0, nA);
-// multiplicacion_matriz(A, B, C, 0, nA);
+multiplicacion_matriz(A, B, C, 0, nA);
 clock_gettime(CLOCK_MONOTONIC, &end);
 elapsed = end.tv_sec - begin.tv_sec;
 elapsed += (end.tv_nsec - begin.tv_nsec) / 1000000000.0;
 cout << "Execution Time Serie: " << elapsed << endl;
 cout << "La suma secuencia genera es:" << endl; // imprimimos la elementos de la matriz.
-// imprimir_matriz(C);
 
 
 delete thr;  // limpiamos memoria.
