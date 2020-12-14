@@ -1,0 +1,139 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish]{babel}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{lmodern}
+\usepackage{xspace}
+\usepackage{multicol}
+\usepackage{hyperref}
+\usepackage{float}
+\usepackage{hyperref}
+\usepackage{color}
+\usepackage{framed}
+
+
+
+\usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
+
+\newcommand{\X}{\mathbb{X}}
+\newcommand{\x}{\mathbf{x}}
+\newcommand{\Y}{\mathbf{Y}}
+\newcommand{\y}{\mathbf{y}}
+\newcommand{\xbarn}{\bar{x}_n}
+\newcommand{\ybarn}{\bar{y}_n}
+\newcommand{\paren}[1]{\left( #1 \right)}
+\newcommand{\llaves}[1]{\left\lbrace #1 \right\rbrace}
+\newcommand{\barra}{\,\vert\,}
+\newcommand{\mP}{\mathbb{P}}
+\newcommand{\mE}{\mathbb{E}}
+\newcommand{\mR}{\mathbb{R}}
+\newcommand{\mJ}{\mathbf{J}}
+\newcommand{\mX}{\mathbf{X}}
+\newcommand{\mS}{\mathbf{S}}
+\newcommand{\mA}{\mathbf{A}}
+\newcommand{\unos}{\boldsymbol{1}}
+\newcommand{\xbarnv}{\bar{\mathbf{x}}_n}
+\newcommand{\abs}[1]{\left\vert #1 \right\vert}
+\newcommand{\muv}{\boldsymbol{\mu}}
+\newcommand{\mcov}{\boldsymbol{\Sigma}}
+\newcommand{\vbet}{\boldsymbol{\beta}}
+\newcommand{\veps}{\boldsymbol{\epsilon}}
+\newcommand{\mcC}{\mathcal{C}}
+\newcommand{\mcR}{\mathcal{R}}
+\newcommand{\mcN}{\mathcal{N}}
+
+\newcommand{\ceros}{\boldsymbol{0}}
+\newcommand{\mH}{\mathbf{H}}
+\newcommand{\ve}{\mathbf{e}}
+\newcommand{\avec}{\mathbf{a}}
+\newcommand{\res}{\textbf{RESPUESTA}\\}
+
+\newcommand{\defi}[3]{\textbf{Definición:#3}}
+\newcommand{\fin}{$\blacksquare.$}
+\newcommand{\finf}{\blacksquare.}
+\newcommand{\tr}{\text{tr}}
+\newcommand*{\temp}{\multicolumn{1}{r|}{}}
+
+\newcommand{\grstep}[2][\relax]{%
+   \ensuremath{\mathrel{
+       {\mathop{\longrightarrow}\limits^{#2\mathstrut}_{
+                                     \begin{subarray}{l} #1 \end{subarray}}}}}}
+\newcommand{\swap}{\leftrightarrow}
+
+\newcommand{\gen}{\text{gen}}
+\newtheorem{thmt}{Teorema:}
+\newtheorem{thmd}{Definición:}
+\newtheorem{thml}{Lema:}
+\newcommand{\muh}{\hat{\mu}}
+\newcommand{\thh}{\hat{\theta}}
+\newcommand{\xb}{\bar{x}}
+\newcommand{\yb}{\bar{y}}
+\newcommand{\Xb}{\bar{X}}
+\newcommand{\Yb}{\bar{Y}}
+\newcommand{\zal}{$z_{\alpha/2}$}
+\begin{document}
+\begin{table}[ht]
+\centering
+\begin{tabular}{c}
+\textbf{Maestría en Computo Estadístico}\\
+\textbf{Inferencia Estadística} \\
+\textbf{Tarea 9}\\
+\today \\
+\emph{Enrique Santibáñez Cortés}\\
+Repositorio de Git: \href{https://github.com/Enriquesec/Inferencia_Estad-stica/tree/master/Tareas/Tarea_9}{Tarea 9, IE}.
+\end{tabular}
+\end{table}
+
+\begin{enumerate}
+
+
+
+\item Derivar el intervalo de confianza para las gráficas quantil quantil basado de k$-$ésimo estadístico de una distribución uniforme(0,1).\\
+
+Para ello:
+\begin{itemize}
+\item Redactar en un pequeño texto, donde describa la idea detrás de este intervalo de confianza.
+
+\res Sabemos que el k$-$ésimo estadístico de una distribución uniforme(0,1), denotemosla como $u_{(k)}$ sigue una distribución Beta cuya varianza es
+$$V(u_{(k)})=\frac{k(n+1-k)}{(n+1)^2(n+2)}.$$
+Nótese que entre mayor sea el tamaño de muestra $n$ la varianza de cada estadística de orden será menor. Por tanto, un intervalo de confianza $(1-\beta)$ para esta variable aleatoria Beta, $u_{(k)}$ se obtiene
+al considerar los cuantiles de probabilidades $\beta/2$ y $(1- \beta/2)$ para los extremos del intervalo
+\begin{align*}
+[Q^B_{\beta/2}, Q_{1-\beta/2}^B].
+\end{align*}
+Este intervalo contiene al valor esperado $\mE[u_{(k)}]=k/(n+1)$. Entre mayor sea el tamaño de la muestra, más angosto será este intervalo de predicción. Ahora, al notar que la estadística de orden en la escala original se obtiene aplicando la función de distribución
+estimada inversa, $$x_{(k)}=\hat{F}^{-1}(u_{(k)};\hat{\beta},$$
+entonces también se puede transformar un intervalo de predicción Beta (3) a la escala original de la variable $X_i$
+aplicando a los extremos del dicho intervalo la función de distribución estimada inversa. Así, un intervalo de predicción de probabilidad $(1 - \beta)$ para el cuantil empírico $x_{(k)}$ será
+$$[\hat{F}_X^{-1}(Q_{\beta/2}^\beta), \hat{F}_X^{-1}(Q_{1-\beta/2}^\beta)]$$
+Nótese que los intervalos de predicción se pueden transformar de una escala a otra fácilmente según convenga puesto que se cumplen las siguientes igualdades,
+\begin{align*}
+1-\beta = \mP(Q_{\beta/2}^\beta\leq u_{(k)} \leq Q_{1-\beta/2}^\beta = \mP\left(F_X^{-1}(Q_{\beta/2}^\beta))\leq x_{(k)} \leq F_X^{-1}(Q_{1-\beta/2}^\beta)\right).
+\end{align*}
+
+
+
+\item  Sea $U_1 ,\cdots U_n$ una muestra aleatoria proveniente de una distribución uniforme$(0,1)$. Muestra que
+el k$-$ésimo estadístico de orden de una distribución uniforme estándar $(0,1)$ sigue una distribución Beta$\sim$ Beta$(k, n - k + 1)$.
+\end{itemize}
+ 
+\res  Entonces la función de distribución de una v.a. uniforme es $F_U(u)=u.$ Entonces, el estadístico de orden $k$ tiene función de distribución:
+\begin{align*}
+F_{U_{(k)}}(u)&=\mP(U_{(k)} \leq u) = \mP(\text{al menos } k \text{valores de la muestra} \leq u)\\
+&=\mP(Bin(n,u)\geq k) =\sum_{j=k}^n {n \choose j} u_j(1-u)^{n-j}.
+\end{align*}
+y la función de densidad:
+\begin{align*}
+f_{U_{(k)}}(u)&=n{n-1 \choose k-1}u^{k-1}(1-u)^{n-k}\\
+&=\frac{n!u^{k-1}(1-u)^{n-k}}{(k-1)!(n-k)!}=\frac{u^{k-1}(1-u)^{n-k}}{B(k,n+1-k)}.
+\end{align*}
+
+Por lo tanto podemos concluir que 
+$$U_{(k)}\sim Beta(k,n+1-k).\ \ \ \finf$$
+
+\end{enumerate}
+\end{document}
