@@ -15,39 +15,28 @@ En este repositorio se encuentra todos los recursos (nota, tareas, proyectos, ar
 
 
 ### Examenes
-1. [1er Parcial](parcial_1.pdf) 18-Sep-2020. 1:30 minutos.
-2. [2do Parcial](parcial_2.pdf) 05-Nov-2020. 4 horas.
+1. [1er Parcial](Examenes/parcial_1.pdf) 18-Sep-2020. 1:30 minutos.
+2. [2do Parcial](Examenes/parcial_2.pdf) 05-Nov-2020. 4 horas.
 
 
 ### Proyectos: 
 
 - Redes
-
 - [Comparaciones Múltiples desde la perspectiva de Ciencia de Datos y su relación con el False Discovery Rate](Proyecto/)
-
 - Distribución de los ingresos y la distribución de Pareto.
-
 - Pruebas de bonda de ajuste.
-
 - Potencia y tamaño de muestra.
-
 - Intervalos de predicción para un modelo lineal múltiple.
-
 - Prueba de permutaciones.
-
 - Pruebas no paramétricas clásica.
 
 ### Notas: 
 
 - [Variables aleatorias y distribuciones de probabilidad](Notas/primera_parte.pdf)
-
 - [Estimación de densidad no paramétrica](Notas/EDNP_2020)
-
 - [Distribuciones muestrales y métodos de estimación](Notas/segunda_parte.pdf)
-
--[Pruebas de Hipótesis e intervalos de confianza](tercera_parte2.pdf)
-
-- [Boostrap](boostrap.pdf)
+-[Pruebas de Hipótesis e intervalos de confianza](Notas/tercera_parte2.pdf)
+- [Boostrap](Notas/boostrap.pdf)
 
 
 
