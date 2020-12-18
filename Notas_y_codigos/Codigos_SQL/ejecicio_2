@@ -1,0 +1,231 @@
+CREATE TABLE contacts ( id INTEGER PRIMARY KEY,
+                        name TEXT NOT NULL COLLATE NOCASE,
+                        phone TEXT NOT NULL DEFAULT 'UNKNOWN',
+                        UNIQUE (name,phone) );
+
+ALTER TABLE contacts 
+ADD COLUMN email TEXT NOT NULL DEFAULT '' COLLATE NOCASE;
+
+-- Selecciones
+SELECT id, name FROM food_types;
+
+SELECT NULL;
+
+
+-- Texto
+SELECT id, name FROM foods WHERE name LIKE 'J%';
+SELECT id, name FROM foods WHERE name LIKE '%ac%P%';
+SELECT id, name FROM foods WHERE name LIKE '%ac%P';
+SELECT id, name FROM foods WHERE name LIKE 'ac';
+
+
+SELECT id, name FROM foods 
+WHERE name like '%ac%P%' AND name NOT LIKE '%Sch%';
+
+SELECT * FROM foods WHERE name LIKE 'B%' 
+ORDER BY type_id DESC, name LIMIT 10;
+
+--OFFSET
+SELECT * FROM foods WHERE name LIKE 'B%' 
+ORDER BY type_id DESC,name  LIMIT 1,2;
+
+-- Funciones
+SELECT UPPER('hello newman'), LENGTH('hello newman'), ABS(-12);
+
+SELECT id, UPPER(name), LENGTH(name) FROM foods 
+WHERE type_id=1 LIMIT 10;
+
+
+SELECT id, UPPER(name), LENGTH(name) FROM foods 
+WHERE LENGTH(name) < 5 LIMIT 5;
+
+SELECT COUNT(*) FROM foods WHERE type_id=1;
+
+SELECT AVG(LENGTH(name)) FROM foods;
+
+SELECT type_id FROM foods GROUP BY type_id;
+
+SELECT type_id, COUNT(*) FROM foods GROUP BY type_id;
+
+SELECT type_id, COUNT(*) FROM foods 
+GROUP BY type_id HAVING COUNT(*) < 20;
+
+SELECT DISTINCT type_id FROM foods;
+
+--
+-- JOINS
+--
+SELECT foods.name, food_types.name 
+FROM foods, food_types
+WHERE foods.type_id=food_types.id;
+
+
+-- ALias
+SELECT foods.name, food_types.name FROM foods, food_types
+WHERE foods.type_id=food_types.id LIMIT 10;
+
+SELECT f.name, t.name FROM foods f, food_types t
+WHERE f.type_id=t.id LIMIT 10;
+
+-- Alias y Self Join
+-- Obtener comidas temporada 4 que aparecen en otras temporadas
+-- Utilizamos alias para crear self joins
+SELECT f.name as food, e1.name, e1.season, e2.name, e2.season 
+FROM episodes e1, foods_episodes fe1, foods f, 
+episodes e2, foods_episodes fe2
+WHERE 
+-- Obtener comidas temporada 4
+(e1.id = fe1.episode_id AND e1.season = 4) AND fe1.food_id = f.id
+-- Unir comidas con los episodios 
+AND (fe1.food_id = fe2.food_id) 
+-- Unir comidas con sus episodios y se quita la temporada 4 original (e1)
+  AND (fe2.episode_id = e2.id AND e2.season != e1.season)
+ORDER BY f.name;    
+
+SELECT e.name AS Episode, COUNT(f.id) AS Foods 
+FROM foods f 
+    JOIN foods_episodes fe on f.id=fe.food_id
+    JOIN episodes e on fe.episode_id=e.id
+GROUP BY e.id
+ORDER BY Foods DESC 
+LIMIT 10;
+
+
+-- Subquerys
+SELECT 1 IN (1,2,3);
+
+SELECT 2 IN (3,4,5);
+
+SELECT COUNT(*) FROM foods WHERE type_id IN (1,2);
+
+-- seleccion dentro de Where
+SELECT id FROM food_types WHERE name='Bakery' OR name='Cereal';
+
+SELECT COUNT(*) FROM foods WHERE type_id
+IN (SELECT id FROM food_types WHERE name='Bakery' OR name='Cereal');
+
+
+-- Campo
+SELECT
+  name,
+  (SELECT COUNT(food_id) FROM foods_episodes WHERE food_id=f.id) count
+FROM
+  foods f
+ORDER BY count DESC LIMIT 10;
+
+
+SELECT (SELECT name FROM food_types WHERE id=f.type_id) Type,   
+COUNT(type_id) Items, 
+COUNT(type_id)*100.0/(SELECT COUNT(*) FROM foods) as Percentage 
+FROM foods f GROUP BY type_id ORDER BY Percentage DESC;
+
+-- Subquery como ordenacion
+SELECT * FROM foods f 
+ORDER BY (SELECT COUNT(type_id) 
+FROM foods WHERE type_id=f.type_id) DESC;
+
+-- Subquery como conjunto de union
+SELECT f.name, types.name FROM foods f 
+INNER JOIN (SELECT * FROM food_types WHERE id=6) types 
+ON f.type_id=types.id;
+
+-- Subquery
+SELECT e.name name, COUNT(fe.food_id) foods FROM episodes e
+INNER JOIN foods_episodes fe ON e.id=fe.episode_id
+GROUP BY e.id
+ORDER BY foods DESC
+LIMIT 10;
+
+SELECT e.name, agg.foods FROM episodes e
+INNER JOIN
+(SELECT fe.episode_id as eid, count(food_id) as foods
+   FROM foods_episodes fe
+   GROUP BY episode_id) agg
+ON e.id=agg.eid
+ORDER BY agg.foods DESC
+LIMIT 10;
+
+SELECT e.name, agg.foods FROM episodes e
+INNER JOIN
+(SELECT fe.episode_id as eid, count(food_id) as foods
+   FROM foods_episodes fe
+   GROUP BY episode_id
+   ORDER BY foods DESC LIMIT 10) agg
+ON e.id=agg.eid
+ORDER BY agg.foods DESC;
+
+-- Query compuesta
+
+
+SELECT f.* FROM foods f
+INNER JOIN
+  (SELECT food_id, count(food_id) as count FROM foods_episodes
+     GROUP BY food_id
+     ORDER BY count(food_id) DESC LIMIT 10) top_foods
+  ON f.id=top_foods.food_id
+INTERSECT
+SELECT f.* FROM foods f
+  INNER JOIN foods_episodes fe ON f.id = fe.food_id
+  INNER JOIN episodes e ON fe.episode_id = e.id
+  WHERE e.season BETWEEN 3 and 5
+ORDER BY f.name;
+
+
+SELECT f.* FROM foods f
+INNER JOIN
+  (SELECT food_id, count(food_id) AS count FROM foods_episodes
+     GROUP BY food_id
+     ORDER BY count(food_id) DESC LIMIT 10) top_foods
+  ON f.id=top_foods.food_id
+EXCEPT
+SELECT f.* FROM foods f
+  INNER JOIN foods_episodes fe ON f.id = fe.food_id
+  INNER JOIN episodes e ON fe.episode_id = e.id
+  WHERE e.season BETWEEN 3 and 5
+ORDER BY f.name;
+
+SELECT f.*, top_foods.count FROM foods f
+INNER JOIN
+  (SELECT food_id, count(food_id) AS count FROM foods_episodes
+     GROUP BY food_id
+     ORDER BY count(food_id) DESC LIMIT 1) top_foods
+  ON f.id=top_foods.food_id
+UNION
+SELECT f.*, bottom_foods.count FROM foods f
+INNER JOIN
+  (SELECT food_id, count(food_id) AS count FROM foods_episodes
+     GROUP BY food_id
+     ORDER BY count(food_id) LIMIT 1) bottom_foods
+  ON f.id=bottom_foods.food_id
+ORDER BY top_foods.count DESC;
+
+
+-- CASos
+
+SELECT name || CASE type_id
+                 WHEN 7  THEN ' is a drink'
+                 WHEN 8  THEN ' is a fruit'
+                 WHEN 9  THEN ' is junkfood'
+                 WHEN 13 THEN ' is seafood'
+                 ELSE NULL
+               END description
+FROM foods
+WHERE description IS NOT NULL
+ORDER BY name
+LIMIT 10;
+
+-- Case Conditions
+SELECT name,(SELECT 
+               CASE
+                 WHEN count(*) > 4
+                   THEN 'Very High'
+                 WHEN count(*) = 4
+                   THEN 'High'
+                 WHEN count(*) IN (2,3)
+                   THEN 'Moderate'
+                 ELSE 'Low'
+               END
+             FROM foods_episodes 
+             WHERE food_id=f.id) frequency
+FROM foods f
+WHERE frequency LIKE '%High'; 
