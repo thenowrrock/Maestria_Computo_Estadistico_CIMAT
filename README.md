@@ -17,7 +17,7 @@ En este repositorio se encuentra todos los recursos (nota, tareas, proyectos, ar
 1. 1er Parcial 
 2. 2do Parcial
 
-# [Notas del curso](Notas/Notas completas.pdf)
+# [Notas del curso](Notas/notas_completas.pdf)
 
 # Bibliografía sugerida:
 - S. Banerjee and A. Roy (2014).Linear Algebra and Matrix Analysis for Statistics.

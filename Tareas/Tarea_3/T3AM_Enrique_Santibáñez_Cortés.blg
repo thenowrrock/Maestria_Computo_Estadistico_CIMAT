@@ -1,5 +1,0 @@
-[1] Config.pm:340> INFO - This is Biber 2.4
-[1] Config.pm:343> INFO - Logfile is 'T3AM_Enrique_SantibÃ¡Ã±ez_CortÃ©s.blg'
-[124] biber:287> INFO - === lun sep 14, 2020, 01:19:44
-[162] Utils.pm:163> ERROR - Cannot find control file 'T3AM_Enrique_SantibÃ¡Ã±ez_CortÃ©s.bcf'! - did you pass the "backend=biber" option to BibLaTeX?
-[162] Biber.pm:113> INFO - ERRORS: 1
