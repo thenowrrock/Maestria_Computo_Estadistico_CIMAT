@@ -1,0 +1,104 @@
+\section{Notación}
+
+\begin{frame}{Ecuaciones}
+	
+		\begin{equation}\label{Monna}
+		\rho: \sum_{j=\gamma}^{\infty} a_{j} p^{j} \mapsto \sum_{j=\gamma}^{\infty} a_{j} p^{-j-1}, \quad a_{j}=0,1, \ldots, p-1, \quad \gamma \in \mathbb{Z}.
+		\end{equation}
+\end{frame}
+
+\begin{frame}{Transiciones}
+	\begin{itemize}[<+- | alert@+>]
+		
+		\item ítem 1
+		\item ítem 2
+		\item ítem 3
+		
+	\end{itemize}
+
+\end{frame}
+
+\subsection{Sección para la tabla}%para que aparezca en la tabla de contenidos como subsección
+\section*{Sección} %para que me muestre la barra de progreso
+
+\begin{frame}{Definiciones, teoremas, lemas, corolarios y ejemplos}
+	\begin{df}
+		La definición.
+	\end{df}
+\begin{thh}
+	El teorema
+\end{thh}
+\begin{crr}
+	El corolario
+\end{crr}
+\begin{lm}
+	El lema
+\end{lm}
+\begin{example}{Ejemplo}
+	El ejemplo
+\end{example}
+\end{frame}
+
+
+
+\begin{frame}[fragile]{Listings en este beamer}
+	Sea $x=342.536_7=6\cdot7^{-3}+3\cdot7^{-2}+5\cdot7^{-1}+2\cdot7^0+4\cdot7+3\cdot7^2$
+
+\begin{lstlisting}[language=Python, caption = Instancia de la clase Número   (Number), basicstyle=\tiny]
+digits = [3,4,2,5,3,6]
+x = Number(7,-3,2,digits) #initialization of x
+
+x.show()
+>> [3,4,2,5,3,6]
+
+x.order()
+>> -2
+
+x.norm()
+>> 49
+
+x.len()
+>>6
+\end{lstlisting}
+En este caso $p=7$, $n=-3$ y  $N=2$. Además satisface que $7^{-3}\leq{x}\leq 7^2$.
+\end{frame}
+
+
+\begin{frame}{Subfiguras}
+	
+\begin{figure}
+	\captionsetup[subfigure]{font=footnotesize}
+	\centering
+	\subcaptionbox{Triángulo 1}[.5\textwidth]{%
+		\begin{tikzpicture}
+		
+		%   \draw [black!20]  (0,0) grid  (3,4);
+		\draw[black]  (0,0)-- (3,0)--  (1.5,4)--cycle;
+		
+		
+		\draw  (0,0) circle  (0pt) node[anchor=north] {$y$};
+		\draw  (3,0) circle  (0pt) node[anchor=north] {$z$};
+		\draw  (1.5,4.5) circle  (0pt) node[anchor=north] {$x$};
+		\draw  (3.5,2) circle  (0pt) node[anchor=north] {${x-z}$};
+		\draw  (-0.5,2) circle  (0pt) node[anchor=north] {${x-y}$};
+		\draw  (1.5,-0.2) circle  (0pt) node[anchor=north] {${z-y}$};  
+		\end{tikzpicture}
+	}%
+	\subcaptionbox{Triángulo 2}[.5\textwidth]{
+		\begin{tikzpicture}
+		
+		%   \draw [black!20]  (0,0) grid  (3,4);
+		\draw[orange]  (0,0)-- (3,0)--  (1.5,4)--cycle;
+		
+		
+		\draw  (0,0) circle  (0pt) node[anchor=north] {$y$};
+		\draw  (3,0) circle  (0pt) node[anchor=north] {$z$};
+		\draw  (1.5,4.5) circle  (0pt) node[anchor=north] {$x$};
+		\draw  (3.5,2) circle  (0pt) node[anchor=north] {${x-z}$};
+		\draw  (-0.5,2) circle  (0pt) node[anchor=north] {${x-y}$};
+		\draw  (1.5,-0.2) circle  (0pt) node[anchor=north] {${z-y}$};  
+		\end{tikzpicture}
+	}
+\end{figure}
+\end{frame}
+

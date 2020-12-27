@@ -1,0 +1,397 @@
+\section{Introducción}
+\begin{frame}{Introducción}
+    Papel de la inferencia estadística
+    \begin{itemize}[<+- | alert@+>]
+        \item Cuestionarse acerca de parámetros que estimamos.
+        \item Lo hacemos a través de \textit{Pruebas de Hipótesis}.
+        \item Generalmente queremos comparar más de dos parámetros.
+        \item Este proceso se conoce como Comparación Múltiple.
+    \end{itemize}
+\end{frame}
+\section{Aspectos preliminares}
+\begin{frame}{Pruebas de hipótesis simples}
+    \begin{df}
+        Se conoce como hipótesis \textit{simple}, a una prueba en la que interviene sólo una única hipótesis nula $H_0$ y su complemento, la hipótesis alternativa $H_1$.
+    \end{df}
+    \begin{example}[Un quiz chévere...]
+        \begin{itemize}[<+- | alert@+>]
+        \item \textit{Fat Tony} va a ser juzgado como mafioso, y el Juez \textit{Roy Snyder} lo hará:
+            \item \includegraphics[scale = 0.15]{cheve.png}
+            \item \includegraphics[scale = 0.12]{Acusado.png}\quad \quad  \includegraphics[scale = 0.15]{Juez.png}
+        \end{itemize}
+    \end{example}
+\end{frame}
+
+\begin{frame}{Pruebas de hipótesis simples}
+    \begin{example}[Juicio oral - Continuación]
+        \textit{Roy Snyder} plantea:
+        \begin{itemize}
+            \item $H_0$ : \textit{Fat Tony} es inocente.
+            \item $H_1$ : \textit{Fat Tony} es culpable.
+        \end{itemize}
+        Los posibles resultados del juicio pueden mostrarse en la siguiente tabla:
+        \begin{center}
+            \scalebox{0.8}{ 
+        	\begin{tabular}{ | m{4.3cm} | m{3.3cm}| m{3.3cm} | } 
+        		\hline
+        		& $H_0$ Cierta (inocencia) & $H_0$ Falsa (Culpable)\\ 
+        		\hline
+        		$H_0$ rechazada (Condenado) & Error tipo I & Decisión correcta\\ 
+        		\hline
+        		$H_0$ no rechazada (Libre)  & Decisión correcta& Error tipo II\\ 
+        		\hline
+        	\end{tabular}
+        	}
+        \end{center}
+    \end{example}
+\end{frame}
+
+
+
+
+\begin{frame}{Pruebas de hipótesis simples}
+    \begin{rr}
+        En el anterior ejemplo, pareciera que no tuviéramos relación entre el error tipo I y el error tipo II. Aún así, es posible probar que:
+        \begin{itemize}
+            \item $P(\textit{error tipo I })\to0\quad \Longrightarrow \quad P(\textit{error tipo II} )\to 1$
+            \item $P(\textit{error tipo II})\to0\quad \Longrightarrow \quad P(\textit{error tipo I } )\to 1$
+        \end{itemize}
+    \end{rr}
+    \begin{itemize}[<+- | alert@+>]
+        \item Casi siempre damos prioridad a disminuir el error tipo I.
+        \item En los casos donde se requiere controlar el error tipo II, trabajamos con \textit{pruebas uniformemente más potentes}.
+        \item Dado que el error tipo I quiere llevarse a 0, establecemos una cota superior para la cual este puede ser encontrado. Dicha cota se conoce como \textit{nivel de significancia} y se denota con la letra $\alpha$
+        
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Pruebas de hipótesis simples - Definiciones}
+    
+    Una vez establecida la filosofía básica de una prueba de hipótesis, planteamos algunos conceptos:
+    \begin{df}
+    \begin{itemize}
+        \item \textbf{Hipótesis de trabajo:} La aseveración acerca del espacio parametral $\Theta$ que nos interesa probar,
+        junto con su complemento o hipótesis alternativa. Usualmente es denotado de la siguiente forma:
+        $$H_0:\theta\in\Theta_0; \quad H_1: \theta\in\Theta_1,$$
+        donde $\{\Theta_0,\Theta_1\}$ es una partición de $\Theta$, el espacio de parámetros.
+    \end{itemize}
+    \end{df}
+\end{frame}
+
+\begin{frame}{Pruebas de hipótesis simples - Definiciones}
+    \begin{df}[Continuación]
+    \begin{itemize}
+        \item \textbf{Estadístico de prueba:} Valor calculado en función de la muestra observada, denotado por $T$.
+        \item {Región de Rechazo ($C$): } Conjunto de valores que puede tomar el estadístico de prueba $T$, para los cuales se rechaza $H_0$.
+        \item {Potencia: } robabilidad de no cometer error de tipo II. En el caso de una hipótesis que plantee igualdad:
+        \begin{equation}
+        	\beta(\theta^*)=P(T\in C|\theta=\theta^*)\label{pot}
+        \end{equation}
+    \end{itemize}
+    \end{df}
+\end{frame}
+
+\begin{frame}{Pruebas de hipótesis simples - Definiciones}
+    \begin{df}[Continuación]
+    \begin{itemize}
+        \item Nivel de significancia ($\alpha$): puede ser definido en términos de (\ref{pot}):
+        \begin{equation}
+        	\alpha\leq\sup_{\theta\in\Theta_0} \beta(\theta).
+        \end{equation}
+        \item \textbf{$p$-valor: } probabilidad, asumiendo la hipótesis nula como cierta, de haber observado un valor del estadístico de prueba al menos tan extremo como el que se observó:
+        \begin{equation*}
+        	p=P(T>T_{obs}|\theta\in\Theta_0).
+        \end{equation*}
+    \end{itemize}
+    \end{df}
+\end{frame}
+
+\begin{frame}{Pruebas de hipótesis simples - Resumen}
+En resumen, realizar una prueba de hipótesis consiste en:
+\begin{enumerate}[<+- | alert@+>][I]
+    \item Plantear la hipótesis nula y la hipótesis alternativa.
+	\item Seleccionar un nivel de significancia $\alpha$. El umbral probabilı́stico bajo el cual la hipótesis será rechazada.
+	\item Elegir la estadística de prueba adecuada $T$.
+	\item Encontrar la distribución de $T$ bajo la hipótesis nula.
+	\item Calcular la región crítica o región de rechazo $C$.
+	\item Encontrar el valor observado del estadístico de prueba $T_{obs}$ de la muestra o, alternativamente, el $p$-valor.
+	\item Decidir si rechazar o no $H_0$ con base en la región $C$ especificada en el paso (VI), o, alternativamente, rechazar $H_0$ si el $p$-valor obtenido pequeño.
+\end{enumerate}
+\end{frame}
+
+\section{Comparaciones Múltiples}
+
+\begin{frame}{Comparaciones Múltiples - Procedimiento}
+\begin{itemize}[<+- | alert@+>]
+    \item Es posible juzgar acerca de un determinado número $m>1$ de hipótesis nulas $H_{01},\dots,H_{0m}$.
+	\item Es pertinente la realización de un procedimiento que nos permita evaluar la veracidad de una hipótesis general.
+	\item \textit{Dutoit} et al (2003), estandarizó el procedimiento
+	\item Elegir y calcular un estadístico de prueba $T_j$ para cada hipótesis individual $j$, con $j=1,\dots,m$
+	\item Aplicar un procedimiento de prueba de hipótesis múltiple para determinar cuáles hipótesis se han
+	de rechazar de manera que se controle de alguna forma específica el error tipo I.
+\end{itemize}
+\end{frame}
+
+
+\subsection{Sobre la extensión del caso simple}
+\begin{frame}{Sobre la extensión del caso simple}
+\begin{itemize}[<+- | alert@+>]
+    \item Una prueba de manea simultánea al conjunto de hipótesis $\{H_{01},\dots,H_{0m}\}$ no es equivalente a realizar $m$ pruebas individuales.
+    \item Primero, se necesitarían ${m\choose2}=\frac{m(m-1)}{2}$ comparaciones individuales.
+    \item Segundo, con mayor relevacia, por independencia entre las hipótesis.
+    \item Esto es, el rechazo de $H_{0i}$ podrı́a influir (positiva o negativamente) en las posibilidades del rechazo de $H_{0j}$
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}{Sobre la extensión del caso simple}
+\begin{example}[Lanzamiento de monedas - parte 1]
+    \begin{itemize}[<+- | alert@+>]
+        \item Queremos probar si una moneda es equilibrada.
+        \item 9 de 10 lanzamientos son cara.
+        \item La probabilidad de que se observe un resultado al menos tan extremo como ese, sería de $(10 + 1)(1/2)^{10} = 0.0107$.
+        \item Concluimos que la moneda no es justa.
+    \end{itemize}
+\end{example}
+\end{frame}
+
+
+\begin{frame}{Sobre la extensión del caso simple}
+\begin{example}[Lanzamiento de monedas - parte 2]
+    \begin{itemize}[<+- | alert@+>]
+        \item Repitamos el experimento con 100 monedas.
+        \item Esperaríamos que fuera igual o más raro, al lanzar una moneda equilibrado, observar 9 caras en 10 lanzamientos.
+        \item ¡Pues no!
+        \item De hecho la probabilidad de que en 100 repeticiones al menos una moneda sea equilibrada está dada por $1 - (1 - 0,0107)^{100}= 0.6604$
+        \item ¡Sería un error aplicar el razonamiento anterior para probar que las 100 monedas son equilibradas!
+    \end{itemize}
+\end{example}
+\end{frame}
+
+\begin{frame}{Sobre la extensión del caso simple}
+\begin{rr}
+\begin{itemize}
+    \item El anterior ejemplo, nos muestra la delicadeza de la multiplicidad.
+    \item La noción de error se complica de manera creciente.
+    \item  Si una prueba simple se hace a un $5\%$ de confianza, afirmamos que existe un $5\%$ de probabilidad de que la hipótesis nula sea rechazada incorrectamente.
+    \item Si se realizan $m = 100$ pruebas de hipótesis simultáneamente, donde todas son ciertas, el número esperado de rechazos incorrectos es 5
+    \item Si las pruebas son independientes, la probabilidad de rechazar al menos una hipótesis incorrectamente es de $1 - (1-0,05)^{100} =0,994$!!!
+\end{itemize}
+\end{rr}
+\end{frame}
+
+
+\subsection{Sobre el error}
+\begin{frame}{Tabla de comparaciones múltiples}
+\scalebox{0.8}{ 
+\begin{center}
+\begin{tabular}{|l|l|l|l|}
+	\hline & Hipótesis No Rechazadas & Hipótesis Rechazadas & Total \\
+	\hline Hipótesis Verdaderas & $U$ & $V$ & $m_{0}$ \\
+	Hipótesis Falsas & $K$ & $S$ & $m_{1}$ \\
+	\hline & $m-R$ & $R$ & $M$ \\
+	\hline
+\end{tabular}	
+\end{center}
+}
+\begin{itemize}
+	\item $m$ es el total de hipótesis realizadas.
+	\item $m_0$ es el número de hipótesis nulas verdaderas.
+	\item $m-m_0$ es el número de verdaderas hipótesis alternativas.
+	\item $V$ es el número de falsos positivos (error tipo I) (también conocido como \textit{falso descubrimiento}).
+	\item $S$ es el número de verdaderos positivos (conocido como \textit{descubrimiento verdadero}).
+	\item $K$ es el número de falsos negativos (error tipo II).
+	\item $U$ es el número de verdaderos negativos.
+	\item $R=V+S$ es el número de hipótesis nulas rechazadas (conocido como \textit{descubrimientos})
+\end{itemize}
+\end{frame}
+
+
+
+
+\begin{frame}{Sobre los errores}
+Nos encontramos con la necesidad de controlar el error tipo I en el caso múltiple. Para esto, introducimos 3 nociones de error:
+\begin{itemize} [<+- | alert@+>]
+	\item \textbf{Tasa de Error por Comparación (PCER)}: Consiste de el valor esperado de errores de tipo I dividido entre el número total de hipótesis:
+$$
+\mathrm{PCER}=\frac{\mathrm{E}(V) }{m}
+$$
+    \item \textbf{Tasa de Error Global (FWER)}: Es la probabilidad de cometer uno o más errores de tipo I:
+$$
+\mathrm{FWER}=P(V \geq 1) \Longleftrightarrow \mathrm{FWER}=P(V>0)=1-P(V=0)
+$$
+\item \textbf{Tasa de Falsos Descubrimientos (FDR)}. se define como el valor esperado de $Q$:
+$$
+Q=\left\{\begin{array}{ll}
+	V/R, & R>0 \\
+	0, & R=0
+\end{array}\right.
+$$
+\end{itemize}
+\end{frame}
+
+\section{Controlando el FWER}
+
+\begin{frame}{Control del FWER}
+\begin{df}
+Si suponemos que FWER$\leq\alpha$, decimos que 	la probabilidad de cometer un error tipo I está \textit{controlada} por un nivel $\alpha$. Adicionalmente:
+\begin{itemize}
+    \item Un proceso controla el FWER \textit{débilmente}, si el control del FWER a un nivel $\alpha$, es garantizado sólo cuando todas las hipótesis  nulas son ciertas.
+    \item Un procedimiento controla \textit{fuertemente}, si el control del FWER a un nivel $\alpha$ independientemente de la configuración de hipótesis falsas o verdaderas.
+\end{itemize}
+\end{df}
+\end{frame}
+
+\begin{frame}{Procedimientos de Control del FWER - Bonferroni}
+\begin{itemize}[<+- | alert@+>]
+    \item Sea $\{H_{01},\dots,H_{0m}\}$ una familia de hipótesis.
+    \item Sea $p_i$ el $p$-valor correspondiente a la hipótesis $H_{0i}$.
+    \item Procedemos a rechazar la hipótesis $H_{0i}$, si $p_i\leq\frac{\alpha}{m}$
+    \item El control puede ser probado a través de la \textit{desigualdad de Boole:}
+$$\mathrm{FWER}=P\left\{\bigcup_{i=1}^{m_{0}}\left(p_{i} \leq \frac{\alpha}{m}\right)\right\} \leq \sum_{i=1}^{m_{0}}\left\{P\left(p_{i} \leq \frac{\alpha}{m}\right)\right\}=m_{0} \frac{\alpha}{m} \leq m \frac{\alpha}{m}=\alpha.$$
+
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}{Procedimientos de Control del FWER - Bonferroni}
+\begin{example}
+    En el estudio de un taller, se obtuvo un conjunto de datos para determinar si la proporción de artículos defectuosos producidos por los trabajadores era la misma durante el dia, la tarde o la noche. Se encontraron los	siguientes datos:
+    
+	\begin{center}
+	\scalebox{0.5}{
+	\begin{tabular}{|l|c|c|c|c|}
+		\hline & \multicolumn{4}{|c|} { TURNO } \\
+		\hline Estado artículo & Día & Tarde & Noche & Total \\
+		\hline Defectuosos & 45 & 55 & 70 & 170 \\
+		\hline No defectuosos & 905 & 890 & 870 & 2665 \\
+		\hline Total & 950 & 945 & 940 & 2835 \\
+		\hline
+	\end{tabular}	
+	}
+	\end{center}
+	
+	Usamos un nivel de significancia de $5 \%$ para determinar si la proporción de artículos defectuosos es la misma para	los tres turnos.:
+\end{example}
+\end{frame}
+
+
+
+\begin{frame}{Procedimientos de Control del FWER - Bonferroni}
+\begin{example}[Continuación]
+    \begin{itemize}
+        \item Planteamiento de hipótesis:
+		\begin{align*}
+			&\mathrm{H}_{0}: \pi_{D}=\pi_{T}=\pi_{N}\\
+			&\mathrm{H}_{1}: \text{las proporciones poblacionales no son todas iguales}
+		\end{align*}
+
+		\item  Establecer el nivel de significancia: $\alpha=5 \% \rightarrow$ error tipo $I$
+		\item El estadístico de prueba ji-cuadrada que se utiliza para este tipo de prueba de hipótesis, corresponde a la expresión:
+		$$
+		\chi_{p}^{2}=\sum \frac{(f_o-f_e)^{2}}{f_e},
+		$$
+    \end{itemize}
+\end{example}
+\end{frame}
+
+\begin{frame}{Procedimientos de Control del FWER - Bonferroni}
+\begin{example}[Continuación de la continuación]
+    Así:
+		\begin{center}
+		\scalebox{0.5}{
+		\begin{tabular}{|l|c|c|c|c|}
+			\hline & \multicolumn{4}{|c|} { TURNO ($f_o$) } \\
+			\hline Estado artículo & Día & Tarde & Noche & Total \\
+			\hline Defectuosos & 45 & 55 & 70 & 170 \\
+			\hline No defectuosos & 905 & 890 & 870 & 2665 \\
+			\hline Total & 950 & 945 & 940 & 2835 \\
+			\hline
+		\end{tabular}}			
+		\end{center}
+	\begin{center}
+	\scalebox{0.5}{
+		\begin{tabular}{|l|c|c|c|c|}
+			\hline & \multicolumn{4}{|c|} { TURNO ($f_e$) } \\
+			\hline Estado artículo & Día & Tarde & Noche & Total \\
+			\hline Defectuosos & $(170 \cdot 950) / 2835$ & $(170 \cdot 945) / 2835$ & $(170 \cdot 940) / 2835$ & 170 \\
+			& 56.9 & 56.6 & 56.36 & \\
+			\hline No defectuosos & $(2665 \cdot 950) / 283$5 & $(2665 \cdot 945) / 283$5 & $\left(2665^{\cdot} 940\right) / 283$5 & 2665 \\
+			& 893.03 & 888.33 & 883.63 & \\
+			\hline Total & 950 & 945 & 940 & 2835\\
+			\hline
+		\end{tabular}}	
+		\end{center}
+		$\chi_{p}^{2}=\left[\frac{(45-56.9)^{2}}{56.9}+\cdots+\frac{(870-883.63)^{2}}{883.63}\right]=6.29$ y,
+		$$
+		\chi_{c r}^{2}=\chi_{((2-1)(3-1), 0.05)}^{2}=5.98
+		$$
+\end{example}
+\end{frame}
+
+\begin{frame}{Procedimientos de Control del FWER - Bonferroni}
+\begin{example}[Continuación de la continuación - again]
+\begin{enumerate}[VI]
+     \item Regla de decisión: rechazamos	$\mathrm{H}_{0}, \text{ si } \chi_{p}^{2}>\chi_{c r}^{2}$.
+		\item Conclusión: rechazamos $\mathrm{H}_{0}.$
+\end{enumerate}
+¿Y ahora? Veamos cuáles proporciones son distintas.
+\end{example}
+\end{frame}
+
+
+\begin{frame}{Procedimientos de Control del FWER - Bonferroni}
+\begin{example}[Continuación de la continuación - again x2]
+\begin{itemize}
+	\item Prueba 1:
+	\begin{align*}
+		&H_0: \pi_{D}=\pi_{T}\\
+		&{H}_{1}: \pi_{D} \neq \pi_{T}
+	\end{align*}
+	\item Prueba 2:
+	\begin{align*}
+		&H_0: \pi_{D}=\pi_{N}\\
+		&{H}_{1}: \pi_{D} \neq \pi_{N}
+	\end{align*}
+	\item Prueba 3:
+	\begin{align*}
+		&H_0: \pi_{T}=\pi_{N}\\
+		&{H}_{1}: \pi_{T} \neq \pi_{N}
+	\end{align*}
+\end{itemize}
+\end{example}
+\end{frame}
+
+\begin{frame}{Procedimientos de Control del FWER - Bonferroni}
+\begin{example}[Continuación de la continuación - final :D]
+Luego al aplicar la corrección de Bonferroni, se obtiene $\alpha^{*}=1.7 \%$. Al usar un paquete estadístico (por ejemplo \texttt{R}), se obtuvo los siguientes $p$-valores para cada par:
+\begin{center}
+\begin{tabular}{|l|l|l|}
+	\hline \multicolumn{1}{|c|} {Comparación} & $p$-valor & Conclusión \\
+	\hline Día vs. Tarde & 0.8563 & $\mathrm{AH}_{0}$ \\
+	\hline Día vs. Noche & 0.0032 & $\mathrm{RH}_{0}$ \\
+	\hline Tarde vs. Noche & 0.0041 & $\mathrm{RH}_{0}$ \\
+	\hline
+\end{tabular}	
+\end{center}
+Interpretación: la proporción de defectos es similar entre el turno del día y el de la tarde. El turno de la noche difiere significativamente en la proporción de defectos de los demás turnos.
+\end{example}
+\end{frame}
+
+\begin{frame}{Procedimientos de Control del FWER - Šidák}
+\begin{itemize}[<+- | alert@+>]
+    \item Sea $\{H_{01},\dots,H_{0m}\}$ una familia de hipótesis.
+    \item Sea $p_i$ el $p$-valor correspondiente a la hipótesis $H_{0i}$.
+    \item Procedemos a rechazar la hipótesis $H_{0i}$, si $p_i\leq\alpha _{{SID}}=1-(1-\alpha )^{{\frac  {1}{m}}}$
+    \item Por ejemplo, para $\alpha$  = 0.05 y $m$ = 10, el nivel de ajuste por Bonferroni es 0.005 mientras que el ajuste de Šidák es 0.005116 aproximadamente.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Procedimientos de Control del FWER - Holm-Bonferroni}
+\begin{itemize}[<+- | alert@+>]
+    \item Supongamos que tenemos $m$ $p$-valores, ordenados de menor a mayor: $p_{(1)}, \ldots, p_{(m)}$,y sus respectivas hipótesis: $H_{01}, \ldots, H_{0m}$
+    \item Evaluamos si $p_{(1)}\leq \frac{\alpha}{m}$. Si \textbf{sí}, rechazamos $H_{01}$ y continuamos con el siguiente paso. Si \textbf{no}, paramos.
+    \item Evaluamos si $p_{(2)}\leq \frac{\alpha}{m-1}$. Si \textbf{sí}, rechazamos $H_{02}$ y continuamos con el siguiente paso. Si \textbf{no}, paramos.
+    \item Así sucesivamente: para cada $p$-valor, verificamos si $p_{(k)}<\frac{\alpha}{m+1-k}$.  Si \textbf{sí}, rechazamos $H_{0k}$ y continuamos con $p$-valores más grandes. Si \textbf{no}, paramos.
+\end{itemize}
+\end{frame}
