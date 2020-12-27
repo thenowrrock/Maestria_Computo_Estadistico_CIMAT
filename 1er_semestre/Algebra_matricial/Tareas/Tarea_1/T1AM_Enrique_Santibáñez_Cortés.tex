@@ -1,0 +1,773 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish]{babel}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{lmodern}
+\usepackage{xspace}
+\usepackage{multicol}
+\usepackage{hyperref}
+\usepackage{float}
+\usepackage{hyperref}
+\usepackage{color}
+
+\newcommand{\azul}[1]{\textcolor{MaterialBlue900}{#1}}
+\usepackage{array}
+
+\hypersetup{colorlinks=true,   linkcolor=MaterialBlue900}
+%\usepackage[colorlinks=true, linkcolor=black, urlcolor=blue, pdfborder={0 0 0}]{hyperref}
+
+\usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
+\title{Modelos no paramétricos y de regresión 2018-1}
+\author{Tarea examen: pruebas binomiales y tablas de contingencia}
+\date{Fecha de entrega: 08/01/2017}
+\setlength{\parindent}{0in}
+\spanishdecimal{.}
+
+
+\newcommand{\X}{\mathbb{X}}
+\newcommand{\x}{\mathbf{x}}
+\newcommand{\Y}{\mathbf{Y}}
+\newcommand{\y}{\mathbf{y}}
+\newcommand{\xbarn}{\bar{x}_n}
+\newcommand{\ybarn}{\bar{y}_n}
+\newcommand{\paren}[1]{\left( #1 \right)}
+\newcommand{\llaves}[1]{\left\lbrace #1 \right\rbrace}
+\newcommand{\barra}{\,\vert\,}
+\newcommand{\mP}{\mathbb{P}}
+\newcommand{\mE}{\mathbb{E}}
+\newcommand{\mI}{\mathbf{I}}
+\newcommand{\mJ}{\mathbf{J}}
+\newcommand{\mX}{\mathbf{X}}
+\newcommand{\mS}{\mathbf{S}}
+\newcommand{\mA}{\mathbf{A}}
+\newcommand{\unos}{\boldsymbol{1}}
+\newcommand{\xbarnv}{\bar{\mathbf{x}}_n}
+\newcommand{\abs}[1]{\left\vert #1 \right\vert}
+\newcommand{\muv}{\boldsymbol{\mu}}
+\newcommand{\mcov}{\boldsymbol{\Sigma}}
+\newcommand{\vbet}{\boldsymbol{\beta}}
+\newcommand{\veps}{\boldsymbol{\epsilon}}
+\newcommand{\mC}{\mathbf{C}}
+\newcommand{\ceros}{\boldsymbol{0}}
+\newcommand{\mH}{\mathbf{H}}
+\newcommand{\ve}{\mathbf{e}}
+\newcommand{\avec}{\mathbf{a}}
+\newcommand{\res}{\textbf{RESPUESTA}\\}
+\newcommand{\rojo}[1]{\textcolor{MaterialRed900}{#1}}
+
+\newcommand{\defi}[3]{\textbf{Definición:#3}}
+\newcommand{\fin}{$\blacksquare.$}
+\newcommand{\finf}{\blacksquare.}
+\newcommand{\tr}{\text{tr}}
+\begin{document}
+\begin{table}[ht]
+\centering
+\begin{tabular}{c}
+\textbf{Maestría en Computo Estadístico}\\
+\textbf{Álgebra Matricial} \\
+\textbf{Tarea 1}\\
+\today \\
+\emph{Enrique Santibáñez Cortés}\\
+Repositorio de Git: \href{https://github.com/Enriquesec/Algebra_matricial/tree/feature/tareas/tareas/Tarea_1}{Tarea 1, AM}.
+\end{tabular}
+\end{table}
+
+\begin{enumerate}
+\item Si $A$ es una matriz $m\times n$ dada por bloques de vectores columna como $$ (a_1\ a_2\ \cdots a_n)$$ y $B$ es una matriz $n\times p$ dada por bloques de vectores renglón como
+\begin{equation*}
+\left(\begin{array}{c}
+v_1\\
+v_2\\
+\vdots \\
+v_n
+\end{array}
+\right)
+\end{equation*}
+Demuestre que $$AB=\sum_{i=1}^na_iv_i.$$
+\res
+Como $A$ es una matriz $m\times n$ dada por bloques columnas, como
+$$(a_1\ a_2\ \cdots a_n)$$
+donde $a_i$ es un vector columna 
+$$a_i=\left( \begin{array}{c}
+a_{1i}\\
+a_{2i}\\
+\vdots\\
+a_{ni}
+\end{array}\right).$$
+Del mismo modo podemos decir que $B$ esta constituida por $b_i$ vectores renglón:
+$$v_i=(\begin{array}{cccc}
+v_{i1} & v_{i2} & \cdots &v_{in}
+\end{array} ).$$
+Entonces ocupando lo anterior
+$$AB=\left( \begin{array}{cccc}
+\left( \begin{array}{c}
+a_{11}\\
+a_{21}\\
+\vdots\\
+a_{n1}
+\end{array}\right) & 
+\left( \begin{array}{c}
+a_{12}\\
+a_{22}\\
+\vdots\\
+a_{n2}
+\end{array}\right)& \cdots &
+\left( \begin{array}{c}
+a_{1n}\\
+a_{2n}\\
+\vdots\\
+a_{nn}
+\end{array}\right)
+\end{array} \right) \left( \begin{array}{c}
+\left(\begin{array}{cccc}
+v_{11} & v_{12} & \cdots &v_{1n}
+\end{array} \right) \\
+\left(\begin{array}{cccc}
+v_{21} & v_{22} & \cdots &v_{2n}
+\end{array} \right)\\
+\vdots\\
+\left(\begin{array}{cccc}
+v_{n1} & v_{n2} & \cdots &v_{nn}
+\end{array} \right)
+\end{array} \right)
+$$
+$$
+=\begin{array}{cccc}
+\left( \begin{array}{c}
+a_{11}\\
+a_{21}\\
+\vdots\\
+a_{n1}
+\end{array}\right) \left(\begin{array}{cccc}
+v_{11} & v_{12} & \cdots &v_{1n}
+\end{array} \right)+\cdots+\left( \begin{array}{c}
+a_{1n}\\
+a_{2n}\\
+\vdots\\
+a_{nn}
+\end{array}\right) \left(\begin{array}{cccc}
+v_{n1} & v_{n2} & \cdots &v_{nn}
+\end{array} \right)
+\end{array}$$
+$$=\begin{array}{c}
+a_1v_1+a_2v_2+\cdots+a_nv_n
+\end{array}=\sum_{i=1}^na_iv_i \ \ \finf$$
+\item Sean $A$ y $B$ matrices cuadradas del mismo orden. Demuestre que $(A-B)(A+B)=A^2-B^2$ si y solo si $AB=BA.$
+
+\res
+$\Rightarrow)$ Si $(A-B)(A+B)=A^2-B^2$ entonces:
+\begin{equation*}
+\begin{array}{ccc}
+A^2-B^2&=&(A-B)(A+B)\\
+&&\\
+&=&AA-BA+AB-BB\\
+&&\\
+&=&A^2-BA+AB-B^2 \\
+&&\\
+BA&=&AB.
+\end{array}
+\end{equation*}
+$\Leftarrow)$ Si $AB=AB$ entonces:
+$$(A-B)(A+B)=AA-BA+AB-BB=A^2-B^2.$$
+Por lo tanto, queda demostrado que $(A-B)(A+B)=A^2-B^2$ si y solo si $AB=BA.\ \ \finf$
+
+\item Sean $A$ y $B$ matrices $n\times n$, $A\neq 0, \ B\neq 0,$ tales que $AB=BA.$ Demuestre que $A^pB^q=B^qA^p$ para cualesquiera $p,q\in \mathbb{N}.$
+
+\res
+Multiplicado por $A^{p-1}$ (donde $p\in \mathbb{N}$) por la izquierda a $AB=BA$ tenemos 
+\begin{equation*}
+\begin{array}{ccc}
+A^{p-1}AB&=&A^{p-1}BA\\
+&=&A^{p-2}(AB)A=A^{p-2}(BA)A\\
+&=&A^{p-3}(AB)A^2=A^{p-3}(BA)A^2\\
+&=&\vdots\\
+&=&(AB)A^{p-1}=(BA)A^{p-1}.
+\end{array}
+\end{equation*}
+Simplificando de ambos lados, tenemos que $A^pB=BA^p.$ Ahora multiplicamos al resultado obtenido por la matriz $B^{q-1}$ (donde $q\in \mathbb{N}$) por la derecha tenemos 
+\begin{equation*}
+\begin{array}{ccc}
+A^pBB^{q-1}&=&BA^{p}B^{q-1}\\
+&=&BA^{p-1}(AB)B^{q-2}=BA^{p-1}(BA)B^{q-2}\\
+&=&BA^{p-2}(AB)AB^{q-2}=BA^{p-2}(BA)AB^{q-2}\\
+&=&BA^{p-3}(AB)A^2B^{q-2}=BA^{p-3}(BA)A^2B^{q-2}\\
+&\vdots&\\
+&=&B(AB)A^{p-1}B^{q-2}=B(BA)A^{p-1}B^{q-2}\\
+&=&B^2A^{p}B^{q-2}\\
+&=&B^2A^{p-1}(AB)B^{q-3}=B^2A^{p-1}(BA)B^{q-3}\\
+&=&B^2A^{p-2}(AB)AB^{q-3}=B^2A^{p-2}(BA)AB^{q-3}\\
+&=&B^2A^{p-3}(AB)A^2B^{q-3}=B^2A^{p-3}(BA)A^2B^{q-3}\\
+&\vdots&\\
+&=&B^2(AB)A^{p-1}B^{q-3}=B^2(BA)A^{p-1}B^{q-3}\\
+&=&B^3A^{p}B^{q-3}\\
+&\vdots&\\
+\end{array}
+\end{equation*}
+
+\begin{equation*}
+\begin{array}{ccc}
+&\vdots&\\
+&=&B^{q-1}A^{p-1}(AB)=B^{q-1}A^{p-1}(BA)\\
+&=&B^{q-1}A^{p-2}(AB)A=B^{q-1}A^{p-2}(BA)A\\
+&=&B^{q-1}A^{p-3}(AB)A^2=B^{q-1}A^{p-3}(BA)A^2\\
+&\vdots&\\
+&=&B^{q-1}(AB)A^{p-1}=B^{q-1}(BA)A^{p-1}\\
+&=&B^qA^{p}.
+\end{array}
+\end{equation*}
+Por lo tanto, queda demostrado que si $AB=BA$ y para cualesquiera $p,q\in \mathbb{N}$ se cumple que $A^pB^q=B^qA^p \ \ \ \finf$ 
+\item Se dice que una matriz cuadrada $A$ es antisimétrica si $A=-A^t.$ Demuestre que $A-A^t$ es antisimétrica.
+
+\res
+Sea $B=A-A^t$, entonces:
+$$B^t=(A-A^t)^t=A^t-A.$$
+y $$-B^t=-(A^t-A)=A-A^t.$$
+Como $B=-B^t$ y como $B=A-A^t$ (por definición), podemos concluir que   $A-A^t$ es antisimétrica. \ \ \fin
+
+\item Demuestre que dada cualquier matriz cuadrada $A,$ esta se puede escribir como la suma de una matriz simétrica y una matriz antisimétrica.
+
+\res
+Demostremos que sea $A$ una matriz cuadrada entonces $A+A^t$ es simétrica. Sea $B=A+A^t$ entonces:
+$$B^t=(A+A^t)^t=A^t+A=B.$$
+Como $B=B^t$ y como $B=A+A^t$, podemos concluir que $A+A^t$ es simétrica. 
+
+Ahora,
+\begin{equation}
+\begin{array}{ccc}
+A&=&\frac{1}{2}A+\frac{1}{2}A\\
+&&\\
+&=&\frac{1}{2}A+\frac{1}{2}A^t+\frac{1}{2}A-\frac{1}{2}A^t\\
+&&\\
+&=&\frac{1}{2}(A+A^t)+\frac{1}{2}(A-A^t). 
+\end{array}
+\end{equation}	
+Y como ya se demostró que $A+A^t$ es simétrica y $A-A^t$ es antisimetrica para cualquier matriz cuadrada $A$ y además como se conoce que si una matriz simétrica(antisimetrica) se multiplica por un escalar el resultado es otra matriz simétrica(antisimetrica), entonces podemos concluir que dada cualquier matriz cuadrada $A$ se puede escribir como suma de una matriz simétrica y una matriz antisimetrica, y estas matrices son de la forma que se muestra en (1).\ \ \ \ \fin 
+
+\item Se dice que una matriz cuadrada $P$ es idempotente si $P^2=P$. Si 
+\begin{equation*}
+A=\left(\begin{array}{cc}
+I& P\\
+0&P
+\end{array}
+\right)
+\end{equation*}
+y si $P$ es idempotente, encuentre $A^{500}.$
+
+\res
+Encontremos una formula para encontrar a $A^n$. Primero veamos que pasa cuando $n=2,3$:
+\begin{equation*}
+A^2=\left(\begin{array}{cc}
+I& P\\
+0&P
+\end{array}
+\right)\left(\begin{array}{cc}
+I& P\\
+0&P
+\end{array}
+\right)=
+\left(\begin{array}{cc}
+I^2+0& IP+P^2\\
+0+0&0+P^2
+\end{array}
+\right)=\left(\begin{array}{cc}
+I&2P\\
+0&P
+\end{array}
+\right).
+\end{equation*}
+\begin{equation*}
+A^3=\left(\begin{array}{cc}
+I& 2P\\
+0&P
+\end{array}
+\right)\left(\begin{array}{cc}
+I& P\\
+0&P
+\end{array}
+\right)=
+\left(\begin{array}{cc}
+I^2+0& IP+2P^2\\
+0+0&0+P^2
+\end{array}
+\right)=\left(\begin{array}{cc}
+I&3P\\
+0&P
+\end{array}
+\right).
+\end{equation*}
+De lo anterior y considerando $n\in \mathbb{N}$ podemos suponer que se cumple que :
+\begin{equation*}
+A^n= \left(\begin{array}{cc}
+I&nP\\
+0&P
+\end{array}
+\right).
+\end{equation*}
+Demostremos lo anterior de forma inductiva: \\
+\textbf{Paso 1.} Mostrar que se cumple para $n=2,3$ o para algún $n$. Por construcción se cumple este paso.\\
+\textbf{Paso 2.} Suponer que se cumple para $n$.\\
+\textbf{Paso 3.} Demostrar que se cumple para $n+1$. Considerando el paso 2, tenemos que:
+\begin{equation*}
+A^{n+1}=A^nA=\left(\begin{array}{cc}
+I& nP\\
+0&P
+\end{array}
+\right)\left(\begin{array}{cc}
+I& P\\
+0&P
+\end{array}
+\right)=\left(\begin{array}{cc}
+I^2+0& IP+nP^2\\
+0+0&0+P^2
+\end{array}
+\right)=\left(\begin{array}{cc}
+I&(n+1)P\\
+0&P
+\end{array}
+\right).
+\end{equation*}
+Queda demostrado que para $n\in \mathbb{N}$ se cumple
+\begin{equation*}
+A^n= \left(\begin{array}{cc}
+I&nP\\
+0&P
+\end{array}
+\right).
+\end{equation*}
+Por lo tanto, utilizando la formula encontrada podemos concluir que 
+\begin{equation*}
+A^{500}=\left(\begin{array}{cc}
+I& 500P\\
+0&P
+\end{array}
+\right)\ \ \  \finf
+\end{equation*}
+
+\item Sean $A$ y $B$ matrices de tamaño $m\times n$. Demuestre que tr$(AB^t)=$tr$(A^tB)$. 
+
+\res
+Sea $A_{m\times n}, B_{n\times m}$ matrices. Entonces se cumple que (\textit{se demostraron en clase}):
+\begin{itemize}
+\item $\tr(A)=\tr(A^t).$
+\item $\tr(AB)=\tr(BA)$.
+\end{itemize}
+Ocupando las dos propiedades de la traza anteriores tenemos que:
+$$\tr(AB^t)=\tr((AB^t)^t)=\tr(BA^t)=\tr(A^tB). \ \ \finf$$
+\item Encuentre matrices $A, B \ \text{y} \ C$ tales que tr$(ABC)\neq$tr$(BAC)$.
+
+\res
+Por convicción definamos a $A=\left( \begin{array}{cc}
+0&1 \\
+1&0
+\end{array} \right)$, y ahora sea $B=\left( \begin{array}{cc}
+b_{11}&b_{12} \\
+b_{21}&b_{22}
+\end{array} \right)$ y $C=\left( \begin{array}{cc}
+c_{11}&c_{12} \\
+c_{21}&c_{22}
+\end{array} \right)$. Entonces 
+\begin{equation*}
+AB=\left( \begin{array}{cc}
+0&1 \\
+1&0
+\end{array} \right)\left( \begin{array}{cc}
+b_{11}&b_{12} \\
+b_{21}&b_{22}
+\end{array} \right)=\left( \begin{array}{cc}
+b_{21}&b_{22} \\
+b_{11}&b_{12}
+\end{array} \right)\ \  \text{y} \ \ \ BA=\left( \begin{array}{cc}
+b_{11}&b_{12} \\
+b_{21}&b_{22}
+\end{array} \right)\left( \begin{array}{cc}
+0&1 \\
+1&0
+\end{array} \right)=\left( \begin{array}{cc}
+b_{12}&b_{11} \\
+b_{22}&b_{21}
+\end{array} \right).
+\end{equation*}
+Observemos que la primera multiplicación representa a un cambio de renglones y la segunda a un cambio de columnas. Ahora multipliquemos de lado izquierdo lo anterior por la matriz $C$ pero solo concentrarnos en los resultados de la diagonal. 
+\begin{equation*}
+ABC=\left( \begin{array}{cc}
+b_{21}&b_{22} \\
+b_{11}&b_{12}
+\end{array} \right)\left( \begin{array}{cc}
+c_{11}&c_{12} \\
+c_{21}&c_{22}
+\end{array} \right)=
+\left( \begin{array}{cc}
+b_{21}c_{11}+b_{22}c_{21} & \gamma_1\\
+\gamma_2&b_{11}c_{12}+b_{12}c_{22}
+\end{array} \right),
+\end{equation*}
+
+\begin{equation*}
+BAC=\left( \begin{array}{cc}
+b_{12}&b_{11} \\
+b_{22}&b_{21}
+\end{array} \right)\left( \begin{array}{cc}
+c_{11}&c_{12} \\
+c_{21}&c_{22}
+\end{array} \right)=
+\left( \begin{array}{cc}
+b_{12}c_{11}+b_{11}c_{21}&\gamma_3 \\
+\gamma_4& b_{22}c_{12}+b_{21}c_{22}
+\end{array} \right),
+\end{equation*}
+donde $\gamma_i$ no son relevantes para este problema. Por lo que la traza de esos producto de matrices es:
+\begin{equation*}
+\tr (ABC)= b_{21}c_{11}+b_{22}c_{21}+b_{11}c_{12}+b_{12}c_{22}\ \ \text{y}\ \ \tr (BAC)= b_{12}c_{11}+b_{11}c_{21}+ b_{22}c_{12}+b_{21}c_{22}.
+\end{equation*}
+De lo anterior podemos observar que si tr$(ABC)\neq$tr$(BAC)$ ,
+\begin{equation*}
+\begin{array}{ccc}
+b_{21}c_{11}+b_{22}c_{21}+b_{11}c_{12}+b_{12}c_{22} \neq 
+b_{12}c_{11}+b_{11}c_{21}+ b_{22}c_{12}+b_{21}c_{22}\\
+b_{21}c_{11}+b_{22}c_{21}+b_{11}c_{12}+b_{12}c_{22}-b_{12}c_{11}-b_{11}c_{21}-b_{22}c_{12}-b_{21}c_{22}\neq 0\\
+c_{11}(b_{21}-b_{12})+c_{21}(b_{22}-b_{11})+c_{12}(b_{11}-b_{22})+c_{22}(b_{12}-b_{21})\neq 0\\
+(b_{21}-b_{12})(c_{11}-c_{22})+(b_{22}-b_{11})(c_{21}-c_{12})\neq 0.
+\end{array}
+\end{equation*}
+Entonces de lo anterior podemos encontrar un conjunto de elementos de las matrices $B$ y $C$:
+\begin{equation*}
+\begin{array}{ccc}
+c_{11}>c_{22} &,& b_{21}>b_{12}\\
+c_{21}>c_{12} &,& b_{22}>b_{11}
+\end{array}
+\end{equation*} 
+tal que tr$(ABC)\neq$tr$(BAC), $ donde $A=\left( \begin{array}{cc}
+0&1 \\
+1&0
+\end{array} \right).$\\
+Entonces una tripleta de matrices que cumple que tr$(ABC)\neq$tr$(BAC),$ son: $A=\left( \begin{array}{cc}
+0&1 \\
+1&0
+\end{array} \right),$ $B=\left( \begin{array}{cc}
+2&3 \\
+4&5
+\end{array} \right)$ y $C=\left( \begin{array}{cc}
+4&2 \\
+3&1
+\end{array} \right).$ Calculemos la trazas para mostrar que efectivamente se cumple. 
+\begin{equation*}
+AB=\left( \begin{array}{cc}
+0&1 \\
+1&0
+\end{array} \right)\left( \begin{array}{cc}
+2 & 3\\
+4 & 5
+\end{array} \right)=\left( \begin{array}{cc}
+4 & 5\\
+2 & 3
+\end{array} \right)\ \  \text{y} \ \ \ BA=\left( \begin{array}{cc}
+2 & 3\\
+4 & 5
+\end{array} \right)\left( \begin{array}{cc}
+0&1 \\
+1&0
+\end{array} \right)=\left( \begin{array}{cc}
+3 & 2\\
+5 & 4
+\end{array} \right).
+\end{equation*}
+Ahora calculemos la multiplicación con la matriz $C$:
+\begin{equation*}
+ABC=\left( \begin{array}{cc}
+4 & 5\\
+2 & 3
+\end{array} \right)\left( \begin{array}{cc}
+4 & 2\\
+3 & 1
+\end{array} \right)=
+\left( \begin{array}{cc}
+14+15 & \gamma_1\\
+\gamma_2&4+3
+\end{array} \right)=
+\left( \begin{array}{cc}
+29 & \gamma_1\\
+\gamma_2&7
+\end{array} \right),
+\end{equation*}
+\begin{equation*}
+BAC=\left( \begin{array}{cc}
+3 & 2\\
+5 & 4
+\end{array} \right)\left( \begin{array}{cc}
+4 & 2\\
+3 & 1
+\end{array} \right)=
+\left( \begin{array}{cc}
+12+6&\gamma_3 \\
+\gamma_4& 10+4
+\end{array} \right)=
+\left( \begin{array}{cc}
+18&\gamma_3 \\
+\gamma_4& 14
+\end{array} \right),
+\end{equation*}
+donde $\gamma_i$ no son relevantes para este problema. Por lo que la traza de esos producto de matrices es:
+\begin{equation*}
+\tr (ABC)= 29+7=36\ \ \text{y}\ \ \tr (BAC)= 18+14=32.
+\end{equation*}
+Por lo que se cumple que tr$(ABC)\neq$tr$(BAC)$ para las matrices propuestas. $\ \ \ \finf$
+
+\item Sea $L$ una matriz triangular inferior $n\times n$. Demuestre que $L=L_1L_2\cdots L_n$ donde $L_i$ es la matriz $n\times n$ que se obtiene reemplazando la $i-$ésima columna de $I_n$ por la $i-$ésima columna de $L$. Demuestre un resultado análogo para matrices triangulares superiores.
+
+\res
+Sea $L$ la matriz triangular inferir $n\times n$:
+\begin{equation*}
+L=\left( \begin{array}{ccccc}
+l_{11}&0 & 0 & \cdots &0\\
+l_{21}&l_{22}& 0 & \cdots & 0\\
+l_{31}&l_{32}& l_{33}& \cdots & 0\\
+\vdots & \vdots & \vdots & \ddots & \vdots\\
+l_{n1}&l_{n2}&l_{n3}& \cdots & l_{nn}
+\end{array}\right).
+\end{equation*}	 
+Entonces $L_i$ están definidas como:
+\begin{equation*}
+L_1=\left( \begin{array}{ccccc}
+l_{11}&0 & 0 & \cdots &0\\
+l_{21}&1& 0 & \cdots & 0\\
+l_{31}&0&1& \cdots & 0\\
+\vdots & \vdots & \vdots & \ddots & \vdots\\
+l_{n1}&0&0& \cdots &1
+\end{array}\right), \ L_2=\left( \begin{array}{ccccc}
+1&0 & 0 & \cdots &0\\
+0&l_{22}& 0 & \cdots & 0\\
+0&l_{32}& 1& \cdots & 0\\
+\vdots & \vdots & \vdots & \ddots & \vdots\\
+0&l_{n2}&0& \cdots & 1
+\end{array}\right), \cdots , L_n=\left( \begin{array}{ccccc}
+1&0 & 0 & \cdots &0\\
+0&1& 0 & \cdots & 0\\
+0&0& 1& \cdots & 0\\
+\vdots & \vdots & \vdots & \ddots & \vdots\\
+0&0&0& \cdots & l_{nn}
+\end{array}\right).
+\end{equation*}
+Considerando la siguiente partición por bloques de $L_1$ y $L_2$
+\begin{equation*}
+L_1=\left( \begin{array}{c|cccc}
+l_{11}&0 & 0 & \cdots &0\\ \hline
+l_{21}&1& 0 & \cdots & 0\\
+l_{31}&0&1& \cdots & 0\\
+\vdots & \vdots & \vdots & \ddots & \vdots\\
+l_{n1}&0&0& \cdots &1
+\end{array}\right)=\left( \begin{array}{cc}
+N_1& \bf{0}\\
+M_1&I_{n-1}\\
+\end{array} \right)\ \text{y} \ L_2=\left( \begin{array}{c|cccc}
+1&0 & 0 & \cdots &0\\ \hline
+0&l_{22}& 0 & \cdots & 0\\
+0&l_{32}& 1& \cdots & 0\\
+\vdots & \vdots & \vdots & \ddots & \vdots\\
+0&l_{n2}&0& \cdots & 1
+\end{array}\right)=\left( \begin{array}{cc}
+I_{1}& \bf{0}\\
+\bf{0}&A_{n-1}\\
+\end{array} \right)
+\end{equation*}
+Entonces la multiplicación de $L_1$ y $L_2$ es:
+\begin{equation*}
+L_1L_2=\left( \begin{array}{cc}
+N_1& \bf{0}\\
+M_1&I_{n-1}\\
+\end{array} \right)\left( \begin{array}{cc}
+I_{1}& \bf{0}\\
+\bf{0}&A_{n-1}\\
+\end{array} \right)=
+\left( \begin{array}{cc}
+N_1I_1&N_1\textbf{0}+\textbf{0} A_{n-1}\\
+M_1I_1 &M_2\textbf{0} +I_{n-1}A_{n-1}
+\end{array}\right)=
+\left( \begin{array}{cc}
+N_1&\bf{0}\\
+M_1& A_{n-1}
+\end{array}\right)
+\end{equation*}
+\begin{equation*}
+= \left( \begin{array}{ccccc}
+l_{11}&0 & 0 & \cdots &0\\
+l_{21}&l_{22}& 0 & \cdots & 0\\
+l_{31}&l_{32}&1& \cdots & 0\\
+\vdots & \vdots & \vdots & \ddots & \vdots\\
+l_{n1}&l_{n2}&0& \cdots &1
+\end{array}\right).
+\end{equation*}
+Ahora considerando la partición por bloques de $L_1L_2$ y $L_3$
+\begin{equation*}
+L_1L_2= \left( \begin{array}{cc|ccc}
+l_{11}&0 & 0 & \cdots &0\\
+l_{21}&l_{22}& 0 & \cdots & 0\\ \hline
+l_{31}&l_{32}&1& \cdots & 0\\
+\vdots & \vdots & \vdots & \ddots & \vdots\\
+l_{n1}&l_{n2}&0& \cdots &1
+\end{array}\right)=\left( \begin{array}{cc}
+N_2& \bf{0}\\
+M_2&I_{n-2}\\
+\end{array} \right)\ \text{y} \ L_3=\left( \begin{array}{cc|ccc}
+1&0 & 0 & \cdots &0\\ 
+0&1& 0 & \cdots & 0\\ \hline
+0&0&l_{33}& \cdots & 0\\
+\vdots & \vdots & \vdots & \ddots & \vdots\\
+0&0&l_{n3}& \cdots & 1
+\end{array}\right)=\left( \begin{array}{cc}
+I_{2}& \bf{0}\\
+\bf{0}&A_{n-2}\\
+\end{array} \right).
+\end{equation*}
+Por lo que 
+\begin{equation*}
+(L_1L_2)L3=\left( \begin{array}{cc}
+N_2& \bf{0}\\
+M_2&I_{n-2}\\
+\end{array} \right)\left( \begin{array}{cc}
+I_{2}& \bf{0}\\
+\bf{0}&A_{n-2}\\
+\end{array} \right)=
+\left( \begin{array}{cc}
+N_2I_2&N_2\textbf{0}+\textbf{0}A_{n-2}\\
+M_2I_2+I_{n-2}\textbf{0}&M_2\textbf{0}+I_{n-2} A_{n-2}
+\end{array}\right)=
+\left( \begin{array}{cc}
+N_2&\bf{0}\\
+M_2&A_{n-2}
+\end{array}\right)
+\end{equation*}
+\begin{equation*}
+=\left( \begin{array}{ccccc}
+l_{11}&0 & 0 & \cdots &0\\
+l_{21}&l_{22}& 0 & \cdots & 0\\
+l_{31}&l_{32}&l_{33}& \cdots & 0\\
+\vdots & \vdots & \vdots & \ddots & \vdots\\
+l_{n1}&l_{n2}&l_{n3}& \cdots &1
+\end{array}\right).
+\end{equation*}
+Como las matrices $L_i$ por definición  provienen de la construcción de una matriz triangular inferior podemos decir que $L_i$ igual es una matriz triangular inferior. Entonces como todas las matrices tienen la misma estructura, podemos hacer el proceso iterativo que se utilizó para calcular la multiplicación de $L_1L_2$ y $(L_1L_2)L_3$, para la $n-1$ iteración  que es multiplicar $L_1L_2\cdots L_{n-1}$ y $L_n$.\\
+Particionamos la matriz $L_1L_2\cdots L_{n-1}$ y $L_n$
+\begin{equation*}
+L_1L_2\cdots L_{n-1}= \left( \begin{array}{ccccc|c}
+l_{11}&0 & 0 & \cdots &0&0\\
+l_{21}&l_{22}& 0 & \cdots&0 & 0\\
+l_{31}&l_{32}&l_{33}& \cdots&0 & 0\\
+\vdots & \vdots & \vdots & \ddots & \vdots &\vdots\\
+l_{n-1 \ 1} & l_{n-1\ 2} & l_{n-1\ 3} &\cdots& l_{n-1 \ n-1} &0\\ \hline
+l_{n1}&l_{n2}&l_{n3}& \cdots &l_{n\ n-1}&1
+\end{array}\right)=\left( \begin{array}{cc}
+N_{n-1}& \bf{0}\\
+M_{n-1}&I_{1}\\
+\end{array} \right)\ \text{y} 
+\end{equation*}
+\begin{equation*}
+L_n=\left( \begin{array}{cccc|c}
+1&0 & 0 & \cdots &0\\
+0&1& 0 & \cdots & 0\\
+0&0& 1& \cdots & 0\\
+\vdots & \vdots & \vdots & \ddots & \vdots\\ \hline
+0&0&0& \cdots & l_{nn}
+\end{array}\right)=\left( \begin{array}{cc}
+I_{n-1} & \bf{0}\\
+\bf{0}& A_1
+\end{array}\right).
+\end{equation*}
+Por lo que 
+\begin{equation*}
+(L_1L_2\cdots L_{n-1})L_n=\left( \begin{array}{cc}
+N_{n-1}& \bf{0}\\
+M_{n-1}&I_{n-2}\\
+\end{array} \right)\left( \begin{array}{cc}
+I_{n-1}& \bf{0}\\
+\bf{0}&A_{1}\\
+\end{array} \right)=
+\left( \begin{array}{cc}
+N_{n-1}I_{n-1}&N_{n-1}\textbf{0}+\textbf{0}A_{1}\\
+M_{n-1}I_{n-1}+I_{1}\textbf{0}&M_{n-1}\textbf{0}+I_{1} A_{1}
+\end{array}\right)
+\end{equation*}
+\begin{equation*}
+=
+\left( \begin{array}{cc}
+N_{n-1}&\bf{0}\\
+M_{n-1}&A_{1}
+\end{array}\right)=\left( \begin{array}{cccccc}
+l_{11}&0 & 0 & \cdots &0&0\\
+l_{21}&l_{22}& 0 & \cdots&0 & 0\\
+l_{31}&l_{32}&l_{33}& \cdots&0 & 0\\
+\vdots & \vdots & \vdots & \ddots & \vdots &\vdots\\
+l_{n-1 \ 1} & l_{n-1\ 2} & l_{n-1\ 3} &\cdots& l_{n-1 \ n-1} &0\\
+l_{n1}&l_{n2}&l_{n3}& \cdots &l_{n\ n-1}&l_{nn}
+\end{array}\right)=L.
+\end{equation*}
+Por lo tanto, queda demostrado que $L=L_1L_2\cdots L_n$ donde $L_i$ es la matriz $n\times n$ que se obtiene reemplazando la $i-$ésima columna de $I_n$ por la $i-$ésima columna de $L$.\ \ \ \fin 
+
+Ahora un resultado  análogo para matrices triangulares superiores sería: Sea $U$ una matriz triangular superior $n\times n$, entonces $U=U_nU_{n-1}\cdots U_1$ donde $U_i$ es la matriz $n\times n$ que se obtiene reemplazando el $i-$ésimo renglón de $I_n$ por el $i-$ésimo renglón de $U$. \\
+
+Para demostrar lo anterior ocupemos lo demostrado con las matrices triangulares inferiores. Como ya se demostró que si $L$ matriz triangular inferior se puede escribir como producto de matrices $L_1L_2\cdots L_n$ donde $L_i$ es la matriz $n\times n$ que se obtiene reemplazando la $i-$ésima columna de $I_n$ por la $i-$ésima columna de $L$. Entonces ocupando este hecho podemos ver que 
+\begin{equation*}
+\begin{array}{ccc}
+L^t&=&(L_1L_2\cdots L_n)^t\\
+&=&L_n^tL_{n-1}^t\cdots L_1^t
+\end{array}.
+\end{equation*}
+Por las propiedades de matrices inferiores/superiores (vistas en clase) sabemos que si $L$ es inferior esto implica que $L^t$ sea una matriz superior con 
+$$L=\left( \begin{array}{ccccc}
+l_{11}&0 & 0 & \cdots &0\\
+l_{21}&l_{22}& 0 & \cdots & 0\\
+l_{31}&l_{32}& l_{33}& \cdots & 0\\
+\vdots & \vdots & \vdots & \ddots & \vdots\\
+l_{n1}&l_{n2}&l_{n3}& \cdots & l_{nn}
+\end{array}\right), \ \ L^t=\left( \begin{array}{ccccc}
+l_{11}&l_{21} & l_{31} & \cdots &l_{n1}\\
+0&l_{22}& l_{32} & \cdots & l_{n2}\\
+0&0& l_{33}& \cdots & l_{n3}\\
+0\vdots & \vdots & \vdots & \ddots & \vdots\\
+0&0&0& \cdots & l_{nn}
+\end{array}\right).$$
+Ahora si observamos a
+$$L_i^t=\left( \begin{array}{ccccccc}
+1&0&\cdots &0&0&\cdots&0\\
+0&1&\cdots &0&0&\cdots&0\\
+\vdots&\vdots&\ddots&\vdots&\vdots&\cdots&\vdots\\
+0&0&\cdots&l_{ii}&l_{i+1\ i}&\cdots&l_{ni}\\
+0&0&\cdots&0&1&\cdots&0\\
+0&0&\cdots&0&0&\ddots&0\\
+0&0&\cdots&0&0&\cdots&1\\
+\end{array}\right)$$
+podemos observar que $L_i^t$ represenata a la matriz $n\times n$ que se obtiene remplazando el $i-$ésimo renglón de $I_n$ por el $e-$ésiimo renglón de $L^t$. Por lo que queda demostrado que si $U$ es una matriz triangular superior $n\times n$, entonces $U=U_nU_{n-1}\cdots U_1$ donde $U_i$ es la matriz $n\times n$ que se obtiene reemplazando el $i-$ésimo renglón de $I_n$ por el $i-$ésimo renglón de $U$. \ \ \ \fin
+
+\item Sea $A=(a_{ij})$ una matriz cuadrada de tamaño $n$, triangular superior tal que $a_{ii}=0$ para $i=1, \cdots , n.$ Demuestre que para $i=1, \cdots , n$ y $j=1, \cdots , \min (n,i+p-1)$ se cumple que $b_{ij}=0$ donde $A^p=(b_{ij})$ y $p$ es un entero positivo. 
+
+\res
+Para hacer más sencilla la demostración cambiemos la notación de $i,j$. Consideremos dos casos posibles para el valor de $p$, cuando $p+k=n$ donde $k\in \mathbb{N}$ es decir $p<n$ y el otro caso cuando $p\geq n$.  Caso 1, cuando $p+k=n$ donde $k\in \mathbb{N}$, observemos que si $i\leq k$ esto implica que $j=1,\cdots, i+p-1,$ y si $i>k$ implica que $j=1,\cdots,n.$ Ahora busquemos $\max (j-i)$, cuando $i\leq k\Rightarrow$ $\max (j-i)=i+p-1-i=p-1$, ahora si $i>k\Rightarrow$ $\max (j-i)=n-(k+1)=n-(n-p+1)=p-1$, por lo que observemos que sin importar $i$ el  $max(j-i)=p-1<p$. Caso 2, si $p\geq n$, tenemos que $\min(n,i+p-1)=n$ para $i=1,\cdots,n$, por lo que el $\max(j-i)=n-i< n\leq p$. Por lo que podemos decir $i=1, \cdots , n$ y $j=1, \cdots , \min (n,i+p-1)$ es equivalente a decir que $j-i<p.$\\
+Entonces demostremos que si A es una matriz cuadrada de tamaño $n$, triangular superior tal que $a_{ii}=0$ para $i=1,\cdots, n$, entonces se cumple que $b_{ij}=0$ para $j-i<p$ donde $A^p=(b_{ij})$ y $p$ un entero positivo. Para ello ocuparemos inducción matemática. 
+
+\textbf{Paso 1.} Mostrar que se cumple para $p=2,3$ o para algún $p$. Si tomamos a $p=1$, tenemos que $A^1=(b_{ij})=(a_{ij})=A$, pero como $A$ una matriz cuadrada de tamaño $n$, triangular superior tal que $a_{ii}=0$ para $i=1, \cdots , n$:
+\begin{equation*}
+A=\left( \begin{array}{ccccc}
+0& a_{12} & a_{13} & \cdots & a_{1n}\\
+0 & 0 & a_{23} & \cdots & a_{2n}\\
+0 & 0 & 0 & \cdots & a_{3n}\\
+\vdots & \vdots & \vdots & \ddots & \vdots\\
+0 & 0 & 0 & \cdots & 0
+\end{array}\right),
+\end{equation*}
+entonces es sencillo ver que se cumple que para cuando $j-i<1$ se cumple que $b_{ij}=0$.
+
+\textbf{Paso 2.} Suponer que se cumple para $p-1$. Es decir, suponer que para $p-1$ se cumple que $(b_{ij})=0$ para $j-i<p-1$ donde  $A^{p-1}=(b_{ij})$.\\
+\textbf{Paso 3.} Demostrar que se cumple para $p$. Por definición de multiplicación de matrices tenemos que:
+$$A_{ij}^p=(AA^{p-1})_{ij}=\sum_{r=1}^nA_{ir}A_{rj}^{p-1}=\sum_{r=1}^iA_{ir}A_{rj}^{p-1}+\sum_{r=i+1}^nA_{ir}A_{rj}^{p-1}.$$
+Observemos que en la primera suma como $r\leq i$ y como $A_{ij}$ una matriz superior podemos concluir que $A_{ir}=0$.
+$$A_{ij}^p=\sum_{r=1}^i0A_{rj}^{p-1}+\sum_{r=i+1}^nA_{ir}A_{rj}^{p-1}=\sum_{r=i+1}^nA_{ir}A_{rj}^{p-1}.$$
+
+Ahora si consideramos todos los elementos de la matriz que cumple que $j-i<p$ en lo anterior, tenemos que $r=i+1>j-p+1=j-(p-1)$ por lo que implica que $A^{p-1}_{rj}=0$ debido a que $j-r<j-j-(p-1)=p-1$ por el paso dos de la inducción. 
+Por lo que para $j-i<p$ queda demostrado que
+$$A_{ij}^p=0.\ \ \ \ \finf$$
+Por lo que concluimos que si $A$ matriz cuadrada triangular superior tal que $a_{ii}=0$ para $i=1,\cdots,n.$ entonces se cumple que $b_{ij}=0$ para $i=1,\cdots,n$ y $j=1,\cdots,\min (n,i+p-1)$ donde $A^p=(b_{ij})$ y $p$ es un entero positivo.
+\end{enumerate}
+\end{document}
