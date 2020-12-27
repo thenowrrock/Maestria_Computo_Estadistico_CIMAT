@@ -1,0 +1,1102 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish]{babel}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{lmodern}
+\usepackage{xspace}
+\usepackage{multicol}
+\usepackage{hyperref}
+\usepackage{float}
+\usepackage{hyperref}
+\usepackage{color}
+\usepackage{framed}
+
+
+
+\usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
+
+\newcommand{\X}{\mathbb{X}}
+\newcommand{\x}{\mathbf{x}}
+\newcommand{\Y}{\mathbf{Y}}
+\newcommand{\y}{\mathbf{y}}
+\newcommand{\xbarn}{\bar{x}_n}
+\newcommand{\ybarn}{\bar{y}_n}
+\newcommand{\paren}[1]{\left( #1 \right)}
+\newcommand{\llaves}[1]{\left\lbrace #1 \right\rbrace}
+\newcommand{\barra}{\,\vert\,}
+\newcommand{\mP}{\mathbb{P}}
+\newcommand{\mE}{\mathbb{E}}
+\newcommand{\mR}{\mathbb{R}}
+\newcommand{\mJ}{\mathbf{J}}
+\newcommand{\mX}{\mathbf{X}}
+\newcommand{\mS}{\mathbf{S}}
+\newcommand{\mA}{\mathbf{A}}
+\newcommand{\unos}{\boldsymbol{1}}
+\newcommand{\xbarnv}{\bar{\mathbf{x}}_n}
+\newcommand{\abs}[1]{\left\vert #1 \right\vert}
+\newcommand{\muv}{\boldsymbol{\mu}}
+\newcommand{\mcov}{\boldsymbol{\Sigma}}
+\newcommand{\vbet}{\boldsymbol{\beta}}
+\newcommand{\veps}{\boldsymbol{\epsilon}}
+\newcommand{\mcC}{\mathcal{C}}
+\newcommand{\mcR}{\mathcal{R}}
+\newcommand{\mcN}{\mathcal{N}}
+
+\newcommand{\ceros}{\boldsymbol{0}}
+\newcommand{\mH}{\mathbf{H}}
+\newcommand{\ve}{\mathbf{e}}
+\newcommand{\avec}{\mathbf{a}}
+\newcommand{\res}{\textbf{RESPUESTA}\\}
+
+\newcommand{\defi}[3]{\textbf{Definición:#3}}
+\newcommand{\fin}{$\blacksquare.$}
+\newcommand{\finf}{\blacksquare.}
+\newcommand{\tr}{\text{tr}}
+\newcommand*{\temp}{\multicolumn{1}{r|}{}}
+
+\newcommand{\grstep}[2][\relax]{%
+   \ensuremath{\mathrel{
+       {\mathop{\longrightarrow}\limits^{#2\mathstrut}_{
+                                     \begin{subarray}{l} #1 \end{subarray}}}}}}
+\newcommand{\swap}{\leftrightarrow}
+
+\newcommand{\gen}{\text{gen}}
+\newtheorem{thmt}{Teorema:}
+\newtheorem{thmd}{Definición:}
+\newtheorem{thml}{Lema:}
+
+\begin{document}
+\begin{table}[ht]
+\centering
+\begin{tabular}{c}
+\textbf{Maestría en Computo Estadístico}\\
+\textbf{Álgebra Matricial} \\
+\textbf{Tarea 7}\\
+\today \\
+\emph{Enrique Santibáñez Cortés}\\
+Repositorio de Git: \href{https://github.com/Enriquesec/Algebra_matricial/tree/master/tareas/Tarea_7}{Tarea 7, AM}.
+\end{tabular}
+\end{table}
+Todos los cálculos deben ser a mano.
+\begin{enumerate}
+\item Dadas las matrices 
+\begin{align*}
+\begin{pmatrix}
+3 & 2 & 3\\
+1 & 4 & 3\\
+1 & 2 & 5
+\end{pmatrix}, \ \ \ \begin{pmatrix}
+6 & 3 & -8\\
+0 &-2 & 0\\
+1 & 0 &-3
+\end{pmatrix}
+\end{align*}
+Para cada una de ellas: i) Determine todos los valores propios. ii) Para cada valor propio $\lambda$ encuentre el espacio propios que le corresponde. iii) Si es posible,
+encuentre una base de $\mR^3$ que consista de vectores propios de A. iv) Si tal base existe, determine una matriz invertible $P$ y una matriz diagonal $D$ tal que la matriz es igual a $P DP^{-1}$.
+
+\res Recordemos las definiciones de valor propio, espacio propio.
+\begin{framed}
+    \begin{thmd} \label{d_valor_propio}
+	(Visto en clase, pag. 124) Sea $A$ una matriz $n\times n$. La ecuación característica de $A$ es
+	$$\det(A-\lambda I)=0.$$
+	Decimos que $\lambda$ es un valor propio de $A$ si y solo si $\lambda$ satisface la ecuación característica. 
+    \end{thmd}
+\end{framed}
+\begin{framed}
+    \begin{thmd} \label{d_polinomio_car}
+	(Visto en clase, pag. 124) Sea $A$ una matriz $n\times n$. $p(\lambda):=\det(A- \lambda I)$ es un polinomio de grado $n$, llamado el polinomio característico de $A$. 
+    \end{thmd}
+\end{framed}
+\begin{framed}
+    \begin{thmd} \label{d_espacio_propio}
+	(Visto en clase, pag. 122) El espacio propio de $A$ correspondiente a $\lambda$ es 
+	$$E_\lambda:=\mcN(A-\lambda I).$$ 
+    \end{thmd}
+\end{framed}
+\begin{framed}
+    \begin{thmt} \label{t_matriz_diagonalizable}
+	(Visto en clase, pag. 122) Sea $A$ una matriz $n \times n$. Entonces $A$ es diagonalizable si y solo si $A$ tiene $n$ vectores propios linealmente independientes. De hecho, $A= PDP^{-1}$ si y solo si las columnas de P son los $n$ vectores
+propios de $A$ linealmente independientes y las entradas de la matriz diagonal $D$ son los valores propios correspondientes a los vectores propios.
+    \end{thmt}
+\end{framed}
+Denotemos a la primera matriz del problema como $A$ y a la segunda como $B$, empecemos a calcular lo que piden para $A$.
+Para determinar los valores propios calculemos el polinomio característico de $A$:
+\begin{align*}
+p(\lambda) &= \det (A-\lambda I)=\left|\begin{array}{ccc}
+3-\lambda & 2 & 3 \\
+1& 4-\lambda & 3\\
+1 & 2 & 5-\lambda
+\end{array} \right|=\left|\begin{array}{ccc}
+3-\lambda & 2 & 3 \\
+1& 4-\lambda & 3\\
+0 & \lambda-2 & 2-\lambda
+\end{array} \right|\\
+&=(3-\lambda)[(4-\lambda)(2-\lambda)-3(\lambda-2)]-[2(2-\lambda)-3(\lambda-2)\\
+&=(3-\lambda)[\lambda^2-6\lambda+8-3\lambda+6]-[4-2\lambda-3\lambda+6]\\
+&=(3-\lambda)[\lambda^2-9\lambda+14]-[-5\lambda+10]\\
+&=3\lambda^2-27\lambda+42-\lambda^3+9\lambda^2-14\lambda+5\lambda-10\\
+&=-\lambda^3+12\lambda^2-36\lambda+32\\
+&=(2-\lambda)(\lambda^2-10\lambda+16)\\
+&=(2-\lambda)(\lambda-2)(\lambda-8)\\
+&=(2-\lambda)^2(8-\lambda)
+\end{align*}
+Esto implica \textbf{que i) todos los valores propios de $A$ sean}
+\begin{align*}
+p(\lambda)&=0,\Leftrightarrow\\
+(2-\lambda)^2(8-\lambda)&=0\ \ \ \Rightarrow \lambda_1=2, \ \ \ y \ \ \lambda_2=8.
+\end{align*}
+Ahora calculemos los espacios propios, para $\lambda_1=2$ por definición de espacio propio (\ref{d_espacio_propio}) tenemos que 
+\begin{align*}
+E_{\lambda_1} = \mcN(A-\lambda_1 I) =\mcN\left( \begin{pmatrix}
+3-2 & 2 & 3\\
+1 & 4-2 & 3\\
+1 & 2 & 5-2
+\end{pmatrix} \right)=\mcN\left( \begin{pmatrix}
+1 & 2 & 3\\
+1 & 2 & 3\\
+1 & 2 & 3
+\end{pmatrix} \right).
+\end{align*}
+Para encontrar el espacio nulo anterior, ocupamos eliminación Guassiana para determinar el conjunto del sistema
+\begin{align*}
+\begin{pmatrix}
+1 & 2 & 3\\
+1 & 2 & 3\\
+1 & 2 & 3\\
+\end{pmatrix}%
+\grstep[R_3\rightarrow R_3-R_1]{R_2 \rightarrow R_2-R_1}
+%
+\begin{pmatrix}
+1 & 2 & 3\\
+0 & 0 & 0\\
+0 & 0 & 0\\
+\end{pmatrix},
+\end{align*}
+lo anterior implica que la solución del sistema es $x_1=-2x_2-3x_3$, y $x_2,x_3$ son libres, es decir, el conjunto solución es
+\begin{align*}
+\left\{x_2\begin{pmatrix}
+-2\\
+1\\
+0
+\end{pmatrix}+x_3\begin{pmatrix}
+-3\\
+0\\
+1
+\end{pmatrix}; x_2,x_3\in \mR \right\}.
+\end{align*}
+Por lo tanto, ii) \textbf{el espacio propio asociado a $\lambda_1=2$ es}
+\begin{align*}
+E_{\lambda_1} = \mcN(A-\lambda_1 I) =\left\{x_2\begin{pmatrix}
+-2\\
+1\\
+0
+\end{pmatrix}+x_3\begin{pmatrix}
+-3\\
+0\\
+1
+\end{pmatrix}; x_2,x_3\in \mR \right\}.
+\end{align*}
+Realizando un procedimiento analago al anterior calculemos el espacio propio de $\lambda_2=8$, tenemos que 
+\begin{align*}
+E_{\lambda_2} = \mcN(A-\lambda_2 I) =\mcN\left( \begin{pmatrix}
+3-8 & 2 & 3\\
+1 & 4-8 & 3\\
+1 & 2 & 5-8
+\end{pmatrix} \right)=\mcN\left( \begin{pmatrix}
+-5 & 2 & 3\\
+1 & -4 & 3\\
+1 & 2 & -3
+\end{pmatrix} \right).
+\end{align*}
+Para encontrar el espacio nulo anterior, ocupamos eliminación Guassiana para determinar el conjunto del sistema
+\begin{align*}
+&\begin{pmatrix}
+-5 & 2 & 3\\
+1 & -4 & 3\\
+1 & 2 & -3
+\end{pmatrix}%
+\grstep[R_2\Rightarrow R_2-R_1]{R_1 \leftrightarrow R_3}
+%
+\begin{pmatrix}
+1 & 2 & -3\\
+0 & -6 & 6\\
+-5 & 2 & 3\\
+\end{pmatrix}%
+\grstep[R_2\Rightarrow -R_2/6]{R_3 \Rightarrow R_3+5R_1}
+%
+\begin{pmatrix}
+1 & 2 & -3\\
+0 & 1 & -1\\
+0 & 12 & -12\\
+\end{pmatrix}%
+\grstep[R_1\Rightarrow R_1-2R_2]{R_3 \Rightarrow R_3-12R_2}
+\\ \\
+&\begin{pmatrix}
+1 & 0 & -1\\
+0 & 1 & -1\\
+0 & 0 & 0\\
+\end{pmatrix}.
+\end{align*}
+lo anterior implica que la solución del sistema es $x_1=x_3, x_2=x_3$, y $x_3$ es libre, es decir, el conjunto solución es
+\begin{align*}
+\left\{x_3\begin{pmatrix}
+1\\
+1\\
+1
+\end{pmatrix}; x_3\in \mR \right\}.
+\end{align*}
+Por lo tanto, ii) \textbf{el espacio propio asociado a $\lambda_2=8$ es}
+\begin{align*}
+E_{\lambda_1} = \mcN(A-\lambda_1 I) =\left\{x_3\begin{pmatrix}
+1\\
+1\\
+1
+\end{pmatrix}; x_3\in \mR \right\}.
+\end{align*}
+Ahora determinaremos y encontraremos de ser posible una base para $\mR^3$ considerando vectores propios de $A$. Recordando la definición de base:
+\begin{framed}
+    \begin{thmd} \label{d_base}
+	(Visto en clase) Sea $V$ un espacio vectorial, $W\subset V$ un espacio. Una base de $W$ es un subconjunto de $W$ linealmente independiente que genera a $W$. 
+    \end{thmd}
+\end{framed}
+
+Para el valor propio $\lambda_1=2$ tenemos los vectores propios $v_1=\begin{pmatrix}
+-2 & 1 &0
+\end{pmatrix}^t$ y $v_2= \begin{pmatrix}
+-3 & 0 &1
+\end{pmatrix}^t$ haciendo a $x_2=1\ \&\ x_3=0$ y $x_2=0\ \& \ x_3=0$ en espacio asociado respectivamente, y para el valor propio $\lambda_2=8$ el vector propio asociado es $v_3= \begin{pmatrix}
+1 & 1 &1
+\end{pmatrix}^t$ haciendo a $x_3=1$ en el espacio propio asociado en $\lambda_2=8$. Entonces, vemos que $v_1,v_2, v_3\in \mR$, veamos si son linealmente independiente para comprobarlo veamos si la matriz construida por los vectores tiene inversa, utilizamos eliminación gauss-jordan para encontrar la inversa.
+\begin{align*}
+&\left(\begin{array}{ccc|ccc}
+-2 & -3 &  1&1&0&0\\
+ 1 &  0 &  1&0&1&0\\
+ 0 &  1 &  1&0&0&1
+\end{array}\right)
+%
+\grstep[]{R_2 \Rightarrow 2R_2+R_1}
+%
+\left(\begin{array}{ccc|ccc}
+-2 & -3 &  1&1&0&0\\
+ 0 & -3 &  3&1&2&0\\
+ 0 &  1 &  1&0&0&1
+\end{array}\right)%
+\grstep[R_1\Rightarrow R_1-R_2]{R_3 \Rightarrow 3R_3+R_2}
+%
+\left(\begin{array}{ccc|ccc}
+-2 &  0 & -2&0&-2&0\\
+ 0 & -3 &  3&1&2&0\\
+ 0 &  0 &  6&1&2&3
+\end{array}\right)\\
+&\grstep[R_1\Rightarrow 3R_1+R_3]{R_2 \Rightarrow 2R_2-R_3}
+%
+\left(\begin{array}{ccc|ccc}
+-6 & 0 &  0&1&-4&3\\
+ 0 & 6 &  0&-1&-2&3\\
+ 0 & 0 &  6&1&2&3
+\end{array}\right)%
+\grstep[R_3\Rightarrow R_3/6]{R_2 \Rightarrow R_2/6}
+%
+\left(\begin{array}{ccc|ccc}
+ 1 & 0 &  0&-\frac{1}{6}&\frac{4}{6}&-\frac{3}{6}\\
+ 0 & 1 &  0&-\frac{1}{6}&-\frac{2}{6}&\frac{3}{6}\\
+ 0 & 0 &  1&\frac{1}{6}&\frac{2}{6}&\frac{3}{6}
+\end{array}\right)\Rightarrow \\
+&\begin{pmatrix}
+-2 & -3 &  1\\
+ 1 &  0 &  1\\
+ 0 &  1 &  1
+\end{pmatrix}^{-1}=\frac{1}{6}\begin{pmatrix}
+-1 & 4 & -3 \\
+-1 & -2 & 3 \\
+1 & 2 & 3
+\end{pmatrix}.
+\end{align*}
+Por lo tanto, como los vectores propios son linealmente independiente y son subconjunto de $\mR^3$ y es sencillo mostrar que generan a $\mR^3$ (la definición del espacio columna de una matriz de tamaño $m \times n$ siempre genera al $\mR^n$, teorema de la tarea anterior), \textbf{iii) entonces podemos concluir que los vectores  propios $v_1=\begin{pmatrix}
+-2 & 1 &0
+\end{pmatrix}^t$, $v_2= \begin{pmatrix}
+-3 & 0 &1
+\end{pmatrix}^t$ y $v_3= \begin{pmatrix}
+1 & 1 &1
+\end{pmatrix}^t$ de $A$ son una base para $\mR^3$}.\\
+
+Ahora, considerando el teorema (\ref{t_matriz_diagonalizable}), observemos que en el inciso anterior ya encontramos 3 vectores linealmente independiente, por lo que podemos decir que la matriz $A$ es diagonalizable. Y por lo tanto, \textbf{ la matriz $A$ la escribir como una matriz invertible $P$ (es la matriz formada por los vectores propios como columnas)y una matriz diagonal $D$ (son los vectores propios correspondientes a los vectores propios), es decir, con los resultados de los incisos anteriores ya tenemos todo los necesario para definir a $A$ como}
+\begin{align*}
+A=PDP^{-1}=\begin{pmatrix}
+-2 & -3 & 1 \\
+1 & 0 & 1 \\
+0 & 1 & 1
+\end{pmatrix}\begin{pmatrix}
+2 & 0 & 0 \\
+0 & 2 & 0 \\
+0 & 0 & 8
+\end{pmatrix} \begin{pmatrix}
+\frac{-1}{6} & \frac{2}{3} & \frac{-1}{2} \\
+\frac{-1}{6} & \frac{-1}{3} & \frac{1}{2} \\
+\frac{1}{6} & \frac{1}{3} & \frac{1}{2}
+\end{pmatrix}.
+\end{align*}
+Realizamos un procedimiento análogo de lo que hicimos con la matriz $A$ para determinar los resultados de la matriz $B$. Determinemos los valores propios de $B$, para ello calculemos el polinomio característico de $B$:
+\begin{align*}
+p(\lambda) &= \det (B-\lambda I)=\left|\begin{array}{ccc}
+6-\lambda & 3 & -8 \\
+0& -2-\lambda & 0\\
+1 & 0 & -3-\lambda
+\end{array} \right|\\
+&=(6-\lambda)(-2-\lambda)(-3-\lambda)-(-2-\lambda)(-8)\\
+&=(6-\lambda)[\lambda^2+5\lambda+6]-16-8\lambda\\
+&=6\lambda^2+30\lambda+36-\lambda^3-5\lambda^2-6\lambda-16-8\lambda \\
+&=-\lambda^3+\lambda^2+16\lambda+20\\
+&=(-2-\lambda)(\lambda^2-3\lambda-10)\\
+&=(-2-\lambda)(\lambda+2)(\lambda-5)
+\end{align*}
+Esto implica \textbf{que i) todos los valores propios de $B$ sean}
+\begin{align*}
+p(\lambda)&=0,\Leftrightarrow\\
+(-2-\lambda)(\lambda+2)(\lambda-5)&=0\ \ \ \Rightarrow \lambda_1=-2, \ \ \ y \ \ \lambda_2=5.
+\end{align*}
+Ahora calculemos los espacios propios, para $\lambda_1=2$ por definición de espacio propio (\ref{d_espacio_propio}) tenemos que 
+\begin{align*}
+E_{\lambda_1} = \mcN(B-\lambda_1 I) =\mcN\left( \begin{pmatrix}
+6+2 & 3 &-8\\
+0 & -2+2 & 0\\
+1 & 0 &-3+2
+\end{pmatrix} \right)=\mcN\left( \begin{pmatrix}
+8 & 3 &-8\\
+0 & 0 & 0\\
+1 & 0 &-1
+\end{pmatrix} \right).
+\end{align*}
+Para encontrar el espacio nulo anterior, ocupamos eliminación Guassiana para determinar el conjunto del sistema
+\begin{align*}
+\begin{pmatrix}
+6+2 & 3 &-8\\
+0 & -2+2 & 0\\
+1 & 0 &-3+2
+\end{pmatrix}%
+\grstep[R_3\rightarrow R_3-8R_1]{R_1 \leftrightarrow R_3}
+%
+\begin{pmatrix}
+1 & 0 &-1\\
+0 & 0 & 0\\
+0 & 3 & 0\\
+\end{pmatrix}%
+\grstep[R_2\rightarrow R_2/3]{R_2 \leftrightarrow R_3}
+%
+\begin{pmatrix}
+1 & 0 &-1\\
+0 & 1 & 0\\
+0 & 0 & 0\\
+\end{pmatrix},
+\end{align*}
+lo anterior implica que la solución del sistema es $x_1=-x_3, x_2=0$, y $x_3$ son libres, es decir, el conjunto solución es
+\begin{align*}
+\left\{x_3\begin{pmatrix}
+1\\
+0\\
+1
+\end{pmatrix}; x_3\in \mR \right\}.
+\end{align*}
+Por lo tanto, ii) \textbf{el espacio propio asociado a $\lambda_1=-2$ es}
+\begin{align*}
+E_{\lambda_1} = \mcN(B-\lambda_1 I) =\left\{x_3\begin{pmatrix}
+1\\
+0\\
+1
+\end{pmatrix}; x_3\in \mR \right\}.
+\end{align*}
+Realizando un procedimiento analago al anterior calculemos el espacio propio de $\lambda_2=5$, tenemos que 
+\begin{align*}
+E_{\lambda_2} = \mcN(B-\lambda_2 I) =\mcN\left( \begin{pmatrix}
+6-5 & 3 &-8\\
+0 & -2-5 & 0\\
+1 & 0 & -3-5
+\end{pmatrix} \right)=\mcN\left( \begin{pmatrix}
+1 & 3 &-8\\
+0 &-7 &0\\
+1 & 0 &-8
+\end{pmatrix} \right).
+\end{align*}
+Para encontrar el espacio nulo anterior, ocupamos eliminación Guassiana para determinar el conjunto del sistema
+\begin{align*}
+&\begin{pmatrix}
+1 & 3 &-8\\
+0 &-7 &0\\
+1 & 0 &-8
+\end{pmatrix}%
+\grstep[R_2\Rightarrow -R_2/7]{R_3 \Rightarrow R_3-R_1}
+%
+\begin{pmatrix}
+1 & 3 &-8\\
+0 & 1 &0\\
+0 & -3&0
+\end{pmatrix}%
+\grstep[R_3\Rightarrow R_3+3R_2]{R_1 \Rightarrow R_1-3R_2}
+%
+\begin{pmatrix}
+1 & 0 &-8\\
+0 & 1 &0\\
+0 & 0&0
+\end{pmatrix}
+\end{align*}
+lo anterior implica que la solución del sistema es $x_1=8x_3, x_2=0$, y $x_3$ es libre, es decir, el conjunto solución es
+\begin{align*}
+\left\{x_3\begin{pmatrix}
+8\\
+0\\
+1
+\end{pmatrix}; x_3\in \mR \right\}.
+\end{align*}
+Por lo tanto, ii) \textbf{el espacio propio asociado a $\lambda_2=5$ es}
+\begin{align*}
+E_{\lambda_1} = \mcN(A-\lambda_1 I) =\left\{x_3\begin{pmatrix}
+8\\
+0\\
+1
+\end{pmatrix}; x_3\in \mR \right\}.
+\end{align*}
+Ahora determinaremos y encontraremos de ser posible una base para $\mR^3$ considerando vectores propios de $A$. Ya que los vectores propios de $B$ son $v_1=\begin{pmatrix}
+1&0&1
+\end{pmatrix}^t $ y $v_2=\begin{pmatrix}
+8&0&1
+\end{pmatrix}^t$, y cualquier otro vector propio de $B$ es combinación lineal de estos dos vectores podemos decir que no es posible generar una base para $\mR^3$, la justificación es que cualquier base de $\mR^3$ tiene dimensión 3 y como cualquier conjunto de vectores propios de $B$ son linealmente independiente a los vectores $v_1$ y $v_2$ entonces esto indica que la dimensión de cualquier conjunto de vectores propios es a lo más $2$, por lo\textbf{que podemos concluir iii) no es posible construir una base a partir de los vectores propios de $B$.} Entonces como no existe la base, \textbf{no es posible hacer el inciso iv). (ya que eso dice el problema.}\ \ \ \fin
+
+\item Dadas las matrices 
+\begin{align*}
+\begin{pmatrix}
+1 & 0 & 0\\
+0 & 0 & 3\\
+1 & 7 & 4
+\end{pmatrix}, \ \ \ \begin{pmatrix}
+1 &-1 & 1\\
+2 &-2 & 2\\
+1 &-1 & 1
+\end{pmatrix}
+\end{align*}
+Determine si cada una de ellas es diagonalizable y si lo es, encuentre una matriz invertible $P$ y una matriz diagonal $D$ tal que la matriz es igual a $PDP^{-1}$.
+
+\res Denotemos las matrices para una mejor redacción del problema.
+\begin{align*}
+A=\begin{pmatrix}
+1 & 0 & 0\\
+0 & 0 & 3\\
+1 & 7 & 4
+\end{pmatrix}, \ \ \ B=\begin{pmatrix}
+1 &-1 & 1\\
+2 &-2 & 2\\
+1 &-1 & 1
+\end{pmatrix}.
+\end{align*}
+Veamos si la matriz $A$ es diagonalizable para ello ocupemos el teorema (\ref{t_matriz_diagonalizable}), entonces primero calculemos el polinomio característico de $A$
+\begin{align*}
+p(\lambda) &= \det (A-\lambda I)=\left|\begin{array}{ccc}
+1-\lambda &0 & 0 \\
+0& -\lambda & 3\\
+1 & 7 & 4-\lambda
+\end{array} \right|=(1-\lambda)[(-\lambda)(4-\lambda)-21]= (1-\lambda)[\lambda^2-4\lambda-21]= \\
+&=\lambda^2-4\lambda-21-\lambda^3+4\lambda^2+21\lambda\\
+&=-\lambda^3+5\lambda^2+17\lambda-21=(-\lambda+1)(\lambda^2-4\lambda-21)=(-\lambda+1)(\lambda+3)(\lambda-7).
+\end{align*}
+Esto implica que los valores propios de $A$ sean
+\begin{align*}
+p(\lambda)&=0,\Leftrightarrow\\
+(-\lambda+1)(\lambda+3)(\lambda-7)&=0\ \ \ \Rightarrow \lambda_1=1, \ \lambda_2=-3 \ \ y \ \ \lambda_3=7.
+\end{align*}
+Ahora calculemos los vectores propios para cada uno de los valores propios. Para $\lambda_1=1$, tenemos 
+\begin{align*}
+A-\lambda_1I=\begin{pmatrix}
+1-1& 0 & 0\\
+0 & -1 &3\\
+1 & 7 & 4-1
+\end{pmatrix}=\begin{pmatrix}
+0& 0 & 0\\
+0 & -1 &3\\
+1 & 7 & 3
+\end{pmatrix}%
+\grstep[]{R_3 \leftrightarrow R_1}
+%
+\begin{pmatrix}
+1 & 7 & 3\\
+0 & -1 &3\\
+0& 0 & 0
+\end{pmatrix}
+%
+\grstep[R_2\rightarrow -1R_2]{R_1 \rightarrow R_1+7R_2}
+%
+\begin{pmatrix}
+1 & 0 &24\\
+0 & 1 &-3\\
+0& 0 & 0
+\end{pmatrix}.
+\end{align*}
+Por lo tanto, de la eliminación Guass-jordan tenemos que la solución del sistema es $x_1=-24x_3, \ x_2=3x_3$ y $x_3$ es libre, es decir, el conjunto solución es
+\begin{align*}
+\left\{x_3\begin{pmatrix}
+-24\\
+3\\
+1
+\end{pmatrix}: x_3 \ \in \mR \right\}.
+\end{align*}
+Lo anterior implica que un vector propio de $\lambda_1=1$ es 
+$\begin{pmatrix}
+-24 & 3 & 1
+\end{pmatrix}^t$. Realizando un razonamiento análogo, calculemos el vector propio para $\lambda_2=-3$, tenemos 
+\begin{align*}
+A-\lambda_2I=\begin{pmatrix}
+1+3& 0 & 0\\
+0 & 3 &3\\
+1 & 7 & 4+3
+\end{pmatrix}=\begin{pmatrix}
+4& 0 & 0\\
+0 & 3 &3\\
+1 & 7 & 7
+\end{pmatrix}%
+\grstep[R_3\rightarrow R3-R_1]{R_1 \leftrightarrow R_1/4}
+%
+\begin{pmatrix}
+1 & 0 & 0\\
+0 & 3 &3\\
+0& 7 & 7
+\end{pmatrix}
+%
+\grstep[R_3\rightarrow R_3-7R_2]{R_2 \rightarrow R_2/2}
+%
+\begin{pmatrix}
+1 & 0 &0\\
+0 & 1 &1\\
+0& 0 & 0
+\end{pmatrix}.
+\end{align*}
+Por lo tanto, de la eliminación Guass-jordan tenemos que la solución del sistema es $x_1=0,\ x_2=-x_3$ y $x_3$ es libre, es decir, el conjunto solución es
+\begin{align*}
+\left\{x_3\begin{pmatrix}
+0\\
+-1\\
+1
+\end{pmatrix}: x_3 \ \in \mR \right\}.
+\end{align*}
+Lo anterior implica que un vector propio de $\lambda_2=-3$ es 
+$\begin{pmatrix}
+0 & -1 & 1
+\end{pmatrix}^t$. Realizando un razonamiento análogo, calculemos el vector propio para $\lambda_3=7$, tenemos 
+\begin{align*}
+A-\lambda_3I=\begin{pmatrix}
+1-7& 0 & 0\\
+0 & -7 &3\\
+1 & 7 & 4-7
+\end{pmatrix}=\begin{pmatrix}
+-6 & 0 & 0\\
+0 & -7 &3\\
+1 & 7 & -3
+\end{pmatrix}%
+\grstep[R_3\rightarrow R3-R_1]{R_1 \leftrightarrow -R_1/6}
+%
+\begin{pmatrix}
+1 & 0 & 0\\
+0 &-7 &3\\
+0& 7 & -3
+\end{pmatrix}
+%
+\grstep[R_2\rightarrow -R_2/7]{R_3 \rightarrow R_3+R_2}
+%
+\begin{pmatrix}
+1 & 0 &0\\
+0 & 1 &-3/7\\
+0& 0 & 0
+\end{pmatrix}.
+\end{align*}
+Por lo tanto, de la eliminación Guass-jordan tenemos que la solución del sistema es $x_1=0,\ x_2=\frac{3}{7}x_3$ y $x_3$ es libre, es decir, el conjunto solución es
+\begin{align*}
+\left\{x_3\begin{pmatrix}
+0\\
+\frac{3}{7}\\
+1
+\end{pmatrix}: x_3 \ \in \mR \right\}.
+\end{align*}
+Lo anterior implica que un vector propio de $\lambda_3=7$ es 
+$\begin{pmatrix}
+0 & \frac{3}{7} &1 
+\end{pmatrix}^t$. Ahora comprobemos si los vectores propios son linealmente independiente. Para ello calculemos la matriz inversa inversa de la matriz formada por los vectores propios encontrados, ocupando eliminación Gauss-Jordan podemos calcularla si es que existe (solo con decir que exista era suficiente para decir que son linealmente independiente, pero encuentro la matriz inversa ya que esta representará a $P^{-1}$ si es que existe) 
+\begin{align*}
+&\left(\begin{array}{ccc|ccc}
+-24 & 0 & 0 & 1 & 0 & 0 \\
+3 & -1 & \frac{3}{7} & 0 & 1 & 0 \\
+1 & 1 & 1 & 0 & 0 & 1
+\end{array}\right)%
+\grstep[R_1\rightarrow -R_1/24]{R_2 \rightarrow R_2-3R_2}
+%
+\left(\begin{array}{ccc|ccc}
+1 & 0 & 0 & \frac{-1}{24} & 0 & 0 \\
+0 & -1 & \frac{3}{7} & \frac{1}{8} & 1 & 0 \\
+1 & 1 & 1 & 0 & 0 & 1
+\end{array}\right)%
+\grstep[R_2\rightarrow -1R_2]{R_3 \rightarrow R_3-R_1}
+%
+\left(\begin{array}{ccc|ccc}
+1 & 0 & 0 & \frac{-1}{24} & 0 & 0 \\
+0 & 1 & \frac{-3}{7} & \frac{-1}{8} & -1 & 0 \\
+0 & 1 & 1 & \frac{1}{24} & 0 & 1
+\end{array}\right)\\
+&\grstep[]{R_3 \rightarrow R_3-R_2}
+%
+\left(\begin{array}{ccc|ccc}
+1 & 0 & 0 & \frac{-1}{24} & 0 & 0 \\
+0 & 1 & \frac{-3}{7} & \frac{-1}{8} & -1 & 0 \\
+0 & 0 & \frac{10}{7} & \frac{1}{6} & 1 & 1
+\end{array}\right)%
+\grstep[]{R_2 \rightarrow R_2+3R_3/7}
+%
+\left(\begin{array}{ccc|ccc}
+1 & 0 & 0 & \frac{-1}{24} & 0 & 0 \\
+0 & 1 & 0 & \frac{-3}{40} & \frac{-7}{10} & \frac{3}{10} \\
+0 & 0 & 1 & \frac{7}{60} & \frac{7}{10} & \frac{7}{10}
+\end{array}\right).
+\end{align*}
+Por lo tanto, como la matriz de los vectores propios existe podemos decir por el teorema \ref{t_matriz_diagonalizable} que \textbf{la matriz $A$ es diagonalizable ya que tiene 3 vectores propios propios linealmente independientes}. Ahora, por el teorema \ref{t_matriz_diagonalizable} (aquí se describe los elementos de las matrices $P$ y $D$, y a $P^{-1}$ ya la calculamos arriba) \textbf{podemos concluir que a $A$ se puede escribir como}
+\begin{align*}
+A=PDP^{-1}=\left(\begin{matrix}
+-24 & 0 & 0 \\
+3 & -1 & \frac{3}{7} \\
+1 & 1 & 1
+\end{matrix}\right)
+\left(\begin{matrix}
+1 & 0 & 0 \\
+0 & -3 & 0 \\
+0 & 0 & 7
+\end{matrix}\right)\left(\begin{matrix}
+\frac{-1}{24} & 0 & 0 \\
+\frac{-3}{40} & \frac{-7}{10} & \frac{3}{10} \\
+\frac{7}{60} & \frac{7}{10} & \frac{7}{10}
+\end{matrix}\right).
+\end{align*}
+
+Ahora consideremos un razonamiento análogo que se realizo con la matriz $A$ para la matriz $B$. Primero veamos si $B$ es diagonalizable, para ello calculemos el polinomio característico de $A$ 
+\begin{align*}
+p(\lambda)&=\det(B- \lambda I)=\left|\begin{matrix}
+1-\lambda & -1 & 1 \\
+2 & -2-\lambda & 2 \\
+1 & -1 & 1-\lambda
+\end{matrix}\right|=\\
+&=(1-\lambda)[(-2-\lambda)(1-\lambda)+2]+[2(1-\lambda)-2]+[-2-(-2-\lambda)]\\
+&=(1-\lambda)[\lambda^2+\lambda]+[-2\lambda]+\lambda\\
+&=-\lambda^3-\lambda^2+\lambda^2+\lambda-2\lambda+\lambda\\
+&=-\lambda^3.
+\end{align*}
+Esto implica que los valores propios de $B$ sean
+\begin{align*}
+p(\lambda)=0, \ \ \Leftrightarrow\\
+-\lambda^3=0\ \ \ \Rightarrow \lambda=0.
+\end{align*}
+Ahora calculamos los vectores propios para el valor propio de $B$, es decir, para $\lambda=0$ tenemos que 
+\begin{align*}
+B-\lambda I = \begin{pmatrix}
+1 & -1 & 1 \\
+2 & -2 & 1 \\
+1 & -1 & 1
+\end{pmatrix} %
+\grstep[R_3\rightarrow R3-R_1]{R_2 \leftrightarrow R_2-2R_1}
+%
+\begin{pmatrix}
+1 & -1 & 1 \\
+0 &  0 & 0 \\
+0 &  0 & 0
+\end{pmatrix},
+\end{align*}
+lo anterior implica que la solución del sistema homogéneo formado por los vectores propios es $x_1=x_2-x_3$, y $x_2,x_3$ libres, es decir, si hacemos a $x_2=1\ \& x_3=0$ y $x_2=0\ \& \ x_3=1$ el conjunto solución es
+\begin{align*}
+\left\{x_2\begin{pmatrix}
+1\\
+1\\
+0
+\end{pmatrix}+x_3\begin{pmatrix}
+-1\\
+0\\
+1
+\end{pmatrix} \right\}.
+\end{align*}
+Entonces podemos decir que los vectores linealmente independientes asociados al valor propio $\lambda=0$ de $B$ son $v_1=\begin{pmatrix}
+1 & 1 &0
+\end{pmatrix}^t$ y $v_2=\begin{pmatrix}
+-1 & 0 & 1
+\end{pmatrix}^t$, y cualquier otro vector propio tiene que ser combinación lineal de estos dos vectores (por como esta definido el conjunto solución). Por lo tanto, ocupando el teorema (\ref{t_matriz_diagonalizable}) \textbf{podemos concluir que $B$ no es diagonalizable, ya que no tiene 3 vectores propios linealmente independientes.}\ \ \fin
+ 
+\item Dada 
+\begin{align*}
+A=\begin{pmatrix}
+1 & 4 \\
+2 & 3
+\end{pmatrix} \ \in M_{2\times 2}(\mR),
+\end{align*}
+encuentre una expresión para $A^n$, donde $n$ es un entero positivo.
+
+\res Un enfoque que podemos utilizar es con el siguiente resultado demostrado en clase.
+\begin{framed}
+    \begin{thmt} \label{t_potencia_diagonalizable}
+	(Visto en clase, pag. 137) Si $A$ es diagonalizable y $A=PDP^{-1}$, entonces $$A^k=PD^kP^{-1}$$ 
+    \end{thmt}
+\end{framed}
+Entonces, empecemos por probar que $A$ es diagonalizable. El polinomio característico de $A$ es
+\begin{align*}
+p(\lambda) &= \det (A-\lambda I)=\left|\begin{array}{cc}
+1-\lambda &4 \\
+2& 3-\lambda
+\end{array} \right|=(1-\lambda)(3-\lambda)-8=3-4\lambda+\lambda^2-8 \\
+&=\lambda^2 - 4\lambda -5.
+\end{align*}
+Esto implica que los valores propios de $A$ sean:
+\begin{align*}
+p(\lambda)&=0\\
+\lambda^2 - 4\lambda -5 & = 0
+(\lambda +1)(\lambda-5)=0 \Rightarrow \ \ \ \ \bf \lambda_1 =-1 \ \ \ \ \&\ \ \ \ \lambda_2=5.
+\end{align*}
+Ahora determinemos los vectores propios, para ello observemos que el espacio generado para $\lambda=5$ es
+\begin{align*}
+\mcN (A-5I)=\mcN\begin{pmatrix}
+-4 & 4 \\
+2 & -2 
+\end{pmatrix},
+\end{align*}
+para encontrar el espacio nulo anterior, ocupemos eliminación guassinana para determinar el conjunto solución del sistema homogéneo. 
+\begin{align*}
+\begin{pmatrix}
+-4 & 4 \\
+2 & -2 
+\end{pmatrix}%
+\grstep[R_2\rightarrow R2-2R_1]{R_1 \leftrightarrow -R_1/4}
+%
+\begin{pmatrix}
+1 & -1 \\
+0 & 0 
+\end{pmatrix},
+\end{align*}
+lo anterior implica que las soluciones del sistema son $x_1=x_2$ y $x_2$ es libre, es decir, el espacio nulo es igual a 
+\begin{align*}
+\mcN (A-5I)=\mcN\begin{pmatrix}
+-4 & 4 \\
+2 & -2 
+\end{pmatrix}=\gen \left\{\begin{pmatrix}
+1\\
+1
+\end{pmatrix} \right\}.
+\end{align*}
+Realizando un razonamiento análogo tenemos que  el espacio generado de $\lambda=-1$ es
+\begin{align*}
+\mcN (A+I)=\mcN\begin{pmatrix}
+2 & 4 \\
+2 & 4 
+\end{pmatrix}
+\end{align*}
+para encontrar el espacio nulo anterior, ocupemos eliminación guassinana para determinar el conjunto solución del sistema homogéneo. 
+\begin{align*}
+\begin{pmatrix}
+2 & 4 \\
+2 & 4 
+\end{pmatrix}%
+\grstep[R_2\rightarrow R2-2R_1]{R_1 \leftrightarrow -R_1/2}
+%
+\begin{pmatrix}
+1 & 2 \\
+0 & 0 
+\end{pmatrix},
+\end{align*}
+lo anterior implica que las soluciones del sistema son $x_1=-x_2$ y $x_2$ es libre, es decir, el espacio nulo es igual a 
+\begin{align*}
+\mcN (A-5I)=\mcN\begin{pmatrix}
+-4 & 4 \\
+2 & -2 
+\end{pmatrix}=\gen \left\{\begin{pmatrix}
+2\\
+-1
+\end{pmatrix} \right\}.
+\end{align*}
+Entonces tenemos dos vectores propios $v_1=\begin{pmatrix}
+1& 1
+\end{pmatrix}^t$ y $v_2=\begin{pmatrix}
+2& -1
+\end{pmatrix}$, determinemos si son linealmente independientes, para ello calculemos la inversa de la matriz construida con esos vectores, es decir, calculemos la inversa,
+\begin{align*}
+\begin{pmatrix}
+1& 2\\
+1&-1
+\end{pmatrix}^{-1}=\frac{1}{1(-1)-2(1)}\begin{pmatrix}
+-1&-2\\
+-1&1
+\end{pmatrix}= \begin{pmatrix}
+\frac{1}{3} & \frac{2}{3}\\
+\frac{1}{3} & -\frac{1}{3}
+\end{pmatrix}.
+\end{align*}
+Entonces como la inversa de la matriz construida por los vectores propios existe, podemos concluir que los vectores $v_1$ y $v_2$ son linealmente independientes. Y por lo tanto, por el teorema (\ref{t_matriz_diagonalizable}) podemos decir que la matriz $A$ es diagonalizable, es decir, $A=PDP^{-1}$ donde 
+\begin{align*}
+P=\begin{pmatrix}
+1 & 2\\
+1 & -1
+\end{pmatrix}\Rightarrow P^{-1} =\frac{1}{3}\begin{pmatrix}
+1 &  2\\
+1 & -1
+\end{pmatrix}, \ \ \ y \ \ \ D=\begin{pmatrix}
+5 &0 \\
+0 & -1
+\end{pmatrix}
+\end{align*}
+Por lo que si ocupamos el teorema (\ref{t_potencia_diagonalizable}), tenemos una expresión para $A^n$, donde $n$ es un entero positivo 
+\begin{align*}
+A^n&=PD^nP^{-1}= \begin{pmatrix}
+1 & 2\\
+1 & -1
+\end{pmatrix}\begin{pmatrix}
+5^n &0 \\
+0 & (-1)^n
+\end{pmatrix}\begin{pmatrix}
+\frac{1}{3} & \frac{2}{3}\\
+\frac{1}{3} & -\frac{1}{3}
+\end{pmatrix}=\frac{1}{3}\begin{pmatrix}
+5^n & 2(-1)^n\\
+5^n & (-1)^{n+1}
+\end{pmatrix}\begin{pmatrix}
+1 &2\\
+1 & -1
+\end{pmatrix}\\
+&=\frac{1}{3}\begin{pmatrix}
+5^n+2(-1)^n& 2\cdot 5^n+2(-1)^{n+1}\\
+5^n+(-1)^{n+1}& 2\cdot 5^n+(-1)^{n+2}
+\end{pmatrix} \ \ \ \finf
+\end{align*}
+
+\item Sea $A\in M_{n\times n}(\mR)$ con valores propios distintos $\lambda_1, \lambda_2, \cdots, \lambda_r$ y multiplicidades correspondientes $m_1, \cdots, m_r$. Suponga que $B$ es una matriz en $M_{n\times n}(\mR)$, triangular superior y similar a la matriz $A$. Demuestre que las entradas diagonales de $B$ son $\lambda_1, \lambda_2,\cdots, \lambda_r$  y que cada $\lambda_j$ aparece $m_j$ veces, $1\leq j \leq r$.
+
+\res Recordemos la definición de matrices similares y dos teoremas que se ocupara en la demostración.
+\begin{framed}
+    \begin{thmt} \label{t_similar}
+	(Visto en clase, pag. 126) Si $A$ y $B$ son similares entonces tienen el mismo polinomio característico y por tanto tienen los mismos valores propios.
+    \end{thmt}
+\end{framed}
+\begin{framed}
+    \begin{thmt} \label{t_triangular_diagonal}
+	(Demostrado en clase, pag. 123) Si $A$ es triangular, sus valores propios son las entradas de su diagonal principal.
+    \end{thmt}
+\end{framed}
+\res Como $B$ es similar a $A$ por el teorema  (\ref{t_similar}) podemos afirmar que $B$ tiene el mismo polinomio característico y más específicamente los mismos valores propios con sus respectivas multiplicidades de $A$, es decir, los valores propios de $B$ son $\lambda_1, \lambda_2\cdots , \lambda_r$ y multiplicidades correspondientes $m_1,\cdots, m_r$.  Entonces como $B$ también es una matriz triangular (superior, no importa si es superior o inferior) por el teorema (\ref{t_triangular_diagonal}) podemos concluir que los las entradas de su diagonal principal son sus valores propios, pero como su valores propios son $\lambda_1, \lambda_2\cdots , \lambda_r$ y multiplicidades correspondientes $m_1,\cdots, m_r$. Y por lo tanto, \textbf{queda demostrado que las entradas diagonales de $B$ son $\lambda_1, \lambda_2\cdots , \lambda_r$ y $\lambda_i$ aparece  $m_i$ veces para $i\leq i \leq r.$} \ \ \ \ \fin
+
+\item Suponga que $A\in M_{n\times n}(\mR)$ tiene dos valores propios distintos $\lambda_1$ y $\lambda_2$ y que $\dim(E_{\lambda_1})=n-1$. Demuestre que $A$ es diagonalizable. 
+
+\res Recordemos la definición de multiciplidad algebraica y geométrica, y también un teorema para demostrar diagonialización. 
+\begin{framed}
+    \begin{thmd} \label{d_multiplicidad}
+	(Visto en clase, pag. 130) Sea $A$ una matriz $n\times n$ y $\lambda_0$ un valor propio de $A$. La multiplicidad algebraica de $\lambda_0$ es el número $m$ de veces que aparece como raíz del polinomio característico, $p(\lambda)=(\lambda-\lambda_0)^m q(\lambda).$ La multiplicidad geométrica de $\lambda_0$ es $\dim(E_{\lambda_0})=\dim \mcN(A-\lambda_0 I).$ \\
+	
+	La multiplicidad geométrica de un valor propio es menor o igual que su multiplicidad algebraica.
+    \end{thmd}
+\end{framed}
+\begin{framed}
+    \begin{thmt} \label{t_diagonizable_multiplicidad}
+	(Visto en clase, pag. 131) Sea $A$ una matriz $n\times n$. $A$ es diagonalizable si y solo si la multiplicidad geométrica de cada valor propio es igual a su multiplicidad algebraica; es decir si la suma de las dimensiones de los espacios propios es igual a $n$. 
+    \end{thmt}
+\end{framed}
+Con lo anterior, denotamos a $g_1, g_2$ las multiplicidades geométricas de $\lambda_1, \lambda_2$ respectivamente y a $a_1,a_2$ las multiplicidades algebraicas de $\lambda_1, \lambda_2$ respectivamente. Ocupando la (\ref{d_multiplicidad}) tenemos que 
+\begin{align*}
+a_1\geq g_1=n-1, \ \ \ \ y \ \ \ a_2\geq g_2\geq1.
+\end{align*}
+Pero como sabemos que $a_1+a_2=n$ (por definición de polinomio característico (\ref{d_polinomio_car})), entonces esto implica que 
+\begin{align*}
+a_1=g_1=n-1, \ \ \ \ y \ \ \ a_2= g_2=1.
+\end{align*}
+Y ocupando el teorema (\ref{t_diagonizable_multiplicidad}), como la multiplicidad de cada valor propio es igual a su multiplicidad algebraica podemos concluir que $A$ es diagonalizable. \ \ \ \fin
+
+\item Sea $A$ una matriz que es diagonalizable e invertible. Demuestre que $A^{-1}$ también es diagonalizable.
+
+\res Como $A$ es diagonalizable entonces la podemos escribir como 
+$$A=PDP^{-1}$$
+donde las columnas de $P$ son los $n$ vectores propios de $A$ linealmente independientes y las entradas de la matriz diagonal $D$ son los valores propios correspondientes a los vectores propios (por el teorema (\ref{t_matriz_diagonalizable})). Tenemos que $A$ y $P$ son invetibles, y como $D$ es una matriz diagonal entonces podemos concluir que $D$ también es invertible. Ahora, ocupando las propiedades de las matrices tenemos que 
+\begin{align*}
+A^{-1}=(PDP^{-1})^{-1}=(P^{-1})^{-1}D^{-1}P^{-1}=PD^{-1}P^{-1}.
+\end{align*} 
+Por lo tanto, podemos concluir que  $A^{-1}$ también es diagonalizable con $P$ igual a la $P$ matriz que en la diagonalización de $A$ y como $D=diag(\lambda_1, \cdots,\lambda_n )\Rightarrow D^{-1}=diag(\lambda_1^{-1}, \cdots, \lambda_n^{-1})$. \ \ \ \fin 
+
+  
+\item Sea $A\in M_{r\times r} (\mR)$ la matriz
+\begin{align*}
+\begin{pmatrix}
+0 & 0 & \cdots & 0 & -a_0\\
+1 & 0 & \cdots & 0 & -a_1\\
+0 & 1 & \cdots & 0 & -a_2\\
+\vdots & \vdots &  & \vdots &\vdots\\
+0 & 0 & \cdots & 0 & -a_{r-2}\\
+0 & 0 & \cdots & 1 & -a_{r-1}
+\end{pmatrix}
+\end{align*}
+donde $a_0, a_1, \cdots, a_{r-1}$ son escalares arbitrarios. Demuestre que el polinomio característico de $A$ es 
+
+\begin{align*}
+(-1)^r(a_0+a_1t+\cdots+a_{r-1}t^{r-1}+t^r)
+\end{align*}
+
+Sugerencia: use inducción matemática, expandiendo el determinante con el primer renglón.
+
+\res Ocupando la definición (\ref{d_polinomio_car}), tenemos que el polinomio característico de $A$ es 
+\begin{align}\label{matriz_rara}
+\det(tI-A)=
+\det \begin{pmatrix}
+t & 0 & \cdots & 0 & a_0\\
+-1 & t & \cdots & 0 & a_1\\
+0 & -1 & \cdots & 0 & a_2\\
+\vdots & \vdots &  & \vdots &\vdots\\
+0 & 0 & \cdots & t & a_{r-2}\\
+0 & 0 & \cdots & -1 & t+a_{r-1}
+\end{pmatrix}.
+\end{align}
+Entonces, demostremos por inducción que sea una matriz de tañaño $n\times n$ (con $n>1$) de la forma 
+\begin{align}\label{companion_matrix}
+\begin{pmatrix}
+t & 0 & \cdots & 0 & a_0\\
+-1 & t & \cdots & 0 & a_1\\
+0 & -1 & \cdots & 0 & a_2\\
+\vdots & \vdots &  & \vdots &\vdots\\
+0 & 0 & \cdots & t & a_{n-2}\\
+0 & 0 & \cdots & -1 & t+a_{n-1}
+\end{pmatrix}
+\end{align}
+entonces su determinante es 
+\begin{align*}
+\det \begin{pmatrix}
+t & 0 & \cdots & 0 & a_0\\
+-1 & t & \cdots & 0 & a_1\\
+0 & -1 & \cdots & 0 & a_2\\
+\vdots & \vdots &  & \vdots &\vdots\\
+0 & 0 & \cdots & t & a_{r-2}\\
+0 & 0 & \cdots & -1 & t+a_{n-1}
+\end{pmatrix}=(-1)^n(a_0+a_1t+\cdots+a_{n-1}t^{n-1}+t^n).
+\end{align*}
+\textbf{Paso 1.} Demostremos que se cumple para algún $n$. Sea $n=2$, entonces sea la matriz de la forma \ref{companion_matrix}
+\begin{align*}
+\begin{pmatrix}
+t & a_0\\
+-1& t+a_1
+\end{pmatrix},\Rightarrow \det\begin{pmatrix}
+t & a_0\\
+-1& t+a_1
+\end{pmatrix}=t(t+a_1)-(-1)a_0=t^2+ta_1+a_0=(-1)^2(a_0+a_1t+t^2),
+\end{align*}
+es decir, se cumple para $n=2$.\\
+\textbf{Paso 2.} Suponemos que se cumple para $n$. Es decir, se cumple que 
+\begin{align*}
+\det \begin{pmatrix}
+t & 0 & \cdots & 0 & a_0\\
+-1 & t & \cdots & 0 & a_1\\
+0 & -1 & \cdots & 0 & a_2\\
+\vdots & \vdots &  & \vdots &\vdots\\
+0 & 0 & \cdots & t & a_{r-2}\\
+0 & 0 & \cdots & -1 & t+a_{n-1}
+\end{pmatrix}=(-1)^n(a_0+a_1t+\cdots+a_{n-1}t^{n-1}+t^n).
+\end{align*}
+\textbf{Paso 3.} Demostremos que se cumple para $n+1$. Sea la matriz de la forma \ref{companion_matrix}
+\begin{align*}
+\begin{pmatrix}
+t & 0 & \cdots & 0 & a_0\\
+-1 & t & \cdots & 0 & a_1\\
+0 & -1 & \cdots & 0 & a_2\\
+\vdots & \vdots &  & \vdots &\vdots\\
+0 & 0 & \cdots & 0 & a_{r-2}\\
+0 & 0 & \cdots & t & a_{n-1}\\
+0 & 0 & \cdots & -1 & t+a_{n}
+\end{pmatrix},
+\end{align*}
+Entonces, calculemos el determinante de la matriz anterior el cual ocupamos el primer renglón para obtenerlo
+\begin{align*}
+\det \begin{pmatrix}
+t & 0 & \cdots & 0 & a_0\\
+-1 & t & \cdots & 0 & a_1\\
+0 & -1 & \cdots & 0 & a_2\\
+\vdots & \vdots &  & \vdots &\vdots\\
+0 & 0 & \cdots & 0 & a_{r-2}\\
+0 & 0 & \cdots & t & a_{n-1}\\
+0 & 0 & \cdots & -1 & t+a_{n}
+\end{pmatrix}&= t\det 
+\begin{pmatrix}
+t & 0 & \cdots & 0 & a_1\\
+-1 & t & \cdots & 0 & a_2\\
+0 & -1 & \cdots & 0 & a_3\\
+\vdots & \vdots &  & \vdots &\vdots\\
+0 & 0 & \cdots & t & a_{n-1}\\
+0 & 0 & \cdots & -1 & t+a_{n}
+\end{pmatrix}+(-1)^{n+1}a_0\det\begin{pmatrix}
+t & 0 & \cdots & 0 \\
+-1 & t & \cdots & 0\\
+0 & -1 & \cdots & 0\\
+\vdots & \vdots &   &\vdots\\
+0 & 0 & \cdots & t \\
+0 & 0 & \cdots & -1
+\end{pmatrix},
+\end{align*}
+observemos que la primera matriz de lado derecho de la igual es de la forma (\ref{companion_matrix}) de tamaño $n\times n$ por lo que podemos ocupar el paso 2 para encontrar el determinante, es decir, su determinante sería $(-1)^n(a_1+a_2t+\cdots+a_nt^{n-1}+t^n)$, y además observemos que la segunda matriz es una matriz diagonal con elementos iguales a $-1$ (por como se construyo la matriz por lo que el determinante de esa matriz sería igual a $(-1)^n$, entonces ocupando lo anterior tenemos 
+\begin{align*}
+\det \begin{pmatrix}
+t & 0 & \cdots & 0 & a_0\\
+-1 & t & \cdots & 0 & a_1\\
+0 & -1 & \cdots & 0 & a_2\\
+\vdots & \vdots &  & \vdots &\vdots\\
+0 & 0 & \cdots & 0 & a_{r-2}\\
+0 & 0 & \cdots & t & a_{n-1}\\
+0 & 0 & \cdots & -1 & t+a_{n}
+\end{pmatrix}&= t ((-1)^{n}[a_1+a_2t+\cdots+a_nt^{n-1}+t^n])+(-1)^{n+1}(-1)^na_0\\
+&=(-1)^{n+1}[a_1t+a_2t^2+\cdots+a_nt^{n}+t^{n+1}]+(-1)^{n+1}a_0\\
+&=(-1)^{n+1}(a_0+a_1t+a_2t^2+\cdots+a_nt^{n}+t^{n+1}).
+\end{align*}
+Queda demostrado para $n+1$. Por lo tanto, queda demostrado que si una matriz de tamaño $n\times n$ es de la forma \ref{companion_matrix} entonces su determinante es  $(-1)^n(a_0+a_1t+\cdots+a_{n-1}t^{n-1}+t^n)$. 
+
+Ocupando el resultado anterior, podemos concluir que el polinomio característico de la matriz del problema es 
+\begin{align*}
+\det(tI-A)=
+\det \begin{pmatrix}
+t & 0 & \cdots & 0 & a_0\\
+-1 & t & \cdots & 0 & a_1\\
+0 & -1 & \cdots & 0 & a_2\\
+\vdots & \vdots &  & \vdots &\vdots\\
+0 & 0 & \cdots & t & a_{r-2}\\
+0 & 0 & \cdots & -1 & t+a_{r-1}
+\end{pmatrix}(-1)^r(a_0+a_1t+\cdots+a_{r-1}t^{r-1}+t^r)\ \ \finf
+\end{align*}
+
+\item  Demuestre que una matriz nilpotente tiene como único valor propio a 0. 
+
+\res Recordando la definición de valor propio y la de matriz nilpotente. 
+\begin{framed}
+    \begin{thmd} \label{d_valor_propio}
+	(Vista en clase, pag. 121) Sea $A$ una matriz $n\times n$ un vector $x\in \mR^n, \ \ x\neq 0$ es un vector propio de $A$ si $Ax=\lambda x$ para algún escalar $\lambda,$ que en tal caso es llamada un valor propio.
+    \end{thmd}
+\end{framed}
+\begin{framed}
+    \begin{thmd} \label{d_nilpotente}
+	(Vista en clase, pag. 164) Sea $A$ una matriz cuadrada. Si existe un entero positivo $k$ tal que $A^k=0$, se dice que $A$ es nilpotente. 
+    \end{thmd}
+\end{framed}
+Para demostrar que el único valor propio de $A$ (una matriz nilpotente) es 0, primero demostremos  por inducción que si $\lambda$ es un valor propio de $A$ entonces
+\begin{align} \label{p_induccion}
+A^n x=\lambda^n x.,\ \ \ \ \ x\neq 0.
+\end{align} 
+Como $\lambda$ es valor propio de $A$ por definición \ref{d_valor_propio} se tiene que 
+$$Ax=\lambda x, \ \ \ \ \ x\neq 0$$
+\textbf{Paso 1.} Mostrar que se cumple \ref{p_induccion} para algún $n$. Mostraremos que se cumple para $n=2$,
+\begin{align*}
+A^2x=A(Ax)=A(\lambda x)=\lambda (Ax)=\lambda(\lambda x)=\lambda^2 x.
+\end{align*}
+\textbf{Paso 2.} Suponemos que se \ref{p_induccion} cumple para $n$. Es decir, suponemos que se cumple
+\begin{align*}
+A^n x = \lambda^n x.
+\end{align*}
+\textbf{Paso 3.} Demostremos que se cumple para $n+1$. Como se cumple para $n$ podemos multiplicar de ambos lados de la igualdad por $A$, es decir,
+\begin{align*}
+A^{n+1}x = A(A^n x) = A(\lambda^n x)=\lambda^n Ax=\lambda^n (\lambda x)=\lambda^{n+1} x.
+\end{align*}
+Por lo tanto, queda demostrado que para cualquier $n$ se cumple \ref{p_induccion}. Ahora, ocupando la definición de una matriz nilpotente \ref{d_nilpotente}. Sea $A$ una matriz nilpotente, esto quiere decir que existe un entero positivo $k$ que $A^k=0$. Entonces sea $k$ el entero positivo que satisface $A^k=0$ y ocupando \ref{p_induccion} tenemos que
+\begin{align*}
+A^k x=\lambda^k x = 0, \Rightarrow \lambda =0,
+\end{align*}
+donde $\lambda$ es el valor propio de $A$. Por lo que queda demostrado que las matrices nilpotente tienen como único valor propio a 0. \ \ \ \fin
+ 
+\end{enumerate}
+\end{document}
