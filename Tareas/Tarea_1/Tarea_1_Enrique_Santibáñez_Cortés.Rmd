@@ -1,0 +1,483 @@
+---
+fontsize: 11pt
+geometry: "left=2cm,right=2cm,top=2cm,bottom=2cm"
+documentclass: article
+output:
+    pdf_document:
+        includes:
+            in_header: mystyles.sty
+bibliography: references.bib
+---
+\begin{table}[ht]
+\centering
+\begin{tabular}{c}
+\textbf{Maestría en Computo Estadístico}\\
+\textbf{Estadística Multivariada} \\
+\textbf{Tarea 1}\\
+\today \\
+\emph{Enrique Santibáñez Cortés}\\
+Repositorio de Git: \href{https://github.com/Enriquesec/Estadística_multivariada/tree/master/Tareas/Tarea_1}{Tarea 1, EM}.
+\end{tabular}
+\end{table}
+
+\textbf{Ejercicio 1.} Demuestre que la matriz de centrado $\bf P=I-\frac{1}{n}11'$ cumple las siguientes propiedades:
+
+- Tiene rango $(n-1)$, es decir, tiene $n-1$ columnas o renglones linealmente indepenties.
+
+\res Lo haremos por inducción.
+
+\textbf{Paso 1.} Demostrar para algún $n$. Sea n=2, tenemos que la matriz de centrado es
+
+\begin{align*}
+\bf P=I-\frac{1}{2}11'=\begin{pmatrix}
+1 & 0\\
+0 & 1 
+\end{pmatrix}-\frac{1}{2}\begin{pmatrix}
+1 & 1\\
+1 & 1
+\end{pmatrix}=\begin{pmatrix} 
+\frac{1}{2} & -\frac{1}{2}\\
+-\frac{1}{2} & \frac{1}{2}
+\end{pmatrix}.
+\end{align*}
+Ahora ocupemos eliminación gaussiana para llevar a la matriz $\bf P$ a su forma escalonada.
+\begin{align*}
+\begin{pmatrix} 
+\frac{1}{2} & -\frac{1}{2}\\
+-\frac{1}{2} & \frac{1}{2}
+\end{pmatrix}%
+\grstep[]{R_2 \rightarrow R_2+R_1}
+%
+\begin{pmatrix}
+\frac{1}{2} & -\frac{1}{2}\\
+0 & 0
+\end{pmatrix}.
+\end{align*}
+Por lo tanto, observando la forma escalonada de $\bf P$ podemos ver que esta tiene solo un pivote diferente de cero por lo que podemos decir, que el rango de $\bf P$ es 1 $(n-1=2-1=1).$
+
+\textbf{Paso 2.} Suponemos que se cumple para $n-1$. Es decir,
+la matriz 
+\begin{align*}
+\bf P=I-\frac{1}{n-1}11'=\underbrace{\begin{pmatrix}
+1 & 0& \cdots & 0\\
+0 & 1 & \cdots & 0\\
+\vdots & \vdots & \ddots & \vdots\\
+0 & 0 & \cdots & 1
+\end{pmatrix}}_{n-1}-\frac{1}{n-1}\underbrace{\begin{pmatrix}
+1 & 1& \cdots & 1\\
+1 & 1 & \cdots & 1\\
+\vdots & \vdots & \ddots & \vdots\\
+1 & 1 & \cdots & 1
+\end{pmatrix}}_{n-1}
+\end{align*}
+tiene rango $n-2$. 
+\textbf{Paso 3.} Demostremos que se cumple para $n$. Tenemos que la matrz de centrado es 
+\begin{align*}
+\bf P=I-\frac{1}{n-1}11'=\underbrace{\begin{pmatrix}
+1 & 0& \cdots & 0 &0\\
+0 & 1 & \cdots & 0 &0\\
+\vdots & \vdots & \ddots & \vdots & \vdots\\
+0 & 0 & \cdots & 1 & 0\\
+0 & 0 & \cdots & 0 & 1
+\end{pmatrix}}_{n}-\frac{1}{n}\underbrace{\begin{pmatrix}
+1 & 1 & \cdots & 1 &1\\
+1 & 1 & \cdots & 1 &1\\
+\vdots & \vdots & \ddots & \vdots & \vdots\\
+1 & 1 & \cdots & 1 & 1\\
+1 & 1 & \cdots & 1 & 1
+\end{pmatrix}}_{n}=\underbrace{\begin{pmatrix}
+1-\frac{1}{n} & -\frac{1}{n} & \cdots & -\frac{1}{n} &-\frac{1}{n}\\
+-\frac{1}{n} & 1-\frac{1}{n} & \cdots & -\frac{1}{n} &-\frac{1}{n}\\
+\vdots & \vdots & \ddots & \vdots & \vdots\\
+-\frac{1}{n} & -\frac{1}{n} & \cdots & 1-\frac{1}{n} & -\frac{1}{n}\\
+-\frac{1}{n} & -\frac{1}{n} & \cdots & -\frac{1}{n} & 1-\frac{1}{n}
+\end{pmatrix}}_{n}.
+\end{align*}
+Ahora, llevemos a la matriz $\bf P$ a su forma escalonada
+\begin{align*}
+\underbrace{\begin{pmatrix}
+1-\frac{1}{n} & -\frac{1}{n} & \cdots & -\frac{1}{n} &-\frac{1}{n}\\
+-\frac{1}{n} & 1-\frac{1}{n} & \cdots & -\frac{1}{n} &-\frac{1}{n}\\
+\vdots & \vdots & \ddots & \vdots & \vdots\\
+-\frac{1}{n} & -\frac{1}{n} & \cdots & 1-\frac{1}{n} & -\frac{1}{n}\\
+-\frac{1}{n} & -\frac{1}{n} & \cdots & -\frac{1}{n} & 1-\frac{1}{n}
+\end{pmatrix}}_{n}&%
+\grstep[]{R_i \rightarrow R_1-R_i, i=1,...,n}
+%
+\underbrace{\begin{pmatrix}
+1-\frac{1}{n} & -\frac{1}{n} & \cdots & -\frac{1}{n} &-\frac{1}{n}\\
+1& -1 & \cdots & 0&0\\
+\vdots & \vdots & \ddots & \vdots & \vdots\\
+1& 0& \cdots &-1 & 0\\
+1& 0& \cdots & 0&-1
+\end{pmatrix}}_{n}%
+\grstep[]{R_n \leftrightarrow R_2}
+\end{align*}
+\begin{align*}
+\underbrace{\begin{pmatrix}
+1-\frac{1}{n} & -\frac{1}{n} & \cdots & -\frac{1}{n} &-\frac{1}{n}\\
+1& 0& \cdots & 0&-1\\
+1& -1 & \cdots & 0&0\\
+\vdots & \vdots & \ddots & \vdots & \vdots\\
+1& 0& \cdots &-1 & 0
+\end{pmatrix}}_{n}&%
+\grstep[]{R_2 \rightarrow R_i-R_2, i=3,...,n}
+%
+\underbrace{\begin{pmatrix}
+1-\frac{1}{n} & -\frac{1}{n} & \cdots & -\frac{1}{n} &-\frac{1}{n}\\
+1& 0& \cdots & 0&-1\\
+0& -1 & \cdots & 0&1\\
+\vdots & \vdots & \ddots & \vdots & \vdots\\
+0& 0& \cdots &-1 & 1
+\end{pmatrix}}_{n}%
+\grstep[]{R_1 \rightarrow R_1-R_i/n, i=3,...,n}\\
+\underbrace{\begin{pmatrix}
+1-\frac{1}{n} & 0 & \cdots &0&-\frac{n-1}{n}\\
+1& 0& \cdots & 0&-1\\
+0& -1 & \cdots & 0&1\\
+\vdots & \vdots & \ddots & \vdots & \vdots\\
+0& 0& \cdots &-1 & 1
+\end{pmatrix}}_{n}&%
+\grstep[]{}
+%
+\underbrace{\begin{pmatrix}
+1-\frac{1}{n} & 0 & \cdots &0&-1+\frac{1}{n}\\
+1& 0& \cdots & 0&-1\\
+0& -1 & \cdots & 0&1\\
+\vdots & \vdots & \ddots & \vdots & \vdots\\
+0& 0& \cdots &-1 & 1
+\end{pmatrix}}_{n} %
+\grstep[]{R_2 \rightarrow R_1-R2(1-\frac{1}{n})}\\
+\underbrace{\begin{pmatrix}
+1-\frac{1}{n} & 0 & \cdots &0&-1+\frac{1}{n}\\
+0& 0& \cdots & 0&0\\
+0& -1 & \cdots & 0&1\\
+\vdots & \vdots & \ddots & \vdots & \vdots\\
+0& 0& \cdots &-1 & 1
+\end{pmatrix}}_{n}&%
+\grstep[]{R_2 \leftrightarrow R_n}
+%
+\underbrace{\begin{pmatrix}
+1-\frac{1}{n} & 0 & \cdots &0&-1+\frac{1}{n}\\
+0& -1 & \cdots & 0&1\\
+\vdots & \vdots & \ddots & \vdots & \vdots\\
+0& 0& \cdots &-1 & 1\\
+0& 0& \cdots & 0&0
+\end{pmatrix}}_{n}.
+\end{align*}
+Observando la forma escalonada, tenemos que la matriz tiene $n-1$ pivotes \textbf{lo que implica que la rango de la matriz $\bf P$ sea $n-1$} \fin   
+
+- Sus valores propios son 1 o 0.
+
+\res Para este problema ocupemos el siguiente teorema,
+
+\begin{framed}
+    \begin{thmt} \label{t_idempotente}
+	Sea $A$ una matriz idempotente si y solo si todos los valores propios son 0 o 1.
+    \end{thmt}
+\end{framed}
+\textbf{Demostración.} Si $A$ es idempotente, para cualquier $\lambda$ valor propio y $V$ un vector propio correspondiente (distinto de $\bf 0$) entonces
+\begin{align*}
+ \lambda v=Av =AAv=\lambda Av=\lambda^2 v.
+\end{align*}
+Entonces, como $v \neq \bf 0$ entonces
+$$\lambda -\lambda^2=\lambda(1-\lambda)=0.$$
+
+Esto implica que los valores propios sean $\lambda=0$ o $\lambda =1$.
+
+Ahora, por lo visto en clase sabemos que la matriz de centradoes simétrica e idempotente (ver diapositiva 23). Entonces podemos \textbf{concluir que por ser idempotente esto implica que los valores propios sean 1 o 0} \ \ \fin
+
+\textbf{Ejercicio 2.} Dado los siguientes datos:
+
+\begin{figure}[H]
+\centering
+\includegraphics{datos_2.png}
+\end{figure}
+
+a) Dibújese al diagrama de dispersión múltiple y coméntese el aspecto del gráfico.
+
+\res Con ayuda de software R, y la librería 'lattice' gráficamos las tres variables.
+
+```{r, message=FALSE, warning=FALSE, fig.width = 4, fig.asp = 1, fig.align = "center"}
+# cargamos los datos
+library(tidyverse)
+library(lattice)
+x_1 <- c(8.7, 14.3, 18.9, 19.0, 20.5, 14.7, 18.8, 37.3, 12.6, 25.7)
+x_2 <- c(0.3, 0.9, 1.8, 0.8, 0.9, 1.1, 2.5, 2.7, 1.3, 3.4)
+x_3 <- c(3.1, 7.4, 9.0, 9.4, 8.3, 7.6, 12.6, 18.1, 5.9, 15.9)
+
+# graficamos todas las variables.
+cloud(x_1~x_2*x_3, ticktype="detailed", main=expression(paste("Datos de casas")),
+	screen=list(z=80,x=-70, y=40), scales=list(arrows=FALSE,col="black",distance=1,cex=.7),
+  xlab=list(expression(paste("X_1")),rot=-10,cex=1.2), ylab=list("X_2",rot=10,cex=1.2),
+	zlab=list("X_3", rot=90,cex=1.1))
+```
+
+Del gráfico anterior podemos observar una relación entre las variables, podría afirmar que están altamente correlacionadas. El gráfico con las tres variables no es tan claro determinar algo, es por eso que graficaremos las variables dos a dos para tener un enfoque más claro.
+
+```{r, message=FALSE, warning=FALSE, fig.width = 5, fig.asp = 0.7, fig.align = "center"}
+library(GGally) # cargamos un la libraria para graficar
+datos_2 <- data.frame(x_1, x_2, x_3) # creamos un data frame.
+
+# graficamos todas las variables
+datos_2 %>% ggpairs(.)
+```
+
+El lás gráficas anteriores ya se observa claramente la correlación lineal entre las variables, la variable $X_1$ y $X_2$ son las que están más altamente correlacionadas. En términos de los datos, podemos decir que, la duración media de la hipoteca (supongo que de una casa) esta correlacionada (positivamente) con la superficie media de la cocina.
+
+b) Para $X_1$ y $X_2$ calcúlanse, respectivamente, las medias muestrales $\bar{x}_1$ y $\bar{x}_2$, las varianzas muestrales $s_{11}$ y $s_{22}$, la covarianza entre $X_1$ y $X_2$, $s_{12}$, y la correlación entre ambas $r_{12}$. Interprétrese el valor obtenido de $r_{12}$.
+
+\res Tenemos que
+\begin{align*}
+\bar{x}_{j} =\frac{1}{n} \sum_{j=1}^n x_{ij}, \ \ \ \  s_{j}^2=\frac{1}{n}\sum_{i=1}^n(x_j-\bar{x_j})^2, \ \ \ s_{jk}=\frac{1}{n}\sum_{i=1}^2(x_{ij}-\bar{x}_j)(x_{jj}-\bar{x}_k) \ \ \ \&\ \  r_{jk}=\frac{s_{jk}}{s_js_k}.
+\end{align*}
+Entonces con ayuda de $R$ calculamos los solicitado.
+```{r}
+# medias muestrales
+bar_x_1 <- mean(x_1)
+bar_x_2 <- mean(x_2)
+
+# varianzas muestrales
+s_x_1 <- sum((x_1-bar_x_1)^2)/length(x_1)
+s_x_2 <- sum((x_2-bar_x_2)^2)/length(x_2)
+
+# covarianza
+s_x_1_x_2 <- sum((x_1-bar_x_1)*(x_2-bar_x_2))/length(x_1)
+
+# correlacion
+r_x_1_x_2 <- s_x_1_x_2/sqrt(s_x_1*s_x_2)
+```
+Por lo tanto, \textbf{las medias muestrales $\bar{x}_1=$`r bar_x_1` y $\bar{x}_2=$`r bar_x_2`, las varianzas muestrales $s_{11}=$`r s_x_1` y $s_{22}=$`r s_x_2`, la covarianza entre $X_1$ y $X_2$, $s_{12}=$`r s_x_1_x_2`, y la correlación entre ambas $r_{12}=$`r r_x_1_x_2`. Observamos que el coeficiente de correlación es positivo y a mi parecer es un valor alto. En términos del los datos, podemos decir que la duración media hipoteca esta relacionada al precio medio.}
+
+c) Utilizando la matriz de datos $\bf X$ y la de centrado $\bf P$, calcúlense el vector de medias muestrales $\bf \bar{x}$ y la matriz de covarianzas muestrales $\bf S$. A partir de ésta obténgase la matriz de correlaciones $\bf R$.
+
+\res Tenemos que las siguientes igualdades vistas en clases,
+\begin{align*}
+\bf \bar{x}&=\frac{1}{n}X'1 \ \ \ \ S=\frac{1}{n} X' P X, \ \ \ \ \text{donde } P=I-\frac{1}{n}11'\\
+R&=D^{-1/2}SD^{-1/2}, \ \ \ D\text{ es la matriz diagonal con las varianzas}.
+\end{align*}
+Entonces ocupando lo anterior, calculemoslo
+```{r}
+# datos del problema
+X <- matrix(c(x_1,x_2,x_3), nrow = 10) # matriz de los datos
+n <- length(x_1) # numero de observaciones
+P <- diag(1,10)-matrix(1,nrow=10, ncol=10)/n # matriz P
+
+# calculamos la matriz de medias
+x_bar <- t(X)%*%matrix(1,nrow=10, ncol=1)/n
+x_bar
+
+# calculamos la matriz de covarianzas
+S <- (t(X)%*%P%*%X)/n
+S
+
+# calculamos la matriz de correlaciones
+R <- solve(diag(sqrt(diag(S))))%*%S%*%solve(diag(sqrt(diag(S))))
+R
+```
+
+
+\textbf{Ejercicio 3.} Considérese la muestra $\bf x_1, \cdots, x_n$ de vectores de . Pruébese que la matriz de covarianzas $\bf S=\frac{1}{n}\sum_{i=1}^n (x_i-\bar{x})(x_i-\bar{x})'$, se puede expresar como $\bf \frac{1}{n}\sum_{i=1}^{n} x_ix_i'-\bar{x}\bar{x}'$.
+
+\res Utilizando solo propiedades vectoriales, tenemos
+\begin{align*}
+\bf S=\frac{1}{n}\sum_{i=1}^n(x_i-\bar{x})(x_i-\bar{x})'&=\bf \frac{1}{n}\sum_{i=1}^n(x_i-\bar{x})x_i'-\frac{1}{n}\sum_{i=n}^n(x_i-\bar{x})\bar{x}'\\
+&=\bf \frac{1}{n}\sum_{i=1}^n x_ix_i'-\frac{1}{n}\sum_{i=1}^n\bar{x}x_i'+\frac{1}{n}\sum_{i=1}^nx_i\bar{x}'-\frac{1}{n}\sum_{i=1}^n\bar{x}\bar{x}'\\
+&= \bf \frac{1}{n}\sum_{i=1}^n x_ix_i'-\frac{1}{n}\sum_{i=1}^n\bar{x}\bar{x}'\\
+&=\bf \frac{1}{n}\sum_{i=1}^n x_ix_i' -\bar{x}\bar{x}'. \ \ \ \blacksquare
+\end{align*}
+
+\textbf{Ejercicio 4.} Considere una población normal bivariada con $\mu_1=0,\mu_2=2, \sigma_{11}=2, \sigma_{22}=1,$ y $\rho_{12}=0.5.$
+
+a) Escriba la densidad normal bivariada explicitamente.
+
+\res Tenemos que la función de densidad normal p$-$dimensional es [@multivarido_book]:
+\begin{align*}
+f(x)=\frac{1}{(2\pi)^{p/2}|\Sigma|^{1/2}}e^{-(\bf x-\mu)'\Sigma^{-1}(x-\mu)/2}
+\end{align*}
+donde $-\infty \leq x_i \leq \infty, \ \ i=1,\cdots,p.$ Entonces del problema tenemos que 
+\begin{align*}
+\bf \mu=\begin{pmatrix}
+0\\ 2
+\end{pmatrix}, \ \ \ \sigma_{12}=\sigma_{21}=\rho_{12}\sqrt{\sigma_{11}}\sqrt{\sigma_{22}}=\frac{\sqrt{2}}{2} \Rightarrow \bf \Sigma=\begin{pmatrix}
+2 & \frac{\sqrt{2}}{2}\\
+\frac{\sqrt{2}}{2} & 1
+\end{pmatrix}.
+\end{align*}
+Ahora calculemos el determinante y la inversa de la matriz de covarianza $\bf \Sigma$,
+\begin{align*}
+\bf |\Sigma| &= 2-\frac{2}{4}=\frac{3}{2}\Rightarrow |\Sigma|^{1/2}=\sqrt{\frac{3}{2}}.\\
+\bf \Sigma^{-1}&=\frac{1}{\sigma_{11}\sigma_{22}-\sigma_{21}^2}\begin{pmatrix}
+\sigma_{22} & -\sigma_{12}\\
+-\sigma_{21} & \sigma_{11}
+\end{pmatrix}=\frac{2}{3}\begin{pmatrix}
+1 & -\frac{\sqrt{2}}{2}\\
+-\frac{\sqrt{2}}{2} & 2
+\end{pmatrix} = \begin{pmatrix}
+\frac{2}{3} & -\frac{\sqrt{2}}{3}\\
+-\frac{\sqrt{2}}{3} & \frac{4}{3}
+\end{pmatrix}.
+\end{align*}
+Con lo anterior podemos concluir \textbf{que la función de densidad normal bivariada es}
+\begin{align*}
+f(x)&=\frac{\sqrt{2}}{2\pi\sqrt{3}}e^{-\begin{pmatrix} x_1 & x_2-2\end{pmatrix} \begin{pmatrix}
+\frac{2}{3} & -\frac{\sqrt{2}}{3}\\
+-\frac{\sqrt{2}}{3} & \frac{4}{3}
+\end{pmatrix}\begin{pmatrix} x_1 \\ x_2-2\end{pmatrix}/2}\\
+&=\frac{1}{\pi\sqrt{6}}e^{-\begin{pmatrix} x_1 & x_2-2\end{pmatrix} \begin{pmatrix}
+\frac{2}{3}x_1 -\frac{\sqrt{2}}{3}(x_2-2)\\
+-\frac{\sqrt{2}}{3}x_1 + \frac{4}{3}(x_2-2)
+\end{pmatrix}/2}\\
+&=\frac{1}{\pi\sqrt{6}}e^{-\begin{pmatrix} x_1 & x_2-2\end{pmatrix} \begin{pmatrix}
+\frac{1}{3}x_1 -\frac{1}{3\sqrt{2}}x_2+\frac{1}{6\sqrt{2}}\\
+-\frac{1}{3\sqrt{2}}x_1 + \frac{2}{3}x_2-\frac{4}{3})
+\end{pmatrix}}\\
+&=\frac{1}{\pi\sqrt{6}}e^{-\left(x_1\left(\frac{1}{3}x_1 -\frac{1}{3\sqrt{2}}x_2+\frac{1}{6\sqrt{2}}\right)+(x_2-2)\left(-\frac{1}{3\sqrt{2}}x_1 + \frac{2}{3}x_2-\frac{4}{3}\right) \right)}.
+\end{align*}
+De forma explícita nosé si se tenía que desarrollar más.
+
+b) Escriba la expresión de distancia cuadrada generalizada $\bf (x-\mu)'\Sigma^{-1}(x-\mu)$ como función de $x_1$ y $x_2$.
+
+\res Sabemos que la distancia cuadrada generalizada se puede escribir como [@multivarido_book]
+\begin{align*}
+\bf (x-\mu)'\Sigma^{-1}(x-\mu) &= \frac{1}{1-\rho_{12}^2}\left[\left(\frac{x_1-\mu_1}{\sqrt{\sigma_{11}}}\right)^2+\left(\frac{x_2-\mu_2}{\sqrt{\sigma_{22}}}\right)^2-2\rho_{12}\left(\frac{x_1-\mu_1}{\sqrt{\sigma_{11}}}\right)\left(\frac{x_2-\mu_2}{\sqrt{\sigma_{22}}}\right)\right]
+\end{align*}
+Entonces para este problema la distancia cuadrada generalizada se escribe en función de $x_1$ y $x_2$ de la sigueinte manera
+\begin{align*}
+\bf (x-\mu)'\Sigma^{-1}(x-\mu) &= \frac{1}{1-\rho_{12}^2}\left[\left(\frac{x_1-\mu_1}{\sqrt{\sigma_{11}}}\right)^2+\left(\frac{x_2-\mu_2}{\sqrt{\sigma_{22}}}\right)^2-2\rho_{12}\left(\frac{x_1-\mu_1}{\sqrt{\sigma_{11}}}\right)\left(\frac{x_2-\mu_2}{\sqrt{\sigma_{22}}}\right)\right]\\
+&=\frac{1}{1-0.5^2}\left[\left(\frac{x_1}{\sqrt{2}}\right)^2+\left(x_2-2\right)^2-\left(\frac{x_1}{\sqrt{2}}\right)\left(x_2-2\right)\right]\\
+&=\frac{4}{3}\left[\frac{x_1^2}{2}+\left(x_2-2\right)^2-\frac{x_1\left(x_2-2\right)}{\sqrt{2}}\right].
+\end{align*}
+De igual manera, podemos reescribir la distribución calculada en el inciso a) de la siguiente forma
+\begin{align*}
+f(x)&=\cdots=\frac{1}{\pi\sqrt{6}}e^{-\left(x_1\left(\frac{1}{3}x_1 -\frac{1}{3\sqrt{2}}x_2+\frac{1}{6\sqrt{2}}\right)+(x_2-2)\left(-\frac{1}{3\sqrt{2}}x_1 + \frac{2}{3}x_2-\frac{4}{3}\right) \right)}\\
+&= \frac{1}{\pi\sqrt{6}}e^{-\frac{2}{3}\left[\frac{x_1^2}{2}+\left(x_2-2\right)^2-\frac{x_1\left(x_2-2\right)}{\sqrt{2}}\right]}.
+\end{align*}
+
+c) Determine y grafique el contorno de densidad constante que contiene el $50\%$ de la probabilidad.
+
+\res Sabemos que la distancia generalizada tiene una distribución conocida, en concreto, $\bf (x-\mu)'\Sigma^{-1}(x-\mu) \sim \chi_p^2$ con $p$ grados de libertad. Entonces el elipsoide sólido de valores de $x$ que satisface $$\bf (x-\mu)'\Sigma^{-1}(x-\mu)\leq \chi_p^2(\alpha)$$
+tiene una probabilidad $1-\alpha$ donde $\chi_p^2(\alpha)$ denota el percentil superior $(100\alpha)\%$ de la distribución $\chi_p^2$. Ahora, si asumimos $\alpha=0.5$ se espera que el $50\%$ de los datos estén contenidos dentro del contorno estimado del $50\%$. Tenemos que $\chi_p^2(0.5)=1.3863$ (ocupando R 'qchisq(0.5,2)'), entonces buscamos el elipsoide que cumple
+$$\bf (x-\mu)'\Sigma^{-1}(x-\mu)\leq \chi_p^2(0.5)=1.3863=(1.774)^2 $$
+Entonces, para graficar el contorno del elipsoide ahora calculemos los valores propios de la matriz de covarianzas y vectores propios correspondientes a los valores propios
+```{r}
+sigma_4 <- matrix(c(2,1/sqrt(2), 1/sqrt(2), 1), 2) #matriz de covarianzas
+eigen(sigma_4) # valores y vectores propios
+```
+Entonces los vectores propios son $(\lambda_1, \lambda_2)=2.3660254 0.6339746$ y sus vectores propios $\begin{pmatrix} e_1 & e_2\end{pmatrix}=\begin{pmatrix} -0.8880738 & 0.4597008\\ -0.4597008 & -0.8880738 \end{pmatrix}$. Por lo tanto, los ejes del elipsoide que se espera cumpla que el $50\%$ de los datos estén obtenidos en este son $c\sqrt(\lambda_1)=1.1774*\sqrt{2.36602}=1.81106$ y $c\sqrt(\lambda_1)=1.1774*\sqrt{0.6339}=0.9375.$ Entonces simulemos puntos de esta distribución bivariada y posteriormente graficamos la elipsoide encontrada, se ocupara la libreria ´MASS´.
+```{r, message=FALSE, warning=FALSE}
+# cargamos las librerias y los datos del problema.
+library(MASS)
+n <- 30000
+mu <- c(0, 2)
+sigma <- sigma_4
+
+# simulamos datos.
+datos_4 <- mvrnorm(n, mu, sigma)
+delta <- 0.06 # delta.
+# calculamos las distancias
+distancias <- mahalanobis(datos_4, colMeans(datos_4), cov(datos_4)) 
+
+# graficamos los puntos y la región de rechazo.
+plot(datos_4, pch=".", xlab="X_1", ylab="X_2", main="Datos simulados, región del 50%.")
+points(datos_4[distancias>1.3863,], pch='.', col='red')
+points(datos_4[(1.3863-delta)<distancias & distancias<(1.3863+delta),], pch='.', col='blue')
+```
+
+Los puntos rojos son los puntos que se encuentran fuera de la región del $50\%$, la linea azul es el límite de la región que contiene al $50\%$ de los datos (se ocupo un $\delta=0.6$ para resaltar el límite) y llos puntos negros son los que se encuentran dentro de la región. Otra manera de gráficar la región es utilizando los párametros (centro, eje menor y mayor) de la elipsoide, pero con simulación fue más sencillo de hacer la gráfica.  
+
+d) Especifique la distribución condicional de $X_1$ dado que $X_2=x_2$.
+
+\res Ocupemos la siguiente propiedad de las distribuciones normales multivariadas [@multivarido_book].
+\begin{framed}
+    \begin{thmt} \label{t_normal_condicional}
+	(Ver página 181) Sea $X=\left(\begin{array}{c} X_1\\ \hline X_2\end{array}\right)\sim N_p\left(\mu, \bf \Sigma\right),$ con $\bf \mu = \left(\begin{array}{c} \mu_1\\ \hline \mu_2\end{array}\right), \Sigma=\left(\begin{array}{c|c} \Sigma_{11}& \Sigma_{12}\\ \hline \Sigma_{21}& \Sigma_{22}\end{array}\right), |\Sigma_{22}|>0.$ Entonces la distribución condidicional de $X_1$ dado $X_2=x_2,\ f(X_1|X_2)$ es normal multivariada con 
+	\begin{align*}
+	\text{Media }&=\mu_1+\Sigma_{12}\Sigma_{22}^{-1}(x_2-\mu_2)\\
+	\text{Covarianza }&=\Sigma_{11}-\Sigma_{12}\Sigma_{22}^{-1}\Sigma_{21}.
+	\end{align*}
+    \end{thmt}
+\end{framed}
+Entonces para este problema tenemos $X=\left(\begin{array}{c} X_1\\ \hline X_2\end{array}\right)\sim N_p\left(\mu, \bf \Sigma\right),$ con $\bf \mu = \left(\begin{array}{c}0\\ \hline 2\end{array}\right), \Sigma=\left(\begin{array}{c|c} 2& \frac{1}{\sqrt{2}}\\ \hline \frac{1}{\sqrt{2}}& 1\end{array}\right), |\Sigma_{22}|=1>0.$ Entonces la distribución condidicional de $X_1$ dado $X_2=x_2,\ f(X_1|X_2)$ es normal multivariada con 
+	\begin{align*}
+	\text{Media }&=\frac{1}{\sqrt{2}}(x_2-2)=\frac{x_2-2}{\sqrt{2}}\\
+	\text{Covarianza }&=2-\frac{1}{\sqrt{2}}\frac{1}{\sqrt{2})}=\frac{3}{2}.
+	\end{align*}
+Es decir, $\bf X_1|X_2=x_2\sim N\left(\frac{x_2-2}{\sqrt{2}}, \frac{3}{2}\right)$ \ \ \ \fin
+
+\textbf{Ejercicio 5.} Sea $X$ un vector aleatorio de distribución normal con media $\mu=\begin{pmatrix}-1&1&0\end{pmatrix}'$ y matriz de covarianza
+
+\begin{equation}
+\bf \Sigma= \begin{pmatrix}
+1 & 0 & 1 \\
+0 & 3 & 1 \\
+1 & 1 & 2 
+\end{pmatrix}
+\end{equation}
+
+a) Hállese la distribución de $X_1+2X_2-3X_3.$
+
+\res Por lo visto en clase [@multivarido_book], tenemos la siguiente propiedad
+\begin{framed}
+    \begin{thmt} \label{t_normal}
+	 (Ver página 177) Si $\bf x\sim N_p(\mu, \Sigma)$, entonces cualquier combinación lineal
+	$$\bf a'x=\sum_{i=1}^p a_i x_i\sim N(a'\mu, a'\Sigma a).$$
+    Además, si $\bf a'x=\sum_{i=1}^p a_i x_i\sim N(a'\mu, a'\Sigma a)$ para cada $\bf a$, entonces $\bf x\sim N_p(\mu, \Sigma)$.
+    \end{thmt}
+\end{framed}
+
+Entonces ocupando lo anterior, estamos buscando la combinación lineal
+$$Y=X_1+2X_2-3X_3=\begin{pmatrix}1 & 2 & -3\end{pmatrix}\begin{pmatrix} X_1\\X_2\\X_3\end{pmatrix},$$
+entonces tenemos que $\bf a= \begin{pmatrix} 1 & 2 & -3 \end{pmatrix}'$. Ahora calculemos los parametros de la distribución 
+\begin{align*}
+\bf a'\mu &= \begin{pmatrix} 1 & 2 & -3 \end{pmatrix} \begin{pmatrix}-1\\1\\0\end{pmatrix}=-1+2=1\\
+\bf a'\Sigma a &=\begin{pmatrix} 1 & 2 & -3 \end{pmatrix}\begin{pmatrix}
+1 & 0 & 1 \\
+0 & 3 & 1 \\
+1 & 1 & 2 
+\end{pmatrix}\begin{pmatrix} 1 \\ 2 \\ -3 \end{pmatrix}=\begin{pmatrix} 1 & 2 & -3 \end{pmatrix}\begin{pmatrix}-2 \\ 3 \\-3 \end{pmatrix}=13.
+\end{align*}
+Por lo tanto, $\bf X_1+2X_2-3X_3\sim N(-1,13).$
+
+b) Hállese un vector $\bf a_{(2\times 1)}$ tal que las variables $X_1$ y $\bf X_1-a'\begin{pmatrix}X_2\\X_3 \end{pmatrix}$ sean independientes.
+
+\res Ocupemos la siguiente propiedad de las distribuciones multivariadas normales [@multivarido_book].
+\begin{framed}
+    \begin{thmt} \label{t_independencia_normal}
+    (Ver página 180)
+    
+	a) Si $X_1 \sim N_{p_1}\left( \mu_1, \sigma_{11}\right)$ y $X_2\sim N_{p_2}\left(\mu_2, \Sigma_{22}\right)$ son independientes, entonces $Cov(X_1, X_2)=\Sigma_{12}=0$.
+	
+	b) Si $$\left(\begin{array}{c}X_1\\ \hline X_2\end{array}\right)\sim N_{p_1+p_2}\left(\left(\begin{array}{c}\mu_1\\ \hline \mu_2\end{array}\right),
+\left(\begin{array}{c|c}\Sigma_{11}& \Sigma_{12}\\ \hline \Sigma_{21} & \Sigma_{22} \end{array}\right)	\right)$$
+    entonces $X_1$ y $X_2$ son independientes si y solo si $\Sigma_{12}=0.$
+    \end{thmt}
+\end{framed}
+Tenemos la variable $X_1$ y sea $Y=\bf X_1-a'\begin{pmatrix}X_2\\ X_3 \end{pmatrix}=X_1-a_1X_2-a_3X_3$, entonces tenemos la matrix $A=\begin{pmatrix}1 & 0 &0\\ 1&-a_1&-a_2 \end{pmatrix}$. Por lo que ocupando el teorema \ref{t_normal} tenemos
+$$AX= \begin{pmatrix}1 & 0 &0\\ 1&-a_1&-a_2 \end{pmatrix} \begin{pmatrix}X_1 \\ X_2\\X_3 \end{pmatrix}=\begin{pmatrix} X_1\\ X_1-a_1X_2-a_2X_3\end{pmatrix}\sim N_2\left(A\mu, A\Sigma A^T \right).$$
+Ahora, calculemos explicitamente la matriz de covarianza 
+\begin{align*}
+A\Sigma A^T&=\begin{pmatrix}1 & 0 &0\\ 1&-a_1&-a_2 \end{pmatrix} \begin{pmatrix}
+1 & 0 & 1 \\
+0 & 3 & 1 \\
+1 & 1 & 2 
+\end{pmatrix} \begin{pmatrix} 1& 1\\ 0 & -a_1\\ 0 & -a_2\end{pmatrix}= \begin{pmatrix}1 & 0 &0\\ 1&-a_1&-a_2 \end{pmatrix} \begin{pmatrix} 1 & 1-a_2\\ 0&-3a_1-a_2\\ 1 & 1-a_1-2a_2 \end{pmatrix}\\
+&=\begin{pmatrix} 1 &1-a_2\\ 1-a_2 &1-a_2-a_1(-3a_1-a_2)-a_2(1-a_1-2a_2) \end{pmatrix}.
+\end{align*}
+Por lo tanto, \textbf{ocupando el teorema \ref{t_independencia_normal} podemos decir que $X_1$ y $Y=\bf X_1-a'\begin{pmatrix}X_2\\ X_3 \end{pmatrix}=X_1-a_1X_2-a_3X_3$ son independientes si solo si $a'=\begin{pmatrix}a_1& 1\end{pmatrix}, \ \ \forall a_1\in \mathbb{R}.$}
+
+c) Calcúlese la distribución de $X_3$ condicionada a $X_1=x_1$ y $X_2=x_2$.
+
+\res  Tenemos $\mu_1=0,\mu_2=\begin{pmatrix} -1 & 1\end{pmatrix}', \Sigma_{11}=2, \Sigma_{22}=\begin{pmatrix} 1 & 0\\ 0 & 3 \end{pmatrix}, \Sigma_{12}=\begin{pmatrix}1 & 1\end{pmatrix}'.$ Entonces ocupando el teorema \ref{t_normal_condicional} sabemos que la distribución de $X_3$ condicionada a $X_1=x_1, \ X_2=x_2$ es normal con 
+
+\begin{align*}
+\text{Media }&=\mu_1+\Sigma_{12}\Sigma_{22}^{-1}(x_2-\mu_2)=\begin{pmatrix} -1& 1\end{pmatrix}\begin{pmatrix} 1 & 0\\ 0 & 3 \end{pmatrix}^{-1}\begin{pmatrix} x_1+1\\ x_2-1\end{pmatrix}=\begin{pmatrix} 1& 1\end{pmatrix}\begin{pmatrix} 1 & 0\\ 0 & \frac{1}{3} \end{pmatrix}\begin{pmatrix} x_1+1\\ x_2-1\end{pmatrix}\\
+&=\begin{pmatrix} 1 & 1\end{pmatrix}\begin{pmatrix} 1 & 0\\ 0 & \frac{1}{3} \end{pmatrix}\begin{pmatrix} x_1+1\\ x_2-1\end{pmatrix}=\begin{pmatrix}1& \frac{1}{3}\end{pmatrix}\begin{pmatrix} x_1+1\\ x_2-1\end{pmatrix}=x_1+1+\frac{x_2-1}{3}=x_1+\frac{x_2}{3}+\frac{2}{3}.\\
+\text{Covarianza }&=\Sigma_{11}-\Sigma_{12}\Sigma_{22}^{-1}\Sigma_{21}=2-\begin{pmatrix} 1& 1\end{pmatrix} \begin{pmatrix} 1 & 0\\ 0 & 3 \end{pmatrix}^{-1}\begin{pmatrix} 1\\ 1\end{pmatrix}=2-\begin{pmatrix}1& \frac{1}{3}\end{pmatrix} \begin{pmatrix} 1\\ 1\end{pmatrix}\\
+&=2-\left(1+\frac{1}{3}\right)=\frac{2}{3}. 
+\end{align*}
+Es decir, \textbf{podemos concluir que $X_3|X_1=x_1,X_2=x_2\sim N\left(x_1+\frac{x_2}{3}+\frac{2}{3}, \frac{2}{3}\right)$} \ \ \ \fin
+
+\textbf{Nota: En algunos ejercicios no se desarrollo la función de distribución por que no se especificaba (aunque no se si era correcto), solo se encontraba la distribución y los parámetros de esta.}
+
+# Bibliografía
