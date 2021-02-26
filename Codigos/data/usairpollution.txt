@@ -1,0 +1,29 @@
+Air Pollution in US Cities
+
+Description:
+
+     Air pollution data of 41 US cities.
+
+Format:
+
+     A data frame with 41 observations on the following 7 variables.
+
+     ‘SO2’ SO2 content of air in micrograms per cubic metre.
+     ‘temp’ average annual temperature in Fahrenheit.
+     ‘manu’ number of manufacturing enterprises employing 20 or more workers.
+     ‘popul’ population size (1970 census); in thousands.
+     ‘wind’ average annual wind speed in miles per hour.
+     ‘precip’ average annual precipitation in inches.
+     ‘predays’ average number of days with precipitation per year.
+
+Details:
+
+     The annual mean concentration of sulphur dioxide, in micrograms per cubic metre, is a measure of the air pollution of the city. 
+     The question of interest here is what aspects of climate and human ecology as measured by the other six variables in the data determine pollution?
+
+Source:
+
+     R. R. Sokal and F. J. Rohlf (1981), _Biometry_, W. H. Freeman, San
+     Francisco (2nd edition).
+
+
