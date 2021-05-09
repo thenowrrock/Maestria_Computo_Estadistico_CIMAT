@@ -71,7 +71,7 @@ def QDA_clasification(X_train, y_train, X_test, y_test):
     return y_predict
 
 
-def log_regression_clasification(X_train, y_train, X_test, y_test):
+def log_regression_clasification(X_train, y_train, X_test, y_test, C):
     log_reg = LogisticRegression(solver='sag', max_iter=100, random_state=semilla,
 multi_class="multinomial", n_jobs=-1)
     log_reg.fit(X_train, y_train)
@@ -86,7 +86,7 @@ multi_class="multinomial", n_jobs=-1)
     
     
     log_reg = LogisticRegression(solver='sag', max_iter=100, random_state=semilla,
-multi_class="ovr", n_jobs=-1)
+multi_class="ovr", n_jobs=-1, penalty="l1", C=C)
     log_reg.fit(X_train, y_train)
     
     print("----------Errors train------------------")
