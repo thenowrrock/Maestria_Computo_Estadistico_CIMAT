@@ -1,0 +1,921 @@
+---
+fontsize: 11pt
+geometry: "left=2cm,right=2cm,top=2cm,bottom=2cm"
+documentclass: article
+output:
+    pdf_document:
+        includes:
+            in_header: mystyles.sty
+---
+\begin{table}[ht]
+\centering
+\begin{tabular}{c}
+\textbf{Maestría en Computo Estadístico}\\
+\textbf{Estadística Multivariada} \\
+\textbf{Examen parcial}\\
+\today \\
+\emph{Enrique Santibáñez Cortés}\\
+Repositorio de Git: \href{https://github.com/Enriquesec/Estadística_multivariada/tree/master/Tareas/Examen_1}{Examen 1}.
+\end{tabular}
+\end{table}
+
+
+1. Los datos del archivo \texttt{datossavehembra.dat} corresponde a mediciones de $x_1=$ longitud de cola y $x_2=$ longitud de ala, para una muestra de $n=45$ aves.
+
+(a) Construye y muestra una región de confíanza (elipse) del $95\%$ para $\mu_1$ y $\mu_2$. Supón que se sabe que $\mu_1$ = 190mm y $\mu_2$ = 275mm son valores estándar para las aves macho. ¿Son datos plausibles para las mediciones de las aves hembra?
+
+\res \begin{framed}
+    \begin{thmr} \label{r_lambda}
+	(Visto en clase, pag. 62-semana 4) Recordando que el estadístico para probar $H_0:\mu = \mu_0$ está dado por 
+	\begin{align*}
+	T^2=n(\xb-\mu_0)'S^{-1}(\xb-\mu_0)
+\end{align*}	 
+	No se rechaza $H_0$ si $T^2 \leq \frac{(n-1)p}{(n-p)}F_{p,n-p}(\alpha)$, es decir,
+	$$n(\xb-\mu_0)'S^{-1}(\xb-\mu_0)\leq \frac{(n-1)p}{(n-p)}F_{p,n-p}(\alpha)$$
+	Por tanto, la región de confianza para $\mu$ de una población normal p$-$variada está dado por 
+	$$\mP\left(n(\xb-\mu_0)'S^{-1}(\xb-\mu_0)\leq \frac{(n-1)p}{(n-p)}F_{p,n-p}(\alpha)\right) = 1-\alpha.$$
+	Más formalmente, una región de confianza $R(\X)$ del 100$(1-\alpha)\%$ para el vector de medias $\mu$ de una distribución normal p$-$dimensional es el elipsoide determinado por todos los puntos posibles de $\mu$ que satisfacen
+	$$n(\xb-\mu_0)'S^{-1}(\xb-\mu_0)\leq \frac{(n-1)p}{(n-p)}F_{p,n-p}(\alpha) $$
+    \end{thmr}
+\end{framed}
+
+Primero revisemos los datos,
+```{r, message=FALSE, warning=FALSE}
+library(tidyverse) # manipulación de dataframe
+
+# cargamos los datos
+aves_hembra <- read.table("../data/datosavehembra.dat", col.names = c("x_1", "x_2"))
+head(aves_hembra)
+
+dim(aves_hembra)
+```
+
+Ahora, sabemos por el teorema del límite central que cuando una muestra aleatoria es grande con distribución $T^2$ esta converge en probabilidad a una distribución $\chi^2_p$. En nuestro conjunto de datos tenemos que $n-p=45-2=43$ es grande, entonces ocupando el \textbf{Resultado} (\ref{r_lambda}) podemos traducir la región de confianza $R(\X)$ del 100$(1-\alpha)\%$ para el vector de medias $\mu$ de una distribución normal p$-$dimensional es la elipsoide determinada por todos los puntos posibles de $\mu$ que satisfacen
+$$n(\xb-\mu_0)'S^{-1}(\xb-\mu_0)\leq \frac{n-1}{n-p}\chi^2_p(\alpha) $$
+Con ayuda de R calculamos el vector de medias $\xb$, la matriz de covarianzas muestral $S$ y el valor crítico $\frac{(n-1)}{(n-p)}\chi^2_p(\alpha=0.05):$  
+
+```{r}
+mu <- aves_hembra %>% select(x_1, x_2) %>% colMeans() %>% as.vector()  
+mu #vector de medias
+
+n <- nrow(aves_hembra) # datos del problema
+p <- ncol(aves_hembra)
+
+S <- aves_hembra %>% select(x_1, x_2) %>%  cov() %>% as.matrix()
+solve(S) # inversa de la matriz de covarianzas muestral
+
+chi_valor = (n-1)*qchisq(0.95, p)/(n-p) # valor crítico.
+chi_valor
+```
+
+Por lo tanto, ocupando los calculos anteriores podemos decir que nuestra región de confianza $R(\X)$ son todos los puntos $(\mu_1,\mu_2)$ que satisfacen
+\begin{align*}
+45\begin{pmatrix}
+193.6222-\mu_1& 279.7778-\mu_2
+\end{pmatrix}\begin{pmatrix}
+0.02044265 & -0.01199324\\
+-0.01199324 & 0.01183140
+\end{pmatrix}\begin{pmatrix}
+193.6222-\mu_1\\ 279.7778-\mu_2
+\end{pmatrix}&\leq 6.130801\\
+\begin{pmatrix}
+193.6222-\mu_1& 279.7778-\mu_2
+\end{pmatrix}\begin{pmatrix}
+3.958151-0.02044265\mu_1-3.355442+0.01199324\mu_2\\
+-2.322158+0.01199324\mu_1+3.310163-0.01183140\mu_2
+\end{pmatrix}&\leq 0.13624\\
+\begin{pmatrix}
+193.6222-\mu_1& 279.7778-\mu_2
+\end{pmatrix}\begin{pmatrix}
+0.602709-0.02044265\mu_1+0.01199324\mu_2\\
+0.988005+0.01199324\mu_1-0.01183140\mu_2
+\end{pmatrix}&\leq 0.13624\\
+116.6978-3.958151\mu_1+2.322158\mu_2-0.602709\mu_1+
+ 0.02044265\mu_1^2-0.01199324\mu_1\mu_2+&\\
+  276.4219+3.355442\mu_1-3.310163\mu_2-0.988005\mu_2-0.01199324\mu_2\mu_1+0.01183140\mu_2^2
+  &\leq 0.13624\\
+ \bf 393.1197-1.205418\mu_1-1.97601\mu_2-0.02398648\mu_1\mu_2
+ +0.02044265\mu_1^2+0.01183140\mu_2^2&\leq 0.13624
+\end{align*}
+
+\textbf{Y la elipsoide de confianza al $95\%$ de confianza esta dada por la forma cuádratica }
+$$\bf 392.9835-1.205418\mu_1-1.97601\mu_2-0.02398648\mu_1\mu_2 +0.02044265\mu_1^2+0.01183140\mu_2^2=0.$$
+Ahora, si queremos verifica si los datos son plausibles considerando que $\mu_1=190 mm$ y $\mu_2=275mm$ son valores estándar para las aves machos veamos si esta media cae dentro de la región de confiaza del $95\%$ para $\mu_1$ y $\mu_2$ de los datos de las hembras.
+
+```{r, fig.width = 5, fig.height= 3.5, fig.align = "center"}
+# elipse de confianza del 95% para 
+ggplot(aves_hembra, aes(x_1, x_2))+
+  geom_point(color="blue")+
+  stat_ellipse(data=aves_hembra,aes(x_1, x_2), type="t", col="red", size=.5, linetype=2, 
+               level=.05)+
+  geom_point(data=data.frame(x_1=colMeans(aves_hembra)[1], x_2=colMeans(aves_hembra)[2]), 
+             aes(x_1,x_2), col="green")+
+  geom_point(data=data.frame(x_1=c(190), x_2=(275)), aes(x_1, x_2), col="red")+
+  labs(title = "Elipse de confianza del 95%.")
+```
+
+El punto rojo de la grafica anterior representa las medias para las aves machos, por lo que observando notamos que no cae dentro de la región de confianza. Por lo que, \textbf{podemos concluir que la media poblacional de los datos de las hembras no es $\mu=\begin{pmatrix} 190 & 275 \end{pmatrix}'$, es decir, la medias entre los generos en las aves son diferentes. }
+
+(b) Construye intervalos de confíanza $T^2$ simultáneos de $95\%$ para $\mu_1$ y $\mu_2$. ¿Hay alguna ventaja sobre los de bonferroni?
+
+\res  \begin{framed}
+    \begin{thmt} \label{t_multi}
+	(Visto en clase, pag. 10-semana 5) Sea $\x_1,\cdots,\x_n$ una muestra aleatoria obtenida de una población $N_p(\mu, \Sigma)$ positiva definida. Entonces, simultáneamente para toda $\mathbf{a}$, el intervalo
+	\begin{align*}
+	\left(\mathbf{a}'\bar{\X}-\sqrt{\frac{(n-1)p}{(n-p)}}F_{p,n-p}(\alpha)\mathbf{a}'S\mathbf{a},\mathbf{a}'\bar{\X}+\sqrt{\frac{(n-1)p}{n(n-p)}}F_{p,n-p}(\alpha)\mathbf{a}'S\mathbf{a} \right)
+	\end{align*}
+	Contendrá $\mathbf{a}'\mu$ con probabilidad $1-\alpha$. Estos intervalos simultáneos se denomina intervalos $T^2$, ya que la probabilidad de cobertura es determinada por la distribución $T^2$. Notese que las elecciones sucesivas de $\mathbf{a}'=[1000 \cdots 0], \mathbf{a}'=[0100\cdots 0],\cdots, \mathbf{a}'=[000\cdots 1]$ para los intervalos $T^2$, nos permiten obtener los intervalos de confianza para las medias de los componentes, $\mu_1, \mu_2, \cdots , \mu_p$, esto es
+	\begin{align*}
+	\xb_1-\sqrt{\frac{(n-1)p}{(n-p)} F_{p,n-p}(\alpha)}\sqrt{\frac{s_{11}}{n}} \leq & \mu_1 \leq \xb_1+\sqrt{\frac{(n-1)p}{(n-p)} F_{p,n-p}(\alpha)}\sqrt{\frac{s_{11}}{n}}\\
+	\xb_2-\sqrt{\frac{(n-1)p}{(n-p)} F_{p,n-p}(\alpha)}\sqrt{\frac{s_{22}}{n}} \leq & \mu_2 \leq \xb_2+\sqrt{\frac{(n-1)p}{(n-p)} F_{p,n-p}(\alpha)}\sqrt{\frac{s_{22}}{n}}\\
+		&\vdots\\
+	\xb_p-\sqrt{\frac{(n-1)p}{(n-p)} F_{p,n-p}(\alpha)}\sqrt{\frac{s_{pp}}{n}} \leq & \mu_p \leq \xb_p+\sqrt{\frac{(n-1)p}{(n-p)} F_{p,n-p}(\alpha)}\sqrt{\frac{s_{pp}}{n}}.
+	\end{align*}
+    \end{thmt}
+\end{framed}
+Ocupando el Resultado (\ref{t_multi}) procedemos a calcularlo con ayuda de $R$. Suponemos que los datos se distribuyen como una normal multivariada, es decir, cumple los supuestos del Resultado \ref{t_multi}
+
+```{r}
+valor_critico <- sqrt((n-1)*p*(qf(0.95, p, n-p))/(n-p)) # valor critico
+mu <- colMeans(aves_hembra) # vector de medias
+mu
+
+S_mof <- matrix(sqrt(diag(cov(aves_hembra))/n),1) # a'Sa
+
+lim_inf <- mu-valor_critico*S_mof # limites de los intervalso de confianza
+lim_inf
+lim_sup <- mu+valor_critico*S_mof
+lim_sup
+
+```
+Entonces, los intervalos de confianza para las cuatro medias poblacionales de la longitud por año $\mu_1$ y $\mu_2$ son
+\begin{table}[H]
+\centering
+\begin{tabular}{ccccc}
+media&límite inferior & media & límite superior\\ \hline \hline
+$\mu_1$&`r lim_inf[1]`  & $\mu_1=$`r mu[1]` & `r lim_sup[1]`\\
+$\mu_2$&`r lim_inf[2]`  & $\mu_2=$`r mu[2]` & `r lim_sup[2]`\\ \hline \hline 
+\end{tabular}
+\caption{Intervalos de confianza simultaneos $T^2$ al $95\%$ de confianza.}
+\end{table}
+
+Calculemos los intervalos de Bonferroni, para ello recordemos el siguiente teorema.
+\begin{framed}
+    \begin{thmt} \label{t_multi_bonfe} Con un nivel de confiazna global más grande o igual a $1-\alpha$, podemos construir los $m=p$ intervalos de confianza de Bonferroni: 
+	\begin{align*}
+	\xb_1-t_{n-1}\left(\frac{\alpha}{2p}\right)\sqrt{\frac{s_{11}}{n}} \leq & \mu_1 \leq \xb_1+t_{n-1}\left(\frac{\alpha}{2p}\right)\sqrt{\frac{s_{11}}{n}}\\
+	\xb_2-t_{n-1}\left(\frac{\alpha}{2p}\right)\sqrt{\frac{s_{22}}{n}} \leq & \mu_2 \leq \xb_2+t_{n-1}\left(\frac{\alpha}{2p}\right)\sqrt{\frac{s_{22}}{n}}\\
+		&\vdots\\
+	\xb_p-t_{n-1}\left(\frac{\alpha}{2p}\right)\sqrt{\frac{s_{pp}}{n}} \leq & \mu_p \leq \xb_p+t_{n-1}\left(\frac{\alpha}{2p}\right)\sqrt{\frac{s_{pp}}{n}}.
+	\end{align*}
+    \end{thmt}
+\end{framed}
+Utilizando el teorema (\ref{t_multi_bonfe}) procedemos a calcular los nuevos intervalos de confianza,
+```{r}
+mu <- colMeans(aves_hembra) # vecotr de medias
+
+S_mof <- matrix(sqrt(diag(cov(aves_hembra))/n),1)
+
+valor_critico <- abs(qt(0.05/(2*p),n-1)) # cambiamos el valro criico
+
+lim_inf_bon <- mu-valor_critico*S_mof # limites de los intervalso de confianza
+lim_inf_bon
+lim_sup_bon <- mu+valor_critico*S_mof
+lim_sup_bon
+```
+
+Entonces, los intervalos de confianza para las cuatro medias poblacionales de la longitud por año $\mu_1$ y $\mu_2$ son
+\begin{table}[H]
+\centering
+\begin{tabular}{ccccccc}
+media&lím. inf.&lim. inf. bonf. & media & lim. sup. bonf. &lím. sup.\\ \hline \hline
+$\mu_1$&`r lim_inf[1]`&`r lim_inf_bon[1]`& $\mu_1=$`r mu[1]` &`r lim_sup_bon[1]`& `r lim_sup[1]`\\
+$\mu_2$&`r lim_inf[2]`&`r lim_inf_bon[2]`& $\mu_2=$`r mu[2]` &`r lim_sup_bon[2]`& `r lim_sup[2]`\\  \hline \hline 
+\end{tabular}
+\caption{Comparación de los intervalos de confianza simultaneos $T^2$ al $95\%$ de confianza.}
+\end{table}
+Comparando los intervalos notamos que los invertalos considerando el método de Bonferroni es más cortos que los intervalos de confianza simultáneos. \textbf{Estas diferencias tienen sentido, ya que con el método de Bonferroni se esta controlando la tasa de error global intependiente de la estructura de correlación entre las variables, pero como la correlación de las variables es muy cercana a 0 no se nota tanto esta diferencia} 
+
+Observamos una diferencia entre las concluciones del inciso a) y este, una explicación fue a que consideramos la aproximación de $T^2$ cuando es una muestra aleatoria grande. Por lo que en este caso, sería preferible haber considerando la distribución real de $T^2$, es decir, una distribución $F$ \fin
+
+2. Muchos inversionistas están buscando dividendos que se pagarán de los benefícios futuros. Los datos del archivos \textbf{cash hi tech.tx} enumeran una serie de características sobre su situación fínanciera, hasta septiembre del 2010, de varias empresas de tecnologías e información. Las variables resultado a explicar son los dividendos actuales y futuros (current, $Y_1$ y $60\%$ payout, $Y_2$).
+
+(a) Desarrolle un modelo de regresión multivariada usando la capitalización de mercado (market cap, $z_1$), efectivo neto (net cash, $z_2$) y flujo de efectivo (cash flow, $z_3$) como las variables independientes.
+
+\res \begin{framed}
+    \begin{thmr} \label{r_multivariada_regresion}
+	Sea $\Y=\Z\beta+\epsilon$ el modelo de regresión multivariada, con $\Z$ de rango completo $r+1, n\geq (r+1)+m,$ y $\epsilon$ sigue una distribución normal multivariada. Entonces
+	$$\hat{\beta} = (\Z'\Z)^{-1}\Z' \Y$$
+    es el estimador de máxima verosimilitud de $\beta$ y 
+    $$\hat{\beta} \sim N(\beta, \mcov)$$
+    donde los elementos de $\mcov$ son
+    $$Cov(\hat{\beta}_{(i)},\hat{\beta}_{(k)})=\sigma_{ik}(\Z \Z)^{-1}, \ \ \ i,k=1,\cdots,m. $$
+    \end{thmr}
+\end{framed}
+
+Cargamos los datos:
+```{r, message=FALSE, warning=FALSE}
+names_cash <- c("company", "market", "net_cash", "cash_2009", "cash_flow", 
+                "cash_cash_flow", "current", "payout")
+cash <- as.data.frame(read_tsv("../data/cash_hi_tech.txt", col_names=names_cash, skip = 2))
+n <- nrow(cash)
+```
+
+Del archivo de datos tenemos la siguiente tabla de datos:
+\begin{table}[H]
+\centering
+\begin{tabular}{ccccccc}
+Compañía&Current ($Y_1$) & Payout ($Y_2$) & Markep Cap ($z_1$) &Net cash $(z_2)$ &Cash flow $(z_3)$ \\ \hline \hline
+`r cash$company[1]` &`r cash$current[1]`&`r cash$payout[1]`&`r cash$market[1]` &`r cash$net_cash[1]`& `r cash$cash_flow[1]`\\
+`r cash$company[2]` &`r cash$current[1]`&`r cash$payout[2]`&`r cash$market[2]` &`r cash$net_cash[2]`& `r cash$cash_flow[2]`\\
+`r cash$company[3]` &`r cash$current[3]`&`r cash$payout[3]`&`r cash$market[3]` &`r cash$net_cash[3]`& `r cash$cash_flow[3]`\\
+`r cash$company[4]` &`r cash$current[4]`&`r cash$payout[4]`&`r cash$market[4]` &`r cash$net_cash[4]`& `r cash$cash_flow[4]`\\
+`r cash$company[5]` &`r cash$current[5]`&`r cash$payout[5]`&`r cash$market[5]` &`r cash$net_cash[5]`& `r cash$cash_flow[5]`\\
+`r cash$company[6]` &`r cash$current[6]`&`r cash$payout[6]`&`r cash$market[6]` &`r cash$net_cash[6]`& `r cash$cash_flow[6]`\\
+`r cash$company[7]` &`r cash$current[7]`&`r cash$payout[7]`&`r cash$market[7]` &`r cash$net_cash[7]`& `r cash$cash_flow[7]`\\
+`r cash$company[8]` &`r cash$current[8]`&`r cash$payout[8]`&`r cash$market[8]` &`r cash$net_cash[8]`& `r cash$cash_flow[8]`\\
+`r cash$company[9]` &`r cash$current[9]`&`r cash$payout[9]`&`r cash$market[9]` &`r cash$net_cash[9]`& `r cash$cash_flow[9]`\\
+`r cash$company[10]` &`r cash$current[10]`&`r cash$payout[10]`&`r cash$market[10]` &`r cash$net_cash[10]`& `r cash$cash_flow[10]`\\
+`r cash$company[11]` &`r cash$current[11]`&`r cash$payout[11]`&`r cash$market[11]` &`r cash$net_cash[11]`& `r cash$cash_flow[11]`\\
+`r cash$company[12]` &`r cash$current[12]`&`r cash$payout[12]`&`r cash$market[12]` &`r cash$net_cash[12]`& `r cash$cash_flow[12]`\\
+`r cash$company[13]` &`r cash$current[13]`&`r cash$payout[13]`&`r cash$market[13]` &`r cash$net_cash[13]`& `r cash$cash_flow[13]`\\
+`r cash$company[14]` &`r cash$current[14]`&`r cash$payout[14]`&`r cash$market[14]` &`r cash$net_cash[14]`& `r cash$cash_flow[14]`\\
+`r cash$company[15]` &`r cash$current[15]`&`r cash$payout[15]`&`r cash$market[15]` &`r cash$net_cash[15]`& `r cash$cash_flow[15]`\\  \hline \hline 
+\end{tabular}
+\caption{Datos del problema de dividendos.}
+\end{table}
+Queremos estimar conjuntamente
+\begin{align*}
+Y_1 = B_{01}+B_{11}z_1+B_{21}z_2+B_{31}z_3+\epsilon_1, \ \ \ \text{y} \ \ \ Y_2 = B_{02}+B_{12}z_1+B_{22}z_2+B_{32}z_3+\epsilon_2.\\
+\end{align*}
+La matriz de diseño es
+\begin{align*}
+Z = \begin{pmatrix}
+1&`r cash$market[1]` &`r cash$net_cash[1]`& `r cash$cash_flow[1]`\\
+1&`r cash$market[2]` &`r cash$net_cash[2]`& `r cash$cash_flow[2]`\\
+1&`r cash$market[3]` &`r cash$net_cash[3]`& `r cash$cash_flow[3]`\\
+1&`r cash$market[4]` &`r cash$net_cash[4]`& `r cash$cash_flow[4]`\\
+1&`r cash$market[5]` &`r cash$net_cash[5]`& `r cash$cash_flow[5]`\\
+1&`r cash$market[6]` &`r cash$net_cash[6]`& `r cash$cash_flow[6]`\\
+\vdots& \vdots & & \vdots
+\end{pmatrix}.
+\end{align*}
+
+Para obtener los estimadores de maxima verosimilitud ocupamos el \textbf{Resultado} (\ref{r_multivariada_regresion}), lo calculamos con R: 
+
+```{r}
+Z <- cash %>% 
+  mutate(intercepto=1) %>% 
+  select(intercepto, market, net_cash, cash_flow) %>% 
+  as.matrix() # matriz diseño
+
+r <- ncol(Z)-1
+
+y1 <- cash %>% select(current) %>% as.matrix() # variables explicativas
+y2 <- cash %>% select(payout) %>% as.matrix()
+
+beta_1 <- solve(t(Z)%*%Z)%*%t(Z)%*%y1 # estimadores de MV. 
+beta_1
+
+beta_2 <- solve(t(Z)%*%Z)%*%t(Z)%*%y2
+beta_2
+```
+Por lo tanto, tenemos que los EMV's son
+\begin{align*}
+\hat{\beta} = \begin{pmatrix} \hat{\beta}_1 & \hat{\beta}_2\end{pmatrix} = \begin{pmatrix}
+`r beta_1[1]` &  `r beta_2[1]`\\
+`r beta_1[2]` &  `r beta_2[2]`\\
+`r beta_1[3]` &  `r beta_2[3]`\\
+`r beta_1[4]` &  `r beta_2[4]`
+\end{pmatrix}
+\end{align*}
+Ahora, calculemos la matriz de las predichos y la matriz de residuales:
+```{r}
+Y_hat <- Z%*%cbind(beta_1, beta_2)
+```
+
+\begin{align*}
+\hat{\Y} = \Z\hat{\beta} =\begin{pmatrix} 
+`r as.vector(Y_hat[1,1])` &  `r as.vector(Y_hat[1,2])`\\
+`r as.vector(Y_hat[2,1])` &  `r as.vector(Y_hat[2,2])`\\
+`r as.vector(Y_hat[3,1])` &  `r as.vector(Y_hat[3,2])`\\
+`r as.vector(Y_hat[4,1])` &  `r as.vector(Y_hat[4,2])`\\
+\vdots & \vdots
+\end{pmatrix}.
+\end{align*}
+```{r}
+epsilon_hat <- cbind(y1, y2) - Y_hat
+```
+
+\begin{align*}
+\hat{\epsilon} =\Y-\hat{\Y} =\begin{pmatrix} 
+`r as.vector(epsilon_hat[1,1])` &  `r as.vector(epsilon_hat[1,2])`\\
+`r as.vector(epsilon_hat[2,1])` &  `r as.vector(epsilon_hat[2,2])`\\
+`r as.vector(epsilon_hat[3,1])` &  `r as.vector(epsilon_hat[3,2])`\\
+`r as.vector(epsilon_hat[4,1])` &  `r as.vector(epsilon_hat[4,2])`\\
+\vdots & \vdots
+\end{pmatrix}
+\end{align*}
+
+(b) Analice el efecto que tiene el flujo de efectivo ($z_3$) respecto a los dividendos en conjunto. Comente los resultados.
+
+\res \begin{framed}
+    \begin{thmr} \label{r_hipotesis_beta}
+	(Visto en clase, pag. 10-semana 5) Para el modelo de regresión multivariada, sea $Z$ de rango completo $r+1, \ n\geq r+1+m$ y $\epsilon$ normalmente distribuidos. Entocnes bajo la hipótesis nula $H_0:\beta_{(2)} = 0, \ n(\hat{\mcov} \sim W_{n-r-1}(\mcov)$ independientemente de $n\left(\hat{\mcov}_1-\hat{\mcov}\right),$ la cual a su vez se distribuye como $W_{r-q}\left(\mcov\right)$.\\
+	La prueba de razón de verosimilitud de $H_0$ es equivalente a rechazar $H_0$ para valores grandes de 
+	\begin{align*}
+	-2\ln\Lambda = -n\ln\left(\frac{|\hat{\mcov}|}{|\hat{\mcov}_1|}  \right)= -n\ln \frac{|n\hat{\mcov}|}{|n\hat{\mcov}+n(\hat{\mcov}_1-\hat{\mcov})|}
+	\end{align*}
+	
+	Cuando $n-r$ y $n-m$ son ambos grandes, el estadístico modificado
+	\begin{align*}
+	-\left[ n-r-1-\frac{1}{2}(m-r+q+1)\right]\ln\left(\frac{|\hat{\mcov}|}{|\hat{\mcov}_1|} \right) \sim \chi^2_{m(r-q)}.
+	\end{align*}
+    \end{thmr}
+\end{framed}
+
+Con el \textbf{Resultado} (\ref{r_hipotesis_beta}), podemos analizar el efecto que tiene el flujo de efectivo $z_3$ respecto a los dividendos. Es decir, bajo $H_0:\beta_{(3)}=0$, y $\textbf{Y}=\textbf{Z}_1\beta_{(1)}+\textbf{Z}_2\beta_{(2)}+\bf{\epsilon}$ y ocupando la prueba de razón de verosimilitud para $H_0$. Para ello primero calculemos la matriz de la suma de cuadrados de los residuales y productos cruzados (\textbf{E}), y la matriz de la hipótesis nula (\textbf{H}) para facilitar los calculos.
+
+```{r}
+sigma <- t(epsilon_hat)%*%epsilon_hat/n
+sigma
+
+E <- n*sigma
+E
+
+# considerando Beta_3=0
+Z1 <- cash %>% 
+  mutate(intercepto=1) %>% 
+  select(intercepto, market, net_cash) %>% 
+  as.matrix()
+
+y1 <- cash %>% select(current) %>% as.matrix()
+y2 <- cash %>% select(payout) %>% as.matrix()
+
+beta_1 <- solve(t(Z1)%*%Z1)%*%t(Z1)%*%y1
+beta_2 <- solve(t(Z1)%*%Z1)%*%t(Z1)%*%y2
+Y_hat <- Z1%*%cbind(beta_1, beta_2)
+epsilon_hat <- cbind(y1, y2) - Y_hat
+
+sigma1 <- t(epsilon_hat)%*%epsilon_hat/n
+sigma1
+
+H <- n*(sigma1 -sigma)
+H
+```
+Así, el valor calculado del estadístico de la lambda de Wilsk es
+```{r}
+lambda_2n <- (det(E)/(det(E+H)))
+lambda_2n
+```
+Entonces como la lamdda de Wilsk es muy pequeño, no hay evidencia significativa para rechazar la hipotésis nula. Es decir, \textbf{podemos concluir que el efecto que tiene el flujo de efectivo $(z_3)$ respecto a los dividendos en conjunto es nulo.}
+
+(c) Dado $z_0 = [1, 21296, 7850, 15.2]$, obtenga una elipse de confíanza al $95\%$ para $B_{z_0}$ e interpretala.
+
+\res \begin{framed}
+    \begin{thmr} \label{r_elipse_confianza}
+	De los resultados sobre las distribuciones muestrales de los estimadores de máxima verosimilitud tenemoes que 
+	$$\hat{\beta}z_0\sim N_m\left(\beta'z_0, z_0'\left(Z'Z\right)^{-1}z_0 \mcov\right)\ \ \ \text{y}\ \ \ n\hat{\mcov}\sim W_{n-r-1}(\mcov). $$
+	El valor conocido de la función de regresión en $z_0$ es $\beta'z_0$. Así la $T^2$ se puede escribir como
+	$$T^2=\left(\frac{\hat{\beta}z_0-\beta z_0}{\sqrt{z_0'(\Z' \Z)^{-1}}}\right)'\left(\frac{n}{n-r-1}\hat{\mcov}\right){-1}\left(\frac{\hat{\beta}z_0-\beta z_0}{\sqrt{z_0'(\Z' \Z)^{-1}}}\right)$$	
+	De esta forma la elipsoide de confianza del $100(1-\alpha)\%$ para la función de regresión $\beta' z_0$ asociado con $z_0$, está dado por la desigualdad
+	$$\left(\hat{\beta}'z_0-\beta z_0\right)'\left(\frac{n}{n-r-1}\hat{\mcov}\right)^{-1}\left(\hat{\beta}'z_0-\beta z_0\right)\leq z_0'(\Z'\Z)^{-1}z_0\left(\frac{m(n-r-1)}{(n-r-m)}F_{m,n-r-m}(\alpha)\right).$$
+    \end{thmr}
+\end{framed}
+
+Ocupando el \textbf{Resultado} (\ref{r_elipse_confianza}), podemos calcular el elipsoide de confianza del $100(1-\alpha)\%$ para la función de regresión $\beta z_0$ asociado con $z_0= [1, 21296, 7850, 15.2]$. Primero calculemos algunos valores con ayuda de R,
+
+```{r}
+# datos del problema
+m <- 2
+r <- ncol(Z)-1
+
+# estimadores de MV.
+beta_1 <- solve(t(Z)%*%Z)%*%t(Z)%*%y1
+beta_2 <- solve(t(Z)%*%Z)%*%t(Z)%*%y2
+beta <- cbind(beta_1, beta_2)
+
+# predición y matriz de errores
+Y_hat <- Z%*%beta
+epsilon_hat <- cbind(y1, y2) - Y_hat
+
+# matriz de covarianzas
+sigma <- t(epsilon_hat)%*%epsilon_hat/n
+
+# z0
+z_0 <- matrix(c(1, 21296, 7850, 15.2))
+
+# valores para la elipsoide
+t(beta)%*% z_0 # calculamos beta *z_0
+
+solve(n*sigma/(n-r-1)) # valor intermedio
+
+# Valor critico del lado derecho de la desigualda
+aux_z <- (t(z_0)%*%solve(t(Z)%*%Z)%*%z_0)
+f_valor<- (m*(n-r-1)/(n-r-m))*qf(0.95, m, n-r-m)
+aux_z*f_valor 
+```
+Con los calculos de arriba, tenemos que 
+\begin{align*}
+\begin{pmatrix}
+z_0'\beta_{(1)}-0.8563708& z_0'\beta_{(2)}- 9.1100679
+\end{pmatrix}\begin{pmatrix}
+0.8547&11.757\\
+11.757& 1821.6988
+\end{pmatrix}\begin{pmatrix}
+z_0'\beta_{(1)}-0.8563708\\ z_0'\beta_{(2)}- 9.1100679
+\end{pmatrix}\leq 3.08\\
+\begin{pmatrix}0.8546z_0'\beta_{(1)}+11.7573z_0'\beta_{(2)}-107.84173 &11.757z_0'\beta_{(1)}+1821.6988z_0'\beta_{(2)}-16605.869 \end{pmatrix}\begin{pmatrix}
+z_0'\beta_{(1)}-0.856\\z_0'\beta_{(2)}- 9.11
+\end{pmatrix} \leq 3.08\\
+0.854(z_0'\beta_{(1)})^2+23.514z_0'\beta_{(1)}z_0'\beta_{(2)}-215.68346z_0'\beta_{(1)}+ 1821.6988(z_0'\beta_{(2)})^2+151372.94-33211.73z_0'\beta_{(2)} \leq 3.08
+\end{align*}
+Entonces, la elipsoide de confianza del $95\%$ para $\beta'z0$ asociado a $\bf z_0$ está dado por la forma cuádratica
+\begin{align*}
+\bf 0.854(z_0'\beta_{(1)})^2+23.514z_0'\beta_{(1)}z_0'\beta_{(2)}-215.683z_0'\beta_{(1)}+1821.6988(z_0'\beta_{(2)})^2+151369.9-33211.73z_0'\beta_{(2)}=0.
+\end{align*}
+
+```{r, include=FALSE}
+plot.ellipse <- function (a, b, c, d, e, f, n.points = 1000) {
+  A <- matrix(c(a, c / 2, c / 2, b), 2L)
+  B <- c(-d / 2, -e / 2)
+  mu <- solve(A, B)
+
+  r <- sqrt(a*mu[1]^2+b*mu[2]^2+c*mu[1]*mu[2]-f)
+  theta <- seq(0, 2 * pi, length = n.points)
+  v <- rbind(r * cos(theta), r * sin(theta))
+
+  z <- backsolve(chol(A), v) + mu
+  }
+```
+
+
+```{r fig.width = 5, fig.height= 3.5, fig.align = "center"}
+a <- 0.8546666; b <- 1821.6988; c <- 23.5146046; d <- 215.68346
+e <- 33211.73674; f <- 151369.9
+
+z <- plot.ellipse(a, b,c,d,e,f)
+z <- as.data.frame(-t(z))
+
+Y <- cbind(y1, y2)
+ggplot(as.data.frame(Y_hat), aes(current, payout))+
+  geom_point()+
+  geom_point(data=data.frame("current"=c(0.8563708), "payout"=c(9.1100679)), 
+             aes(current, payout), color="blue")+
+  geom_point(data=z, aes(V1,V2), color="red", size=0.1)
+```
+Observando la elipse de confianza, podemos observar que el intervalo para la variable $current$ es demasiado amplío en comparación con la variable $payout$.
+
+(d) Obtenga una elipse de predicción al $95\%$ para $Y_0 = [Y_{01}, Y_{02}]$ dado el valor del inciso anterior e interpretala.
+
+\res \begin{framed}
+    \begin{thmr} \label{r_elipse_predic}
+	Podemos construir elipsoides e intervalos de confianza para el valor predicho de $\Y_0$ asociado con $z_0$. Asumiendo que el error del modelo $\Y_0=\beta'z_0+\epsilon_0$ sigue una distribución normal, entonces
+	$$\Y_0-\hat{\beta}'z_0=(\beta -\hat{\beta})'z_0+\epsilon \sim N_m\left(0, \left(1+z_0'(\Z'\Z)^{-1}z_0\right)\mcov \right)$$
+	e independiente de $n\hat{\mcov}\sim W_{n-r-1}(\mcov)$. De esta forma, el elipsoide de predicción del $100(1-\alpha)\%$ para $\Y_0$ asociado con $z_0$ está dado por
+	$$\left(\Y_0-\hat{\beta}'z_0\right)'\left(\frac{n}{n-r-1}\hat{\mcov}\right)^{-1}\left(\Y_0-\hat{\beta}'z_0\right)\leq \left(1+z_0'(\Z'\Z)^{-1}z_0\right)\left(\frac{m(n-r-1)}{(n-r-m)}F_{m,n-r-m}(\alpha)\right).$$
+    \end{thmr}
+\end{framed}
+
+Ocupando el \textbf{Resultado} \ref{r_elipse_predic} podemos calcular el elipsoide de predicción del $100(1-\alpha)\%$ para $Y_0$ asociado con $z_0$,
+```{r}
+t(beta)%*% z_0 # calculamos beta *z_0
+
+solve(n*sigma/(n-r-1)) # valor intermedio
+
+
+# Valor critico del lado derecho de la desigualda
+aux_z <- (1+t(z_0)%*%solve(t(Z)%*%Z)%*%z_0)
+aux_z
+f_valor<- (m*(n-r-1)/(n-r-m))*qf(0.95, m, n-r-m)
+aux_z*f_valor 
+```
+Con los calculos de arriba, tenemos que 
+\begin{align*}
+\begin{pmatrix}
+Y_{01}-0.8563708& Y_{02}- 9.1100679
+\end{pmatrix}\begin{pmatrix}
+0.8546666 &11.7573023\\
+11.7573023 & 1821.6988
+\end{pmatrix}\begin{pmatrix}
+Y_{01}-0.8563708\\ Y_{02}- 9.1100679
+\end{pmatrix}\leq 12.10676\\
+\begin{pmatrix}0.8546Y_{01}+11.7573Y_{02}-107.84173 &11.757Y_{01}+1821.6988Y_{02}-16605.869 \end{pmatrix}\begin{pmatrix}
+Y_{01}-0.8563708\\ Y_{02}- 9.1100679
+\end{pmatrix} \leq 12.10676\\
+0.8546666 Y_{01}^2+23.5146046Y_{01}Y_{02}-215.68346Y_{01}+1821.6988Y_{02}^2+151372.94091 -33211.73674Y_{02} \leq 12.10676
+\end{align*}
+Entonces, la elipsoide de predicción del $95\%$ para $\bf Y_0$ asociado a $\bf z_0$ está dado por la forma cuádratica
+\begin{align*}
+\bf 0.8546666 Y_{01}^2+23.5146046Y_{01}Y_{02}-215.68346Y_{01}+1821.6988Y_{02}^2+151360.8-33211.73674Y_{02}=0.
+\end{align*}
+
+```{r fig.width = 5, fig.height= 3.5, fig.align = "center"}
+a <- 0.8546666; b <- 1821.6988; c <- 23.5146046; d <- 215.68346
+e <- 33211.73674; f <- 151360.8
+
+z<- plot.ellipse(a, b,c,d,e,f)
+z <- as.data.frame(-t(z))
+
+Y <- cbind(y1, y2)
+ggplot(as.data.frame(Y_hat), aes(current, payout))+
+  geom_point()+
+  geom_point(data=data.frame("current"=c(0.8563708), "payout"=c(9.1100679)), 
+             aes(current, payout), color="blue")+
+  geom_point(data=z, aes(V1,V2), color="red", size=0.1)
+```
+De igual manera, observamos que la elipse de predicción es muy amplia en el eje de la variable $current$ en comparación con la variable $payout$ \ \ \fin
+
+\textsc{Nota:} Un aspecto que no entendí de este problema, fue por que se considero la variable cash flow. Ya que esta variable esta en razón de la variable markep cap, no entendí si esta parte influye en la parte de colinealidad. Se eligío esa variable ya que el valor $z_0$ en la tercer variable correspondía con una razón. En mi opinio no eligiría mejor la variable cash 2009, ya que esta esta en unidades en miles como las demás.
+
+
+3. Una empresa está evaluando la calidad de su personal de ventas para lo cual seleccionó una muestra aleatoria de 50 vendedores y evaluó en cada uno de ellos 3 medidas de rendimiento: crecimiento de ventas, rentabilidad de ventas y ventas de nuevas cuentas. Estas medidas se han convertido a una escala, en la que 100 indica desempeño "promedio". Además, a los 50 individuos se les aplicaron 4 pruebas, que pretendían medir la creatividad, el razonamiento mecánico, el razonamiento abstracto
+y la capacidad matemática, respectivamente. Las $n=50$ observaciones sobre las $p=7$ variables se muestran en el archivo \textbf{datosvendedores}.
+
+(a) Asumiendo un modelo ortogonal de factores para las variables estandarizadas. Obtén la solución por máxima verosimilitud de \bL  y $\bphi$ para $m=2$ y $m=3$ factores, considerando una rotación varimax, e interpreta las soluciones con m = 2 y m = 3 factores.
+
+\res \begin{framed}
+    \begin{thmr} \label{r_factores}
+	Sea $\X_1, \X_2, \cdots, \X_n$ una muestra aleatoria de una población $N_p(\mu, \mcov)$, donde $\mcov = \bL \bL'+\phi$ es la matriz de covarianzas para el modelo de $m$ factores comunes. \\
+	
+	Entonces, los estimadores de máxima verosimilitud $\hat{\bL}, \hat{\phi}, \hat{\mu}=\hat{\x}$ maximizan la función de verosimilitud $\bL (\mu, \mcov)$ bajo la restricción de que $\hat{\bL}'\hat{\phi}\hat{\bL}$ sea diagonal.
+    \end{thmr}
+\end{framed}
+
+Ocupando el \textbf{Resultado} (\ref{r_factores}) y con la ayuda de R calculamos los estimadores de maxima verosimilitud. Pero primero, comprobemos si las variables no están correlacionadas. Para ello ocuparemos la prueba de esfericidad de Bartlett,
+
+```{r, warning=FALSE, message=FALSE}
+library("readxl") # leer datos de excel
+library("psych") #prueba de esfericidad de bartlett
+
+# nombres de las columnas 
+names_vendedores <- c("individuo", "sales_growth", "sales_profit", "new_account", 
+                      "creativity", "mechanical", "abstract", "mathematics")
+# cargamos los datos
+datosvendedores <- read_excel("../data/datosvendedores.xls", skip=3, 
+                              col_names = names_vendedores)
+
+# seleccionamos las variables
+datosvendedores <- datosvendedores[,2:8]
+
+# revisamos la correlación de las variables
+varvendedores_corr <-cor(datosvendedores)
+
+# Prueba esfericidad de bartlett
+cortest.bartlett(varvendedores_corr)
+```
+Entonces, como el $p-$value es menor de 0.05 podemos rechazar de esfericidad para proseguir con un análisis de factores. Ahora realizamos la solución que máxima la función verosimilitud de $\bL$ y $\bphi$, consideremos $m=2$. Con la función \texttt{factanal} podemos calcula los estimadores de máxima verosimilitud del modelo, esta función se realiza sobre los datos estandarizados y utilizando la rotación varimaz:
+```{r}
+# se prueba la solucion con un factor (m=2)
+datosvendedores.fa2<- factanal(datosvendedores, factors=2)
+
+CARGAS2<-datosvendedores.fa2$loadings # cargas estimadas
+L2 <- CARGAS2[1:7,]
+L2
+
+VAR_ESP2<-datosvendedores.fa2$uniquenesses #varianzas especificas estimadas
+psi2<- diag(VAR_ESP2)
+psi2
+```
+
+Las salidas anteriores son los estimadores de máxima verosimilitud de  $\bL$ y $\bphi$. Es díficil interpretar los dos factores obtenidos, pero la más sencilla sería relacionar el primer factor con las medias de rendimiento y habilidades mátematicas, y el segundo factor como habilidades de creatividad. 
+Ahora consideremos $m=3$
+
+```{r}
+# se prueba la solucion con un factor (m=3)
+datosvendedores.fa3 <- factanal(datosvendedores,factors=3)
+
+CARGAS3<-datosvendedores.fa3$loadings # cargas estimadas
+L3 <- CARGAS3[1:7,]
+L3
+
+VAR_ESP3<-datosvendedores.fa3$uniquenesses # varianzas especificas estimadas
+psi3<- diag(VAR_ESP3)
+psi3
+```
+Las salidas anteriores son los estimadores de máxima verosimilitud de $\bL$ y $\bphi$. Nuevamente es díficil interpretar los dos factores obtenidos, pero la interpretación más sencilla sería relacionar el primer factor con las medias de rendimiento en ventas y habilidades mátematicas, el segundo factor como habilidades de creatividad y el tercer factor con el razonamiento abstracto.
+
+(b) A partir de las estimaciones de los parámetros obtén las comunalidades, las varianzas específicas y $\hat{\bL}\hat{\bL}'+\hat{\bphi}$ para las soluciones en $m = 2$ y $m = 3$ factores. Compara los resultados. Qué elección
+de m prefieres en este punto? ¿Por qué?
+
+\res Ahora calculamos las comunalidades, las varianzas específicas y $\hat{\bL}\hat{\bL}'+\hat{\bphi}$:
+```{r}
+#se calculan las comunalidades para cada variable (hi^2)
+comun2<-diag((L2%*%t(L2)))
+print("Las comunalidades para cada variable considerando m=2 son")
+comun2
+
+#se calculan las varianzas especificas para cada variable (las psi)
+varesp2<- (1-comun2)
+print("las varianzas específicas para cada variable cosiderando m=2 son")
+varesp2
+
+#se obtiene la estimacion de la matriz de correlaciones (matriz reproducida)
+pred2_vc<- L2%*%t(L2)+diag(varesp2)
+print("la estimación de la matriz de correlaciones considerando m=2 es")
+pred2_vc
+
+#se calculan las comunalidades para cada variable (hi^2)
+comun3<-diag((L3%*%t(L3)))
+print("Las comunalidades para cada variable considerando m=3 son")
+comun3
+
+#se calculan las varianzas especificas para cada variable (las psi)
+varesp3<- (1-comun3)
+print("las varianzas específicas para cada variable cosiderando m=3 son")
+varesp3
+
+#se obtiene la estimacion de la matriz de correlaciones (matriz reproducida)
+pred3_vc<- L3%*%t(L3)+diag(varesp3)
+print("la estimación de la matriz de correlaciones considerando m=3 es")
+pred3_vc
+```
+Comparemos las estimaciones de la matriz de correlación de cada modelo con la real,
+```{r}
+
+round(varvendedores_corr-pred2_vc,digits=3)
+
+round(varvendedores_corr-pred3_vc,digits=3)
+
+```
+Por lo anterior, hasta es punto eligiría el modelo considerando $m=3$ factores ya que se aproxima mejor la matriz de covarianzas.
+
+(c) Realiza una prueba de $H_0: \mcov= \bL \bL' + \bphi$  Vs $H_1: \mcov \neq \bL \bL' + \bphi$ para $m = 2$ y $m = 3$. A partir de estos resultados y de la parte b), que elección de m parece ser la adecuada?
+
+\res \begin{framed}
+    \begin{thmr} \label{r_hipot_cov}
+Suponiendo que el modelo de $m$ factores comunes, tiene buen ajuste. Entonces $\mcov =\bL'\bL+\bphi$, y probar el ajuste del modelo de $m$ factores comunes es equivalente a probar:
+
+$$H_0: \mcov = \bL \bL '+\bphi \ \ \ \text{vs}\ \ \ H_1:\mcov \neq \bL \bL'+\bphi.$$
+
+Cuando $n$ es grande, bajo $H_0,$ el cociente de verosimilitud 
+
+$$-2\ln \Delta =-2\ln \left[\frac{\text{verosimilitud maximizada bajo } H_0}{\text{verosimilitud maximizada}}\right]$$
+
+	sigue aproximidamente una $\chi^2_{v-v_0}$.    
+    \end{thmr}
+\end{framed}
+```{r}
+#prueba de hipotesis para determinar si dos factores es adecuado
+prueba_hipo2<-datosvendedores.fa2$PVAL 
+prueba_hipo2
+
+#prueba de hipotesis para determinar si dos factores es adecuado
+prueba_hipo3<-datosvendedores.fa3$PVAL 
+prueba_hipo3
+```
+Ahora, como el $p-$valor en ambas pruebas es menor que 0.05, se rechazaría la hipótesis nula de que 2 y 3 factores respectivamentes son suficientes. Pero esto se puede explicar si calculamos el determinante de la matriz de covariazas:
+```{r}
+det(varvendedores_corr)
+```
+
+Entonces como el determinante es muy pequeño hace que la prueba y el análisis sea confuso. Pero como del inciso anterior pudimos comparar los dos modelos considerando $m=2$ y $m=3$, por convicción elegimos en este caso el modelo considerando $m=3$. 
+
+(d) De acuerdo al número de factores elegido en c), calcula las puntuaciones de los factores (factor scores) para los vendedores mediante: i) mínimos cuadrados ponderados y ii) mediante el enfoque de regresión. ¿Existe algun patron de agrupamiento de los vendedores de acuerdo a sus puntuaciones factoriales?, si es así como se caracterizan los vendendedores de cada grupo, de acuerdo a la interpretación de los factores?
+
+\res 
+
+```{r fig.width = 5, fig.height= 3.5, fig.align = "center"}
+library("scatterplot3d")
+# calculamos las puntuaciones de los factores mediante
+# minimos cuadrados y enfoque de regresión
+factor_coches_reg <- factanal(datosvendedores,factors=3,scores="regression")
+scores_reg<-factor_coches_reg$scores
+
+factor_coches_ms <- factanal(datosvendedores,factors=3,scores="Bartlett")
+scores_ms<-factor_coches_reg$scores
+```
+
+Imprimimos los primeros y observamos que son muy parecidos. 
+```{r}
+scores_reg[1,]
+scores_ms[1,]
+```
+
+
+Ahora graficamos los 50 individuos de acuerdo a los factor scores obtenidos con regresión:
+```{r fig.width = 5, fig.height= 3.5, fig.align = "center"}
+solve(t(CARGAS2)%*%solve(diag(VAR_ESP2))%*%CARGAS2)
+
+#se grafican los 50 individuos de acuerdo a los factor scores obtenidos con regresion
+scatterplot3d(scores_reg, angle=35, col.grid="lightblue", main="Grafica de los factor scores", 
+              pch=20)
+
+#graficamos los factor scores tomados dos a dos
+#f1 x f2
+par(pty="s")
+plot(scores_reg[,1],scores_reg[,2],
+     ylim=range(scores_reg[,1]),
+     xlab="Factor 1",ylab="Factor 2",type="n",lwd=2)
+text(scores_reg[,1],scores_reg[,2],cex=0.6,lwd=2)
+
+#f1 x f3
+par(pty="s")
+plot(scores_reg[,1],scores_reg[,3],
+     ylim=range(scores_reg[,1]),
+     xlab="Factor 1",ylab="Factor 3",type="n",lwd=2)
+text(scores_reg[,1],scores_reg[,3],cex=0.6,lwd=2)
+
+#f2 x f3
+par(pty="s")
+plot(scores_reg[,2],scores_reg[,3],
+     ylim=range(scores_reg[,2]),
+     xlab="Factor 2",ylab="Factor 3",type="n",lwd=2)
+text(scores_reg[,2],scores_reg[,3],cex=0.6,lwd=2)
+```
+
+Visualmente no pude encontrar algún patrón de agrupamiento claro de los vendedores de acuerdo a sus puntaciones factoriales \fin
+
+
+4. Considere que los vectores $X_1, X_2, X_3$ y $X_4$, son independientes, aleatorios e idénticamente distribuidos normalmente con parámetros
+\begin{align*}
+\mu = \begin{pmatrix}
+3\\
+-1\\
+1
+\end{pmatrix}, \ \ \ \mcov = \begin{pmatrix}
+3 & -1 & 1\\
+-1 & 1 & 0 \\
+1 & 0 & 2
+\end{pmatrix}.
+\end{align*}
+Considere las siguientes combinaciones lineales de los vectores aleatorios anteriores
+\begin{align*}
+\frac{1}{2}X_1+\frac{1}{2}X_2+\frac{1}{2}X_3+\frac{1}{2}X_4\\
+X_1+X_2+X_3-3X_4.
+\end{align*}
+
+(a) Obtenga el vector de medias y su matriz de covarianzas para cada uno de ellos.
+
+\res 
+
+\begin{framed}
+    \begin{thmp} \label{p_mu_covarianza}
+	(Visto en clase, pag. 186) Sea $\X_1, \X_2, \cdots , \X_n$ mutuamente independiente con $\X_i$ se distribuye como $N_p (\mub_i, \mcov)$ (Note que cada $\X_i$ tiene la misma matriz de covarianza $\mcov$). Entonces, 
+	\begin{align*}
+	\textbf{V}_1 =c_1\X_1+c_2\X_2+\cdots+c_n\X_n 
+	\end{align*}
+se distribuye como $N_p\left(\sumj c_j \mub, \left( \sumj c_i^2 \right) \mcov \right).$ Ahora, considerando $\textbf{V}_1$ y denotemos a $\textbf{V}_2 =b_1\X_1+b_2\X_2+\cdots+b_n\X_n$ son conjuntamente normales multivariantes con matriz de covarianza
+
+	\begin{align*}
+	\begin{pmatrix}
+	\left(\sumj c_j^2 \right) \mcov & (\textbf{b}'\textbf{c})\mcov\\
+	(\textbf{b}'\textbf{c})\mcov & \left(\sumj b_j^2\right) \mcov
+	\end{pmatrix}
+	\end{align*}
+	En consecuencia, $\textbf{V}_1$ y $\textbf{V}_2$ son independientes si $\textbf{b}'\textbf{c} = 0$.
+    \end{thmp}
+\end{framed}
+
+Definamos a $\textbf{V}_1= \frac{1}{2}X_1+\frac{1}{2}X_2+\frac{1}{2}X_3+\frac{1}{2}X_4$ y $\textbf{V}_2=X_1+X_2+X_3+X_4$, entonces $\textbf{b} = \begin{pmatrix}
+\frac{1}{2} & \frac{1}{2} & \frac{1}{2} & \frac{1}{2}
+\end{pmatrix}$ y $\textbf{c} = \begin{pmatrix}
+1 & 1 & 1 & -3
+\end{pmatrix}.$ Entonces ocupando la propiedad (\ref{p_mu_covarianza}), podemos encontrar la distribución de $\textbf{V}_1:$
+\begin{align*}
+\mu_{\textbf{V}_1} = \sumj b_j\mub=\mub \sumj b_j=\mub \left(\frac{1}{2}+\frac{1}{2}+\frac{1}{2}+\frac{1}{2}\right) =2\begin{pmatrix}
+3\\
+-1\\
+1
+\end{pmatrix} = \begin{pmatrix}
+6\\
+-2\\
+2
+\end{pmatrix},  \\
+\mcov_{\textbf{V}_1}  = \left(\sumj b_j^2\right) \mcov=\left(\frac{1}{4}+\frac{1}{4}+\frac{1}{4}+\frac{1}{4}\right)\mcov = \begin{pmatrix}
+3 & -1 & 1\\
+-1 & 1 & 0 \\
+1 & 0 & 2
+\end{pmatrix}.
+\end{align*}
+Analogamente para $V_2$ tenemos:
+\begin{align*}
+\mu_{\textbf{V}_2} = \sumj c_j\mub=\mub \sumj c_j=\mub \left(1+1+1-3\right) =0\begin{pmatrix}
+3\\
+-1\\
+1
+\end{pmatrix}  = \begin{pmatrix}
+0\\
+0\\
+0
+\end{pmatrix},  \\
+\mcov_{\textbf{V}_2}  = \left(\sumj c_j^2\right) \mcov=\left(1+1+1+9\right)\mcov = \begin{pmatrix}
+36 & -12 & 12\\
+-12 & 12 & 0 \\
+12 & 0 & 24
+\end{pmatrix}.
+\end{align*}
+\textbf{En conclusión podemos decir que, $\textbf{V}_1\sim N_3\left(\begin{pmatrix}
+6\\
+-2\\
+2
+\end{pmatrix}, \begin{pmatrix}
+3 & -1 & 1\\
+-1 & 1 & 0 \\
+1 & 0 & 2
+\end{pmatrix}\right)$ y $\textbf{V}_2\sim N_3\left(\begin{pmatrix}
+0\\
+0\\
+0
+\end{pmatrix}, \begin{pmatrix}
+36 & -12 & 12\\
+-12 & 12 & 0 \\
+12 & 0 & 24
+\end{pmatrix}\right).$}
+
+(b) Calcule la covarianza entre ellos.
+
+\res Ocupando nuevamente la propiedad (\ref{p_mu_covarianza}), tenemos que la covarianza de las combinaciones lineales $\textbf{V}_1$ y $\textbf{V}_2$ es 
+\begin{align*}
+(\textbf{b}'\textbf{c}\mcov)=\sumj b_j c_j \mcov = \left(\frac{1}{2}+\frac{1}{2}+\frac{1}{2}-\frac{3}{2}\right) \mcov = 0\begin{pmatrix}
+3 & -1 & 1\\
+-1 & 1 & 0 \\
+1 & 0 & 2
+\end{pmatrix} =\begin{pmatrix}
+0 & 0 & 0\\
+0 & 0 & 0\\
+0 & 0 & 0
+\end{pmatrix}.
+\end{align*}
+Es decir, cada componente de la primera combinación lineal de vectores aleatorias tiene covarianza cero con cada componente de la segunda combinación lineal de vectores aleatorios. Además, como cada $X_i$ tiene una distribución normal trivariada, entonces  las dos combinaciones lineales $\textbf{V}_1$ y $\textbf{V}_2$ tienen una distribución normal conjunto de seis variables y \textbf{las dos combinaciones lineales de vectores son independientes} \fin
+
+5. (Solución única pero impropia: caso Heywood). Considere un modelo factorial con $m=1$ para la población con matriz de covarianza
+\begin{align*}
+\mcov = \begin{pmatrix}
+1 & .4 & .9\\
+.4 & 1 & .7 \\
+.9 & .7 & 1
+\end{pmatrix}.
+\end{align*}
+Muestra que existe una única elección de \bL y $\bphi$ con $\Sigma = \bL \bL' + \bphi$, pero que $\bphi_3 < 0$ , por lo que la elección no es admisible.
+
+\res Usando el modelo de facotres, obtenemos 
+\begin{align*}
+\X_1-\mub_1 = \lit_{11} F_1+\epsilon_1 \\
+\X_2 -\mub_2 = \lit_{21} F_1+\epsilon_2\\
+\X_3 -\mub_3 = \lit_{31} F_1+\epsilon_3
+\end{align*}
+Entonces, la estructura de la covarianza en asd implica que 
+$$\mcov = \bL \bL'+ \bphi $$
+o
+\begin{align*}
+&1 = \lit_{11}^2+\psi_1 & .40=\lit_{11}\lit_{21}& &.90 = \lit_{11}\lit_{31}\\
+& & 1 = \lit_{21}^2+\psi_2 &  & .70 = \lit_{21}\lit_{31}\\
+& & & &1 = \lit_{31}^2+\psi_3
+\end{align*}
+Ocupando las ecuaciones tenemos que 
+\begin{equation} \label{sustitucion}
+\begin{split} 
+\left.\begin{array}{cc}
+90 &= \lit_{11}\lit_{31} \\
+.70 &= \lit_{21}\lit_{31}
+\end{array}\right\} \ \ \ \Rightarrow  \bf \lit_{21}=\left(\frac{.70}{.90}\right)\lit_{11}
+\end{split}
+\end{equation}
+Ahora, sustituyendo el resultado  (\ref{sustitucion}) en la ecuación: $\bf .40=\lit_{11}\lit_{21}$, tenemos
+\begin{align}\label{r_l11}
+.40=\lit_{11}\lit_{21},  \ \ \ \Rightarrow \ \ \ .40=\lit_{11}\left(\frac{.70}{.90}\right)\lit_{11}, \ \ \ \ \Rightarrow \ \ \ \bf \lit_{11}^2 = \frac{.40\times .90}{.70}= 0.5142857. 
+\end{align}
+Entonces de lo anterior, podemos decir que $\lit_{11}=\pm \sqrt{0.5142857} =\pm  0.7171372.$ Utilizando (\ref{r_l11}) y sustituyendolo en $1 = \lit_{11}^2+\psi_1$ , tenemos que 
+\begin{align*}
+1 = \lit_{11}^2 +\psi_1\ \ \  \Rightarrow \ \ \ 1 = 0.5142857 +\psi_1\ \ \ \Rightarrow \ \ \ \bf\psi_1 = 0.4857143.
+\end{align*}
+Nuevamente utilizando el resultado de (\ref{r_l11}) y sustituyendolo en $\bf .40=\lit_{11}\lit_{21}$, tenemos
+\begin{align}\label{r_l22}
+.40=\lit_{11}\lit_{21} \ \ \  \Rightarrow \ \ \ .40=\pm  0.7171372\times \lit_{21} \ \ \ \Rightarrow \bf \lit_{21}=\pm 0.5577734.
+\end{align}
+Ahora, ocupando el resultado de (\ref{r_l22}) y sustituyendolo en $1 = \lit_{21}^2+\psi_2$ tenemos que 
+\begin{align*}
+1 = \lit_{21}^2+\psi_2 \ \ \ \Rightarrow \ \ \ 1=0.3111111+\psi_2\ \ \ \Rightarrow \ \ \ \bf \psi_2 = 0.6888889.
+\end{align*}
+
+Nuevamente utilizando el resultado de (\ref{r_l11}) y sustituyendolo en $\bf .90=\lit_{11}\lit_{31}$, tenemos
+\begin{align}\label{r_l33}
+.90=\lit_{11}\lit_{31} \ \ \  \Rightarrow \ \ \ .90=\pm  0.7171372\times \lit_{31} \ \ \ \Rightarrow \bf \lit_{31}=\pm 1.25499.
+\end{align}
+Ahora, ocupando el resultado de (\ref{r_l33}) y sustituyendolo en $1 = \lit_{31}^2+\psi_3$ tenemos que 
+\begin{align}\label{psi_1}
+1 = \lit_{31}^2+\psi_3 \ \ \ \Rightarrow \ \ \ 1=1.575+\psi_3\ \ \ \Rightarrow \ \ \ \bf \psi_3 =  -0.575.
+\end{align}
+Dado que $Var(F_1) =1$ y $Var(X_3)=1$, $\lit_{31}=Cov(X_3,F_1)=Corr(X_3,F_1)$. Ahora, recordemos que por definición el coefiente de correlación no puede ser mayor que uno (su valor absoluto), entonces desde este punto de vista $|\lit_{31}| = 1.254999$ es muy grande. Ademas, de (\ref{psi_1}) tenemos que $\psi_3=-0.575$ lo cual es insatisfactorio, ya que da un valor negativo, y por definición $Var(\epsilon_i)=\psi_i>0.$ \textbf{Por lo tanto, para este ejecicio con $m = 1$, es posible obtener una solución numérica única para las ecuaciones }
+\begin{align*}
+\mcov = \bL \bL'+ \bphi  = \begin{pmatrix}
+\pm 0.7171372\\
+\pm 0.5577734\\
+\pm 1.254999
+\end{pmatrix}\begin{pmatrix}
+\pm 0.7171372&
+\pm 0.5577734&
+\pm 1.254999
+\end{pmatrix}+\begin{pmatrix}
+0.4857143 & 0 & 0\\
+0 & 0.68888889 & 0\\
+0 & 0 & -0.575
+\end{pmatrix}
+\end{align*}
+Sin embargo, la solución no es consistente con la interpretación estadística de los coeficientes, por lo que no es una solución adecuada o un caso Heywood. \ \ \ \fin
+
+
+
+
+
