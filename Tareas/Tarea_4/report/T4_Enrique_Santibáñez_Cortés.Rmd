@@ -22,9 +22,9 @@ Repositorio de Git: \href{https://github.com/Enriquesec/Estadística_multivariad
 \textbf{Ejercicio 1.}
 
 Frecuentemente en las aplicaciones nos encontramos con una variable categórica nominal con $k$ estados excluyentes medida sobre una muestra de $n = n_1 + \cdots + n_g$ individuos provenientes de $g$ poblaciones. Se desea obtener una medida de disimilaridad entre estas poblaciones. En estas condiciones, el vector de frecuencias de cada población $n_i = (n_{i1} , \cdots, n_{ik})$, para $i = 1, \cdots, g$ , tiene una distribución conjunta multinomial con parámetros ($n_i , p_i)$ , donde $n_i = n_{i1} +\cdots + n_{ik}$ y $p_{i} = (p_{i1} , \cdots, p_{ik})$. Una medida de disimilaridad es la distancia de Bhattacharyya, conocida en genética como distancia Cavalli-Sforza, cuya expresión es:
-\begin{align*}
+\begin{align}\label{bha}
 d_{ij}^2 = \arccos \left(\sum_{l=1}^k \sqrt{p_{il}p_{jl}}\right)
-\end{align*}
+\end{align}
 La siguiente tabla contiene las proporciones génicas (observadas) de los grupos sanguíneos correspondientes a 10 poblaciones.
 \begin{table}[H]
 \centering
@@ -34,7 +34,6 @@ La siguiente tabla contiene las proporciones génicas (observadas) de los grupos
  1 & Francesa  &  0.21  &   0.06   &   0.06  &0.67\\
  2 & Checa            &  0.25  &   0.04   &   0.14  &0.57\\
  3 & Germanica        &  0.22  &   0.06   &   0.08  &0.64\\
- 4 & Vasca            &  0.19  &   0.04   &   0.02  &0.75\\
  5 & China            &  0.18  &   0.00   &   0.15  &0.67\\
  6 & Ainu             &  0.23  &   0.00   &   0.28  &0.49\\
  7 & Esquimal         &  0.30  &   0.00   &   0.06  &0.64\\
@@ -47,67 +46,185 @@ La siguiente tabla contiene las proporciones génicas (observadas) de los grupos
 a) **Obtenga las distancias de Bhattacharyya entre estas poblaciones.**
 
 \res
-
+Primero introducimos la matriz de porporciones géneticas obsevadas,
 ```{r, warning=FALSE}
 nombres <- c("Francesa", "Checa", "Germanica", "Vasca", "China", "Ainu", "Esquimal",
              "Afromericana USA", "Española", "Egipcia") 
-
-datos_genetica <- c(0.21, 0.06, 0.06, 0.67, 0.25, 0.04, 0.14, 0.57,
-           0.22, 0.06, 0.08, 0.64, 0.19, 0.04, 0.02, 0.75,
-           0.18, 0.00, 0.15, 0.67, 0.23, 0.00, 0.28, 0.49,
-           0.30, 0.00, 0.06, 0.64, 0.10, 0.06, 0.13, 0.71,
-           0.27, 0.04, 0.06, 0.63, 0.21, 0.05, 0.20, 0.54)
-
-p_geneticas <- matrix(datos_genetica, nrow=10, byrow=T)
-
-p_p_geneticas <- sqrt(p_geneticas)%*% sqrt(t(p_geneticas))
-
-dist_cavalli <- acos(p_p_geneticas)
-dist_cavalli[is.na(dist_cavalli)] <- 0
-round(dist_cavalli,2)               
+datos_genetica <- c(0.21, 0.06, 0.06, 0.67, 0.25, 0.04, 0.14, 0.57, 0.22, 0.06, 0.08, 
+                    0.64, 0.19, 0.04, 0.02, 0.75, 0.18, 0.00, 0.15, 0.67, 0.23, 0.00, 
+                    0.28, 0.49, 0.30, 0.00, 0.06, 0.64, 0.10, 0.06, 0.13, 0.71, 0.27, 
+                    0.04, 0.06, 0.63, 0.21, 0.05, 0.20, 0.54) # datos
+p_geneticas <- matrix(datos_genetica, nrow=10, byrow=T) # creamos la matriz de datos
 ```
+Ahora creamos una matriz auxiliar con elementos $(i,j)= \sum_{l=1}^k\sqrt{p_{il}p_{jl}}$, esto con el objetivo de facilitar los calculos
+```{r}
+p_p_geneticas <- sqrt(p_geneticas)%*% sqrt(t(p_geneticas)) # matriz auxiliar.
+```
+Por último, calculamos el arcoseno de cada uno de los elementos de la matriz auxiliar.
+```{r, warning=FALSE}
+dist_cavalli <- acos(p_p_geneticas)
+dist_cavalli[is.na(dist_cavalli)] <- 0 # imputamos con 0
+```
+**Y por lo tanto, la matriz de distancias de Bhattacharyya es**
+\begin{table}[H]
+\centering
+\begin{tabular}{ccccccccccc}\hline \hline
+pob. & 1 & 2 & 3 & 4 & 5& 6& 7& 8& 9& 10\\ \hline \hline
+1 &`r round(dist_cavalli[1,1], 2)`&`r round(dist_cavalli[1,2], 2)`&`r round(dist_cavalli[1,3], 2)`&`r round(dist_cavalli[1,4], 2)`&`r round(dist_cavalli[1,5], 2)`&`r round(dist_cavalli[1,6], 2)` & `r round(dist_cavalli[1,7], 2)` & `r round(dist_cavalli[1,8], 2)`&`r round(dist_cavalli[1,9], 2)` & `r round(dist_cavalli[1,10], 2)`\\  
+2 &`r round(dist_cavalli[2,1], 2)`&`r round(dist_cavalli[2,2], 2)`&`r round(dist_cavalli[2,3], 2)`&`r round(dist_cavalli[2,4], 2)`&`r round(dist_cavalli[2,5], 2)`&`r round(dist_cavalli[2,6], 2)` & `r round(dist_cavalli[2,7], 2)` & `r round(dist_cavalli[2,8], 2)`&`r round(dist_cavalli[2,9], 2)` & `r round(dist_cavalli[2,10], 2)`\\  
+3 &`r round(dist_cavalli[3,1], 2)`&`r round(dist_cavalli[3,2], 2)`&`r round(dist_cavalli[3,3], 2)`&`r round(dist_cavalli[3,4], 2)`&`r round(dist_cavalli[3,5], 2)`&`r round(dist_cavalli[3,6], 2)`& `r round(dist_cavalli[3,7], 2)` & `r round(dist_cavalli[3,8], 2)`&`r round(dist_cavalli[3,9], 2)` & `r round(dist_cavalli[3,10], 2)`\\  
+4 &`r round(dist_cavalli[4,1], 2)`&`r round(dist_cavalli[4,2], 2)`&`r round(dist_cavalli[4,3], 2)`&`r round(dist_cavalli[4,4], 2)`&`r round(dist_cavalli[4,5], 2)`&`r round(dist_cavalli[4,6], 2)`& `r round(dist_cavalli[4,7], 2)` & `r round(dist_cavalli[4,8], 2)`&`r round(dist_cavalli[4,9], 2)` & `r round(dist_cavalli[4,10], 2)`\\  
+5 &`r round(dist_cavalli[5,1], 2)`&`r round(dist_cavalli[5,2], 2)`&`r round(dist_cavalli[5,3], 2)`&`r round(dist_cavalli[5,4], 2)`&`r round(dist_cavalli[5,5], 2)`&`r round(dist_cavalli[5,6], 2)` & `r round(dist_cavalli[5,7], 2)` & `r round(dist_cavalli[5,8], 2)`&`r round(dist_cavalli[5,9], 2)` & `r round(dist_cavalli[5,10], 2)`\\  
+6 &`r round(dist_cavalli[6,1], 2)`&`r round(dist_cavalli[6,2], 2)`&`r round(dist_cavalli[6,3], 2)`&`r round(dist_cavalli[6,4], 2)`&`r round(dist_cavalli[6,5], 2)`&`r round(dist_cavalli[6,6], 2)`& `r round(dist_cavalli[6,7], 2)` & `r round(dist_cavalli[6,8], 2)`&`r round(dist_cavalli[6,9], 2)` & `r round(dist_cavalli[6,10], 2)`\\ 
+7 &`r round(dist_cavalli[7,1], 2)`&`r round(dist_cavalli[7,2], 2)`&`r round(dist_cavalli[7,3], 2)`&`r round(dist_cavalli[7,4], 2)`&`r round(dist_cavalli[7,5], 2)`&`r round(dist_cavalli[7,6], 2)`& `r round(dist_cavalli[7,7], 2)` & `r round(dist_cavalli[7,8], 2)`&`r round(dist_cavalli[7,9], 2)` & `r round(dist_cavalli[7,10], 2)`\\ 
+8 &`r round(dist_cavalli[8,1], 2)`&`r round(dist_cavalli[8,2], 2)`&`r round(dist_cavalli[8,3], 2)`&`r round(dist_cavalli[8,4], 2)`&`r round(dist_cavalli[8,5], 2)`&`r round(dist_cavalli[8,6], 2)`& `r round(dist_cavalli[8,7], 2)` & `r round(dist_cavalli[8,8], 2)`&`r round(dist_cavalli[8,9], 2)` & `r round(dist_cavalli[8,10], 2)`\\ 
+9 &`r round(dist_cavalli[9,1], 2)`&`r round(dist_cavalli[9,2], 2)`&`r round(dist_cavalli[9,3], 2)`&`r round(dist_cavalli[9,4], 2)`&`r round(dist_cavalli[9,5], 2)`&`r round(dist_cavalli[9,6], 2)`& `r round(dist_cavalli[9,7], 2)` & `r round(dist_cavalli[9,8], 2)`&`r round(dist_cavalli[9,9], 2)` & `r round(dist_cavalli[9,10], 2)`\\ 
+10 &`r round(dist_cavalli[10,1], 2)`&`r round(dist_cavalli[10,2], 2)`&`r round(dist_cavalli[10,3], 2)`&`r round(dist_cavalli[10,4], 2)`&`r round(dist_cavalli[10,5], 2)`&`r round(dist_cavalli[10,6], 2)`& `r round(dist_cavalli[10,7], 2)` & `r round(dist_cavalli[10,8], 2)`&`r round(dist_cavalli[10,9], 2)` & `r round(dist_cavalli[10,10], 2)`\\ \hline \hline
+\end{tabular} \caption{Matriz de distancias de Bhattacharyya}
+\end{table} 
 
 
 b) **Construye una configuración MDS de las poblaciones mediante la solución clasica (coordenadas principales), utilizando la matriz de distancias Bhattacharyya.**
 
+\res 
+
+Ocupando la función *cmdscale* de la librería *stats* procedemos a construir una configuración MDS consideranod k=6, se escogio este valor de forma arbitrario ya que en el inciso posterior se usa un criterio para seleccionar ese valor. Ago importante resaltar, es que la distancia Battacharry (\ref{bha}) estan elevadas al cuadrado por lo que tenemos de utilizar la raíz cuadrada de la matriz calculada anterioremente.
+
 ```{r}
-resul_mds_clas<-cmdscale(sqrt(dist_cavalli), k=2, eig=TRUE, add=FALSE, x.ret=FALSE)
-config_nations<-resul_mds_clas$points
-dimnames(config_nations)[[1]]<-nombres
+# calculo de la configuración mds
+resul_mds_clas <-cmdscale(sqrt(dist_cavalli), k=6, eig=TRUE, add=FALSE, x.ret=FALSE)
+config_pobla<-resul_mds_clas$points # configuracion mds
 ```
+**Entonces la configuración MDS es**
+
+\begin{table}[H]
+\centering
+\begin{tabular}{ccccccc}\hline \hline
+pobl. & $X_1$ & $X_2$ & $X_3$ &$X_4$ &$X_5$&$X_6$\\ \hline \hline
+1       &`r round(config_pobla[1,1], 2)`&`r round(config_pobla[1,2], 2)`&`r round(config_pobla[1,3], 2)`&`r round(config_pobla[1,4], 2)`&`r round(config_pobla[1,5], 2)`&`r round(config_pobla[1,6], 2)`\\  
+2     &`r round(config_pobla[2,1], 2)`&`r round(config_pobla[2,2], 2)`&`r round(config_pobla[2,3], 2)`&`r round(config_pobla[2,4], 2)`&`r round(config_pobla[2,5], 2)`&`r round(config_pobla[2,6], 2)`\\  
+3       &`r round(config_pobla[3,1], 2)`&`r round(config_pobla[3,2], 2)`&`r round(config_pobla[3,3], 2)`&`r round(config_pobla[3,4], 2)`&`r round(config_pobla[3,5], 2)`&`r round(config_pobla[3,6], 2)`\\  
+4      &`r round(config_pobla[4,1], 2)`&`r round(config_pobla[4,2], 2)`&`r round(config_pobla[4,3], 2)`&`r round(config_pobla[4,4], 2)`&`r round(config_pobla[4,5], 2)`&`r round(config_pobla[4,6], 2)`\\  
+5       &`r round(config_pobla[5,1], 2)`&`r round(config_pobla[5,2], 2)`&`r round(config_pobla[5,3], 2)`&`r round(config_pobla[5,4], 2)`&`r round(config_pobla[5,5], 2)`&`r round(config_pobla[5,6], 2)`\\  
+6     &`r round(config_pobla[6,1], 2)`&`r round(config_pobla[6,2], 2)`&`r round(config_pobla[6,3], 2)`&`r round(config_pobla[6,4], 2)`&`r round(config_pobla[6,5], 2)`&`r round(config_pobla[6,6], 2)`\\
+7     &`r round(config_pobla[7,1], 2)`&`r round(config_pobla[7,2], 2)`&`r round(config_pobla[7,3], 2)`&`r round(config_pobla[7,4], 2)`&`r round(config_pobla[7,5], 2)`&`r round(config_pobla[7,6], 2)`\\
+8     &`r round(config_pobla[8,1], 2)`&`r round(config_pobla[8,2], 2)`&`r round(config_pobla[8,3], 2)`&`r round(config_pobla[8,4], 2)`&`r round(config_pobla[8,5], 2)`&`r round(config_pobla[8,6], 2)`\\
+9     &`r round(config_pobla[9,1], 2)`&`r round(config_pobla[9,2], 2)`&`r round(config_pobla[9,3], 2)`&`r round(config_pobla[9,4], 2)`&`r round(config_pobla[9,5], 2)`&`r round(config_pobla[9,6], 2)`\\
+10     &`r round(config_pobla[10,1], 2)`&`r round(config_pobla[10,2], 2)`&`r round(config_pobla[10,3], 2)`&`r round(config_pobla[10,4], 2)`&`r round(config_pobla[10,5], 2)`&`r round(config_pobla[10,6], 2)`\\ \hline \hline
+\end{tabular} \caption{Configuración MDS, k=6}
+\end{table} 
 
 
 (c) **¿Cuál la dimensión adecuada de la representación euclidiana?, ¿cuál es el porcentaje de la variabilidad explicada por las dos primeras coordenadas principales? Grafíca las poblaciones con las dos primeras coordenadas.**
 
-```{r}
-plot(config_nations[,1],config_nations[,2], main="configuracion solucion mediante mds clasico",
-     ylim=range(config_nations[,1]), xlab="dim 1",ylab="dim 2",type="n",lwd=2)
-text(config_nations[,1],config_nations[,2],
-     labels=abbreviate(row.names(config_nations),minlength=8),cex=0.6,lwd=2)
+\res 
+Para saber la dimensión adecuada de la representación utilizaremos el criterio de la proporción de varianza explicada por las primeras $m$ dimensiones, dado por $$\frac{\sumi \lambda_i}{\sumi|\lambda_i|}.$$
+Entonces calculemos la varianza explicada por cada componente, 
+```{r, fig.width = 5, fig.height= 4, fig.align = "center"}
+var_acu <- c()
+for (i in seq(1:9)){
+    var_acu[i] <- cmdscale(sqrt(dist_cavalli), k=i, eig=TRUE, add=FALSE, 
+                           x.ret=FALSE)$GOF[1]
+}
 
-resul_mds_clas$GOF
+plot(seq(1:9), var_acu, type="o", col="blue", xlab="Eigenvalues", 
+     ylab="Varianza acumulada")
+lines(x=seq(1:10), y=rep(0.80,10), type="l", col="red")
 ```
 
+Observando el gráfico anterior, **la dimensión adecuada de la representación euclidiana es 4** debido a que la varianza explicada esta alrededor del $80\%$. Ahora, **graficamos las poblaciones con las dos primeras coordenadas, que tiene una varianza explicada igual a 0.5658885.**
+```{r, fig.width = 5, fig.height= 4, fig.align = "center"}
+resul_mds_clas<-cmdscale(sqrt(dist_cavalli), k=4, eig=TRUE, add=FALSE, x.ret=FALSE)
+config_pobla<-resul_mds_clas$points
+dimnames(config_pobla)[[1]]<-nombres
+
+plot(config_pobla[,1], config_pobla[,2], ylim=range(config_pobla[,1]),  xlab="dim 1",
+     main="Configuracion solucion mediante MDS, poblacion", ylab="dim 2", type="n", 
+     lwd=2, xlim=range(-0.5,0.35))
+text(config_pobla[,1], config_pobla[,2],
+     labels=abbreviate(row.names(config_pobla),minlength=8),cex=0.8,lwd=4)
+```
+
+En la gráfica anterior se pueden reconocer una separación de los regiones europea: Francesa, Española, Vasca y Germanic. Además de las regiones Africanas: Checa, Egipcia y ArrmrUSA. Y otra región *asiática*: Ainu y China. Lo cual tiene sentido que se separaran así. 
 
 d) **Construye una configuración MDS de las poblaciones utilizando el enfoque de mínimos cuadrados considerando la matriz de distancias Bhattacharyy, tomando como solución inicial la solución clásica y considerando las transformaciones de tipo razón, intervalo y ordinal para las disimilaridades. Compara los resultados obtenidos en cada modelo y justifíca la dimensionalidad adecuada de representación y grafíca las dos primeras dimensiones.**
 
 \res 
-
-```{r}
+\begin{framed}
+    \begin{thmp} \label{elección}
+    \textbf{Elección de la dimensionalidad adecuada de la representación}
+    Un criterio muy utilizado es calcular soluciones MDS para un rango de dimensiones y graficar el STRESS vs la dimensión. \textbf{Se utiliza el criterio del codo de la curva.}
+    \end{thmp}
+\end{framed}
+\begin{framed}
+    \begin{thmd} \label{str}
+    \textbf{Stress1}
+    La función STRESS1 evita el problema de la dependencia de escalas de las disimilaridades o de sus transformaciones, es decir, al dividir entre las distancias euclidianas se eliminan las escalas de las disimilaridades o de las disparidades.
+    $$STRESS1 = \sqrt{\frac{\sum_{i,j}w_{ij}(\hat{d}_{ij}-d_{ij}(\X))^2}{\sum_{ij} w_{ij} d_{ij}^2 (\X)}}$$
+    \end{thmd}
+\end{framed}
+Ocuparemos la función *smacofSym* de la librería *smacof* para encontrar estas configuraciones utilizando el enfoque de mínimos cuadrados. Empecemos graficando las gráficas de codo,
+```{r, warning=FALSE, message=FALSE, fig.width = 9, fig.height= 4, fig.align = "center"}
 library("smacof")
-resul_mds_mc <- smacofSym(sqrt(dist_cavalli), ndim=2,type = "ratio", init = "torgerson", itmax = 1000, eps = 1e-06) 
-config_nations_mc<-resul_mds_mc$conf
-
-plot(config_nations_mc[,1],config_nations_mc[,2],main="configuracion solucion mediante smacof",ylim=range(config_nations_mc[,1]),
-     xlab="Dim 1",ylab="Dim 2",type="n",lwd=2)
-text(config_nations_mc[,1],config_nations_mc[,2],
-     labels=abbreviate(nombres,minlength=8),cex=0.6,lwd=2)
-          
+stress_values <- c()
+par(mfrow=c(1,3))
+for (j in c("ratio", "interval", "ordinal")){
+    for (i in seq(1:9)){
+    stress_values[i] <- smacofSym(sqrt(dist_cavalli), ndim=i, type=j, init = "torgerson", 
+                          itmax = 1000, eps = 1e-06)$stress
+}
+    plot(seq(1:9), stress_values, type="l", col="blue", main=j, xlab="Dimensiones", ylab="STRESS")
+    lines(x=seq(1:10), y=rep(0.05,10), type="l", col="red")
+}
 ```
 
+Algunps investigadores sugieren que si el valor del STRESS1 para una dimensionalidad dada ees menor de 0.05 la representación es muy buena y por tanto se puede elegir esa dimensionalidad $M$ para la configuración solución $\X$. Entonces con este criterio observamos que cuando se utilizan la transformación de tipo de razón la mejor dimensión serían 6, considerando la transformación intervalo sería 3 y ocupando la tranformación ordinal sería 2. Por lo que, la mejor transformación sería ocupar la ordinal ya que se necesitan menos dimensiones.
+
+Ahora, proyectamos las dos primeras dimensiones
+```{r, warning=FALSE, message=FALSE, fig.width = 9, fig.height= 4, fig.align = "center"}
+par(mfrow=c(1,3))
+for (i in c("ratio", "interval", "ordinal")){
+    config_pobla_r <- smacofSym(sqrt(dist_cavalli), ndim=2, type=i, init = "torgerson", 
+                          itmax = 1000, eps = 1e-06)$conf 
+
+    plot(config_pobla_r[,1], config_pobla_r[,2], ylim=range(config_pobla_r[,1]+.1),
+     main=paste0("Configuración MDS: ",i), xlab="dim 1",ylab="dim 2",type="n",lwd=2,
+     xlim=range(-1.3,1))
+    text(config_pobla_r[,1], config_pobla_r[,2],
+     labels=abbreviate(nombres,minlength=8),cex=0.9,lwd=2)
+}
+
+```
+Observamos que no existe mucha diferencias en las proyecciones obtenidas, en general se observa los mismos patrones. Solo que cambia la separacione entre las poblaciones. 
 
 e) Compara las configuraciones MDS obtenidas con el enfoque clásico y de mínimos cuadrados, ¿existen diferencias? ¿Cuáles son las conclusiones?
 
+\res 
+
+**En la configuración de MDS con el enfoque clásico ocupamos 4 dimensiones para tener una buena representación, en cambio ocupando mínimos cuadrados con la transformación ordinal se necesitan 2 dimensiones para tener una adecuada representación.** Entonces comparemos las gráficasa utilizando las dos primeras dimensiones,
+```{r, warning=FALSE, message=FALSE, fig.width = 9, fig.height= 4, fig.align = "center"}
+par(mfrow=c(1,2))
+config_pobla_r <- smacofSym(sqrt(dist_cavalli), ndim=2, type=i, init = "torgerson", 
+                          itmax = 1000, eps = 1e-06)$conf 
+
+plot(config_pobla_r[,1], config_pobla_r[,2], ylim=range(config_pobla_r[,1]+.1),
+     main=paste0("Configuración MDS usando MC: ",i), xlab="dim 1",ylab="dim 2",type="n",lwd=2,
+     xlim=range(-1.3,1))
+text(config_pobla_r[,1], config_pobla_r[,2],
+     labels=abbreviate(nombres,minlength=8),cex=0.9,lwd=2)
+
+resul_mds_clas<-cmdscale(sqrt(dist_cavalli), k=4, eig=TRUE, add=FALSE, x.ret=FALSE)
+config_pobla<-resul_mds_clas$points
+dimnames(config_pobla)[[1]]<-nombres
+
+plot(config_pobla[,1], config_pobla[,2], ylim=range(config_pobla[,1]),  xlab="dim 1",
+     main="Configuracion MDS enfoque clasico", ylab="dim 2", type="n", 
+     lwd=2, xlim=range(-0.5,0.35))
+text(config_pobla[,1], config_pobla[,2],
+     labels=abbreviate(row.names(config_pobla),minlength=8),cex=0.9,lwd=4)
+```
+
+Desde mi perspectiva, la representación obtenida usando el enfoque clásico tiene mejor interpretación. Ya que se observan *tres* grupos claros, un grupo es muy parecido en los dos enfoques. Pero los otros dos restantes se aprecian mejor con los enfoques clasico. Mi conclusión sería usar para este ejercicio usar MDS con el enfoque clásico. \fin
 
 \textbf{Ejercicio 2.}
 
@@ -131,8 +248,7 @@ Se considera el siguiente conjunto de 6 individuos formado por 5 animales, león
 **a) Obtenga la matriz de datos.**
 
 \res 
-Describiremos a los animales según las variables a estudiar. Los leones tienen cola, son salvajes, carnívoros y caminan en 4 patas. Las jirafas tienen cola, son salvajes, tienen cuello largo y caminan en 4 patas. Las vacas y las ovejas tienen cola, son animales de granjas y caminan en cuatro patas. Los gatos domesticos son carnivoros y caminan en cuatro patas. Y por último, el hombre es carnivoro. 
-
+Describiremos a los animales según las variables a estudiar. Los leones tienen cola, son salvajes, carnívoros y caminan en 4 patas. Las jirafas tienen cola, son salvajes, tienen cuello largo y caminan en 4 patas. Las vacas y las ovejas tienen cola, son animales de granjas y caminan en cuatro patas. Los gatos domesticos son carnivoros y caminan en cuatro patas. Y por último, el hombre es carnivoro, este último no estoy muy seguro ya que siendo más estricto el hombre sería omnivoro pero se me hizo raro un individuo con todas las variables igual a 0. **Lo anterior se resume en el siguiente Cuadro, que representa la matriz de datos**:
 \begin{table}[H]
 \centering
 \begin{tabular}{ccccccc}\hline \hline
@@ -146,9 +262,9 @@ Hombre & 0 & 0& 0& 0& 1& 0\\ \hline \hline
 \end{tabular} \caption{Matriz de datos de los animales.}
 \end{table} 
 
-Ingresamos esta matriz de datos a R. 
+Ingresamos esta matriz de datos a R, para futuros calculos 
 ```{r}
-# Matriz de datos:
+# matriz de datos:
 animales <- matrix(c(1,1,1,1,1,0,1,1,0,0,0,0,0,1,0,0,0,0,0,0,1,1,0,0,1,0,0,0,1,1,1,1,1,
                      1,1,0), nrow=6)
 ```
@@ -161,16 +277,18 @@ animales <- matrix(c(1,1,1,1,1,0,1,1,0,0,0,0,0,1,0,0,0,0,0,0,1,1,0,0,1,0,0,0,1,1
 \res
 Calculamos las frecuencias a, b, c y d. Debido de como estan definidas podemos aprovechar las propiedades de las matrices y calcularlas de las siguiente forma en R:
 ```{r}
-a <- animales %*% t(animales)
-b <- (animales==0)%*%t(animales)
-c <- animales %*% t(animales==0)
-d <- (animales==0)%*%t(animales==0)
+# si P1 es el valor de verdad del primero, y P2 es el valor de valor del segundo
+a <- animales %*% t(animales)  # P1 & P2
+b <- (animales==0)%*%t(animales) # -P1 & P2
+c <- animales %*% t(animales==0) # P1 & -P2
+d <- (animales==0)%*%t(animales==0) # -P1 & -P2
 ```
-Ahora, **procedemos a calcular los coeficientes de similaridad de Sokal$-$Michener y Jacard**
+Ahora, procedemos a calcular los coeficientes de similaridad de Sokal$-$Michener y Jacard
 ```{r}
 sokal <- (a+d)/6 # similaridad Sokal-Michner
 jacard <- a/(a+b+c) # similiradidad de Jacard
 ```
+**Por lo que, las matrices de los dos coeficientes de similaridad son**:
 \begin{table}[H]
 \centering
 \begin{tabular}{ccccccc}\hline \hline
@@ -197,13 +315,12 @@ Hombre     &`r round(jacard[6,1], 2)`&`r round(jacard[6,2], 2)`&`r round(jacard[
 \end{tabular} \caption{Coeficientes de similiradida de Jacard (redondeado).}
 \end{table} 
 
-Y ahora a calcular las matrices de distancias asociadas a estos coeficientes.
+Observamos que tienen grandes diferencias los coeficientes. Y ahora, calculamos las matrices de distancias asociadas a estos coeficientes.
 ```{r}
-D2_sokal <- 2*(matrix(c(1),nrow=6, ncol=6)-sokal)
-
+D2_sokal <- 2*(matrix(c(1),nrow=6, ncol=6)-sokal) # distancias 
 D2_jacard <- 2*(matrix(c(1),nrow=6, ncol=6)-jacard)
 ```
-
+**Por lo que, la matriz de distancias a estos dos coficientes son:**¨
 
 \begin{table}[H]
 \centering
@@ -235,70 +352,84 @@ Hombre     &`r round(D2_jacard[6,1], 2)`&`r round(D2_jacard[6,2], 2)`&`r round(D
 \textbf{Ejercicio 3.}
 
 Sea $O$ un conjunto de $n$ individuos cuya matriz de distancias euclidianas es $D$ y cuya representación en coordenadas principales es $\X$. Se desean obtener las coordenadas de un nuevo individuo al que llamaremos individuo $n+1$, del cual se conocen los cuadrados de sus distancias a los $n$ individuos del conjunto $O$. Si $\textbf{d} = (\delta_{n+1,1}^2,\cdots, \delta_{n+1,n}^2 )'$ es el vector columna que contiene las distancias al cuadrado del individuo $n+1$ a los restantes $n$ individups, se puede probar que las coordenadas principales del individuo $n+1$ están dadas por $$x_{n+1}=\frac{1}{2} \Delta^{-1}\X'(b-d),$$
-donde $\bf b=diag(B)= \bf (b_{11}, \cdots, b_{nn})', B=\X \X'=U\Gamma U'$ y $\bf U$ es una matriz ortogonal. La ecuación anterior se conoce como formula de interpolación de Gower.
+donde $\bf b=diag(B)= \bf (b_{11}, \cdots, b_{nn})', B=\X \X'=U\Delta U'$ y $\bf U$ es una matriz ortogonal. La ecuación anterior se conoce como formula de interpolación de Gower.
 
 Para los datos del ejercicio 2.
 
 a) **Obtenga una representación en coordenadas principales utilizando la matriz de distancias calculada a partir del coeficiente de similaridad de Sokal-Michener.**
 
 \res 
-Primeros encontremos la representación en coordenadas principales utilizando la matriz de distancias a partir del coeficiente de similaridad de Sokal-Michner
-```{r}
-nombres <- c("León", "Jirafa", "Vaca", "Oveja", "Gato", "Hombre")
+Primeros encontremos la representación en coordenadas principales utilizando la matriz de distancias a partir del coeficiente de similaridad de Sokal-Michner, para ello consideraremos $k=2$ esto con el objetivo de poder representar visualmente los resultados.
+```{r, warning=FALSE, message=FALSE, fig.width = 5, fig.height= 4, fig.align = "center"}
+nombres <- c("Leon", "Jirafa", "Vaca", "Oveja", "Gato", "Hombre")
 resul_mds_clas<-cmdscale(sqrt(D2_sokal), k = 2, eig = TRUE, add = FALSE, x.ret = FALSE)
-config_nations<-resul_mds_clas$points
-dimnames(config_nations)[[1]]<-nombres
+config_animals<-resul_mds_clas$points
+dimnames(config_animals)[[1]]<-nombres
 
-
-plot(config_nations[,1], config_nations[,2], 
-     main="configuracion solucion mediante mds clasico",
+plot(config_animals[,1], config_animals[,2], xlim=range(-1,1), 
+     main="Configuracion mediante MDS clasico de los Animales",
      ylim=range(-1,1), xlab="dim 1",ylab="dim 2",type="n",lwd=2)
-text(config_nations[,1], config_nations[,2],
-     labels=abbreviate(row.names(config_nations),minlength=8), cex=0.6,lwd=2)
+text(config_animals[,1], config_animals[,2],
+     labels=abbreviate(row.names(config_animals),minlength=8), cex=0.9,lwd=2)
 ```
 
+Podemos observar que la representación anterior tiene sentido, debido a que los animales de granjas y salvajes se pueden separar muy bien. Además de que el hombre se separa de todos a exepción del león y gato. Ademas de que la vaca y la oveja están en el mismo lugar.
 
 b) Sin volver a recalcular las coordenadas principales, añada el elefante al conjunto de animales y obtenga sus coordenadas principales.
 
 
 \res 
+\begin{framed}
+    \begin{thmp} \label{eje}
+    Como caso especial, para cada matriz simétrica real $n\times n$, los valores propios son reales y los vectores propios pueden elegirse reales y ortonormales. Por lo tanto, una matriz simétrica real $A$ se puede descomponer como $$A=U\Lambda U^T$$
+    donde $U$ es una matriz ortogonal cuyas columnas son los vectores propios de $A$ y $\Lambda$ es una matriz diagonal cuyas entradas son los valores propios de $A$. (Horn y Johnson (1985) , p. 136, Corolario 2.5.11)
+    \end{thmp}
+\end{framed}
 
+Ocupando la descrión de este problema y la Propiedad \ref{eje}, primero calculamos la matriz $\bf B, b$ y la descomposición espectral de la matriz $\bf B$
 ```{r}
-B <- config_nations%*%t(config_nations)
-B
+# calculamos la matriz B
+B <- config_animals%*%t(config_animals)
 
+# calculamos el vector b
 b <- diag(B)
-b
 
+# calculamos la descomposición espectral.
 r <- eigen(B)
 U <- r$vectors
 lam <- diag(r$values)
+```
 
+
+Ahora, calculamos las frecuencias *a, b, c* y *d* definidas en el inciso anterior para el elefante: 
+```{r}
 a_elefante <- matrix(c(3,3,2,2,2,0), nrow=1)
 b_elefante <- matrix(c(1,1,1,1,1,1), nrow=1)
 c_elefante <- matrix(c(0,0,1,1,1,3), nrow=1)
 d_elefante <- matrix(c(2,2,2,2,2,2), nrow=1)
-                        
-                        
+```
+Calculamos las distancias al cuadrado del elefante usando el coeficiente de Sokal-Michener, es decir, el vector $\bf d$
+```{r}
 sokal_elefante <- (a_elefante+d_elefante)/6
-sokal_elefante                        
-
 D2_elefante <- 2*(matrix(c(1), ncol=6)-sokal_elefante)                        
 D2_elefante    
-
-
-x_elefante <- (solve(lam[0:2,0:2])%*%(t(config_nations))%*%t(b-sqrt(D2_elefante)))
-
-config_animals_new <- matrix(c(config_nations[,1], x_elefante[1], config_nations[,2], x_elefante[2]), nrow=7)
-dimnames(config_animals_new)[[1]] <- c(nombres, "elefante")
-
-plot(config_animals_new[,1],config_animals_new[,2],main="configuracion solucion mediante mds clasico",
-     ylim=range(-1, 1), xlim=range(-1,1),
-     xlab="dim 1",ylab="dim 2",type="n",lwd=2)
-text(config_animals_new[,1],config_animals_new[,2],
-     labels=abbreviate(row.names(config_animals_new),minlength=8),cex=0.6,lwd=2)
-            
 ```
+Con todo lo anterior y ocupando la descripción del ejericio podemos calcular las coordenas principales del nuevo individuo, el elefante,
+```{r}
+x_elefante <- (solve(lam[0:2,0:2])%*%(t(config_animals))%*%t(b-sqrt(D2_elefante)))
+```
+Por último, gráficamos nuevamente las representación incluyendo al elefante
+```{r, warning=FALSE, message=FALSE, fig.width = 5, fig.height= 4, fig.align = "center"}
+config_animals_new <- matrix(c(config_animals[,1], x_elefante[1], config_animals[,2], x_elefante[2]), nrow=7)
+dimnames(config_animals_new)[[1]] <- c(nombres, "Elefante")
+
+plot(config_animals_new[,1],config_animals_new[,2],main="Configuracion  mediante MDS clasico",
+     ylim=range(-1, 1), xlim=range(-1,1), xlab="dim 1",ylab="dim 2",type="n",lwd=2)
+text(config_animals_new[,1],config_animals_new[,2],
+     labels=abbreviate(row.names(config_animals_new),minlength=8),cex=0.9,lwd=2)
+```
+
+Observando la gráfica anterior, podemos concluir que es una representación muy buena. Considero que el componente uno se puede interpretar como la preferencia en comida: carnivoro o no carnivor, y el segundo como si es salvaje o no. Por lo que el elefante esta muy cercano a la jirafa ya que ambos son salvajes y no son carnivoros. \fin¸
 
 
 
