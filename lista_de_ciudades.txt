@@ -37,4 +37,4 @@ ciudades = ["CDMX",
 			"Tepic",
 			"Cuautla de Morelos",
 			"Orizaba",
-			"Ensenada"]
+			"Puerto Vallarta"]
