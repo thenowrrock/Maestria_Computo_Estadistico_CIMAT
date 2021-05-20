@@ -1,0 +1,210 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish]{babel}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{lmodern}
+\usepackage{xspace}
+\usepackage{multicol}
+\usepackage{hyperref}
+\usepackage{float}
+\usepackage{hyperref}
+\usepackage{color}
+\usepackage{framed}
+\usepackage{subfig}
+\usepackage{listings}
+\usepackage{colortbl}
+\usepackage{fancyhdr} % Custom headers and footers
+\pagestyle{fancyplain}
+
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}
+\renewcommand{\algorithmicensure}{\textbf{Output:}}
+
+\usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
+
+\newcommand{\X}{\mathbf{X}}
+\newcommand{\x}{\mathbf{x}}
+\newcommand{\Y}{\mathbf{Y}}
+\newcommand{\y}{\mathbf{y}}
+\newcommand{\Z}{\mathbf{Z}}
+
+\newcommand{\xb}{\bar{x}}
+\newcommand{\xbarn}{\bar{x}_n}
+\newcommand{\ybarn}{\bar{y}_n}
+\newcommand{\paren}[1]{\left( #1 \right)}
+\newcommand{\llaves}[1]{\left\lbrace #1 \right\rbrace}
+\newcommand{\barra}{\,\vert\,}
+\newcommand{\mP}{\mathbb{P}}
+\newcommand{\mE}{\mathbb{E}}
+\newcommand{\mR}{\mathbb{R}}
+\newcommand{\mJ}{\mathbf{J}}
+\newcommand{\mX}{\mathbf{X}}
+\newcommand{\mS}{\mathbf{S}}
+\newcommand{\mA}{\mathbf{A}}
+\newcommand{\unos}{\boldsymbol{1}}
+\newcommand{\xbarnv}{\bar{\mathbf{x}}_n}
+\newcommand{\abs}[1]{\left\vert #1 \right\vert}
+\newcommand{\mub}{\boldsymbol{\mu}}
+\newcommand{\mcov}{\boldsymbol{\Sigma}}
+\newcommand{\vbet}{\boldsymbol{\beta}}
+\newcommand{\veps}{\boldsymbol{\epsilon}}
+\newcommand{\mcC}{\mathcal{C}}
+\newcommand{\mcR}{\mathcal{R}}
+\newcommand{\mcN}{\mathcal{N}}
+
+\newcommand{\bL}{\textbf{L}}
+\newcommand{\bphi}{\bf \Psi}
+
+\newcommand{\lit}{\textit{l}}
+
+\newcommand{\ceros}{\boldsymbol{0}}
+\newcommand{\mH}{\mathbf{H}}
+\newcommand{\ve}{\mathbf{e}}
+\newcommand{\avec}{\mathbf{a}}
+\newcommand{\res}{\textbf{RESPUESTA:}\\}
+
+\newcommand{\defi}[3]{\textbf{Definición:#3}}
+\newcommand{\fin}{$\blacksquare.$}
+\newcommand{\finf}{\blacksquare.}
+\newcommand{\tr}{\text{tr}}
+\newcommand*{\temp}{\multicolumn{1}{r|}{}}
+
+\newcommand{\grstep}[2][\relax]{%
+   \ensuremath{\mathrel{
+       {\mathop{\longrightarrow}\limits^{#2\mathstrut}_{
+                                     \begin{subarray}{l} #1 \end{subarray}}}}}}
+\newcommand{\swap}{\leftrightarrow}
+
+\newcommand{\sumj}{\sum_{j=1}^n}
+\newcommand{\sumi}{\sum_{i=1}^n}
+\newcommand{\sumk}{\sum_{k=1}^n}
+\newcommand{\gen}{\text{gen}}
+\newtheorem{thmt}{Teorema:}
+\newtheorem{thmd}{Definición:}
+\newtheorem{thml}{Lema:}
+\newtheorem{thmp}{Propiedad:}
+\newtheorem{thmr}{Resultado:}
+\newtheorem{thma}{Algoritmo:}
+\usepackage{biblatex}
+\addbibresource{biblio.bib}
+
+\begin{document}
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{c}
+\textbf{Maestría en Computo Estadístico}\\
+\textbf{Optimización}\\
+\textbf{Tarea 3}\\
+\today \\
+\emph{Enrique Santibáñez Cortés}\\
+Repositorio de Git: \href{https://https://github.com/Enriquesec/Optimizacion/tree/master/tareas/tarea_3}{Tarea 3}.
+\end{tabular}
+\end{table}
+
+\section*{Problema de la $p-$mediana}
+Parámetros:
+\begin{itemize}
+\item $I:$ conjunto de instalaciones
+\item $J:$ conjunto de clientes
+\item $c\_ij$ : costo de asignación del cliente $j$ a la instalación $i$, $\forall i \in I, j \in J$
+
+\item $f\_i$: costo de localizar la instalación $i, \forall i \in I$.
+
+\item $p:$ número de instalaciones que se deben abrir
+\end{itemize}
+Variables de decisión:
+\begin{align*}
+y_i= \left\{\begin{array}{cc}
+1 & \text{si la instalación } i \text{ se abre}\\
+0 & \text{en otro caso}
+\end{array} \right.\\
+x_{ij}=\left\{\begin{array}{cc}
+1 & \text{si el cliente } j \text{ se asigna a la instalacion } i\\
+0 & \text{en otro caso}
+\end{array} \right.
+\end{align*}
+Modelo:
+\begin{align}
+z &= \sum_{i\in I} \sum_{j\in J} c_{ij}x_{ij}+\sum_{i\in I} f_i y_i\\
+s.a:& \sum_{i\in I} y_i =p\\
+&\sum_{i\in I} x_{ij} =1\ \ \ \ \ \ \ \ \forall j \in J\\
+&x_{ij}\leq y_1  \ \ \ \ \ \ \ \ \forall i \in I, j \in J \\
+&y_i\in\{ 0,1\},\ x_{ij}\in \{ 0,1\}\ \ \ \ \ \ \ \ \forall i \in I, j \in J \\
+\end{align}
+En la ecuación (1) la función objetivo es minimizar el costo de asignación y el costo de apertura, la
+restricción (2) asegura que sólo se abra la cantidad de instalaciones indicada, la restricción (3) garantiza
+que cada cliente sea asignado a una sola instalación, la restricción (4) asegura que cada cliente sea
+asignado solo a una instalación abierta y finalmente la restricción (5) es la restricción de signo de las
+variables de decisión.
+
+\subsection*{Método Constructivo Aleatorio}
+Para resolver este ejercicio primero nos enfocamos en implementar el método GRASP para resolverlo, pero no pudimos implementarlo completamente. Por lo cuál, solo procedimos a realizar el algoritmo semi$-$greedy (ver Definición \ref{d_semi}) para resolver este problema. Además nos basamos en el algoritmo de GRASP aplicado en el \textit{Problema binivel de la p-mediana con preferencia de los clientes} que se desarrollan en \cite{arggis}.
+
+\begin{framed}
+    \begin{thmd} \label{d_semi}
+    (Diapositiva 6, Métodos constructivos) \textbf{Algoritmo semi$-$greedy} Este algoritmo trata de evitar la convergencia a un mınímo local.\\
+    
+Repetir hasta que la solución esté construida:
+
+\begin{itemize}
+\item Para cada elemento candidato:
+\begin{itemize}
+\item Aplicar una función greedy.
+\item Ordenar los elementos de acuerdo a los valores de la función greedy.
+\end{itemize}
+\item Crear una lista restringida de candidatos.
+\item Seleccionar un elemento de la lista de manera aleatoria.
+\item Añadir el elemento seleccionado a la solución.
+\end{itemize}
+    \end{thmd}
+\end{framed}
+Considerando la \textbf{Definición \ref{d_semi}} procedemos a describir el \textbf{Pseudocódigo \ref{a_semi_greedy}} implementado. Basicamente consiste en una fase en cada iteración, la cual de forma iterativa agrega un elemento en cada iteración hasta que la solución alcance la cardinalidad desadad (\textit{criterio de paro}:  $|y_{optimo}|<p_k$). \\
+
+Para decidir los candidatos se recurre a una función voraz que mide la contribución local de cada elemento a la solución parcial, dicha función la definimos como la suma de los costos fijos y los costos de distribución de la localización de las instalaciones $(costo\_optimo(y_{aux}, c_{ij}, f_{i})$. Dado $k$ instalaciones abiertas nosotros calculamos el costo óptimo asignando a cada cliente la instalación que tiene el costo mínimo para ese cliente, así aseguramos que estamos obteniendo la distribución de los clientes óptima para esas $k$ instalaciones y además que estamos cumpliendo la  ecuación $(3)$ y $(4)$.  \\
+
+Porteriormente, se crea una lista restrigida de candidatos $(RCL)$ en base a los valores de dicha función. Para ello, de todos los valores obtenidos en la función calculamos el valor de $c_{min}$ y $\alpha(c^{max}-c_{min})$. Entonces si el costo del candidato es menor que el valor calculado entonces esa instalación ingresa a la $RCL$. \\
+
+Seleccionamos un elemento de la lista restringida de forma aleatoria ($y_{optimo} \leftarrow y_{optimo} \cup y(k)$) y actualizamos nuestra vector de candidatos ($y \leftarrow y-\{ y(k)\}$). Todo el proceso se repite hasta un criterio de paro, en nuestro caso, hasta que la solución obtinene la cardinalidad $p$. \\
+
+Este pseudocodigo se implemento en python. El archivo \textbf{codigo$\_$EnriqueSantibanez.py} contiene las funciones construidas. La función \textbf{solution$\_$opti} calcula los valores de nuestra función voráz definida anteriormente. Y la función \textbf{semi$\_$greedy} implementa el pseudocodigo descrito anteriormente. El archivo \textbf{codigo$\_$EnriqueSantibanez.ipynb} contiene los resultados de este algoritmo utilizando los datos que están en \textbf{dato$\_$EnriqueSntibanez.txt}, además contiene una comparación con la solución óptima obtenidad con la librería \textit{pulp}.
+
+\begin{algorithm}[H]
+  \caption{Semi-greedy para resolver el problema p-mediana} \label{a_semi_greedy}
+  \begin{algorithmic}[1]
+ 
+    % ENTRADA / SALIDA
+    \Require{y, $c_{ij}$, $f_{i}$, $p_k$, $\alpha$} 
+    \Ensure{$y_{optimo}$}
+
+    \State $y_{optimo} \leftarrow \emptyset$
+ 
+    \While{$|y_{optimo}|<p_k$}
+    \State $costos \leftarrow \emptyset$
+      \For{$ \ \ i \in y$}
+      \State $y_{aux} \leftarrow y_{optimo} \cup i $
+      \State $costos[i]\leftarrow costo\_optimo(y_{aux}, c_{ij}, f_{i})$
+      \EndFor
+      
+      \State $c^{max} = \max\{ costos(k): k= 1,\cdots , len(costos) \}$
+      \State $c_{min} = \min\{ costos(k): k= 1,\cdots , len(costos) \}$ 
+      \State $RCL \leftarrow \{k=1, \cdots, len(costos) :costos(k)\leq c_{min}+\alpha (c^{max}-c_{min}) \}$
+      \State Seleccionamos un elemento $k$ de $RCL$ de forma aleatoria.
+      \State $y_{optimo} \leftarrow y_{optimo} \cup y(k)$
+      \State $y \leftarrow y-\{ y(k)\}$
+    \EndWhile
+ 
+    
+    \State{\textbf{return} $y_{optimo}$}
+  \end{algorithmic}
+\end{algorithm}
+\printbibliography
+
+
+\end{document}
