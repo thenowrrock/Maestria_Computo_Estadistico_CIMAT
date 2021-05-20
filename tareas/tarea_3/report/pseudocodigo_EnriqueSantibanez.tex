@@ -91,8 +91,11 @@
 \newtheorem{thmp}{Propiedad:}
 \newtheorem{thmr}{Resultado:}
 \newtheorem{thma}{Algoritmo:}
+\usepackage{biblatex}
+\addbibresource{biblio.bib}
 
 \begin{document}
+
 \begin{table}[ht]
 \centering
 \begin{tabular}{c}
@@ -142,10 +145,10 @@ asignado solo a una instalación abierta y finalmente la restricción (5) es la 
 variables de decisión.
 
 \subsection*{Método Constructivo Aleatorio}
-Para resolver este ejercicio primero nos enfocamos en implementar el método GRASP para resolverlo, pero no pudimos implementarlo completamente. Por lo cuál, solo procedimos a realizar el algoritmo semi$-$greedy (ver Definición \ref{d_semi}) para resolver este problema.
+Para resolver este ejercicio primero nos enfocamos en implementar el método GRASP para resolverlo, pero no pudimos implementarlo completamente. Por lo cuál, solo procedimos a realizar el algoritmo semi$-$greedy (ver Definición \ref{d_semi}) para resolver este problema. Además nos basamos en el algoritmo de GRASP aplicado en el \textit{Problema binivel de la p-mediana con preferencia de los clientes} que se desarrollan en \cite{arggis}.
 
-\begin{framed}\label{d_semi}
-    \begin{thmd} 
+\begin{framed}
+    \begin{thmd} \label{d_semi}
     (Diapositiva 6, Métodos constructivos) \textbf{Algoritmo semi$-$greedy} Este algoritmo trata de evitar la convergencia a un mınímo local.\\
     
 Repetir hasta que la solución esté construida:
@@ -162,31 +165,46 @@ Repetir hasta que la solución esté construida:
 \end{itemize}
     \end{thmd}
 \end{framed}
-Considerando la \textbf{Definición \ref{d_semi}} procedemos a realizar el pseudocódigo. 
-\begin{algorithm}
-  \caption{Semi-greedy para resolver el problema p-mediana}
+Considerando la \textbf{Definición \ref{d_semi}} procedemos a describir el \textbf{Pseudocódigo \ref{a_semi_greedy}} implementado. Basicamente consiste en una fase en cada iteración, la cual de forma iterativa agrega un elemento en cada iteración hasta que la solución alcance la cardinalidad desadad (\textit{criterio de paro}:  $|y_{optimo}|<p_k$). \\
+
+Para decidir los candidatos se recurre a una función voraz que mide la contribución local de cada elemento a la solución parcial, dicha función la definimos como la suma de los costos fijos y los costos de distribución de la localización de las instalaciones $(costo\_optimo(y_{aux}, c_{ij}, f_{i})$. Dado $k$ instalaciones abiertas nosotros calculamos el costo óptimo asignando a cada cliente la instalación que tiene el costo mínimo para ese cliente, así aseguramos que estamos obteniendo la distribución de los clientes óptima para esas $k$ instalaciones y además que estamos cumpliendo la  ecuación $(3)$ y $(4)$.  \\
+
+Porteriormente, se crea una lista restrigida de candidatos $(RCL)$ en base a los valores de dicha función. Para ello, de todos los valores obtenidos en la función calculamos el valor de $c_{min}$ y $\alpha(c^{max}-c_{min})$. Entonces si el costo del candidato es menor que el valor calculado entonces esa instalación ingresa a la $RCL$. \\
+
+Seleccionamos un elemento de la lista restringida de forma aleatoria ($y_{optimo} \leftarrow y_{optimo} \cup y(k)$) y actualizamos nuestra vector de candidatos ($y \leftarrow y-\{ y(k)\}$). Todo el proceso se repite hasta un criterio de paro, en nuestro caso, hasta que la solución obtinene la cardinalidad $p$. \\
+
+Este pseudocodigo se implemento en python. El archivo \textbf{codigo$\_$EnriqueSantibanez.py} contiene las funciones construidas. La función \textbf{solution$\_$opti} calcula los valores de nuestra función voráz definida anteriormente. Y la función \textbf{semi$\_$greedy} implementa el pseudocodigo descrito anteriormente. El archivo \textbf{codigo$\_$EnriqueSantibanez.ipynb} contiene los resultados de este algoritmo utilizando los datos que están en \textbf{dato$\_$EnriqueSntibanez.txt}, además contiene una comparación con la solución óptima obtenidad con la librería \textit{pulp}.
+
+\begin{algorithm}[H]
+  \caption{Semi-greedy para resolver el problema p-mediana} \label{a_semi_greedy}
   \begin{algorithmic}[1]
  
     % ENTRADA / SALIDA
     \Require{y, $c_{ij}$, $f_{i}$, $p_k$, $\alpha$} 
-    \Ensure{$y_{optimo}$, $A_{optimo}$, $costo_{optimo}$}
+    \Ensure{$y_{optimo}$}
 
-    \State $y_{optimo} = \emptyset$
+    \State $y_{optimo} \leftarrow \emptyset$
  
     \While{$|y_{optimo}|<p_k$}
-    \State $costos = \emptyset$
+    \State $costos \leftarrow \emptyset$
       \For{$ \ \ i \in y$}
-      \State $y_{aux} = y_{optimo} \cup i $
-      \State $costos_{}$
+      \State $y_{aux} \leftarrow y_{optimo} \cup i $
+      \State $costos[i]\leftarrow costo\_optimo(y_{aux}, c_{ij}, f_{i})$
       \EndFor
       
-      \State $c^{max} = \max$
-      \State $c^{min} = \min$ 
+      \State $c^{max} = \max\{ costos(k): k= 1,\cdots , len(costos) \}$
+      \State $c_{min} = \min\{ costos(k): k= 1,\cdots , len(costos) \}$ 
+      \State $RCL \leftarrow \{k=1, \cdots, len(costos) :costos(k)\leq c_{min}+\alpha (c^{max}-c_{min}) \}$
+      \State Seleccionamos un elemento $k$ de $RCL$ de forma aleatoria.
+      \State $y_{optimo} \leftarrow y_{optimo} \cup y(k)$
+      \State $y \leftarrow y-\{ y(k)\}$
     \EndWhile
  
     
-    \State{\textbf{return} $y_{optimo}$, $A_{optimo}$, $costo_{optimo}$}
+    \State{\textbf{return} $y_{optimo}$}
   \end{algorithmic}
 \end{algorithm}
+\printbibliography
+
 
 \end{document}
