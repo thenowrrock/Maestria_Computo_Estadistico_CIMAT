@@ -1,0 +1,236 @@
+\documentclass{beamer}
+\usepackage[utf8]{inputenc}
+\usetheme[background=dark,titleformat = smallcaps , block = fill,numbering = fraction, progressbar = 
+frametitle , titleformat title= smallcaps]{metropolis}           % Use metropolis theme
+
+
+\definecolor{orangeBar}{HTML}{FF3600}
+\setbeamercolor{progress bar}{fg=orangeBar}
+
+\usepackage{multimedia}
+\usepackage{animate}
+\usepackage {extarrows}
+\usepackage {tikz}
+\usepackage[options ]{algorithm2e}
+\usepackage[spanish]{babel}
+\usepackage{graphicx}
+\usepackage{amssymb}
+%\usepackage{amsfonts}
+
+\usepackage{enumerate}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{xcolor}
+%\usepackage{amsfonts,amssymb,amsthm}
+
+\usepackage{url}
+\usepackage{enumerate}
+\usepackage{commath}
+\usepackage{multicol}
+\usepackage{mathtools}
+\usepackage{scrextend}
+\usepackage{hyperref}
+\usepackage{cleveref}
+\usepackage{longtable}
+\usepackage{bbm}
+\usepackage{siunitx}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{subcaption}
+\usepackage{epigraph}
+\usetikzlibrary{arrows}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+\definecolor{darkBlue}{HTML}{00000F}
+\definecolor{lightBlue}{HTML}{00B7D4}
+\definecolor{lightRed}{HTML}{E42525}
+\definecolor{lightGreen}{HTML}{9CE425}
+
+\definecolor{green0}{HTML}{B65900}
+\definecolor{green1}{HTML}{D77200}
+\definecolor{green2}{HTML}{ED8E30}
+\definecolor{green3}{HTML}{FABE86}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{darkBlue},   
+	commentstyle=\color{lightGreen},
+	keywordstyle=\color{lightBlue},
+	numberstyle=\tiny\color{codegray},
+	stringstyle=\color{lightRed},
+	basicstyle=\ttfamily\footnotesize,
+	breakatwhitespace=false,         
+	breaklines=true,                 
+	captionpos=b,                    
+	keepspaces=true,                 
+	numbers=left,                    
+	numbersep=5pt,                  
+	showspaces=false,                
+	showstringspaces=false,
+	showtabs=false,                  
+	tabsize=1
+}
+
+\lstset{style=mystyle}
+\lstset{language=Python}
+\lstset{frame=lines}
+\lstset{caption={Insert code directly in your document}}
+\lstset{label={lst:code_direct}}
+\lstset{basicstyle=\footnotesize}
+
+
+\newcommand{\bb}[1]{\mathbb{#1}}
+
+%\newtheorem{theorem}{Teorema}[section]
+%\theoremstyle{plain}
+\newtheorem{acknowledgement}[theorem]{Acknowledgement}
+%\newtheorem{algorithm}[theorem]{Algorithm}
+\newtheorem{axiom}[theorem]{Axiom}
+\newtheorem{case}[theorem]{Case}
+\newtheorem{claim}{Claim}
+\newtheorem{conclution}[theorem]{Conclusión}
+\newtheorem{condition}[theorem]{Condition}
+\newtheorem{conjecture}[theorem]{Conjecture}
+%\newtheorem{corollary}[theorem]{Corolario}
+\newtheorem{criterion}[theorem]{Criterion}
+\theoremstyle{definition}
+%\newtheorem*{df}{Definición}
+%\newtheorem{definition}[theorem]{Definición}
+%\newtheorem{example}[theorem]{Ejemplo}
+\newtheorem{exercise}[theorem]{Exercise}
+%\newtheorem{lemma}[theorem]{Lema}
+\newtheorem{notation}[theorem]{Notation}
+%\newtheorem{problem}[theorem]{Problem}
+\newtheorem{proposition}[theorem]{Proposición}
+\newtheorem{remark}[theorem]{Nota}
+%\newtheorem{solution}[theorem]{Solución}
+\newtheorem{summary}[theorem]{Summary}
+\numberwithin{equation}{section}
+
+\definecolor{defColor}{HTML}{3ED597}
+\newcommand{\marine}[1]{\textcolor{defColor}{#1}}
+
+
+\definecolor{thColor}{HTML}{FA7E0A}
+\newcommand{\orangee}[1]{\textcolor{thColor}{#1}}
+
+\definecolor{rkColor}{HTML}{F72121}
+\newcommand{\redd}[1]{\textcolor{rkColor}{#1}}
+
+
+%---------------emojis--------------------
+\newcommand{\smiley}{\tikz[baseline=-0.75ex,black]{
+		\draw circle (2mm);
+		\node[fill,circle,inner sep=0.5pt] (left eye) at (135:0.8mm) {};
+		\node[fill,circle,inner sep=0.5pt] (right eye) at (45:0.8mm) {};
+		\draw (-145:0.9mm) arc (-120:-60:1.5mm);
+	}
+}
+
+\newcommand{\frownie}{\tikz[baseline=-0.75ex,black]{
+		\draw circle (2mm);
+		\node[fill,circle,inner sep=0.5pt] (left eye) at (135:0.8mm) {};
+		\node[fill,circle,inner sep=0.5pt] (right eye) at (45:0.8mm) {};
+		\draw (-145:0.9mm) arc (120:60:1.5mm);
+	}
+}
+
+\newcommand{\neutranie}{\tikz[baseline=-0.75ex,black]{
+		\draw circle (2mm);
+		\node[fill,circle,inner sep=0.5pt] (left eye) at (135:0.8mm) {};
+		\node[fill,circle,inner sep=0.5pt] (right eye) at (45:0.8mm) {};
+		\draw (-135:0.9mm) -- (-45:0.9mm);
+	}
+}
+
+
+
+
+\newtheorem{df}{\marine{Definición}}
+\newtheorem{thh}{\orangee{Teorema}}
+\newtheorem{pr}{\orangee{Proposición}}
+\newtheorem{lm}{\orangee{Lema}}
+\newtheorem{crr}{\orangee{Corolario}}
+\newtheorem{rr}{\redd{Observación}}
+\usepackage{graphicx} 
+
+
+%\newtheorem{defn}[]{Definición}
+%\newenvironment{definition}{\begin{defn}}{\end{defn}}
+%\newtheorem{definition}{Definition}[section]
+%\newtheorem*{remark}{Remark}
+%%%%%%%%
+\newcommand{\tit}[1]{\textit{#1}}
+\newcommand{\bsym}{\mathbf}
+\newcommand{\Mod}[1]{\ (\mathrm{mod}\ #1)}
+%\newcommand{\blue}[1]{\textcolor{blue}{#1}}
+\newcommand{\red}[1]{\textcolor{red}{#1}}
+\renewcommand{\geq}{\geqslant}
+\renewcommand{\leq}{\leqslant}
+\newcommand{\Rplus}{\mathds{R}_{^{+}}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\R}{\mathbb{R}}
+
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\ssi}{\longleftrightarrow}
+\newcommand{\ent}{\longrightarrow}
+\newcommand{\Qp}{\mathbb{Q}_p}  
+\newcommand{\Qpn}{\mathbb{Q}_p^n}
+\newcommand{\Zpn}{\mathbb{Z}_p^n}
+\newcommand{\Zp}{\mathbb{Z}_p}
+\newcommand{\Zd}{\mathbb{Z}_2}
+%\newcommand{\abs}[1]{\left\vert #1 \right\vert}
+%\newcommand{\norm}[1]{\|#1\|}
+\newcommand{\pnorm}[1]{\|#1\|_p}
+\newcommand{\maxx}[1]{\text{m\'ax} #1}
+\newcommand{\xbar}[1]{\hskip 1.4pt\overline{\hskip-1.2pt #1\hskip -.6pt}\hskip 1.2pt}
+\newcommand{\rb}{\raisebox{-.35ex}}
+
+\DeclareMathOperator{\s}{\mathbf{S}}
+\DeclareMathOperator{\f}{\mathcal{F}}
+\DeclareMathOperator{\A}{\mathbb{A}}
+\DeclareMathOperator{\dist}{dist} % The distance.
+\DeclareMathOperator{\d^n}{\dif^{\,n}}
+%\DeclareMathOperator{\d}{\dif}
+\DeclareMathOperator{\Real}{Re}
+\DeclareMathOperator{\ord}{Ord}
+\DeclareMathOperator{\Dom}{Dom}
+\DeclareMathOperator{\vol}{vol}
+\DeclareMathOperator{\gpn}{\mathit{{GpnN}}}
+%%%%%%%%%
+%%%%%%%%%%%%%%%%% dashed integrals %%%%%%%%%%%%%%%%%%%%%
+\DeclareSymbolFont{eulargesymbols}{U}{zeuex}{m}{n}
+\DeclareMathSymbol{\intop}{\mathop}{eulargesymbols}{"52}
+\usepackage[toc,page]{appendix}
+\renewcommand{\labelitemi}{$\circ$}
+
+
+\title{Análisis de la infraestructura turística de las principales ciudades del país}
+\subtitle{Proyecto final, Estadística Multivariada}
+\date{27 de Mayo de 2021}
+
+
+\author{\bf{Autores: }Edgar Baquero \& Enrique Santibáñez}
+
+\institute{Centro de Investigación en Matemáticas, \\Maestría en Cómputo Estadístico.}
+%Facultad de Ciencias\\
+%Departamento de Matemáticas}
+
+
+
+\usepackage{MnSymbol,wasysym}
+
+
+
+\titlegraphic{%
+	\begin{picture}(0,0)
+	\put(190,-190){\makebox(0,0)[rt]{\includegraphics[width=2cm]{logo}}}
+    \end{picture}
+}
+
+\usepackage[backend=biber, style=apa, natbib = true]{biblatex}
+\bibliography{biblio.bib}
