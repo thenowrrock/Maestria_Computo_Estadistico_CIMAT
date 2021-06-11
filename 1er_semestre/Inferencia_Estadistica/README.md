@@ -30,17 +30,7 @@ En este repositorio se encuentra todos los recursos (nota, tareas, proyectos, ar
 - Prueba de permutaciones.
 - Pruebas no paramétricas clásica.
 
-### Notas: 
-
-- [Variables aleatorias y distribuciones de probabilidad](Notas/primera_parte.pdf)
-- [Estimación de densidad no paramétrica](Notas/EDNP_2020)
-- [Distribuciones muestrales y métodos de estimación](Notas/segunda_parte.pdf)
--[Pruebas de Hipótesis e intervalos de confianza](Notas/tercera_parte2.pdf)
-- [Boostrap](Notas/boostrap.pdf)
-
-
-
-### [Artículos](Lecturas): 
+### Artículos: 
 1. Captura y Recaptura Hipergeometica
 2. Ejemplo group testing
 3. Momentos de una distribución Hipergeométrica.
@@ -54,8 +44,6 @@ En este repositorio se encuentra todos los recursos (nota, tareas, proyectos, ar
 11. The large-sample distribution of the likelihood ratio for testing composite hypotheses.
 12. The ASA Statement on p-Values: Context, Process, and Purpose.
 13. El número efectivo de grados de libertad.
-
-
 
 ### Bibliografía sugerida:
 - All of Statistics, A Concise Course in Statistical Inference, Larry Wasserman (2003).
