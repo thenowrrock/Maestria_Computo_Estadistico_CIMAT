@@ -1,0 +1,386 @@
+---
+fontsize: 11pt
+geometry: "left=2cm,right=2cm,top=2cm,bottom=2cm"
+documentclass: article
+output:
+    pdf_document:
+        includes:
+            in_header: mystyles.sty
+---
+\begin{table}[ht]
+\centering
+\begin{tabular}{c}
+\textbf{Maestría en Computo Estadístico}\\
+\textbf{Estadística Multivariada} \\
+\textbf{Tarea 1}\\
+\today \\
+\emph{Enrique Santibáñez Cortés}\\
+Repositorio de Git: \href{https://github.com/Enriquesec/Estadística_multivariada/tree/master/Tareas/Tarea_2}{Tarea 2, EM}.
+\end{tabular}
+\end{table}
+
+\textbf{Ejercicio 1.} Demuestre la siguiente igualdad:
+\begin{align*}
+\suma (\x_i-\mu)(\x_i-\mu)'=\suma  (\x_i-\bar{\x})(\x_i-\bar{\x})'+n(\xb-\mu)(\xb-\mu)',
+\end{align*}
+donde  $\x_i\sum N_p(\mu, \Sigma), \ \ i=1, \cdots, n.$
+
+\res Desarrollemos la suma del lado izquierdo pero agreguemos dos cero, sumando y restando $\bar{x}$ de la siguiente forma:
+\begin{align*}
+\suma (\x_i-\mu)(\x_i-\mu)'& = \suma (\x_i-\xb+\xb-\mu)(\x_i-\xb+\xb-\mu)'\\
+&= \suma (\x_i-\xb)(\x_i-\xb)'+\suma (\xb-\mu)(\x_i-\xb)+\suma (\x_i-\xb)(\xb-\mu)+\suma(\xb-\mu)(\xb-\mu)'\\
+&= \suma (\x_i-\xb)(\x_i-\xb)'+\suma (\xb-\mu)(\x_i-\xb)+\suma (\x_i-\xb)(\xb-\mu)+n(\xb-\mu)(\xb-\mu)'
+\end{align*}
+Ahora, como sabemos que $\xb=\frac{1}{n}\suma \x_i$ entonces veamos a que son equivalentes los terminos de enmedio de la ecuación anterior,
+\begin{align*}
+\suma (\xb-\mu)(\x_i-\xb)'& = \suma (\xb\x_i'-\mu \x_i'-\xb\xb'+\mu\xb')=n\xb\xb'-n\mu\xb'-n\xb\xb'+n\mu\xb'=0,\\
+\suma (\x_i-\xb)(\xb-\mu)'& = \suma(\x_i\xb'-\xb\xb'-\mu\x_i+\xb\mu)=n\xb\xb'-n\xb\xb'-n\mu\xb'+n\mu\xb=0.
+\end{align*}
+Por lo tanto, podemos concluir que 
+\begin{align*}
+\suma (\x_i-\mu)(\x_i-\mu)'& = \suma (\x_i-\xb)(\x_i-\xb)'+\underbrace{\suma (\xb-\mu)(\x_i-\xb)'}_{=0}+\underbrace{\suma (\x_i-\xb)(\xb-\mu)'}_{=0}+n(\xb-\mu)(\xb-\mu)'\\
+&= \suma (\x_i-\xb)(\x_i-\xb)'+n(\xb-\mu)(\xb-\mu)'\ \ \ \finf
+\end{align*}
+
+\textbf{Ejercicio 2.} Para el resultado:
+\begin{framed}
+    \begin{thmr} \label{r_ejercicio2}
+    Para una matriz $\bf B$ $(p\times p)$, simétrica y positiva definida y un escalar $b>0$, se sigue que 
+    \begin{align*}
+    \frac{1}{|\Sigma|^b}e^{-tr(\Sigma^{-1}B)/2}\leq \frac{1}{|B|^b}(2b)^{pb}e^{-pb}. 
+    \end{align*}
+   para toda $\Sigma$ positiva definida de dimensión $p\times p$. 
+    \end{thmr}
+\end{framed}
+Compruebe que la igualdad se sostiene únicamente para 
+\begin{align*}
+\Sigma =\frac{1}{2b}\bf B.
+\end{align*}
+
+\res
+\begin{framed}
+    \begin{thmp} \label{p_square}
+    Toda matriz $\bf A$ positiva definida tiene descomposión raíz cuadrada, y se define como 
+    \begin{align}\label{e_square}
+    \bf A^{1/2} = \sum_{i=1}^k\sqrt{\lambda}e_ie_i'
+	\end{align}  
+	Esta matriz tiene las siguientes propiedades:
+	\begin{itemize}
+	\item $(\bf A^{1/2})'=A^{1/2}.$ Es decir, es simétrica.
+	\item $A^{1/2}A^{1/2}=A$.
+	\item $(A^{1/2})^{-1}$.
+	\item $A^{1/2}A^{-1/2}=A^{-1/2}A^{1/2}=I$ y $A^{-1/2}A^{-1/2}=A^{-1}$.
+\end{itemize}	    
+    \end{thmp}
+\end{framed}
+
+Ocupando la propiedad \ref{p_square}, tenemos que la matriz $\bf B$ tiene descomposición raíz cuadrada denotada como $\bf B^{1/2}$, donde se cumple que $\bf B^{1/2}B^{1/2}=B$, $\bf B^{1/2}B^{-1/2}=I$ y $\bf B^{-1/2}B^{-1/2}$. Entonces, podemos observar que 
+\begin{align*}
+tr(\bf \Sigma^{-1}B) = tr\left[(\Sigma^{-1}B^{1/2})B^{1/2}\right]=tr\left[B^{1/2}(\Sigma^{-1}B^{1/2})\right].
+\end{align*}
+Ahora, cuando $\bf \Sigma^{-1}=\frac{1}{2b}B$ tenemos que
+\begin{align*}
+B^{1/2}\Sigma^{-1}B^{1/2}=B^{1/2}\left(\frac{1}{2b}B\right)^{-1}B^{1/2}=2b B^{1/2}B^{-1}B^{1/2}=2b B^{1/2}B^{-1/2}B^{-1/2}B^{1/2}=2bI_{p\times p}.
+\end{align*}
+Ocupando lo anterior podemos obtener que 
+\begin{align*}
+tr(\bf \Sigma^{-1}B) =tr\left[B^{1/2}(\Sigma^{-1}B^{1/2})\right] = tr[(2b)I_{p\times p}]=2bp.
+\end{align*}
+Ahora, ocupando nuevamente las propiedades \ref{p_square} tenemos 
+\begin{align*}
+\frac{1}{|\Sigma|}=|\Sigma|^{-1}\frac{|B|}{|B|}=\frac{|B^{1/2}\Sigma^{-1}B^{1/2}|}{|B|}=\frac{|(2b)I_{p\times p}|}{|B|}=\frac{(2b)^p}{|B|}.
+\end{align*}
+Por lo tanto, ocupando el resultado \ref{r_ejercicio2} considerando $\Sigma= \bf \frac{1}{2b}B$ tenemos que
+\begin{align*}
+    \frac{1}{|\Sigma|^b}e^{-tr(\Sigma^{-1}B)/2}&\leq \frac{1}{|B|^b}(2b)^{pb}e^{-pb}\\
+    \left(\frac{(2b)^p}{|B|}\right)^b e^{-2bp/2}&\leq \frac{1}{|B|^b}(2b)^{pb}e^{-pb}\\
+    \frac{1}{|B|^b}(2b)^{pb} e^{-bp}&= \frac{1}{|B|^b}(2b)^{pb}e^{-pb}.
+    \end{align*}
+Por lo tanto, \textbf{hemos demostrado que cuando $\Sigma =\frac{1}{2b}B$ se cumple la igualdad del resultado \ref{r_ejercicio2}}.  \ \ \fin  
+
+\textbf{Ejercicio 3.} Justifique el siguiente resultaddo para $p=2$:
+\begin{framed}
+	\begin{thmr}\label{r_ejercicio3}
+	Los contornos
+	\begin{align*}
+	\bf (x-\mu)\Sigma^{-1}(x-\mu)=c^2
+	\end{align*}
+	forman elipsoides concéntricos centrados en $\mu$ y la longitud de los ejes esta dada por $\pm c\sqrt{\lambda_i}e_{i},$ donde $\Sigma e_i=\lambda_i e_i,$ para $i=1,\cdots, p$.
+	\end{thmr}	
+\end{framed}
+
+\res Para $p=2$, sea $X'AX$ (con $X\neq 0$) definido positivo y $A$ una matriz simétrica. La distancia de $X$ a un punto fijo $\mu$ es $(X-\mu)'A(X-\mu)$. Ahora consideremos a $X=\begin{pmatrix}
+X_1 & X_2
+\end{pmatrix}$ y $A=\begin{pmatrix}
+a_{11}& a_{12}\\ a_{12} & a_{22}
+\end{pmatrix}$. Sea $A$ es simetrica positiva con $\lambda_1$ y $\lambda_2$ valores propios y $e_1, e_2$ vectores propios respectivamente, entonces por \textbf{el teorema de descomposición espectral tenemos que} 
+\begin{align*}
+A=\lambda_1e_1e_1'+\lambda_2e_2e_2'.
+\end{align*}
+Entonces podemos observar que, 
+\begin{align*}
+c^2=X'AX&=X'(\lambda_1e_1e_1'+\lambda_2e_2e_2')X\\
+&=\lambda_1 X'e_1e_1'X+\lambda_2X'e_2e_2'X\\
+&=\lambda_1 (X'e_1)^2+\lambda_2(X'e_2)^2
+\end{align*}
+Entonces, como sabemos que $X'AX$ representa una distancia cuadradada denotemosla como $c$, tenemos entonces que
+\begin{align}\label{elipse}
+c^2&= \lambda_1 y_1^2+\lambda_2y_2^2\Rightarrow\\
+1 &= \left(\frac{\sqrt{\lambda_1} y_1}{c}\right)^2+\left(\frac{\sqrt{\lambda_2} y_2}{c}\right)^2
+\end{align}
+por lo que podemos ver que tiene la ecuación de una elipse con centro en el origen, donde $y_1=x_1'e_1$ y $y_2=x_2'e_2$. Ahora despejamos a $x_1$ y $x_2$ para encontra los valores de los ejes. 
+\begin{align}\label{ejes_1}
+c&=\sqrt{\lambda_1} (x_1e_1') \Rightarrow ce_1=\sqrt{\lambda_1} (x_1e_1'e_1)\\
+x_1&=\frac{c}{\sqrt{\lambda_1}}e_1.
+\end{align}
+Para $x_2$
+\begin{align}\label{ejes_2}
+c&=\sqrt{\lambda_2} (x_2e_2') \Rightarrow ce_2=\sqrt{\lambda_2} (x_2e_2'e_2)\\
+x_2&=\frac{c}{\sqrt{\lambda_2}}e_2.
+\end{align}
+Lo anterior, es considerando la distancia de $X$ al origen, pero se puede extender considerando la distancia $X$ a un punto fijo $\mu$. La diferencia rádica  en que la elipse formada tendrá ahora centro en $\mu$, basta con ver la ecuación de la elipse (\ref{elipse}). Ahora, considerando a $A=\Sigma$, donde $\Sigma$ es positiva definida llegamos a que los ejes de la elipse estan dados por $\frac{c}{\sqrt{\lambda_1}}e_1$ y $\frac{c}{\sqrt{\lambda_2}}e_2$, donde $\lambda_1$ y $\lambda_2$ valores propios y $e_1, e_2$ vectores propios respectivamente. 
+
+Entonces, como nosotros estamos interesados en la distancia generaliza $\bf (x-\mu)\Sigma^{-1}(x-\mu)=c^2$, entonces utilizando que los valores propios y vectores propios de la inversa de una matriz positiva definida están relacionados con los valores propios y vectores propios de la matriz positiva definida de la siguiente forma: Sea $A$ una matriz positiva definida con $\lambda_1$ y $\lambda_2$ valores propios y $e_1, e_2$ vectores propios, entonces $A^{-1}$ tiene $1/\lambda_1$ y $1/\lambda_2$ valores propios y los mismos vectores propios $e_1, e_2$. Por lo tanto, \textbf{podemos concluir que $\bf (x-\mu)\Sigma^{-1}(x-\mu)=c^2$ forma una elipse con centro en $\mu$ y eje de simétricas (ocupando lo anterior y sutituyendo en (\ref{ejes_1}) y (\ref{ejes_2}))}
+$$\frac{c}{\sqrt{\frac{1}{\lambda_i}}} e_i=c\sqrt{\lambda_i} e_i \ \ \ \finf$$
+
+
+\textbf{Ejercicio 4.} En climas nórdicos, las carreteras debe ser limpiadas de la nieve rápidamente después de una tormenta. Una de las medidas de la severidad de la tormenta es $x_1$ = \textit{duración en horas}, mientras que la efectividad de la limpieza de la nieve se puede cuantificar por $x_2$ = \textit{horas de trabajo} para limpiar la nieve. En la tabla inferior se muestran los resultados de 25 incidentes en Wisconsin.
+
+\begin{table}[H]
+\centering
+\begin{tabular}{cccccc}
+ $x_1$ &  $x_2$ &  $x_1$ &  $x_2$ &  $x_1$ &  $x_2$ \\ \hline \hline
+12.5 & 13.7 &  9.0 & 24.4 &  3.5 & 26.1 \\
+14.5 & 16.5 &  6.5 & 18.2 &  8.0 & 14.5 \\
+ 8.0 & 17.4 & 10.5 & 22.0 & 17.5 & 42.3 \\
+ 9.0 & 11.0 & 10.0 & 32.5 & 10.5 & 17.5 \\
+19.5 & 23.6 &  4.5 & 18.7 & 12.0 & 21.8 \\
+ 8.0 & 13.2 &  7.0 & 15.8 &  6.0 & 10.4 \\
+ 9.0 & 32.1 &  8.5 & 15.6 & 13.0 & 25.6 \\
+ 7.0 & 12.3 &  6.5 & 12.0 &      &      \\
+ 7.0 & 11.8 &  8.0 & 12.8 &      &     \\ \hline \hline 
+\end{tabular}
+\end{table}
+a) Detecte cualquier posible dato atípico mediante el diagrama de dispersión de las variables originales.
+
+\res Sabemos que la distancia generalizada tiene una distribución conocida, en concreto, $\bf (x-\mu)'\Sigma^{-1}(x-\mu) \sim \chi_p^2$ con $p$ grados de libertad. Entonces el elipsoide sólido de valores de $x$ que satisface $$\bf (x-\mu)'\Sigma^{-1}(x-\mu)\leq \chi_p^2(\alpha)$$
+tiene una probabilidad $1-\alpha$ donde $\chi_p^2(\alpha)$ denota el percentil superior $(100\alpha)\%$ de la distribución $\chi_p^2$. Ahora, si asumimos $\alpha=0.05,0.10$ podremos encontrar las elipsoides que se encuentran en la región del elipsoide de confianza del $95\%$ y $90\%$. Todo lo anterior se sigue cumpliendo si se usa $\bf (x-\mu)'S^{-1}(x-\mu) \sim \chi_p^2$ por el TLC. Ahora, con ayuda de R procedemos a calcular las regiones de confianza:
+```{r, warning=FALSE, message=FALSE, fig.width = 5, fig.height= 3.5, fig.align = "center"}
+library(tidyverse) 
+# ingresamos los datos
+x1 <- c( 12.5 ,14.5 ,8.0 ,9.0 , 19.5 , 8.0 ,9.0 , 7.0 , 7.0,  9.0, 6.5, 10.5, 10.0, 4.5,
+         7.0, 8.5, 6.5, 8.0,  3.5, 8.0, 17.5, 10.5, 12.0, 6.0, 13.0)
+
+x2 <- c(13.7, 16.5, 17.4, 11.0, 23.6, 13.2, 32.1, 12.3, 11.8, 24.4, 18.2, 22.0, 32.5,
+        18.7, 15.8, 15.6, 12.0, 12.8, 26.1, 14.5, 42.3, 17.5, 21.8, 10.4,
+25.6)
+
+datos_ejer4 <- data.frame(x1, x2)
+
+# graficamos las regiones de confianza y los puntos.
+ggplot(datos_ejer4, aes(x1, x2))+
+    geom_point() + 
+    labs(title="Diagrama de dispersión, Elipsoide de confianza del 95% y 90%",
+         x="duración en horas", y="horas de trabajo") + 
+    stat_ellipse(aes(x=x1, y=x2), type="norm", col="red", size=1, linetype=5, 
+                 level=.95)+ # región de confianza al 95%
+    stat_ellipse(aes(x=x1, y=x2), type="norm", col="blue", size=1, linetype=5,
+                 level = .90) # región de confianza al 90%
+```
+
+Por lo tanto, \textbf{si observamos la regiones de confianza podemos detectar que la región de confianza al $90\%$ (linea azul) podemos detectar que 3 registros se encuentran fuera de ella, es decir, existen 3 outliers. Ahora si consideramos la región de confianza al $95\%$ (linea roja) observamos que tenemos solo dos outliers.} Dependiendo de que tan estrictos se quiera ser podemos concluir la existencia de 2 o 3 outlirers.
+
+b) Determine la potencia de la transformación $\hat{\lambda}_1$ que convierte los valores de $x_1$ aproximadamente a normales. Construya el $Q-Q\ plot$ de las observaciones transformadas.
+
+\res Box y Cox (1964) sugieren un método para encontrar una transformación apropiada a partir de la familia de transformaciones potencia dada por 
+\begin{align}\label{box_cox}
+x_i^{(\lambda)} =\left\{\begin{array}{cc}\frac{x^\lambda-1}{\lambda} & \lambda \neq 0\\ ln(\lambda)& \lambda = 0 \end{array} \right.
+\end{align}
+Dada las observaciones $x_1, \cdots, x_n$, la solución de Box$-$Cox para elegir una potencia apropiada $\lambda,$ es la solución que maximiza la expresión
+\begin{align*}
+t(\lambda) = -\frac{n}{2}ln \left[\frac{1}{n} \suma  \left(x_i^{(\lambda)}-\bar{x}^{(\lambda)} \right) \right]+(\lambda+1)\suma ln(x_i),
+\end{align*}
+donde 
+\begin{align*}
+\bar{x}^{(\lambda)}=\frac{1}{n}\suma x_i^{(\lambda)}=\frac{1}{n}\suma \left(\frac{x_i^\lambda-1}{\lambda}\right)
+\end{align*}
+Entonces, pasaremos a construir la función $t(\lambda)$ para encontrar de forma númerica el valor de $\lambda$ que maximice la función anterior (ocupamos la función \textit{optimize} en R.).
+```{r, fig.width = 5, fig.height= 2.5, fig.align = "center"}
+x <- datos_ejer4$x1
+# función box-cox
+t_lambda <- function(par){
+    n <- length(x)
+    if (par!=0){
+        x_lambda <- (x^par -1)/par
+    }
+    else {x_lambda <- log(par)}
+    x_bar_lambda <- mean(x_lambda)
+    
+    -(n/2)*log((1/n)*sum((x_lambda-x_bar_lambda)^2))+(par-1)*sum(log(x))
+}
+
+# encontramos el maximo de la función.
+point_max <- optimize(f=t_lambda, interval = c(-5,5), maximum=TRUE)
+point_max <- data.frame(lambda=point_max$maximum, t_lambda_re=point_max$objective)
+
+function_box <- data.frame(lambda=seq(-1,1, 0.01))
+function_box$t_lambda_re <- sapply(function_box$lambda, FUN=t_lambda)
+
+ggplot(function_box, aes(lambda, t_lambda_re))+
+    geom_line()+
+    geom_point(data=point_max, aes(lambda, t_lambda_re), color="red")+
+    labs(y="function_lambda")
+```
+
+Por lo tanto, \textbf{la transformación $\hat{\lambda_1}$ que convierte los valores de $x_1$ aproximadamente a normales es igual a} `r point_max$lambda`. Entonces, realizemos la transformación con este valor de $\lambda$ y grafiquemos el $Q-Q$ de los datos originales y tranformados.
+```{r, message=FALSE, warning=FALSE}
+library(gridExtra)
+datos_ejer4$x1_trans <- (x^point_max$lambda-1)/point_max$lambda
+
+qq_x1 <- ggplot(data=datos_ejer4, aes(sample=x1))+
+    geom_qq(color="blue")+
+    stat_qq_line(color="red")+
+labs(title = "Q-Q plot para x1")
+
+qq_x1_tranform <- ggplot(data=datos_ejer4, aes(sample=x1_trans))+
+    geom_qq(color="blue")+
+    stat_qq_line(color="red")+
+labs(title = "Q-Q plot Box-Cox x1")
+
+grid.arrange(qq_x1, qq_x1_tranform, ncol=2) # Ponemos las gráficas juntas.
+```
+
+\textbf{Observando los graficos $Q-Q$ podemos notar que cuando se aplica la transformación de Box$-$Cox da indicios de que los datos transformados sean normales, mientras que los datos originales no se observa normalidad.}
+
+(c) Determine la potencia de la transformación $\hat{\lambda}_2$ que convierte los valores de $x_2$ aproximadamente a normales. Construya el $Q-Q\ plot$ de las observaciones transformadas.
+
+\res Realicemos la misma metodología explicada en el inciso anterior pero ahora para la variable $x_2$.
+```{r, fig.width = 5, fig.height= 2.5, fig.align = "center"}
+x <- datos_ejer4$x2
+
+# encontramos el maximo de la función.
+point_max <- optimize(f=t_lambda, interval = c(-5,5), maximum=TRUE)
+point_max <- data.frame(lambda=point_max$maximum, t_lambda_re=point_max$objective)
+
+function_box <- data.frame(lambda=seq(-4,4, 0.01))
+function_box$t_lambda_re <- sapply(function_box$lambda, FUN=t_lambda)
+
+ggplot(function_box, aes(lambda, t_lambda_re))+
+    geom_line()+
+    geom_point(data=point_max, aes(lambda, t_lambda_re), color="red")+
+    labs(y="function_lambda")
+```
+
+Por lo tanto, \textbf{la transformación $\hat{\lambda_2}$ que convierte los valores de $x_2$ aproximadamente a normales es igual a} `r point_max$lambda`. Entonces, realizemos la transformación con este valor de $\lambda$ y grafiquemos el $Q-Q$ de los datos originales y tranformados.
+```{r, message=FALSE, warning=FALSE}
+datos_ejer4$x2_trans <- (x^point_max$lambda-1)/point_max$lambda
+
+qq_x2 <- ggplot(data=datos_ejer4, aes(sample=x2))+
+    geom_qq(color="blue")+
+    stat_qq_line(color="red")+
+labs(title = "Q-Q plot para x2")
+
+qq_x2_tranform <- ggplot(data=datos_ejer4, aes(sample=x2_trans))+
+    geom_qq(color="blue")+
+    stat_qq_line(color="red")+
+labs(title = "Q-Q plot Box-Cox x2")
+
+grid.arrange(qq_x2, qq_x2_tranform, ncol=2) # Ponemos las gráficas juntas.
+```
+
+\textbf{Observando los graficos $Q-Q$ podemos notar que cuando se aplica la transformación de Box$-$Cox da indicios de que los datos transformados sean normales, mientras que los datos originales no se observa normalidad.}
+
+(d) Determine la potencia de la transformación que convierte las observaciones bivariadas en aproximadamente normales.
+
+\res Cuando tenemos un conjunto de observaciones multivariadas $\bf x_1, x_2,\cdots, x_n$ se selecciona una transformación de potencia para cada variable. Sean $\lambda_1, \cdots, \lambda_p$ las transformaciones de potencias para las $p$ variables. Cada $\lambda_k$ seleccionada maximiza 
+\begin{align*}
+t_k(\lambda) = -\frac{n}{2}ln \left[\frac{1}{n} \suma  \left(x_{ik}^{(\lambda)}-\bar{x_k}^{(\lambda)} \right) \right]+(\lambda+1)\suma ln(x_{ik}),
+\end{align*}
+Este procedimiento es equivalente a transformar cada distribución marginal a una distribución aproximadamente normal. Aunque el hecho de que las marginales sean normales no es sufiente para asegurar que la distribución conjunta sea normal. Sin embargo en aplicaciones práticas esto podría ser suficiente para asegurar normalidad conjunta. \\
+
+Por lo anterior, podemos considerar los $\hat{\lambda}_1$ y $\hat{\lambda}_2$ de los incisos anteriores para tener una aproximación de distribución conjunta normal bivariada. Para mostrar eso, grafiquemos el diagrama de disperción de los pares $(x_1, x_2)$, si esta tiene una forma a una elipse entonces apoyaría el supuesto de distribución normal bivariada.
+
+```{r}
+ggplot(datos_ejer4, aes(x1_trans, x2_trans))+
+    geom_point() + 
+    labs(title="Diagrama de dispersión de la transformación Box-Cox",
+         x="duración en horas", y="horas de trabajo") + 
+    stat_ellipse(aes(x=x1_trans, y=x2_trans), type="norm", col="red", size=1, linetype=5, 
+                 level=0.99)
+```
+
+Por lo tanto, \textbf{observando la transformación Box$-$Cox podemos apoyar que tienen una distribución normal bivariada.}
+
+
+\textbf{Ejercicio 5.} Para $p$ y $n$ fijos, genérese una muestra de tamaño $N$ de una ley $T_2 (p, n)$ de Hotelling. Para esto construya una función que tome como entradas los valores de $n,\ p,\ N$ , y utilice un generador de números aleatorios gaussianos. Represénte los resultados mediante un histograma, y haga pruebas para diferentes valores de entrada.
+
+\res Si $\x\sim N_p(\mu, \Sigma)$ y $(n-1)\bf S \sim W_p (S|\Sigma)$ la distribución de la variable escalar 
+$$T^2 = (\x-\mu)'S^{-1}(\x-\mu)$$
+se denomina distribución $T^2$ de Hotelling con $p$ y $n-1$ grados de libertad. Diremos que $T^2\sim T^2(p,n-1)$. Además, tenemos que si $\xb\sim N_p(\mu, \Sigma/n)$ entonces la distribución de $n(\xb-\mu)'S^{-1}(\xb-\mu)$ es también una $T^2$ de Hotelling. 
+
+Además, como $\bf S$ converga a $\bf \Sigma$ cuando $n$ es grande, entonces $T^2$ converge a la distancia Mahalanobis y por lo tanto la distribución de Hotelling converge a la distribución $\chi_p^2$.
+
+Ahora procedemos a construir la función en R apartir de una muestra multivarida normal, con media de medias aleatorias y $\Sigma$ matriz diagonal (estamos suponiendo indenpendicia entre las variables) para simplificar los calculos.
+```{r, warning=FALSE, message=FALSE}
+library(MASS)
+muestra_T2<- function (p, n, N){
+    mu <- rnorm(p) # inicializamos el vector de medias.
+    sigma <- diag(rexp(p, 0.02),p) # inicializamos el 
+    random_T2 <- c()
+    for (i in 1:N){
+        random_guassian <- mvrnorm(n = n+1, mu=mu, Sigma=sigma)
+        S <- cov(random_guassian)
+        random_T2[i] <- n*(colMeans(random_guassian)-t(mu))%*%solve(S)%*%t(colMeans(random_guassian)-t(mu))
+    }
+    random_T2
+}
+```
+
+Graficaremos los histogramas para las distintas muestras. No encontre como un paquete o librería que simulará los números aleatorios de una $T^2$ de Hotelling en R, pero como sabemos que $n$ es grande se aproxima a una distribución $\chi_p^2$ entonces las comparaciónes se realizaron con esta distribución. Creamos una función para hacer las gráficas.
+
+```{r}
+# función para graficar las comparaciones
+grap_t2_chi <- function(p, n, N){
+    mue <- data.frame(t2 = muestra_T2(p, n,N), chi=rchisq(N,p))
+    
+    ggplot(mue, aes(x=t2))+
+    geom_histogram(aes(y = ..density..), fill="blue")+
+    geom_density(aes(chi), color="red")+
+    labs(title=paste0("N=",N,", p=",p,", n=",n,". T^2 Hotelling y Chi-Square"))
+}
+```
+Creamos distintas muestras con distintos parametos. Los histogramas corresponden a la muestra generada de $T^2$ de Hotelling y la linea roja representa la función de densidad de la $\chi_p^2$. Cuándo $p=2$ y $N=3000$ permancen constante tenemos,
+
+```{r, message=FALSE, warning=FALSE}
+gra_1 <- grap_t2_chi(p=2, n=10, N=3000)
+gra_2 <- grap_t2_chi(p=2, n=100, N=3000)
+gra_3 <- grap_t2_chi(p=2, n=1000, N=3000)
+gra_4 <- grap_t2_chi(p=2, n=3000, N=3000)
+
+grid.arrange(gra_1, gra_2, gra_3, gra_4, ncol=2, nrow=2) # Ponemos las gráficas juntas.
+```
+
+Es decir, cuando el tamaño de $n$ más grande la distribución $T^2$ se va aproximando más a la distribución $\chi_2$. Ahora veamos que pasa $n=1000$ y $N=3000$ permance constante
+
+```{r, message=FALSE, warning=FALSE}
+gra_1 <- grap_t2_chi(p=2, n=1000, N=3000)
+gra_2 <- grap_t2_chi(p=4, n=1000, N=3000)
+gra_3 <- grap_t2_chi(p=6, n=1000, N=3000)
+gra_4 <- grap_t2_chi(p=7, n=1000, N=3000)
+
+grid.arrange(gra_1, gra_2, gra_3, gra_4, ncol=2, nrow=2) # Ponemos las gráficas juntas.
+```
+
+Cuando $p$ varia observamos como la distribuciones se van haciendo más simétricas. Es decir, podeíamos decir que $p$ influye en la kurtosis de la distribución. Y por último, observemos que pasa cuando $p=3$ y $n=1000$ permance constante
+
+```{r, message=FALSE, warning=FALSE}
+gra_1 <- grap_t2_chi(p=3, n=1000, N=100)
+gra_2 <- grap_t2_chi(p=3, n=1000, N=500)
+gra_3 <- grap_t2_chi(p=3, n=1000, N=1000)
+gra_4 <- grap_t2_chi(p=3, n=1000, N=4000)
+
+grid.arrange(gra_1, gra_2, gra_3, gra_4, ncol=2, nrow=2) # Ponemos las gráficas juntas.
+```
+
+De igual manera, cuando $N$ es grande la distribución $T^2$ se va aproximando a una distribución $\chi^2$. \ \ \fin
+
