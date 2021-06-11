@@ -1,0 +1,445 @@
+\include{config}
+\begin{document}
+  \maketitle
+
+\begin{frame}{Contenido}
+	\tableofcontents
+\end{frame}
+
+\section{Platamiento del problema}
+\begin{frame}{Definición del problema}
+
+
+\begin{block}{\textbf{Planteamiento del problema}}
+Sea $X \in \mathbb{R}^{n\times p}$ una matriz de $n \times p $ con n ejemplos de entrenamiento y p características.
+
+\vspace{.7cm}
+
+
+Y $ \in \mathbb{R}^{n\times q}$ tal que cada fila representa q respuestas
+
+\vspace{.7cm}
+
+Análogamente a encontrar una función $f(\vec{x}_{1\times p})$ que prediga las q salidas de un vector de entrada  $\vec{x}_{1\times p}$, el objetivo será encontrar B en el modelo definido como \Y=\X \B , donde  $B$ es de tamaño ${p \times q}$
+
+\vspace{.35cm}
+
+\end{block}
+\vspace{1.4cm}
+
+\end{frame}
+
+\section{Importancia y Objetivo del proyecto}
+\begin{frame}{Importancia y Objetivo del proyecto}
+
+\begin{itemize}
+    \item En altas dimensiones $p>n$ $X^{t}X$ podria no ser invertible
+    \item La interpretación con muchos predictores podria resultar dificil  
+    \item Evitar el sobreajuste de un modelo
+\end{itemize}
+
+
+\end{frame}
+
+
+
+
+\begin{frame}{Enfoque general.}
+    La regresión multivariada es una generalización del modelo de regresión clásico pero considerando $q>1$ variables respuestas. Es decir, sea $\X$ la matriz de las variables independientes $n\times p$, $\Y$ la matriz de las variables independientes $n\times q$ y sea $\E$ la matriz de error aleatorio $n\times q$. Entonces el modelo de regresión multivariada es
+\begin{align}
+        \Y = \X \B +\E,
+\end{align}
+donde $\B$ es la matriz de coeficientes de regresión $p\times q$. 
+\end{frame}
+
+\begin{frame}
+    La función de verosimilitud logarítmica negativa de ($\B, \Omega$), donde $\Omega = \Sigma^{-1}$ se puede expresar como 
+\begin{align} \label{log_verosimilitud}
+    g(\B,\Omega) = \tr \left[ \frac{1}{n}(\Y-\X\B)^T(\Y-\X\B)\Omega\right]-\log(\det(\Omega))
+\end{align}
+Es fácil ver (derivando con respecto a $\B$ e igualando a 0, y simplificando), que el estimador de máxima verosimilitud de $\B$ es 
+\begin{align} \label{estimador_B_OLS}
+    \hat{\B}^{OLS}=(\X^T\X)^{-1}\X^T\Y.
+\end{align}
+
+Lo anterior es equivalente a realizar las estimaciones de $\B$ utilizando mínimos cuadrados ordinarios de forma separada para cada una de las q variables de respuestas y no este implica que no dependan  de $\Omega.$
+\end{frame}
+
+\begin{frame}{Analisis del problema}
+
+El problema definido (\ref{log_verosimilitud}) también se puede modificar para agregar un parámetro de regularización. Denotando a $C(\B)$ como el parámetro de regularización en función de $\B$, es decir,
+\begin{equation}
+\hat{\B}=  \underset{\B}{argmin } \  ||\Y-\X\B ||_{2}^{2}=  \underset{\B}{argmin } \ [(\Y-\X\B)^{T} (\Y-\X\B)]
+\end{equation}
+$$\hbox{sujeto a: \ \ } C(\B)\leq t$$
+
+Y se puede mostrar que el problema anterior es equivalente a resolver el problema (ver \citep{remap}).
+\begin{equation}
+\hat{\B} = \underset{\B}{argmin } \ \ \{  \ \ \ ||\Y-\X\B ||_{2}^{2}-\lambda(C(\B)) \ \  \}
+\end{equation}
+
+\vspace{0.17cm}
+
+    
+\end{frame}
+
+
+\begin{frame}
+    Del planteamiento inicial podemos observar dos enfoques distintos cuando se considera una regresión multivariada. 
+    \begin{enumerate}[<+- | alert@+>]
+	    \item Considerar que los datos no están correlacionados.
+	    \item Considerar la matriz de covarianzas de los errores para estimar $\B$.
+	\end{enumerate}
+En este trabajo presentamos estos dos enfoques, pero agregamos un parámetro de regularización.
+
+\end{frame}
+
+
+
+\section{Metodología}
+\subsection{REMMAP}
+
+\begin{frame}{REMMAP}
+El problema de minimización con restricciones propuesto por \citep{remap}, considera una optimización L1 y L2, considera tambien que las q respuestas observadas no estan correlacionadas,  la función a optimizar es representada como:
+
+$$L(\hat{\B},\X,\Y)=  \underset{\B}{argmin}  \{\frac{1}{2} \sum_{k=1}^{q} (\y_{k}-\x \B_{k})^{2} \} + \lambda_1 \sum_{k=1}^{q}|\B_{k}| +  \lambda_2 \sqrt{\sum_{k=1}^{q}(\B_{k})^{2}} $$
+
+Considerando $\lambda_2=0$, pues solo trabajaremos con la restricción de norma L1, tenemos:
+
+$$ L(\hat{\B},\X,\Y)=  \underset{\B}{argmin} \{\frac{1}{2} \sum_{k=1}^{q} (\y_{k}-\x \B_{k})^{2} \} + \lambda_1 \sum_{k=1}^{q}|\B_{k}| $$
+\end{frame}
+
+
+\begin{frame}{REMMAP}
+La actualización de los parametros se realiza considerando un descenso coordinado para cada elemento en $b_{jk}$, estamos frente a un algoritmo de orden $O$(TPQ).
+
+De acuerdo con (Peng et al, 2010) la actualización de cada elemento $b_{j.k}$ se realiza tal que: 
+
+$$\hat{\B}_{j_{0},k}=(|\X_{j_{0}}^{T} \tilde{\Y}_{k}|-\lambda_1)_{+} \frac{sign(\X_{j_{0}}^{T} \tilde{\Y}_{k})}{||\X_{j{0}}||_{2}^{2}}$$
+
+$$Donde  \ \ \ \  \ \ \ \tilde{\Y}_{k}= \Y_k- \sum_{j\ne j_0} \X_{j} \B_{jk}$$
+
+En palabras $\tilde{\Y}_{k}$ es el residual que se obtiene de ajustar los pesos sin considerar la j-esima variable, la cual se esta optimizando, esta es la escencia del gradiente por descenso coordinado.
+
+\end{frame}
+
+\begin{frame}{El pseudocodigo de la función}
+
+\begin{algorithm}[H]
+ \KwIn{$Y_{n \times q}$,$X_{n \times p}$}
+ \KwResult{$B_{p\times q}$}
+Inicializamos parametros, $[B=0_{p\times q},...]$;
+
+\While{True}{
+Para j=1,...p ; k=1,...,q
+$$B_{j_0,k}=(|X_{j_{0}}^{T} \tilde{Y}_{k}|-\lambda_1)_{+} \frac{sign(X_{j_{0}}^{T} \tilde{Y}_{k})}{||X_{j{0}}||_{2}^{2}} $$
+
+\If{ ${B} $ no cambia }{
+    \textbf{break}\;
+    return(B)\;
+}
+}
+\caption{ REMMAP \citep{remap}}
+\end{algorithm}
+\end{frame}
+
+
+\begin{frame}{Caso cuando \lambda_{2}\ne0}
+(Peng et al, 2010) muestran que la actualización se realiza tal que la $B_{j0,k}$ ya calculada  que llamaremos $B^{lasso}_{j0,k}$, es evaluada nuevamente en una función donde 
+$$\hat{B}_{j0,k}=(1-\frac{\lambda_2}{ ||B^{lasso}_{j}||_2 \ \ \ ||X_{k}||_2^{2}})_{+} (b^{lasso}_{j0,k})$$
+
+$\hat{B}_{j0,k}=0$ si $||B^{lasso}_{j}||_2 =0$
+
+\end{frame}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\subsection{MRCE}
+\begin{frame}{MRCE}
+\cite{mrce} plantea un procedimiento para construir un estimador de una matriz de coeficientes de regresión multivariada que tenga en cuenta la correlación de las variables de respuesta. Básicamente propone un estimador para $\B$ que considera los errores correlacionados utilizando la verosimilitud normal. Considera dos penalizaciones a la verosimilitud logarítmica negativa (\ref{log_verosimilitud}) para construir un estimador disperso $\B$ que dependa de $\Omega=\{\omega_{j'j}\}$,
+\begin{align}\label{log_verosimilitu_penalizado}
+    (\hat{\B}, \hat{\Omega}) = \arg \min_{\B, \Omega} \left\{g(\B, \Omega)+\lambda_1\sum_{j'\neq j} |\omega_{j'j}| +\lambda_2\sum_{j=1}^p\sum_{k=1}^q|b_{jk}|\right\} 
+\end{align}
+donde $\lambda_1\geq 0$ y $\lambda_2\geq 0$ son los parámetros de regularización.
+\end{frame}
+
+\begin{frame}
+    El problema de optimización en (\ref{log_verosimilitu_penalizado}) no es convexo, sin embargo, resolver $\B$ o $\Omega$ con el otro parámetro fijo hace al problema convexo. Entonces, si dejamos fijo $\B$ en un punto $\B_0$ el problema de optimización para $\Omega$ se convierte a 
+\begin{align} \label{cov_estimate}
+    \hat{\Omega}(\B_0) = \arg \min \left\{ tr \left(\hat{\Sigma}_R \Omega \right)-\log(\det\Omega) +\lambda_1\sum_{j'\neq j}|\omega_{j'j}|)\right\},
+\end{align}
+donde $\hat{\Sigma}_R=\frac{1}{n}(\Y-\X\B_0)^T(\Y-\X\B_0).$ Este problema es conocido como el problema de estimación de covarianza considerando una penalización $L_1$. \cite{friedman_sparse_2008} plantea el algoritmo de LASSO gráfico para resolver el problema de optimización \ref{cov_estimate}.
+\end{frame}
+
+\begin{frame}{LASSO gráfico}
+    Sea $W$ el estimador para $\Sigma$ (matriz de covarianza poblacional). Se puede mostrar que se puede resolver el problema optimizando cada fila y la columna correspondiente a $W$ en una forma de descenso de coordenadas de bloque. Partimos $W$ y $S$,
+\begin{align*}
+    W=\begin{pmatrix}
+    W_{11} & w_{12}\\
+    w_{12}^T & w_{22}
+    \end{pmatrix}, \ \ \ S= W=\begin{pmatrix}
+    S_{11} & s_{12}\\
+    s_{12}^T & s_{22}
+    \end{pmatrix}
+\end{align*}
+donde $S$ es la matriz de correlación empírica. Entonces se puede mostrar que
+\begin{align}\label{ww}
+    w_{12}=\arg \min_y\left\{y^TW_{11}^{-1}y:||y-s12||_\infty\geq p \right\}.
+\end{align}
+Pero de igual manera se puede mostrar usando dualidad convexa que el problema (\ref{ww}) es  equivalente a resolver el problema dual
+\begin{align}\label{www}
+    \min_\beta \left\{\frac{1}{2} |W_{11}^{-1/2}\beta-b|^2+\lambda|\beta|_1 \right\}
+\end{align}
+\end{frame}
+
+\begin{frame}
+    donde $b=W_{11}^{-1/2}s_{12}$.\\
+    
+    Si $\beta$ resuelve (\ref{www}) entonces $w_{12}=W_{11}\beta$ resuelve (\ref{ww}). \\
+    
+    Para resolver (\ref{www}) usamos $W_{11}$ y $s$. Luego actualizamos $w$ y corremos todas las variables hasta la convergencia. Consideramos que la solución de $w_{ii}=s_{ii}+\lambda$ para todo $i$. Este algoritmo se le conoce como algoritmo LASSO gráfico (ver \textbf{Algoritmo} \ref{algoritmo_lasso}).
+\end{frame}
+
+
+\begin{frame}
+    \begin{algorithm}[H]
+ \KwIn{$S, \lambda$ y $\epsilon$.}
+ \KwResult{$W$}
+ \textit{Inicializamos}\\
+ $W=S+\lambda\textbf{I}$
+
+\While{$|W^{(m)}_{-diag}-W^{(m-1)}_{-diag}|>\epsilon |S_{-diag}|$}{
+    \For{j=1,2,\cdots, p, 1,2, \cdots, p, \cdots}{
+    Resolver el problema de LASSO en (\ref{www}). Esto regresa un vector solución $\hat{\beta}$ de tamaño $p-1$, por lo que imputamos el renglón y la columna de $W$ usando $w_{12}=W_{11}\hat{\beta}.$
+    }
+}
+return$\left(W^{-1}\right)$
+ 
+\caption{LASSO gráfico \citep{friedman_sparse_2008}} \label{algoritmo_lasso}
+\end{algorithm}
+\end{frame}
+
+\begin{frame}
+    Para resolver el problema de LASSO en (\ref{www}) del (\textbf{Algoritmo} \ref{algoritmo_lasso}) consideramos un descenso coordinado. Sea $V=W_{11}$ y $u=s_{12},$ entonces actualizamos $\beta_j$ de la forma
+\begin{align}
+    \hat{\beta}_j = S(u_j- \sum_{k\neq j} V_{jk}\beta_k, \lambda) /V_{jj}
+\end{align}
+para $j=1,2,\cdots, p, 1,2, \cdots, p, \cdots.$ Donde $S$ es el operador soft-threshold:
+$$S(x,y)=sign (x)(|x|-t)_+.$$
+Para más detalle de este algoritmo consulte \cite{friedman_sparse_2008}, ahí se presentan las demostraciones más a detalle y más referencias sobre problemas similares. 
+\end{frame}
+
+\begin{frame}{Estimación para $\B$.}
+    Por otro lado, resolver \ref{log_verosimilitu_penalizado} fijando $\Omega$ en un punto elegido $\Omega_0$ transforma el problema a optimizar
+\begin{align}\label{est_beta}
+    \hat{\B}(\Omega_0) = \arg \min \left\{ tr \left( \frac{1}{n}(\Y-\X\B)^T(\Y-\X\B)\Omega_0+\lambda_2 \sum_{j=1}^p\sum_{k=1}^q |b_{jk}| \right) \right\}
+\end{align}
+Una solución para el problema anterior es utilizar un descenso de coordenadas cíclicas. \cite{mrce} resume en el procedimiento de optimización como se describe en el \textbf{Algoritmo \ref{algoritmo_1}}. Se utiliza la estimación de mínimos cuadrados penalizados por rigde $\hat{\B}^{ridge}=(\X^T\X+\lambda_2I)^{-1}\X^T\Y$ para escalar nuestra prueba de convergencia de párametroas, ya que siempre está bien definida (incluso cuando $p>n$).
+\end{frame}
+
+
+\begin{frame}{Algoritmo 3.}
+\begin{algorithm}[H]
+ \KwIn{$\Y_{n \times q}$,$\X_{n \times p}, \Omega_{p\times p}, \lambda_2$ y $\epsilon$}
+ \KwResult{$\hat{B}_{p\times q}$}
+$S=\X^T\X$, \ \ \ $H=\X^T\Y\Omega$, \ \ \ \ $\hat{\B}^{rigde}=(\X^T\X+\lambda_2I)^{-1}\X^T\Y.$\\
+
+\While{$\sum|\hat{\B}^{(m)}-\hat{\B}^{(m-1)}|>\epsilon \sum|\hat{\B}^{rigde}|$}{
+
+\For{r=1,...p}{
+    \For{c=1,...,q}{
+    $\mu_{rc}=\sum_{j=1}^p\sum_{k=1}^q \hat{b}_{jk}^{(m)}s_{rj}w_{kc}$\\
+    $\hat{b}_{rc}^{(m)} = sign\left(\hat{b}_{rc}^{(m)}+\frac{h_{rc}-\mu_{rc}}{s_{rr}\omega_{cc}} \right) \left(\left| \hat{b}_{rc}^{(m)}+\frac{h_{rc}-\mu_{rc}}{s_{rr}\omega_{cc}} \right|-\frac{n\lambda_2}{s_{rr}\omega_{cc}}\right)_+$
+    }
+}
+}
+return$\left(\hat{\B}^{(m)}\right)$
+ 
+\caption{Descenso de coordenadas cíclicas \citep{mrce}.} \label{algoritmo_1}
+\end{algorithm}
+\end{frame}
+
+
+\begin{frame}{MRCE}
+\begin{itemize}[<+- | alert@+>]
+    \item  Considerando lo anterior, podemos resumir la resolución del problema de optimización \ref{log_verosimilitu_penalizado} usando el descenso de coordenadas en bloque, es decir, iteramso minimizando con respecto a $\B$ y miniminzando con respecto a $\Omega$. \\
+    
+    \item El \textbf{Algoritmo \ref{algoritmo_2}} usa el descenso de coordenadas por bloques para calcular una solución loca para \ref{log_verosimilitu_penalizado}. 
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Algoritmo MRCE}
+    \begin{algorithm}[H]
+ \KwIn{$\Y_{n \times q}$,$\X_{n \times p}, \lambda_1, \ \lambda_2, \epsilon=1e-4.$}
+ \KwResult{$\hat{B}_{p\times q}$}
+ \textit{Inicializamos}\\
+ $\hat{\B}^{(0)}=0$\\
+ $\hat{\Omega}^{(0)}=\hat{\Omega}(\hat{\B}_^{(0)})$\\
+
+\While{$\sum|\hat{\B}^{(m)}-\hat{\B}^{m-1}|>\epsilon \sum|\hat{\B}^{rigde}|$}{
+
+    \begin{enumerate}
+        \item Calcular $\hat{\B}^{m+1}=\hat{\B}(\hat{\Omega}^{(m)}$ resolviendo \ref{est_beta} utilizando el \textbf{Algoritmo \ref{algoritmo_1}}.
+        \item Calcular $\hat{\Omega}^{(m+1)}=\hat{\Omega}(\hat{\B}^{(m+1)})$ resolviendo \ref{cov_estimate} usando el algoritmo de LASSO gráfico.
+    \end{enumerate}
+
+}
+return$\left(\hat{\B}^{(m)}\right)$
+\caption{MRCE \citep{mrce}.} \label{algoritmo_2}
+\end{algorithm}
+\end{frame}
+
+\section{Resultados}
+\begin{frame}{Resultados}
+    \begin{itemize}[<+- | alert@+>]
+	   
+    \item Para verificar el rendimientos de los modelos descritos en las secciones anteriores, consideramos probar las estimaciones de los algoritmos REMMAP y MRCE, utilizando MSE como métrica para comparar los errores por la facilidad de comprender la misma. Estos algoritmos se implementaron en el lenguaje de programación Python, en el sistema x86$\_$64, Ubuntu.\\
+    
+    \item[] \begin{rr}La paquetería de Python Scikit-learn \citep{scikit-learn}, tiene una función en donde esta implementado el \textbf{Algoritmo} \ref{algoritmo_2}. Entonces esta función nos ayudo a determinar si nuestra implementación estaba bien.
+    \end{rr}
+    \end{itemize}
+\end{frame}
+\begin{frame}{Conjunto de datos}
+    \begin{itemize}[<+- | alert@+>]
+    \item El conjunto de datos sinteticos fue generado con la función $make_regression()$ de la librería de Scikit-learn. Consideramos diferentes parámetros de la función anterior: $n\_samples (n)=[100,20],\  n\_features(p)=[20,100],$ y $ n\_targets(q)=[2,5]$.
+    \item Consideramos partir el conjunto de datos original, en dos conjuntos uno de prueba y otro de entrenamiento.
+    \item Además de que nuestro conjunto de datos, consideramos una estandarización debido a los supuestos que se tienen en los modelos.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Primeros conjunto de datos}
+    Observando la \textbf{Figura \ref{MSE_1}}, podemos notar que cuando se consideran tamaños de $n<p$ notamos que los mejores predictores son ocupando la metodología de REMMAP.
+     \begin{figure}[!htb]
+ \minipage{0.5\textwidth}
+   \includegraphics[scale=.4]{figure/im1.jpg}
+  \caption{}
+ \endminipage
+ \minipage{0.5\textwidth}
+   \includegraphics[scale=.4]{figure/im2.jpg}
+  \caption{}
+ \endminipage
+ \caption{MSE considerando distintos modelos, con $n<p.$}\label{MSE_1}
+ \end{figure}
+\end{frame}
+
+\begin{frame}
+    Si comparamos los mejores modelos se observa claramente que en general los la metodología de MRCE tiene rendimientos similares que los estimadores de máxima verosimilitud. Pero, en general la metodología REMMAP es mejor.
+\begin{table}[H]
+\centering
+\begin{tabular}{||c c c c||} 
+ \hline
+ Modelo & MSE & Parámetros & Numero de variables \\ [0.5ex] 
+ \hline\hline
+ MRCE & 12.52 & $\lambda_1=0.1 \lambda_2=0.5$ & 21 \\ 
+ $REMMAP\_l1$ & 11.35 & $\lambda_1=0.1 \lambda_2=0$ & 15 \\
+ OLS & 42.2 & -- & -- \\
+\hline
+\end{tabular}
+\caption{Parámetros: n=20 , p=100 , q=2}
+\label{table:1}
+\end{table}
+\begin{table}[H]
+\centering
+\begin{tabular}{||c c c c||} 
+ \hline
+ Modelo & MSE & Parametros & Numero de variables \\ [0.5ex] 
+ \hline\hline
+ MRCE & 34 & $\lambda_1=0.1 \lambda_2=0.5$ & 10 \\ 
+ $REMMAP\_l1$ & 26.47 & $\lambda_1=0.1 \lambda_2=0$ & 40 \\
+ OLS & 42.2 & -- & -- \\
+\hline
+\end{tabular}
+\caption{Parametros: n=20 , p=100 , q=5}
+\label{table:1}
+\end{table}
+\end{frame}
+
+
+
+
+
+\begin{frame}{Últimos conjuntos de datos.}
+ \begin{figure}[!htb]
+ \minipage{0.5\textwidth}
+   \includegraphics[scale=.4]{figure/im3.jpg}
+  \caption{}
+ \endminipage
+ \minipage{0.5\textwidth}
+   \includegraphics[scale=.4]{figure/im4.jpg}
+  \caption{}
+ \endminipage
+\caption{MSE considerando distintos modelos, con $n>p$.}
+ \end{figure}
+\end{frame}
+
+\begin{frame}
+    \begin{table}[H]
+\centering
+\begin{tabular}{||c c c c||} 
+ \hline
+ Modelo & MSE & Parámetros & Numero de variables \\ [0.5ex] 
+ \hline\hline
+ MRCE & 0.1227 & $\lambda_1=0.1 \lambda_2=0.1$ & 14 \\ 
+ REMMAP & 3.43 &  $\lambda_1=1e-20 \lambda_2=0.1$ & 8 \\
+ OLS & 0.1e-16 & -- & -- \\
+\hline
+\end{tabular}
+\caption{Parámetros: n=100 , p=20 , q=2}
+\label{table:1}
+\end{table}
+\begin{table}[H]
+\centering
+\begin{tabular}{||c c c c||} 
+ \hline
+ Modelo & MSE & Parámetros & Numero de variables \\ [0.5ex] 
+ \hline\hline
+ MRCE & 0.3224 & $\lambda_1=0.1 \lambda_2=0.1$ & 33 \\ 
+ REMMAP & 2.89 &  $\lambda_1=1e-20 \lambda_2=0.1$ & 20 \\
+ OLS & 0.1e-16 & -- & -- \\
+\hline
+\end{tabular}
+\caption{Parámetros: n=100 , p=20 , q=5}
+\label{table:1}
+\end{table}
+\end{frame}
+
+\section{Conclusiones}
+\begin{frame}{Conclusiones}
+\begin{itemize}[<+- | alert@+>]
+   \item Primeramente podemos observar que se cumplió el objetivo principal de este trabajo, determinar una función $f$ tal que sirva como función predictora usando un conjunto de datos $X$ y $Y$ planteándolo como un problema de optimización. Para resolver este problema, utilizamos distintos algoritmos de optimización:
+    \begin{itemize}
+        \item \textbf{LASSO gráfico} (\ref{algoritmo_lasso}) (descenso de coordenadas por bloque y descenso coordinado)
+        \item Descenso de Coordenadas Cíclicas (\ref{algoritmo_1})
+        \item Descenso de Coordenadas por Bloques (\ref{algoritmo_2})
+    \end{itemize}
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}
+    \begin{itemize}
+        \item Por otro lado, planteamos dos metodología para resolver el problema de optimización de regresión multivariada con regularización. 
+        
+        \item En general REMMAP parece desempeñarse mejor cuando $n<p$, mientras MRCE tiene un buen desempeño cuando $n>p$. 
+        \item MRCE presento la particularidad de requerir una parametrización mas cuidadosa por lo que en ese sentido es mas exigente, además de que involucra un costo computacional mas alto comparándolo con REMMAP.
+    \end{itemize}
+\end{frame}
+
+\section*{Gracias \blacksmiley{}}
+
+\printbibliography
+
+
+\end{document}

@@ -1,0 +1,912 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish]{babel}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{lmodern}
+\usepackage{xspace}
+\usepackage{multicol}
+\usepackage{hyperref}
+\usepackage{float}
+\usepackage{hyperref}
+\usepackage{color}
+\usepackage{framed}
+\usepackage{subfig}
+\usepackage{listings}
+\usepackage{colortbl}
+\usepackage{fancyhdr} % Custom headers and footers
+\pagestyle{fancyplain}
+
+
+\usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
+
+\newcommand{\X}{\mathbf{X}}
+\newcommand{\x}{\mathbf{x}}
+\newcommand{\Y}{\mathbf{Y}}
+\newcommand{\y}{\mathbf{y}}
+\newcommand{\Z}{\mathbf{Z}}
+
+\newcommand{\xb}{\bar{x}}
+\newcommand{\xbarn}{\bar{x}_n}
+\newcommand{\ybarn}{\bar{y}_n}
+\newcommand{\paren}[1]{\left( #1 \right)}
+\newcommand{\llaves}[1]{\left\lbrace #1 \right\rbrace}
+\newcommand{\barra}{\,\vert\,}
+\newcommand{\mP}{\mathbb{P}}
+\newcommand{\mE}{\mathbb{E}}
+\newcommand{\mR}{\mathbb{R}}
+\newcommand{\mJ}{\mathbf{J}}
+\newcommand{\mX}{\mathbf{X}}
+\newcommand{\mS}{\mathbf{S}}
+\newcommand{\mA}{\mathbf{A}}
+\newcommand{\unos}{\boldsymbol{1}}
+\newcommand{\xbarnv}{\bar{\mathbf{x}}_n}
+\newcommand{\abs}[1]{\left\vert #1 \right\vert}
+\newcommand{\mub}{\boldsymbol{\mu}}
+\newcommand{\mcov}{\boldsymbol{\Sigma}}
+\newcommand{\vbet}{\boldsymbol{\beta}}
+\newcommand{\veps}{\boldsymbol{\epsilon}}
+\newcommand{\mcC}{\mathcal{C}}
+\newcommand{\mcR}{\mathcal{R}}
+\newcommand{\mcN}{\mathcal{N}}
+
+\newcommand{\bL}{\textbf{L}}
+\newcommand{\bphi}{\bf \Psi}
+
+\newcommand{\lit}{\textit{l}}
+
+\newcommand{\ceros}{\boldsymbol{0}}
+\newcommand{\mH}{\mathbf{H}}
+\newcommand{\ve}{\mathbf{e}}
+\newcommand{\avec}{\mathbf{a}}
+\newcommand{\res}{\textbf{RESPUESTA:}\\}
+
+\newcommand{\defi}[3]{\textbf{Definición:#3}}
+\newcommand{\fin}{$\blacksquare.$}
+\newcommand{\finf}{\blacksquare.}
+\newcommand{\tr}{\text{tr}}
+\newcommand*{\temp}{\multicolumn{1}{r|}{}}
+
+\newcommand{\grstep}[2][\relax]{%
+   \ensuremath{\mathrel{
+       {\mathop{\longrightarrow}\limits^{#2\mathstrut}_{
+                                     \begin{subarray}{l} #1 \end{subarray}}}}}}
+\newcommand{\swap}{\leftrightarrow}
+
+\newcommand{\sumj}{\sum_{j=1}^n}
+\newcommand{\sumi}{\sum_{i=1}^n}
+\newcommand{\sumk}{\sum_{k=1}^n}
+\newcommand{\gen}{\text{gen}}
+\newtheorem{thmt}{Teorema:}
+\newtheorem{thmd}{Definición:}
+\newtheorem{thml}{Lema:}
+\newtheorem{thmp}{Propiedad:}
+\newtheorem{thmr}{Resultado:}
+\newtheorem{thma}{Algoritmo:}
+
+\begin{document}
+\begin{table}[ht]
+\centering
+\begin{tabular}{c}
+\textbf{Maestría en Computo Estadístico}\\
+\textbf{Optimización}\\
+\textbf{Tarea 2}\\
+\today \\
+\emph{Enrique Santibáñez Cortés}\\
+Repositorio de Git: \href{https://https://github.com/Enriquesec/Optimizacion/tree/master/tareas/tarea_2}{Tarea 1}.
+\end{tabular}
+\end{table}
+
+\begin{enumerate}
+\item Dadas las siguientes funciones:
+\begin{itemize}
+\item $f(\overrightarrow{x})=10(x_2-x_1^2)+(1-x_1)^2$
+\item $f(\overrightarrow{x})=30+\sum_{j=1}^2 (x_i^2-10\cos (2\pi x_i))$
+\item $f(\overrightarrow{x})=(x_1+2x_2-7)^2+(2x_1+x_2-5)^2$
+\item $f(\overrightarrow{x})=0.25(x_1^2+x_2^2)-0.5(x_1 x_2)$
+\end{itemize}
+Resuelva considerando el punto inicial $\overrightarrow{x}^{(0)}=(0,0)$ y 
+\begin{itemize}
+\item[a)] Gradiente descendente con un tamaño de paso de 0.1.
+\item[b)] Método de Newton.
+\item[c)] Gradiente descendiente con diferencias finitas, considereando un tamaño de paso de 0.1 y una diferencia de $\pm 0.05$.
+\end{itemize}
+
+\res Para este ejercicio programamos las algoritmos de optimización en python considerando pseudocódigos vistos en clase, ver el notebook \textsc{solutions$\_$homework.ipybn}. Para facilitar la notación nombremos a las funciones anteriores como $f_1, f_2, f_3$ y $f_4$. Empecemos por encontrar los puntos óptimos de $f_1$, para ello primero calculemos el gradiente y su matriz hessiana.
+\begin{align*}
+\nabla f_1 =\begin{pmatrix}40x_1(x_2-x_1^2)-2(1-x_1)& 20(x_2-x_1^2)
+\end{pmatrix} \ \ \ \text{y}\ \ \ H_{f_1}=\begin{pmatrix}
+-40x_2+120x_1^2+x & -40x_1\\
+-40x_1&20
+\end{pmatrix}.
+\end{align*}
+Entonces primero calculemos el \textbf{algoritmo de Gradiente descendente}, asumiento como punto inicial $x^{(0)}=(0,0)$ tenemos 
+\begin{enumerate}
+\item[1)] $\nabla f_1(x^{(0)})=\begin{pmatrix}
+-2 & 0
+\end{pmatrix}$\\
+$x^{(1)}=x^{(0)}-0.01\nabla f_1(x^{(0)}) = \begin{pmatrix}
+0+.02 & 0+0
+\end{pmatrix}=\begin{pmatrix}
+0.02 & 0
+\end{pmatrix}. $
+\item[2)] $\nabla f_1(x^{(1)})=\begin{pmatrix}
+-1.95968 & -0.008
+\end{pmatrix}$\\
+$x^{(2)}= \begin{pmatrix}
+0.02+0.0195968 & 0+0.00008
+\end{pmatrix}=\begin{pmatrix}
+0.0395968 & 0.00008
+\end{pmatrix}.$
+\item[3)] $\nabla f_1(x^{(2)})=\begin{pmatrix}
+-1.91844975 & -0.02975813
+\end{pmatrix}$\\
+$x^{(3)}= \begin{pmatrix}
+0.0395968+0.0191844975 & 0.00008+0.0002975813
+\end{pmatrix}=\begin{pmatrix}
+0.058781297 & 0.000377581314
+\end{pmatrix}.$
+\item[4)] $\nabla f_1(x^{(3)})=\begin{pmatrix}
+-1.87520105 & -0.06155319
+\end{pmatrix}$\\
+$x^{(4)}= \begin{pmatrix}
+0.0587812+0.0187520105 & 0.0003775+0.0006155319
+\end{pmatrix}=\begin{pmatrix}
+0.0775333079& 0.000993113
+\end{pmatrix}.$
+\item[5)] $\nabla f_1(x^{(4)})=\begin{pmatrix}
+-1.82936997 & -0.10036601
+\end{pmatrix}$\\
+$x^{(5)}= \begin{pmatrix}
+0.0775333+0.0182936997 & 0.00099311+0.0010036601
+\end{pmatrix}=\begin{pmatrix}
+0.095827007& 0.00199677335
+\end{pmatrix}.$
+\item[6)] Realizando algoritmo, converge en la iteración 566 con el punto $x^{(566)}=\begin{pmatrix}
+0.96569466 & 0.93115914
+\end{pmatrix}$.
+\end{enumerate}
+Ahora ocupemos el \textbf{método de Newton},
+\begin{enumerate}
+\item[1)] $\nabla f_1(x^{(0)})=\begin{pmatrix}
+-2 & 0
+\end{pmatrix}$ y $H_{f_1}=\begin{pmatrix}
+2 & 0 \\0 & 20
+\end{pmatrix}$\\
+$x^{(1)}=x^{(0)}-\nabla f_1(x^{(0)})*H_{f_1}^{-1} = \begin{pmatrix}
+0+1 & 0+0
+\end{pmatrix}=\begin{pmatrix}
+1 & 0
+\end{pmatrix}. $
+\item[2)] $\nabla f_1(x^{(1)})=\begin{pmatrix}
+40 & -20
+\end{pmatrix}$ y $H_{f_1}=\begin{pmatrix}
+122 & -40 \\-40 & 20
+\end{pmatrix}$\\
+$x^{(2)}= \begin{pmatrix}
+1+0 & 0+1
+\end{pmatrix}=\begin{pmatrix}
+1 & 1
+\end{pmatrix}. $
+\item[3)] $\nabla f_1(x^{(1)})=\begin{pmatrix}
+-8.8817842-e15 & -4.4408921-e15
+\end{pmatrix}$ y $H_{f_1}=\begin{pmatrix}
+82 & -40 \\-40 & 20
+\end{pmatrix}$\\
+$x^{(2)}=\begin{pmatrix}
+1+0 & 1+0
+\end{pmatrix}=\bf \begin{pmatrix}
+1 & 1
+\end{pmatrix}.$ \\
+\item[3)] Con este algoritmo converge en la tercera iteración, con el punto $\bf x^{(3)}=\begin{pmatrix}
+1 & 1
+\end{pmatrix}.$
+\end{enumerate}
+Ahora utilicemos el \textbf{Gradiente descendente con diferencias finitas } considerando a $\epsilon=0.05$
+\begin{enumerate}
+\item[1)] $\nabla f_1(x^{(0)})=\begin{pmatrix}
+-1.94875 & 0.5
+\end{pmatrix}$\\
+$x^{(1)}=x^{(0)}-0.01\nabla f_1(x^{(0)}) = \begin{pmatrix}
+0+.0194875 & 0-0.005
+\end{pmatrix}=\begin{pmatrix}
+0.0194875 & -0.005
+\end{pmatrix}. $
+\item[2)] $\nabla f_1(x^{(1)})=\begin{pmatrix}
+-1.89749344 & 0.39240475
+\end{pmatrix}$\\
+$x^{(2)}= \begin{pmatrix}
+0.0194875+0.0189749344 & -0.005-0.0039240475
+\end{pmatrix}=\begin{pmatrix}
+0.0384624 & -0.0089240
+\end{pmatrix}.$
+\item[3)] $\nabla f_1(x^{(2)})=\begin{pmatrix}
+-1.83861115 & 0.29193187
+\end{pmatrix}$\\
+$x^{(3)}= \begin{pmatrix}
+0.0384624+0.0183861115& -0.0089240-0.0029193187
+\end{pmatrix}=\begin{pmatrix}
+0.05684854 & -0.0118433662
+\end{pmatrix}.$
+\item[4)] $\nabla f_1(x^{(3)})=\begin{pmatrix}
+-1.77354946 & 0.19849753
+\end{pmatrix}$\\
+$x^{(4)}= \begin{pmatrix}
+0.05684854+0.0177354946 & -0.0118433662-0.0019849753
+\end{pmatrix}=\begin{pmatrix}
+0.07458404 & -0.0138283
+\end{pmatrix}.$
+\item[5)] $\nabla f_1(x^{(4)})=\begin{pmatrix}
+-1.70375611 & 0.11217759
+\end{pmatrix}$\\
+$x^{(5)}= \begin{pmatrix}
+0.07458404+0.0170375611 & -0.0138283-0.0011217759
+\end{pmatrix}=\begin{pmatrix}
+0.091621601 & -0.01495011
+\end{pmatrix}.$
+\item[6)] Realizando algoritmo, converge en la iteración 137 con el punto $x^{(137)}=\begin{pmatrix}
+0.46611116 & 0.19110887
+\end{pmatrix}$.
+\end{enumerate}
+Considerando los tres puntos optimos encontrados utilizando los distintos métodos,
+
+\begin{table}[h]\label{funcion1}
+\centering
+\begin{tabular}{c|c|c|c}
+\hline \hline
+método &número de iteraciones &$x^{optimo}$ & $f_1(x^{optimo})$ \\ \hline \hline
+GD &566 &$\begin{pmatrix}
+0.96569466 & 0.93115914
+\end{pmatrix}$ & 0.00119\\
+NT &3&$\begin{pmatrix}
+1 & 1
+\end{pmatrix}$ & 0\\
+GD finite & 137&$\begin{pmatrix}
+0.46611116 & 0.19110887
+\end{pmatrix}$ & 0.2918\\ \hline \hline
+\end{tabular}
+\caption{Comparación de los óptimos encontrados de $f_1$.}
+\end{table}
+\textbf{Observando el Cuadro (\ref{funcion1}) podemos observar que el metodo de Newton fue el más eficiente para encontrar el óptimo para la función $f_1$.}
+
+Análogamente a lo realizado con la función uno lo hacemos con la función dos. Entonces primero calculemos el gradiente y su matriz hessiana de $f_2$
+\begin{align*}
+\nabla f_2 =\begin{pmatrix} 2x_1+20\pi \sin(2\pi x_1) &
+2x_2+20\pi \sin(2\pi x_2) \end{pmatrix} \ \ \ \text{y}\ \ \ H_{f_2}=\begin{pmatrix}
+2+40\pi^2 \sin(2\pi x_1) & 0\\
+0 & 2+40\pi^2 \sin(2\pi x_2)
+\end{pmatrix}.
+\end{align*}
+Entonces primero calculemos el \textbf{algoritmo de Gradiente descendente}, asumiento como punto inicial $x^{(0)}=(0,0)$ tenemos 
+\begin{enumerate}
+\item[1)] $\nabla f_1(x^{(0)})=\begin{pmatrix}
+0 & 0
+\end{pmatrix}$\\
+$x^{(1)}=x^{(0)}=\begin{pmatrix}
+0.0 & 0
+\end{pmatrix}. $
+\item[2)] Es decir, como el gradiente en el punto inicial ya es igual a cero no se mueve el punto, por lo que se encuentra el punto óptimo local.
+\end{enumerate}
+Ahora ocupemos el \textbf{método de Newton},
+\begin{enumerate}
+\item[1)] $\nabla f_1(x^{(0)})=\begin{pmatrix}
+0 & 0
+\end{pmatrix}$ y $H_{f_1}=\begin{pmatrix}
+2 & 0 \\0 & 2
+\end{pmatrix}$\\
+$x^{(1)}=x^{(0)}-\nabla f_1(x^{(0)})*H_{f_1}^{-1} =x^{(0)}-=\begin{pmatrix}
+0 & 0
+\end{pmatrix}. $
+\item[2)] Es decir, como el gradiente en el punto inicial ya es igual a cero no se mueve el punto, por lo que se encuentra el punto óptimo local.
+\end{enumerate}
+Ahora utilicemos el \textbf{Gradiente descendente con diferencias finitas } considerando a $\epsilon=0.05$
+\begin{enumerate}
+\item[1)] $\nabla f_2(x^{(0)})=\begin{pmatrix}
+0.49193484 & 0.49193484
+\end{pmatrix}$\\
+$x^{(1)}=x^{(0)}-0.01\nabla f_1(x^{(0)}) = \begin{pmatrix}
+0-.0049193484 & 0-0.0049193484
+\end{pmatrix}=\begin{pmatrix}
+-0.0049193484 & -0.0049193484
+\end{pmatrix}. $
+\item[2)] $\nabla f_2(x^{(1)})=\begin{pmatrix}
+0.39570972 & 0.39570972
+\end{pmatrix}$\\
+$x^{(2)}= \begin{pmatrix}
+-0.0049193484 -0.39570972& -0.0049193484-0.39570972
+\end{pmatrix}=\begin{pmatrix}
+-0.00887644 &- 0.00887644
+\end{pmatrix}.$
+\item[3)] $\nabla f_2(x^{(2)})=\begin{pmatrix}
+0.31802947 & 0.31802947
+\end{pmatrix}$\\
+$x^{(3)}= \begin{pmatrix}
+-0.00887644-0.31802947 &- 0.00887644-0.31802947
+\end{pmatrix}=\begin{pmatrix}
+-0.01205674 & -0.01205674
+\end{pmatrix}.$
+\item[4)] $\nabla f_2(x^{(3)})=\begin{pmatrix}
+0.25545429 & 0.25545429
+\end{pmatrix}$\\
+$x^{(4)}= \begin{pmatrix}
+-0.01205674 -0.25545429& -0.01205674-0.25545429
+\end{pmatrix}=\begin{pmatrix}
+-0.0146112832 & -0.0146112832
+\end{pmatrix}.$
+\item[5)] $\nabla f_2(x^{(4)})=\begin{pmatrix}
+0.20511667 & 0.20511667
+\end{pmatrix}$\\
+$x^{(5)}= \begin{pmatrix}
+-0.014611 -0.20511667& -0.014611-0.20511667
+\end{pmatrix}=\begin{pmatrix}
+-0.0166624 & -0.0166624
+\end{pmatrix}.$
+\item[6)] Realizando algoritmo, converge en la iteración 41 con el punto $x^{(15)}=\begin{pmatrix}
+-0.02407704 & -0.02407704
+\end{pmatrix}$.
+\end{enumerate}
+Considerando los tres puntos optimos encontrados utilizando los distintos métodos,
+
+\begin{table}[h]
+\centering
+\begin{tabular}{c|c|c|c}
+\hline \hline
+método &número de iteraciones &$x^{optimo}$ & $f_1(x^{optimo})$ \\ \hline \hline
+GD &2 &$\begin{pmatrix}
+0 & 0
+\end{pmatrix}$ & 10\\
+NT &2&$\begin{pmatrix}
+0 & 0
+\end{pmatrix}$ & 10\\
+GD finite & 41 &$\begin{pmatrix}
+-0.02407 & -0.02407
+\end{pmatrix}$ & 10.22958 \\ \hline \hline
+\end{tabular}
+\caption{Comparación de los óptimos encontrados de $f_2$.}\label{funcion2}
+\end{table}
+\textbf{Observando el Cuadro (\ref{funcion2}) podemos notar que el método de Newton y gradiente descendente fueron los más eficientes.}
+
+
+Análogamente a lo realizado con las funciones uno y dos lo hacemos con la función tres. Entonces primero calculemos el gradiente y su matriz hessiana de $f_3$
+\begin{align*}
+\nabla f_3 =\begin{pmatrix} 2(x_1+2x_2-7)+4(2x_1+x_2-5)&
+4(x_1+2x_2-7)+2(2x_1+x_2-5)
+\end{pmatrix} \ \ \ \text{y}\ \ \ H_{f_3}=\begin{pmatrix}
+10 & 8\\ 8 & 10
+\end{pmatrix}.
+\end{align*}
+Entonces primero calculemos el \textbf{algoritmo de Gradiente descendente}, asumiento como punto inicial $x^{(0)}=(0,0)$ tenemos 
+\begin{enumerate}
+\item[1)] $\nabla f_3(x^{(0)})=\begin{pmatrix}
+-34 & -38
+\end{pmatrix}$\\
+$x^{(1)}=x^{(0)}-0.01\nabla f_3(x^{(0)}) = \begin{pmatrix}
+0+.34 & 0+.38
+\end{pmatrix}=\begin{pmatrix}
+0.34 & 0.38
+\end{pmatrix}. $
+\item[2)] $\nabla f_3(x^{(1)})=\begin{pmatrix}
+-27.56 & -31.48
+\end{pmatrix}$\\
+$x^{(2)}= \begin{pmatrix}
+0.34+.2756 & 0.38+.3148
+\end{pmatrix}=\begin{pmatrix}
+0.6156 & 0.69480
+\end{pmatrix}.$
+\item[3)] $\nabla f_3(x^{(2)})=\begin{pmatrix}
+-22.2856 & -26.1272
+\end{pmatrix}$\\
+$x^{(3)}= \begin{pmatrix}
+0.6156 +.222856& 0.69480+.261272
+\end{pmatrix}=\begin{pmatrix}
+0.838456 & 0.956072
+\end{pmatrix}.$
+\item[4)] $\nabla f_1(x^{(3)})=\begin{pmatrix}
+-17.966864 & -21.731632
+\end{pmatrix}$\\
+$x^{(4)}= \begin{pmatrix}
+0.838456 +.17966864& 0.956072+.21731632
+\end{pmatrix}=\begin{pmatrix}
+1.01812464& 1.17338832
+\end{pmatrix}.$
+\item[5)] $\nabla f_3(x^{(4)})=\begin{pmatrix}
+-14.43164704 & -18.12111968
+\end{pmatrix}$\\
+$x^{(5)}= \begin{pmatrix}
+1.01812464 + .1443166704& 1.17338832+.181211196
+\end{pmatrix}=\begin{pmatrix}
+1.1624411104& 1.3545995168
+\end{pmatrix}.$
+\item[6)] Realizando algoritmo, converge en la iteración 223 con el punto $x^{(223)}=\begin{pmatrix}
+1.01105134 & 2.98894866
+\end{pmatrix}$.
+\end{enumerate}
+Ahora ocupemos el \textbf{método de Newton},
+\begin{enumerate}
+\item[1)] $\nabla f_3(x^{(0)})=\begin{pmatrix}
+-34 & -38
+\end{pmatrix}$ y $H_{f_3}=\begin{pmatrix}
+10 & 8 \\-1 & -3
+\end{pmatrix}$\\
+$x^{(1)}=x^{(0)}-\nabla f_1(x^{(0)})*H_{f_1}^{-1} = \begin{pmatrix}
+0+1 & 0+3
+\end{pmatrix}=\begin{pmatrix}
+1 & 3
+\end{pmatrix}. $
+\item[2)] $\nabla f_1(x^{(1)})=\begin{pmatrix}
+-2.48689958e-14 & -2.30926389e-14
+\end{pmatrix}$ y $H_{f_1}=\begin{pmatrix}
+10 & 8 \\-1 & -3
+\end{pmatrix}$\\
+$x^{(2)}=\begin{pmatrix}
+1 & 3
+\end{pmatrix}.$
+\item[3)] Con este algoritmo converge en la segunda iteración, con el punto $\bf x^{(3)}=\begin{pmatrix}
+1 & 3
+\end{pmatrix}.$
+\end{enumerate}
+Ahora utilicemos el \textbf{Gradiente descendente con diferencias finitas } considerando a $\epsilon=0.05$
+\begin{enumerate}
+\item[1)] $\nabla f_3(x^{(0)})=\begin{pmatrix}
+-1.6875 & -1.8875
+\end{pmatrix}$\\
+$x^{(1)}=x^{(0)}-0.01\nabla f_3(x^{(0)}) = \begin{pmatrix}
+0+0.016875 & 0+0.018875
+\end{pmatrix}=\begin{pmatrix}
+0.016875 & 0.018875
+\end{pmatrix}. $
+\item[2)] $\nabla f_3(x^{(1)})=\begin{pmatrix}
+-1.6715125 & -1.8713125
+\end{pmatrix}$\\
+$x^{(2)}= \begin{pmatrix}
+0.016875+.1671512 & 0.018875+.18713
+\end{pmatrix}=\begin{pmatrix}
+0.033590125 & 0.037588125
+\end{pmatrix}.$
+\item[3)] $\nabla f_3(x^{(2)})=\begin{pmatrix}
+-1.65566969 &-1.85526989
+\end{pmatrix}$\\
+$x^{(3)}= \begin{pmatrix}
+0.033590125+0.01655669 & 0.037588125+0.018552698
+\end{pmatrix}=\begin{pmatrix}
+0.0501468 & 0.05614082
+\end{pmatrix}.$
+\item[4)] $\nabla f_3(x^{(3)})=\begin{pmatrix}
+-1.63997026 & -1.83937086
+\end{pmatrix}$\\
+$x^{(4)}= \begin{pmatrix}
+0.0501468+0.01639970 & 0.056140829+0.0183937
+\end{pmatrix}=\begin{pmatrix}
+0.0665465 & 0.074534532
+\end{pmatrix}.$
+\item[5)] $\nabla f_1(x^{(4)})=\begin{pmatrix}
+-1.62441292 & -1.82361412
+\end{pmatrix}$\\
+$x^{(5)}= \begin{pmatrix}
+0.0665465+0.1624412 & 0.074534532+0.1823614
+\end{pmatrix}=\begin{pmatrix}
+0.0827906 & 0.0927706
+\end{pmatrix}.$
+\item[6)] Continuando con el algoritmo, este no converge pero teenemos que en la iteración 1000 el punto $x^{(1000)}=\begin{pmatrix}
+1.35320564 & 2.61855018
+\end{pmatrix}$.
+\end{enumerate}
+\textbf{Observando el Cuadro (\ref{funcion3}) podemos observar que el método de Newton fue el más eficiente.}
+
+\begin{table}[h]\label{funcion3}
+\centering
+\begin{tabular}{c|c|c|c}
+\hline \hline
+método &número de iteraciones &$x^{optimo}$ & $f_3(x^{optimo})$ \\ \hline \hline
+GD &233 &$\begin{pmatrix}
+1.01105134 & 2.98894866
+\end{pmatrix}$ & 0.0002442\\
+NT & 2 &$\begin{pmatrix}
+1 & 3
+\end{pmatrix}$ & 0\\
+GD finite & 1000&$\begin{pmatrix}
+1.35320564 & 2.61855018
+\end{pmatrix}$ & 0.2734\\ \hline \hline
+\end{tabular}
+\caption{Comparación de los óptimos encontrados de $f_3$.}
+\end{table}
+
+Por último, análogamente a lo realizado con las funciones anteriores lo hacemos con la función cuatro. Entonces primero calculemos el gradiente y su matriz hessiana de $f_4$
+\begin{align*}
+\nabla f_4 =\begin{pmatrix} 0.5x_1-0.5x_2&0.5x_2-0.5x_1 \end{pmatrix} \ \ \ \text{y}\ \ \ H_{f_4}=\begin{pmatrix}
+0.5 & -0.5\\ -0.5 & 0.5
+\end{pmatrix}.
+\end{align*}
+Entonces primero calculemos el \textbf{algoritmo de Gradiente descendente}, asumiento como punto inicial $x^{(0)}=(0,0)$ tenemos 
+\begin{enumerate}
+\item[1)] $\nabla f_4(x^{(0)})=\begin{pmatrix}
+0 & 0
+\end{pmatrix}$\\
+$x^{(1)}=x^{(0)}=\begin{pmatrix}
+0.0 & 0
+\end{pmatrix}. $
+\item[2)] Es decir, como el gradiente en el punto inicial ya es igual a cero no se mueve el punto, por lo que se encuentra el punto óptimo local.
+\end{enumerate}
+Ahora ocupemos el \textbf{método de Newton},
+\begin{enumerate}
+\item[1)] $\nabla f_4(x^{(0)})=\begin{pmatrix}
+0 & 0
+\end{pmatrix}$ y $H_{f_4}=\begin{pmatrix}
+0.5 & -0.5\\ -0.5 & 0.5
+\end{pmatrix}$\\
+$x^{(1)}=x^{(0)}-\nabla f_4(x^{(0)})*H_{f_1}^{-1} =x^{(0)}-=\begin{pmatrix}
+0 & 0
+\end{pmatrix}. $
+\item[2)] Es decir, como el gradiente en el punto inicial ya es igual a cero no se mueve el punto, por lo que se encuentra el punto óptimo local.
+\end{enumerate}
+Ahora utilicemos el \textbf{Gradiente descendente con diferencias finitas } considerando a $\epsilon=0.05$
+\begin{enumerate}
+\item[1)] $\nabla f_4(x^{(0)})=\begin{pmatrix}
+0.000625 & 0.000625
+\end{pmatrix}$. Es decir, como el gradiente en el punto inicial ya esta muy cercano a cero no se mueve el punto, por lo que se encuentra el punto óptimo local en $x^{(0)}=\begin{pmatrix}
+0 & 0
+\end{pmatrix}$.
+\end{enumerate}
+Considerando los tres puntos optimos encontrados utilizando los distintos métodos,
+
+\begin{table}[h]
+\centering
+\begin{tabular}{c|c|c|c}
+\hline \hline
+método &número de iteraciones &$x^{optimo}$ & $f_4(x^{optimo})$ \\ \hline \hline
+GD &1 &$\begin{pmatrix}
+0 & 0
+\end{pmatrix}$ & 0\\
+NT &1&$\begin{pmatrix}
+0 & 0
+\end{pmatrix}$ & 0\\
+GD finite & 1 &$\begin{pmatrix}
+0 & 0
+\end{pmatrix}$ & 0 \\ \hline \hline
+\end{tabular}
+\caption{Comparación de los óptimos encontrados de $f_4$.}
+\end{table}
+Por último, \textbf{esta función considerando los tres métodos tiene los mismos resultados.} Cabe mencionar que la toleracia ocupada en los algoritmos fue de $1e^3$, por lo que esto puede haber influido a los resultados\ \ \fin
+
+\item Utilizando la condición de optimalidad de primer orden para problemas de optimización con restricciones, encuentre la solución óptima de los siguientes problemas:
+\begin{itemize}
+\item[a)] $f(\overrightarrow{x}) = (1-x_1)^2+100(x_2-x_1^2)^2,$ sujeto a $(x_1-1)^3-x_2\leq 0$ y $x_1+x_2-2 \leq 0$.
+
+\res 
+\begin{framed}\label{d_kkt}
+    \begin{thmd} Dada un problema de probragamación no lineal (NLP) considerando el caso general, es decir, incluyendo restricciones de igualdad y desigualdad en las variables de decisión x: 
+    \begin{align*}
+    min \ \ \ \ \bf J(x)\\
+    s.a. \ \ \ \ \bf h(x)=0\\
+	\bf g(x)\leq 0.    
+    \end{align*} 
+Las condiciones necesarias de óptimo para funciones continuamente diferenciables $J, h, g$ respecto a las variables x son:
+\begin{align*}\centering
+\nabla_x J(x)+\sumj \lambda \nabla_x h_j(x)+\sumj &\nabla_x g_j(x)=0\\
+\bf h_j(x)=0\\
+\bf g_i(x)\leq 0\\
+\bf \mu_i g_i(x)=0\\
+\mu_i\geq 0.
+\end{align*}
+	Sea $L(x,\lambda, \mu)=f(x)-\sumj\lambda_j h_j(x)-\sumj \mu_jg_j(x).$ Entonces, la condición de segundo orden satisface $$d^T\nabla^2 L(x,\lambda, \mu)\geq 0.$$
+    \end{thmd}
+\end{framed}
+Entonces considerando la \textbf{Definición \ref{d_kkt}}, tenemos que las condiciones de optimalidad de primer orden son:
+\begin{align*}\centering
+2(1-x_1)-400x_1(x_2-x_1^2)+3\mu_1(x_1-1)^2+\mu_2=0&\\
+200(x_2-x_1^2)-\mu_1+\mu_2=0&\\
+(x_1-1)^3-x_2\leq 0,\ \ \ \mu_1\left[(x_1-1)^3-x_2\right] =0, \  \ \ \mu_1\geq 0\\
+x_1+x_2-2\leq 0, \ \ \ \mu_2\left[x_1+x_2-2\right]=0,\ \ \ \mu_2\geq 0.
+\end{align*}
+Examinemos la combinación más sencilla para $\mu_1=\mu_2=0$ (por simplicidad), esto representaría a que las dos condiciones del problema original están inactivas. Entonces, considerando $\mu_1=\mu_2=0$ las condiciones de optimalidad de primer orden se reduce a 
+\begin{align}\centering
+2(1-x_1)-400x_1(x_2-x_1^2)=0&\\
+200(x_2-x_1^2)=0&\\
+(x_1-1)^3-x_2\leq 0\\
+x_1+x_2-2\leq 0.
+\end{align}
+Despejando $(2)$ tenemos que $x_2=x_1^2$. Ahora, ocupando el resultado anterior y sustituyendolo en $(1)$ tenemos que
+\begin{align}
+2(1-x_1)-400x_1(x_2-x_1^2)=0 \Leftrightarrow 2(1-x_1)-400x_1(x_1^2-x_1^2)=0 \Rightarrow x_1=1.
+\end{align}
+Ocupando $(5)$ en $(2)$ tenemos que $x_2=1$. Ahora comprobemos si se cumplen las otras dos condiciones de optimalidad:
+\begin{align*}
+(x_1-1)^3-x_2\leq 0\Leftrightarrow (1-1)^3-1\leq 0 \Leftrightarrow -1\leq 0\\
+x_1+x_2-2\leq 0 \Leftrightarrow 1+1-2\leq 0 \Leftrightarrow 0\leq 0.
+\end{align*}
+Por lo tanto, \textbf{$x_1=x_2=1$ y $\mu_1=\mu_2=0$ cumple las condiciones de optimaliadad}. Ahora para concluir que esta solución es la solución óptima ocupamos la condición de segundo orden. Para ello primero calculemos $L(x,\lambda, \mu)$:
+\begin{align}
+L(x, \mu) = (1-x_1)^2+100(x_2-x_1^2)+\mu_1\left[(x_1-1)^3-x_2\right]+\mu_2(x_1+x_2-2).
+\end{align}
+Ahora calculemos la matriz $\nabla^2 L(x,\lambda, \mu)$:
+\begin{align*}
+\nabla^2 L(x,\lambda, \mu)=\begin{pmatrix}
+\frac{\partial^2 L(x,\lambda, \mu)}{\partial x^2} & \frac{\partial^2 L(x,\lambda, \mu)}{\partial x\partial y}\\
+\frac{\partial^2 L(x,\lambda, \mu)}{\partial x\partial y}& \frac{\partial^2 L(x,\lambda, \mu)}{\partial y^2}  
+\end{pmatrix}= \begin{pmatrix}
+2-400x_2+1200x_1^2 & -400x_1\\
+-400x_1 & 200
+\end{pmatrix}.
+\end{align*}
+Ahora evaluamos $\nabla^2 L(x,\lambda, \mu)$ con la solución encontrada
+\begin{align*}
+\nabla^2 L(x*,\lambda, \mu)=\begin{pmatrix}
+2-400+1200 & -400\\
+-400 & 200
+\end{pmatrix}= \begin{pmatrix}
+802 & -400\\
+-400 & 200
+\end{pmatrix}.
+\end{align*}
+Veamos si la matriz $\nabla^2 L(x*,\lambda, \mu)$ es definida positiva, para ello calculemos sus valores propios. El polinomio característico de $\nabla^2 L(x*,\lambda, \mu)$ es 
+\begin{align*}
+p(\lambda)=\det (\nabla^2 L(x*,\lambda, \mu)-\lambda I)=\left|\begin{array}{cc}
+802-\lambda & -400\\ -400 & 200-\lambda
+\end{array} \right|=\lambda^2-10002\lambda+400.
+\end{align*}
+Esto implica que los valores propios de $\nabla^2 L(x*,\lambda, \mu)$ sean:
+\begin{align*}
+p(\lambda)&=0\\
+\lambda^2-10002\lambda+400&=(\lambda+\sqrt{250601}-501)(\lambda-\sqrt{250601}-501)\Rightarrow\\
+\bf \lambda_1 =501-\sqrt{250601}\approx 0.39936 \ \ & \&\ \ \bf \lambda_2=501+\sqrt{25061}\approx 1001.60.
+\end{align*}
+Entonces como los valores propios son ambos positivos, podemos concluir que la matriz $\nabla^2 L(x*,\lambda, \mu)$ es positiva definida, es decir, cumple que para cualquier vector $d^T$ (diferente del nulo) se cumple que $d^T\nabla^2 L(x*,\lambda, \mu)d\geq0$. Es decir, \textbf{la solución encontrada también cumpla la condición de segundo orden, por lo que podemos concluir que es la solución óptima de este problema.}
+
+
+\item[b)] $f(\overrightarrow{x}) = (1-x_1)^2+100(x_2-x_1^2)^2,$ sujeto a $x_1^2+x_2^2\leq 2$. 
+
+\res Considerando la \textbf{Definición \ref{d_kkt}}, tenemos que las condiciones de optimalidad de primer orden son:
+\begin{align*}\centering
+2(1-x_1)-400x_1(x_2-x_1^2)+2\mu_1x_1=0&\\
+200(x_2-x_1^2)+2\mu_1x_2=0&\\
+x_1+x_2-2\leq 0, \ \ \ \mu_1\left[x_1+x_2-2\right]=0,\ \ \ \mu_2\geq 0.
+\end{align*}
+Examinemos la combinación más sencilla para $\mu_1=0$ (por simplicidad), esto representaría a que la restrición  del problema original están inactivas. Entonces, considerando $\mu_1=0$ las condiciones de optimalidad de primer orden se reduce a 
+\begin{align}\centering
+2(1-x_1)-400x_1(x_2-x_1^2)=0&\\
+200(x_2-x_1^2)=0&\\
+(x_1-1)^3-x_2\leq 0\\
+x_1+x_2-2\leq 0.
+\end{align}
+Despejando $(2)$ tenemos que $x_2=x_1^2$. Ahora, ocupando el resultado anterior y sustituyendolo en $(1)$ tenemos que
+\begin{align}
+2(1-x_1)-400x_1(x_2-x_1^2)=0 \Leftrightarrow 2(1-x_1)-400x_1(x_1^2-x_1^2)=0 \Rightarrow x_1=1.
+\end{align}
+Ocupando $(5)$ en $(2)$ tenemos que $x_2=1$. Ahora comprobemos si se cumple la otra condición de optimalidad:
+\begin{align*}
+x_1+x_2-2\leq 0 \Leftrightarrow 1+1-2\leq 0 \Leftrightarrow 0\leq 0.
+\end{align*}
+Por lo tanto, \textbf{$x_1=x_2=1$ y $\mu_1=0$ cumple las condiciones de optimaliadad}. Ahora consideremos el caso en donde $\mu_1\neq 0 (\mu >0)$ (es decir, la restricción esta activa), el problema se reduce a 
+\begin{align*}
+2(1-x_1)-400x_1(x_2-x_1^2)+2\mu_1x_1=0&\\
+200(x_2-x_1^2)+2\mu_1x_2=0&\\
+(x_1-1)^3-x_2\leq 0\\
+x_1+x_2-2=0.
+\end{align*}
+Este sistema es un poco complicado de resolverlo a mano, por lo cuál utilizamos Wolfram Alpha para resolverlo. Las soluciones del sistema de ecuaciones que arroja el programa son 7, de las cuales 6 incumplen que $\mu_1 >0$. La otra solución es $x_1\approx -1.002214, x_1\approx 0.997780$ y $\mu_1\approx 0.66691$. Entonces tenemos dos soluciones que cumplen las condiciones de optimalidad de primer orden. Evaluando estas soluciones en nuestra función original tenemos que $f(x_1^{*1})=0$ y $f(x_1^{*2})=4.0132.$ \textbf{Por lo que podemos concluir que $x_1=x_2=1$ es la solución óptima del problema \ \ \fin}
+\end{itemize}
+
+\textsc{Nota:} Para este problema no supe si querían que utilizara algún algoritmo para encontrar la solución óptima, o si se tenían que encontrar explorando posibles soluciones y descartando las que inclupían alguna restricción (es decir, hacerlo de manera manual). ´
+
+\item Dado la descomposición del problema de optimización de la SVM:
+\begin{align}\label{SVM}
+\min \frac{1}{2}\overrightarrow{\alpha}_{B}^T Q_{BB}\overrightarrow{\alpha}_B-(\overrightarrow{e}_B^T-\overrightarrow{\alpha}_N Q_{NB})\overrightarrow{\alpha}_B+\left(\frac{1}{2}\overrightarrow{\alpha}_N^T Q_{NN}\overrightarrow{\alpha}_N-\overrightarrow{e}_N^T\overrightarrow{\alpha}_N\right)
+\end{align}
+
+sujeto a $\overrightarrow{\alpha}_N^T\overrightarrow{y}_B=z,$ donde $z=-\overrightarrow{\alpha}_N^T\overrightarrow{y}_N$ y $B$ y $N$ representan el subconjunto de variables básicas y no básicas. Considere el algoritmo de SMO, que selecciona las variables básicas $i$ y $j$. Demuestre que el gradiente de $\alpha_i$ de la Ecuación (\ref{SVM}) es equivalente a:
+\begin{align*}
+\nabla_{\hat{\alpha_i}} = \left\{
+\begin{array}{cc}
+\sumk \left( \alpha_i \alpha_k Q_{i,k}+\alpha_j\alpha_kQ_{j,k}\right)-2& \text{ si } y_i=y_j\\ 
+\sumk \left( \alpha_i \alpha_k Q_{i,k} +\alpha_j\alpha_kQ_{j,k}\right)& \text{ si } y_i\neq y_j \end{array}\right.
+\end{align*}
+
+\res Consideremos $\alpha_i$ y $\alpha_j$ variables a optimizar usando el algoritmo SMO. Primero observamos que el termino de la Ecuación (\ref{SVM}) no depende de las variables $\alpha_i, \alpha_j$ por lo que lo podemos considerar como constante, es decir, el problema se reduce a 
+\begin{align*}
+\min \frac{1}{2}\overrightarrow{\alpha}_{B}^T Q_{BB}\overrightarrow{\alpha}_B-(\overrightarrow{e}_B^T-\overrightarrow{\alpha}_N Q_{NB})\overrightarrow{\alpha}_B+\text{constante}.
+\end{align*}
+Ocupemos la siguiente notación:
+\begin{align*}
+\overrightarrow{\alpha}_{B}^T= \begin{pmatrix}
+\alpha_1&\cdots &\alpha_i &\cdots&\alpha_j&\cdots&\alpha_n
+\end{pmatrix} \ \ \ \text{y}\ \ \ Q_{BB}=\begin{pmatrix}
+Q_{11} & Q_{12} & \cdots & Q_{1n}\\
+Q_{21} & Q_{22} & \cdots & Q_{2n}\\
+\vdots & \vdots & \ddots & \vdots\\
+Q_{n1}& Q_{n2}& \cdots & Q_{nn}
+\end{pmatrix}.
+\end{align*}
+Lo expresión anterior es equivalente a 
+\begin{align}\label{r_ecu}
+\frac{1}{2}\overrightarrow{\alpha}_{B}^T Q_{BB}\overrightarrow{\alpha}_B-(\overrightarrow{e}_B^T-\overrightarrow{\alpha}_N Q_{NB})\overrightarrow{\alpha}_B&= \sum_{p=1}^n \alpha_p \left( \sumk \alpha_k Q_{pk}\right)-\sum_{p=1}^n \alpha_p +\sum_{p=1}^n \left(\overrightarrow{\alpha}_N Q_{NB}\right)\alpha_p
+\end{align}
+Del resultado (\ref{r_ecu}), intentemos desarrollar más la expresión en terminos de $\alpha_i$ y $\alpha_j$. Primero desarrollemos el primer termino:
+\begin{align*}
+\sum_{p=1}^n \alpha_p \left( \sumk \alpha_k Q_{pk}\right)&=\alpha_i\left( \sumk \alpha_k Q_{ik}\right)+\alpha_j \left( \sumk \alpha_k Q_{jk}\right)+\sum_{\substack{p=1 \\ p\neq i,j}}^n \alpha_p \left( \sumk \alpha_k Q_{pk}\right)\\
+&=\alpha_i^2Q_{ii}+\alpha_i\alpha_jQ_{ij} + \alpha_i \left( \sum_{\substack{k=1\\ k\neq i,j}}^n  \alpha_k Q_{ik}\right)\\
+&+\alpha_j\alpha_iQ_{jk}+\alpha_j^2Q_{jj}+\alpha_j \left( \sumk \alpha_k Q_{jk}\right)\\
+&+\alpha_i\sum_{\substack{p=1 \\ p\neq i,j}}^n \alpha_pQ_{pi}+\alpha_j\sum_{\substack{p=1 \\ p\neq i,j}}^n \alpha_pQ_{pj}+\sum_{\substack{p=1 \\ p\neq i,j}}^n \alpha_p \left( \sum_{\substack{k=1\\ k\neq i,j}}^n \alpha_k Q_{pk}\right)
+\end{align*}
+Pero como $\alpha_i$ y $\alpha_j$ son variables y el resto se puede considerar como constante, entonces se puede simplificar un poco considerando:
+\begin{align*}
+\sum_{p=1}^n \alpha_p \left( \sumk \alpha_k Q_{pk}\right)&=\alpha_i^2Q_{ii}+\alpha_i\alpha_jQ_{ij} + \alpha_i \left( \sum_{\substack{k=1\\ k\neq i,j}}^n  \alpha_k Q_{ik}\right)+\alpha_j\alpha_iQ_{jk}+\alpha_j^2Q_{jj}+\alpha_j \left( \sum_{\substack{k=1\\ k\neq i,j}}^n \alpha_k Q_{jk}\right)\\
+&+\alpha_i\sum_{\substack{p=1 \\ p\neq i,j}}^n \alpha_pQ_{pi}+\alpha_j\sum_{\substack{p=1 \\ p\neq i,j}}^n \alpha_pQ_{pj}+C_1,
+\end{align*}
+donde $C_1$ es una constante. Ahora desarrollemos el segundo y tercer termino, y simplifiquemos de igualmanera los terminos constantes:
+\begin{align*}
+-\sum_{p=1}^n \alpha_p +\sum_{p=1}^n \left(\overrightarrow{\alpha}_N Q_{NB}\right)\alpha_p&=-\alpha_i-\alpha_j-\sum_{\substack{p=1\\ p\neq i,j}}^n \alpha_p +\overrightarrow{\alpha}_N Q_{NB}\alpha_i+\overrightarrow{\alpha}_N Q_{NB}\alpha_j+\sum_{\substack{p=1\\ p\neq i,j}}^n \left(\overrightarrow{\alpha}_N Q_{NB}\right)\alpha_p\\
+&=-\alpha_i-\alpha_j+\overrightarrow{\alpha}_N Q_{NB}\alpha_i+\overrightarrow{\alpha}_N Q_{NB}\alpha_j+C_2,
+\end{align*}
+donde $C_2$ es constante.
+
+Lo anterior servirá para facilitar los calculos. Consideraremos dos casos: $y_i=y_j,$ $y_i\neq y_j$. Cuando $y_i =y_j$, implica que $\alpha_i+\alpha_j=k$ y $\alpha_j=k-\alpha_i$. Sustiyuyamos lo anterior en la expresión simplificada, empecemos por el segundo y tercer termino:
+\begin{align*}
+-\sum_{p=1}^n \alpha_p +\sum_{p=1}^n \left(\overrightarrow{\alpha}_N Q_{NB}\right)\alpha_p&=-\alpha_i-(k-\alpha_i)+\overrightarrow{\alpha}_N Q_{NB}\alpha_i+\overrightarrow{\alpha}_N Q_{NB}(k-\alpha_i)+C_2\\
+&=-k+\overrightarrow{\alpha}_N Q_{NB}k+C_2=C_3.
+\end{align*}
+Es decir, lo anterior no depende de las variables $\alpha_i$ ni $\alpha_j$ por lo que se consideran como constante ($C_3$). Ahora continuemos con el primer termino:
+\begin{align*}
+\sum_{p=1}^n \alpha_p \left( \sumk \alpha_k Q_{pk}\right)&=\alpha_i^2Q_{ii}+\alpha_i(k-\alpha_i)Q_{ij} + \alpha_i \left( \sum_{\substack{k=1\\ k\neq i,j}}^n  \alpha_k Q_{ik}\right)+(k-\alpha_i)\alpha_iQ_{ji}+(k-\alpha_i)^2Q_{jj}\\
+&+ (k-\alpha_i) \left( \sum_{\substack{k=1\\ k\neq i,j}}^n \alpha_k Q_{jk}\right)+\alpha_i\sum_{\substack{p=1 \\ p\neq i,j}}^n \alpha_pQ_{pi}+(k-\alpha_i)\sum_{\substack{p=1 \\ p\neq i,j}}^n \alpha_pQ_{pj}+C_1.
+\end{align*}
+De juntanto los resultados anteriores y derivando respecto a $\alpha_i$ tenemos que el gradiente de $\alpha_i$ considerando $y_i=y_j$ es
+\begin{align*}
+\nabla_{\hat{\alpha_i}}&=\frac{1}{2}\left(2\alpha_iQ_{ii}+kQ_{ij}-2\alpha_iQ_{ij}+ \sum_{\substack{k=1\\ k\neq i,j}}^n  \alpha_k Q_{ik} + kQ_{ji}-2\alpha_iQ_{ji}-2(k-\alpha_i)Q_{jj}-\sum_{\substack{k=1\\ k\neq i,j}}^n \alpha_k Q_{jk}+\sum_{\substack{p=1 \\ p\neq i,j}}^n \alpha_pQ_{pi} \right)\\
+&+\frac{1}{2}\left(-\sum_{\substack{p=1 \\ p\neq i,j}}^n \alpha_pQ_{pj}+0 \right)
+\end{align*}
+Recordemos que la matriz $Q_{BB}$ es simétrica y además que $k=\alpha_i +\alpha_j$, entonces podemos la expresión anterior es igual a
+\begin{align*}
+\nabla_{\hat{\alpha_i}}&=\frac{1}{2}\left(2\alpha_iQ_{ii}+(\alpha_i +\alpha_j)Q_{ij}-2\alpha_iQ_{ij}+ \sum_{\substack{k=1\\ k\neq i,j}}^n  \alpha_k Q_{ik} + (\alpha_i +\alpha_j) Q_{ji}-2\alpha_iQ_{ji}-2((\alpha_i +\alpha_j)-\alpha_i)Q_{jj} \right)\\
+&+\frac{1}{2}\left(-\sum_{\substack{k=1\\ k\neq i,j}}^n \alpha_k Q_{jk}+\sum_{\substack{p=1 \\ p\neq i,j}}^n \alpha_pQ_{pi}-\sum_{\substack{p=1 \\ p\neq i,j}}^n \alpha_pQ_{pj} \right)\\
+&= \frac{1}{2}\left(2\alpha_iQ_{ii}+\alpha_iQ_{ij} +\alpha_jQ_{ij}-2\alpha_iQ_{ij}+ \sum_{\substack{k=1\\ k\neq i,j}}^n  \alpha_k Q_{ik} + \alpha_iQ_{ji} +\alpha_jQ_{ji}-2\alpha_iQ_{ji}-2\alpha_jQ_{jj} \right)\\
+&+\frac{1}{2}\left(-\sum_{\substack{k=1\\ k\neq i,j}}^n \alpha_k Q_{jk}+\sum_{\substack{p=1 \\ p\neq i,j}}^n \alpha_pQ_{pi}-\sum_{\substack{p=1 \\ p\neq i,j}}^n \alpha_pQ_{pj} \right)
+\end{align*}
+\begin{align*}
+&=\frac{1}{2}\left(2\alpha_iQ_{ii}+2\alpha_j Q_{ij}-2\alpha_i Q_{ij} \sum_{\substack{k=1\\ k\neq i,j}}^n  \alpha_k Q_{ik} -2\alpha_jQ_{jj} -\sum_{\substack{k=1\\ k\neq i,j}}^n \alpha_k Q_{jk}+\sum_{\substack{p=1 \\ p\neq i,j}}^n \alpha_pQ_{pi}-\sum_{\substack{p=1 \\ p\neq i,j}}^n \alpha_pQ_{pj}\right)\\
+&=\frac{1}{2}\left(2\alpha_iQ_{ii}+ 2\alpha_j Q_{ij}-2\alpha_i Q_{ij}+2\sum_{\substack{k=1\\ k\neq i,j}}^n  \alpha_k Q_{ik} -2\alpha_jQ_{jj} -2\sum_{\substack{k=1\\ k\neq i,j}}^n \alpha_k Q_{jk}\right)\\
+&= \frac{1}{2}\left(2\alpha_iQ_{ii}+ 2\alpha_j Q_{ij}-2\alpha_i Q_{ij}+2\sum_{\substack{k=1\\ k\neq i,j}}^n  \alpha_k Q_{ik} -2\alpha_jQ_{jj} -2\sum_{\substack{k=1\\ k\neq i,j}}^n \alpha_k Q_{jk}\right)\\
+&=\frac{1}{2}\left(2\sum_{\substack{k=1}}^n  \alpha_k Q_{ik}-2\sum_{\substack{k=1}}^n \alpha_k Q_{jk}\right)=\bf \sumk \left( \alpha_kQ_{ik}-\alpha_j Q_{jk}\right).
+\end{align*}
+Ahora continuemos con el caso cuando $y_i\neq y_j$, tenemos que $\alpha_i-\alpha_j=k\Rightarrow \alpha_j=-k+\alpha_i$. Realizaremos un procedimiento analago al caso anterior, sustiyuyamos lo anterior en la expresión simplificada del inicio, empecemos por el segundo y tercer termino:
+\begin{align*}
+-\sum_{p=1}^n \alpha_p +\sum_{p=1}^n \left(\overrightarrow{\alpha}_N Q_{NB}\right)\alpha_p&=-\alpha_i-(-k+\alpha_i)+\overrightarrow{\alpha}_N Q_{NB}\alpha_i+\overrightarrow{\alpha}_N Q_{NB}(-k+\alpha_i)+C_2\\
+&=-2\alpha_i+k+\overrightarrow{\alpha}_N Q_{NB}k+2\overrightarrow{\alpha}_N Q_{NB}\alpha_i+C_2.
+\end{align*}
+Ahora continuemos con el primer termino:
+\begin{align*}
+\sum_{p=1}^n \alpha_p \left( \sumk \alpha_k Q_{pk}\right)&=\alpha_i^2Q_{ii}+\alpha_i(-k+\alpha_i)Q_{ij} + \alpha_i \left( \sum_{\substack{k=1\\ k\neq i,j}}^n  \alpha_k Q_{ik}\right)+(-k+\alpha_i)\alpha_iQ_{ji}+(-k+\alpha_i)^2Q_{jj}\\
+&+ (-k+\alpha_i) \left( \sum_{\substack{k=1\\ k\neq i,j}}^n \alpha_k Q_{jk}\right)+\alpha_i\sum_{\substack{p=1 \\ p\neq i,j}}^n \alpha_pQ_{pi}+(-k+\alpha_i)\sum_{\substack{p=1 \\ p\neq i,j}}^n \alpha_pQ_{pj}+C_1.
+\end{align*}
+De juntanto los resultados anteriores y derivando respecto a $\alpha_i$ tenemos que el gradiente de $\alpha_i$ considerando $y_i\neq y_j$ es
+\begin{align*}
+\nabla_{\hat{\alpha_i}}&=\frac{1}{2}\left(2\alpha_iQ_{ii}-kQ_{ij}+2\alpha_iQ_{ij}+ \sum_{\substack{k=1\\ k\neq i,j}}^n  \alpha_k Q_{ik} -kQ_{ji}+2\alpha_iQ_{ji}+2(-k+\alpha_i)Q_{jj}-\sum_{\substack{k=1\\ k\neq i,j}}^n \alpha_k Q_{jk}+\sum_{\substack{p=1 \\ p\neq i,j}}^n \alpha_pQ_{pi} \right)\\
+&+\frac{1}{2}\left(\sum_{\substack{p=1 \\ p\neq i,j}}^n \alpha_pQ_{pj}\right)-2
+\end{align*}
+Recordemos que la matriz $Q_{BB}$ es simétrica y además que $k=\alpha_i -\alpha_j$, entonces podemos la expresión anterior es igual a
+\begin{align*}
+\nabla_{\hat{\alpha_i}}&=\frac{1}{2}\left(2\alpha_iQ_{ii}-(\alpha_i-\alpha_j)Q_{ij}+2\alpha_iQ_{ij}+ \sum_{\substack{k=1\\ k\neq i,j}}^n  \alpha_k Q_{ik} -(\alpha_i -\alpha_j) Q_{ji}+2\alpha_iQ_{ji}-2(-(\alpha_i -\alpha_j)+\alpha_i)Q_{jj} \right)\\
+&+\frac{1}{2}\left(\sum_{\substack{k=1\\ k\neq i,j}}^n \alpha_k Q_{jk}+\sum_{\substack{p=1 \\ p\neq i,j}}^n \alpha_pQ_{pi}+\sum_{\substack{p=1 \\ p\neq i,j}}^n \alpha_pQ_{pj} \right)-2\\
+&= \frac{1}{2}\left(2\alpha_iQ_{ii}-\alpha_iQ_{ij} +\alpha_jQ_{ij}+2\alpha_iQ_{ij}+ \sum_{\substack{k=1\\ k\neq i,j}}^n  \alpha_k Q_{ik} -\alpha_iQ_{ji} +\alpha_jQ_{ji}+2\alpha_iQ_{ji}-2\alpha_jQ_{jj} \right)\\
+&+\frac{1}{2}\left(\sum_{\substack{k=1\\ k\neq i,j}}^n \alpha_k Q_{jk}+\sum_{\substack{p=1 \\ p\neq i,j}}^n \alpha_pQ_{pi}+\sum_{\substack{p=1 \\ p\neq i,j}}^n \alpha_pQ_{pj} \right)-2\\
+&=\frac{1}{2}\left(2\alpha_iQ_{ii}+2\alpha_j Q_{ij}+2\alpha_i Q_{ij} \sum_{\substack{k=1\\ k\neq i,j}}^n  \alpha_k Q_{ik} +2\alpha_jQ_{jj} +\sum_{\substack{k=1\\ k\neq i,j}}^n \alpha_k Q_{jk}+\sum_{\substack{p=1 \\ p\neq i,j}}^n \alpha_pQ_{pi}+\sum_{\substack{p=1 \\ p\neq i,j}}^n \alpha_pQ_{pj}\right)-2\\
+&=\frac{1}{2}\left(2\alpha_iQ_{ii}+ 2\alpha_j Q_{ij}+2\alpha_i Q_{ij}+2\sum_{\substack{k=1\\ k\neq i,j}}^n  \alpha_k Q_{ik} +2\alpha_jQ_{jj} +2\sum_{\substack{k=1\\ k\neq i,j}}^n \alpha_k Q_{jk}\right)-2\\
+&= \frac{1}{2}\left(2\alpha_iQ_{ii}+ 2\alpha_j Q_{ij}+2\alpha_i Q_{ij}+2\sum_{\substack{k=1\\ k\neq i,j}}^n  \alpha_k Q_{ik} +2\alpha_jQ_{jj} +2\sum_{\substack{k=1\\ k\neq i,j}}^n \alpha_k Q_{jk}\right)-2\\
+&=\frac{1}{2}\left(2\sum_{\substack{k=1}}^n  \alpha_k Q_{ik}+2\sum_{\substack{k=1}}^n \alpha_k Q_{jk}\right)-2=\bf \sumk \left( \alpha_kQ_{ik}+\alpha_j Q_{jk}\right)-2.
+\end{align*}
+Entonces podemos concluir que el gradiente descendente para $\alpha_i$ es
+\begin{align*}
+\nabla_{\hat{\alpha_i}} = \left\{
+\begin{array}{cc}
+\sumk \left(\alpha_k Q_{i,k}+\alpha_kQ_{j,k}\right)-2& \text{ si } y_i\neq y_j\\ 
+\sumk \left(\alpha_k Q_{i,k} -\alpha_kQ_{j,k}\right)& \text{ si } y_i= y_j \end{array}\right. \ \ \ \finf
+\end{align*}
+
+\item Formule el problema de regresión con regularización como un problema de progración cuadrática e implemente una función en Python que reciba los datos y determine los coeficientes.
+
+\res Tenemos que el problema de regresión con regularización se puede escribir como el problema de programación cuadrática:
+\begin{align}\label{lasso}
+\min_{\beta} &\ \ \ ||\beta^T X-y||_2^2\\
+s.a &\ \ \  ||\beta||<t.
+\end{align}
+Lo anterior se conoce como regularización de Ivanov, que es equivalente a la regularización de Tikhonov:
+\begin{align*}
+\min_{\beta} &\ \ \ ||\beta^T X-y||_2^2+\lambda ||\beta||.
+\end{align*}
+Veamos que la formulación de regresión con regularización (\ref{lasso}) es un problema de programación cuadratico. Entonces la suma del cuadrado del error se es equivalente a
+\begin{align*}
+RSS(b) \propto b^T(X^TX)b-2y^TX\beta.
+\end{align*} 
+Entonces, podemos usar a $Q=2(X^TX)$ y $q^T=2y^TX$ de la definición de un problema de programación cuadratica. Además, para escribir $A$ se tiene que considerar $2^p$ restricción de desigualda. Por ejemplo, cuando $p=2$ la restricción $|\beta_1|+|\beta_2|\leq t$ es equivalente a:
+\begin{align*}
+\beta_1+\beta_2\leq t\\
+\beta_1-\beta_2\leq t\\
+-\beta_1+\beta_2\leq t\\
+-\beta_1-\beta_2\leq t,
+\end{align*}  
+Entonces $A = \begin{pmatrix}
+1 &1\\
+1 & -1\\
+-1 & 1\\
+-1 & -1
+\end{pmatrix}$ y $b=\begin{pmatrix}
+t & t & t & t
+\end{pmatrix}$.
+Cabe resaltar que $2^p$ puede ser demasiado grande cuando  $p$ crece, por lo que este plantamiento del problema es muy tardado. Entonces con lo anterior podemos resolver el problema de forma cuadratica con ayuda de python, el cual consiste simplemente en crear las matrices anteriores descritas. Para la función ocupamos las librerias \textsf{itertools, pandas, numpy} y \textsf{cvxopt},
+
+\begin{lstlisting}
+import itertools # funcion auxiliar para crear A
+import pandas as pd # transformar dataframe.
+from cvxopt import matrix, solvers # resolver un porblema cuadradico
+
+## funcion auxiliar:
+
+# Crear la matriz A.
+def expand_grid(data_dict):
+    """Crear la matriz de las combinaciones de A.
+    
+    Args:
+        data_dict: (p, 2) diccionario con los vectores (-1,1)
+    
+    return:
+        pd.Datafram: (p, 2) matriz A.
+    """
+    rows = itertools.product(*data_dict.values())
+    return pd.DataFrame.from_records(rows, columns=data_dict.keys())
+    
+### Regression con regularizacion l1.
+def regression_lasso_qp(X, y, t):
+    """
+    Estimacion de beta para una regression con regularizacion l1.
+    
+    Args:
+        X: (n,p) np.array, los datos del problema
+        y: (n) np.array, variable respuesta
+        t: parametro t de regularizacion
+        
+    return:
+        sol["x"]: solucion optima encontrada
+    """
+    n, p = X.shape # tamano de los datos
+    
+    D = matrix(X.T@X, tc="d") # calculamos la matriz D
+    q = matrix(2*y.T@X, tc="d") # calculamos el vector q
+    
+    a = np.array([-1,1]) # calculamos la matriz A
+    aux = {}
+    for i in range(p):
+        aux["Var{}".format(i)] = a
+    A = matrix(np.array(expand_grid(aux)), tc="d")
+    
+    b0 = matrix(np.repeat(t, 2**p).reshape((2**p)), tc="d") # vector b
+    
+    sol = solvers.qp(D, q, A, b0) # resolvemos el PQ.
+    return print(sol["x"])
+\end{lstlisting}  
+
+Ocupemos los datos de sklearn Boston para probar nuestra función:
+
+\begin{lstlisting}
+from sklearn.datasets import load_boston # cargamos los datos
+X, y = load_boston(return_X_y=True)
+
+regression_lasso_qp(X[:,0:2], y, 10) # usamos la funcion
+
+# ouput del ejemplo:
+     pcost       dcost       gap    pres   dres
+ 0: -1.9668e+05 -1.9680e+05  1e+02  2e-17  5e-17
+ 1: -1.9668e+05 -1.9669e+05  1e+00  1e-16  2e-17
+ 2: -1.9668e+05 -1.9668e+05  1e-02  2e-16  2e-17
+Optimal solution found.
+[-1.16e+00]
+[-9.90e-01]
+\end{lstlisting}
+\end{enumerate}
+
+
+
+
+
+\end{document}
