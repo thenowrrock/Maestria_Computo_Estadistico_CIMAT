@@ -12,19 +12,6 @@ En este repositorio se encuentra todos los recursos (nota, tareas, proyectos, re
 
 El objetivo general de este trabajo es determinar una función f(x) que prediga las q salidas de un vector de entrada x, mediante un problema de optimización a partir de datos de entrada X n x p y Y n x q, más un parámetro de regularización.
 
-### Notas
-1. [Conceptos Básicos de optimización](Notas_y_codigos/1_conceptos_basicos.pdf)
-
-1. [1 Programación lineal](Notas_y_codigos/1_programacion_lineal.pdf)
-
-2. [Optimización no lineal](Notas_y_codigos/2_optimizacion_no_lineal.pdf)
-
-3. [Optimización no lineal con restricciones](Notas_y_codigos/3_optimizacion_no_lineal_con_restricciones)
-
-4. [Optimización combinatoria](Notas_y_codigos/4_optimizacion_combinatoria.pdf)
-
-5. [Métodos constructivos](Notas_y_codigos/5_metodos_constructivos.pdf)
-
 ### Referencias
 
 1. Feo, T.A., Resende, M.G.C. Greedy Randomized Adaptive Search Procedures. J Glob Optim 6, 109–133 (1995). https://doi.org/10.1007/BF01096763
