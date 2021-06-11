@@ -1,0 +1,172 @@
+---
+fontsize: 11pt
+geometry: "left=2cm,right=2cm,top=2cm,bottom=2cm"
+documentclass: article
+output:
+    pdf_document:
+        includes:
+            in_header: mystyles.sty
+bibliography: references.bib
+---
+\begin{table}[ht]
+\centering
+\begin{tabular}{c}
+\textbf{Maestría en Computo Estadístico}\\
+\textbf{Estadística Multivariada} \\
+\textbf{Tarea 5}\\
+\today \\
+\emph{Enrique Santibáñez Cortés}\\
+Repositorio de Git: \href{https://github.com/Enriquesec/Estadística_multivariada/tree/master/Tareas/Tarea_5}{Tarea 5, EM}.
+\end{tabular}
+\end{table}
+
+\textbf{Ejercicio 1.}
+
+Otra forma de derivar los resultados del análisis de correspondencia simple es encontrando una matriz $\hat{\mP}$ de dimensión $r\times s$ con rango reducido $t< \min (r,s)$ que aproxime $\mP$ minimizando el criterio de mínimos cuadrados ponderados:
+\begin{align*}
+\tr \{\mD_r^{-1/2}(\mP-\hat{\mP})\mD_c^{-1}(\mP-\hat{\mP})' \mD_r^{-1/2}\}.
+\end{align*}
+Usando el teorema de Eckart-Young, encuentre la matrix $\hat{\mP}$ que arroje la mejor aprroximación de rango reducido de $\mP$ en este sentido. Muestre que la mejor aproximación de rango 1 de $\mP$ es la solución trivial $\hat{\mP}=\bf rc'.$
+
+\res 
+\begin{framed}
+    \begin{thmt} \label{eckar}
+    \textbf{Teorema de Eckart-Young} . Sea $A$ una matriz de tamaño $m\times k$ con $m\geq k$ y con descomposición de valores singulares $U\Lambda V'$. Sea $s< k=rank (A)$. Entonces 
+    \begin{align*}
+    B=\sum_{i=1}^s \lambda_iu_iv_i,
+    \end{align*}
+    es la aproximación de mínimos cuadrados de rango $s$ de A. Y minimiza 
+    $$\tr \left[(A-B)(A-B)'\right]$$
+    de todas la matrices de tamaño $m\times k$ que tienen un rango no mayor que $s$.
+    \end{thmt}
+\end{framed}
+Recordemos las definiciones algunas matrices a utilizar. Si $n$ es el número total de frecuencias en la matriz de datos $X$, y sea $P=\{p_{ij}\}=\{\frac{x_{ij}}{n}\}$ la matriz de correspondencias. Ahora podemos definir los vectores de las sumas de los renglón y columna como $\bf r$ y $\bf c$ respectivamente. Y las matrices diagonales $\bf D_c$ y $\bf D_r$ con los elementos de los vectores $\bf r$ y $\bf c$ en la diagonal respectivamente. Entonces,
+\begin{align*}
+r_i = \sum_{j=1}^J p_{ij} = \sum_{j=1}^J \frac{x_{ij}}{n}, \ \ i=1,2,\cdots, I,\ \ \Leftrightarrow \ \ r_{(I\times 1)}=P_{(I\times J)}1_{(J\times 1)}\\
+c_j = \sum_{i=1}^I p_{ij}=sum_{i=1}^I \frac{x_{ij}}{n}, \ \ j=1,2,\cdots, J,\ \ \Leftrightarrow \ \ c_{(J\times 1)}=P_{(J\times I)}'1_{(I\times 1)}
+\end{align*}  
+donde \textbf{1} es una vector de unos y 
+\begin{align}
+\mD_r=diag(r_1, r_2,\cdots, r_I), \ \ \ \ y \ \ \ \ \mD_c=diag(c_1, c_2, \cdots, c_J).
+\end{align}
+Y definimos la raiz cuadrada de las matrices como
+\begin{align}
+\mD_r^{1/2}=diag(\sqrt{r_1},\sqrt{ r_2},\cdots, \sqrt{r_I}), \ \ \ \ y \ \ \ \ \mD_r^{-1/2}=diag(1/\sqrt{r_1},1/\sqrt{ r_2},\cdots, 1/\sqrt{r_I})\\
+\mD_c^{1/2}=diag(\sqrt{c_1}, \sqrt{c_2}, \cdots, \sqrt{c_J}) \ \ \ \ y \ \ \ \ \mD_c^{-1/2}=diag(1/\sqrt{c_1}, 1/\sqrt{c_2}, \cdots, 1/\sqrt{c_J}).
+\end{align}
+
+Con todo lo anterior, primero definamos a la matriz $\bf B=\mD_r^{-1/2}PD_c^{-1/2}$. Ahora, del \textbf{Teorema \ref{eckar}} [@multivarido_book], sabemos que la mejor $\bf \hat{B}$ aproximación de menor rango $s$ de $\bf B$ esta dada por los primeros $s$ terminos de la descomposición de valores singulares 
+\begin{align*}
+\mD_r^{-1/2} \mP \mD_c^{-1/2}=\sum_{k=1}^J \lambda_k^* u_k^* v_k'^*, 
+\end{align*} 
+donde 
+\begin{align}\label{condicion}
+\mD_r^{-1/2}\mP \mD_c^{-1/2}v_k^* = \lambda_k^* u_k^*, \ \ \ y \ \ \ u_k'^*\mD_r^{-1/2}\mP\mD_c^{-1/2}= \lambda_k^* v_k'^*
+\end{align}
+y 
+\begin{align*}
+|(\mD_r^{-1/2}\mP \mD_c^{-1/2})(\mD_r^{-1/2}\mP \mD_c^{-1/2})'-\lambda_k^{2*}I|=0, \ \ \ \text{para} k=1,\cdots, J.
+\end{align*}
+Es decir, la mejor aproximación de $B$ con rango menor $s$ es
+\begin{align*}
+\hat{\mB} = \mD_r^{-1/2}\hat{\mP} \mD_c^{-1/2} = \sum_{k=1}^s\lambda_k^* u_k^* v_k'^*.
+\end{align*}
+\textbf{Y por lo tanto, podemos encontrar la aproximación para $P$ como}
+\begin{align}\label{repre}
+\hat{\mP} = \mD_r^{1/2}\hat{\mB}\mD_c^{1/2}= \sum_{k=1}^s\lambda_k^* (\mD_r^{1/2}u_k^*) (\mD_c^{-1/2}v_k^*)'.
+\end{align}
+Veamos que si consideramos a $u_1^*=\mD_r^{1/2}1_I$ y $v_1^*=\mD_c^{1/2}1_J$, comprobemos primero que cumplan (\ref{condicion})
+\begin{align*}
+\mD_r^{-1/2}\mP \mD_c^{-1/2}v_k^* &=\mD_r^{-1/2}\mP \mD_c^{-1/2}(\mD_c^{1/2}1_J)\\
+&=\mD_r^{-1/2}\mP1_J\\
+&=\mD_r^{-1/2} \bf r \\
+&=\mD_r^{1/2}1_I= u_1^*
+\end{align*}
+y
+\begin{align*}
+u_k'^*\mD_r^{-1/2}\mP\mD_c^{-1/2}&=(\mD_r^{1/2}1_I)'\mD_r^{-1/2}\mP\mD_c^{-1/2}\\
+&=1_I' \mP\mD_c^{-1/2}\\
+&=c'\mD_c^{-1/2}\\
+&=(\mD^{1/2}I_J)'= v_k'^*.
+\end{align*}
+Entonces podemos decir, que $(u_1^*, v_1^*)=(\mD_r^{1/2}1_I,\mD_c^{1/2}1_J)$ son vectores singulares asociados con el valor singular $\lambda_1^*=1$. Y entonces podemos ver que 
+\begin{align}\label{rc}
+\lambda_1^* (\mD_r^{1/2}u_1^*) (\mD_c^{-1/2}v_1^*)'= \lambda_1^* (\mD_r^{1/2}\mD_r^{1/2}1_I) (\mD_c^{-1/2}\mD_c^{1/2}1_J)'=D_r1_I1'_JD_c=\bf rc'.
+\end{align}
+Por lo tanto, podemos reescribir la expresión (\ref{repre}) como cuando $s\geq 2$. 
+\begin{align*}
+\hat{\mP} =\bf rc'+ \sum_{k=2}^s\lambda_k^* (\mD_r^{1/2}u_k^*) (\mD_c^{-1/2}v_k^*)'
+\end{align*}
+Entonces, debido a que $(u_1^*, v_1^*)=(\mD_r^{1/2}1_I,\mD_c^{1/2}1_J)$ son vectores singulares asociados con el valor singular $\lambda_1^*=1$ y esto implica la expresión (\ref{rc}), \textbf{podemos concluir la mejor aproximación de rango 1 de $\mP$ es la solución $\hat{\mP}=\bf rc'.$} \ \ \fin
+
+\textbf{Ejercicio 2.}
+
+El conjunto de datos \textbf{mundodes} representa 91 países en los que se han observado 6 variables, Razón de natalidad, Razón de mortalidad, mortalidad infantil, esperanza de vida en hombres, esperanza de vida en mujeres y PNB per cápita. Del conjunto de datos se ha tomado la esperanza de vida de hombres y de mujeres. Se han formado cuatro categorías tanto para la mujer como para el hombre. Se denotan por M1 y H1 a las esperanzas entre menos de 41 años a 50 años, M2 y H2, de 51 a 60 años, M3 y H3, de 61 a 70 años, y M4 y H4, para entre 71 a más de 80. La siguiente tabla de contingencia muestra las frecuencias de cada grupo
+
+\begin{table}[H]
+\centering
+\begin{tabular}{ccccc}
+\hline \hline
+Mujer / Hombre & H1 & H2 & H3 & H4\\
+M1 & 10 & 0 & 0 &0\\
+M2 & 7 & 12 & 0 & 0\\
+M3 & 0 & 5 & 15 & 0\\
+M4 &0 & 0 & 23 & 19\\ \hline \hline
+\end{tabular}
+\caption{Conjunto de datos mundodes}
+\end{table}
+
+Realiza proyecciones por filas, por columnas y conjuntas de filas y columnas. Comprobar que en la proyección por filas las categorías están claramente separadas y que en el caso del hombre, las dos últimas categorías están muy cercanas. Comprobar en la proyección conjunta la cercanía de las categorías H3 con M3 y M4.
+
+\res 
+Primero evaluemos la independencia los grupos de mujeres y hombres para diferentes rangos de edad, para ello cuparemos la prueba de $\chi^2$.
+
+```{r, warning=FALSE}
+# datos del problema.
+mundodes <- matrix(c(10,0,0,0,
+                     7, 12 ,0,0,
+                     0, 5, 15, 0,
+                     0, 0, 23, 19), nrow=4, byrow=T)
+n <- sum(mundodes) # número de registros 
+
+# prueba de chi cuadrada para probar independecia.
+chisq.test(mundodes)
+```
+Cómo el p-value es menor a 0.05, podemos rechazar la hipótesis nula de independencia entre los grupos. Y por lo tanto podemos concluir que existe algún tipo de asociación entre ellos. Ahora, procedemos a calcular las proyecciones por filas y columnas
+```{r,  fig.width = 5, fig.height= 4, fig.align = "center"}
+library(ca)
+corres<-ca(mundodes, nd = 2)
+
+Cr<-corres$rowcoord #coordenadas de las filas
+plot(Cr,xlim=range(-3,3),ylim=range(-3,3),
+     xlab="Coordenada 1",ylab="Coordenada 2",lwd=1)
+text(Cr+0.3,labels=c("M1","M2","M3","M4"),col=1,lwd=2)
+abline(h=0,lty=2)
+abline(v=0,lty=2)
+
+Cc<-corres$colcoord  #coordenadas de las columnas
+plot(Cc,xlim=range(-3,3),ylim=range(-3,3),
+     xlab="Coordenada 1",ylab="Coordenada 2",lwd=1, col=2)
+text(Cc+0.3,labels=c("H1","H2","H3","H4"),col=2,lwd=4)
+abline(h=0,lty=2)
+abline(v=0,lty=2)
+```
+
+De las gráficas anteriores no podemos indicar que las filas tengan un perfil similar a través de las columnas, ni que las columnas tienen un perfil similar a través de las filas. Pero podemos interpretar las componentes 1 como la esperanzas de las personas menores de 60 años.
+
+Ahora, se obtiene la representacion conjunta de los renglones y columnas en el espacio de dos dimensiones
+```{r, fig.width = 5, fig.height= 4, fig.align = "center"}
+plot(Cr,xlim=range(-3,3),ylim=range(-3,3),
+     xlab="Coordenada 1",ylab="Coordenada 2",lwd=1)
+points(Cc,col=2)
+text(Cr+0.3,labels=c("M1","M2","M3","M4"),col=1,lwd=2)
+text(Cc+0.3,labels=c("H1","H2","H3","H4"),col=2,lwd=4)
+
+abline(h=0,lty=2)
+abline(v=0,lty=2)
+```
+
+Entocnes como las puntos de las mujeres están cercanos a los hombres con el mismo rango de edad, es decir no hay independencia entre los diferentes rangos de esperanza de vida entre hombre y mujeres. En esta representación se observa la cercaní de las categorías H3 con M3 y M4.
+
+# Bibliografía
+
